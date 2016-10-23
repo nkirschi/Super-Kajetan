@@ -1,16 +1,25 @@
-import java.awt.*;
+package gui;
+
+import gui.MainWindow;
 
 /**
  * @author Kirschi
  */
 
-public class Game {
+public class Level {
     private boolean running;
     private boolean paused;
 
     /**
+     * Die öffentliche statische Leere namens "main"
+     * @param args Ein Feld von Fäden namens "aarrrgghs"
+     */
+    public static void main(String[] args) {
+        new MainWindow();
+    }
+
+    /**
      * Gameloop
-     *
      */
     private void run() {
         init();
