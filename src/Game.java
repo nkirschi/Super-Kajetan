@@ -1,34 +1,50 @@
+import java.awt.*;
+
 /**
  * @author Kirschi
  */
 
 public class Game {
     private boolean running;
+    private boolean paused;
 
     /**
-     * Die öffentliche statische Leere namens "main"
-     * @param args Kommondozeilenargumente
+     * Gameloop
+     *
      */
-    public static void main(String[] args) {
-        new Game().start();
-    }
-
-    /**
-     * Diese Methode startet das Spiel :O
-     */
-    private void start() {
+    private void run() {
         init();
+        long NS_PER_UPDATE = 20000;
+        long frames = 0;
+        long frameTime = System.currentTimeMillis();
+        long lastTime = System.nanoTime();
+        long lag = 0; // Der Zeitunterschied zwischen Real Life und Spielwelt
         while (running) {
-            update();
+            if (paused)
+                continue;
+
+            long currentTime = System.nanoTime();
+            long elapsedTime = currentTime - lastTime;
+            lastTime = currentTime;
+            for (lag += elapsedTime; lag >= NS_PER_UPDATE; lag -= NS_PER_UPDATE)
+                update();
+
             render();
+            frames++;
+
+            if (System.currentTimeMillis() - frameTime >= 1000) {
+                System.out.println(frames + " FPS");
+                frames = 0;
+                frameTime = System.currentTimeMillis();
+            }
         }
     }
 
     /**
      * Diese Methode stoppt das Spiel!!
      */
-    public void stop() {
-        running = false;
+    public void pause() {
+        paused = !paused;
     }
 
     /**
