@@ -15,7 +15,8 @@ public class MainWindow extends JFrame {
      * Die öffentliche statische Leere namens "main"
      * @param args Ein Feld von Fäden namens "aarrrgghs"
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         new MainWindow();
     }
 
@@ -25,7 +26,7 @@ public class MainWindow extends JFrame {
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width / 2 - WIDTH / 2, d.height / 2 - HEIGHT / 2);
 
-        MenuView menuView = new MenuView();
+        menuView = new MenuView();
         add(menuView);
 
         setVisible(true);
