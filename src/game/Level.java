@@ -1,6 +1,4 @@
-package gui;
-
-import gui.MainWindow;
+package game;
 
 /**
  * @author Kirschi
@@ -11,17 +9,9 @@ public class Level {
     private boolean paused;
 
     /**
-     * Die öffentliche statische Leere namens "main"
-     * @param args Ein Feld von Fäden namens "aarrrgghs"
-     */
-    public static void main(String[] args) {
-        new MainWindow();
-    }
-
-    /**
      * Gameloop
      */
-    private void run() {
+    public void run() {
         init();
         long NS_PER_UPDATE = 20000;
         long frames = 0;

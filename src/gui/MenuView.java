@@ -5,9 +5,8 @@ import javax.swing.*;
 /**
  * @author Kirschi
  */
-public class MainView extends JPanel {
-
-    public MainView() {
+public class MenuView extends AbstractView {
+    public MenuView() {
 
     }
 }
