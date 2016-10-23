@@ -4,9 +4,26 @@ package game;
  * @author Kirschi
  */
 
-public class Level {
+public class Level implements Runnable {
+    private static Level level;
     private boolean running;
     private boolean paused;
+
+    private Level() {
+        level = this;
+    }
+
+    public static Level getInstance() {
+        if (level == null)
+            level = new Level();
+        return level;
+    }
+
+    public void start() {
+        if (running)
+            return;
+        new Thread(this).start();
+    }
 
     /**
      * Gameloop
@@ -17,14 +34,18 @@ public class Level {
         long frames = 0;
         long frameTime = System.currentTimeMillis();
         long lastTime = System.nanoTime();
+        long currentTime = 0;
+        long elapsedTime = 0;
         long lag = 0; // Der Zeitunterschied zwischen Real Life und Spielwelt
         while (running) {
+
+            currentTime = System.nanoTime();
+            elapsedTime = currentTime - lastTime;
+            lastTime = currentTime;
+
             if (paused)
                 continue;
 
-            long currentTime = System.nanoTime();
-            long elapsedTime = currentTime - lastTime;
-            lastTime = currentTime;
             for (lag += elapsedTime; lag >= NS_PER_UPDATE; lag -= NS_PER_UPDATE)
                 update();
 
