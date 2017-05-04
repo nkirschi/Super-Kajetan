@@ -11,7 +11,8 @@ public class MenuView extends AbstractView {
     private JButton startButton;
     private JButton pauseButton;
 
-    public MenuView() {
+    public MenuView(MainFrame mainFrame) {
+        super(mainFrame);
         startButton = new JButton("Start");
         pauseButton = new JButton("Pause");
         startButton.addActionListener(l -> Level.getInstance().start());
@@ -19,4 +20,6 @@ public class MenuView extends AbstractView {
         add(startButton);
         add(pauseButton);
     }
+
+    public void update() {}
 }

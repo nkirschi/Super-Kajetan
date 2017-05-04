@@ -1,7 +1,7 @@
 package game;
 
 /**
- * @author Kirschi
+ * Hier wurde ein bisschen rumprobiert ^^
  */
 
 public class Level implements Runnable {
