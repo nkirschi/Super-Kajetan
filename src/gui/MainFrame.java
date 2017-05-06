@@ -12,8 +12,12 @@ public class MainFrame extends JFrame {
      * Die öffentliche statische Leere namens "main"
      * @param args Ein Feld von Fäden namens "aarrrgghs"
      */
-    public static void main(String[] args) throws Exception {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
         new MainFrame();
     }
 
