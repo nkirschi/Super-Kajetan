@@ -4,18 +4,18 @@ package game;
  * Hier wurde ein bisschen rumprobiert ^^
  */
 
-public class Level implements Runnable {
-    private static Level level;
+public class Test implements Runnable {
+    private static Test level;
     private boolean running;
     private boolean paused;
 
-    private Level() {
+    private Test() {
         level = this;
     }
 
-    public static Level getInstance() {
+    public static Test getInstance() {
         if (level == null)
-            level = new Level();
+            level = new Test();
         return level;
     }
 
@@ -23,6 +23,13 @@ public class Level implements Runnable {
         if (running)
             return;
         new Thread(this).start();
+    }
+
+    /**
+     * Diese Methode pausiert bzw. setzt das Spiel fort!!
+     */
+    public void pause() {
+        paused = !paused;
     }
 
     /**
@@ -58,13 +65,6 @@ public class Level implements Runnable {
                 frameTime = System.currentTimeMillis();
             }
         }
-    }
-
-    /**
-     * Diese Methode stoppt das Spiel!!
-     */
-    public void pause() {
-        paused = !paused;
     }
 
     /**

@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 
@@ -29,7 +31,6 @@ public class MainFrame extends JFrame {
 
         currentView = new MenuView(this);
         add(currentView);
-
         setVisible(true);
     }
 }

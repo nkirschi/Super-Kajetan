@@ -1,6 +1,6 @@
 package gui;
 
-import game.Level;
+import game.Test;
 
 import javax.swing.*;
 
@@ -8,15 +8,14 @@ import javax.swing.*;
  * @author Kirschi
  */
 public class MenuView extends AbstractView {
-    private JButton startButton;
-    private JButton pauseButton;
 
     public MenuView(MainFrame mainFrame) {
         super(mainFrame);
-        startButton = new JButton("Start");
-        pauseButton = new JButton("Pause");
-        startButton.addActionListener(l -> Level.getInstance().start());
-        pauseButton.addActionListener(l -> Level.getInstance().pause());
+        JButton startButton = new JButton("Start");
+        JButton pauseButton = new JButton("Pause/Weiter");
+        JLabel runningLabel = new JLabel("Status: Läuft");
+        startButton.addActionListener(l -> Test.getInstance().start());
+        pauseButton.addActionListener(l -> Test.getInstance().pause());
         add(startButton);
         add(pauseButton);
     }
