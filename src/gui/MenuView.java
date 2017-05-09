@@ -1,7 +1,5 @@
 package gui;
 
-import game.Test;
-
 import javax.swing.*;
 
 /**

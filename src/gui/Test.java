@@ -1,4 +1,4 @@
-package game;
+package gui;
 
 /**
  * Hier wurde ein bisschen rumprobiert ^^
