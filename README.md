@@ -1,2 +1,2 @@
-# Sidescroller
-Fancy Programmier-Gedöns featuring Gewalt Disney!
+# Hack 'n' Slay (Puzzle) Side-Scroller
+Fancy Programmier-Gedöns featuring `Gewalt Disney`!
