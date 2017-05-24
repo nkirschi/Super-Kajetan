@@ -59,10 +59,14 @@ public class Point {
     /**
      * Vergleichsmethode für Punkte
      *
-     * @param point Vergleichspunkt
+     * @param o Vergleichsobjekt
      * @return Gleich oder nicht gleich, das ist hier die Frage
      */
-    public boolean equals(Point point) {
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Point))
+            return false;
+        Point point = (Point) o;
         return this.x == point.getX() && this.y == point.getY();
     }
 
