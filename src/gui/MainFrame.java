@@ -15,18 +15,22 @@ import java.io.IOException;
 public class MainFrame extends JFrame implements WindowListener {
     private AbstractView currentView;
 
-    public static Insets BUTTON_INSETS = new Insets(2, 6, 2, 6);
-    public static int BUTTON_ICON_TEXT_GAP = 5;
-
+    /**
+     * Privater Konstruktor, da wir nur genau ein Hauptfenster zur Laufzeit benötigen,
+     * das ganz am Anfang in der statischen main()-Methode erzeugt wird
+     */
     private MainFrame() {
-        setTitle("Sidescroller 0.0.1");
-        setSize(800, 600);
-        //setResizable(false);
-        setLocationRelativeTo(null);
+        setTitle("Sidescroller Alpha v1.1.2_01");
+        setSize(1024, 768);
+        setResizable(false);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = screenSize.width / 2 - getWidth() / 2;
+        int height = screenSize.height / 2 - getHeight() / 2;
+        setLocation(width, height);
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(this);
         try {
-            setIconImage(ImageUtil.getInternalImage("images/icon.png"));
+            setIconImage(ImageUtil.getImage("images/icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
             Logger.log(Logger.WARNING, e);
@@ -75,7 +79,10 @@ public class MainFrame extends JFrame implements WindowListener {
         return currentView;
     }
 
-    private void cleanUpBeforeClose() { //TODO alle Sachen, die beim entfernen aufgeführt werden sollen hinzufügen
+    /**
+     * Cleanup-Methode, die vor dem Beenden des Programms ausgeführt wird
+     */
+    private void cleanUpBeforeClose() {
         Logger.log(Logger.INFO, "Applikation ordnungsgemäß beendet");
         Logger.close();
         System.exit(0);
