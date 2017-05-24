@@ -53,7 +53,17 @@ public class Point {
      * @return Abstand der beiden Punkte
      */
     public double distanceTo(Point point) {
-        return Math.sqrt(Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2));
+        return Math.sqrt(Math.pow(point.getX() - this.x, 2) + Math.pow(point.getY() - this.y, 2));
+    }
+
+    /**
+     * Vergleichsmethode für Punkte
+     *
+     * @param point Vergleichspunkt
+     * @return Gleich oder nicht gleich, das ist hier die Frage
+     */
+    public boolean equals(Point point) {
+        return this.x == point.getX() && this.y == point.getY();
     }
 
     /**
@@ -93,6 +103,17 @@ public class Point {
     }
 
     /**
+     * Setter-Methode für das Setzen der Position über die Koordinaten
+     *
+     * @param x Zu setzende x-Koordinate
+     * @param y Zu setzende y-Koordinate
+     */
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
      * Setter-Methode für das Setzen der Position des Punktes auf einen anderen Punkt
      *
      * @param position Anderer Punkt, auf dessen Position dieser hier gesetzt werden soll
@@ -100,5 +121,25 @@ public class Point {
     public void setPosition(Point position) {
         this.x = position.getX();
         this.y = position.getY();
+    }
+
+    /**
+     * Stringkonvertierungsmethode zu Testzwecken
+     *
+     * @return String-Repräsentation des Punktes
+     */
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" + x + "," + y + ")";
+    }
+
+    public static void main(String[] args) {
+        Point p = new Point(0, 0);
+        Point q = new Point(3, 4);
+        System.out.println(p.distanceTo(q));
+        p.move(-1, 2);
+        System.out.println(p);
+        q.setPosition(p);
+        System.out.println(p.equals(q));
     }
 }
