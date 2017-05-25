@@ -1,18 +1,18 @@
 package util.list;
 
 /**
- * Konkreter Listenknoten
+ * Konkreter Listenknoten ("Composite")
  */
-class ListNode<C> extends ListItem<C> {
+class ListNode<C> extends ListElement<C> {
     private C content;
-    private ListItem<C> next;
+    private ListElement<C> next;
 
-    ListItem<C> add(C content) {
+    ListElement<C> add(C content) {
         next = next.add(content);
         return this;
     }
 
-    ListItem<C> remove(C content) {
+    ListElement<C> remove(C content) {
         if (this.content.equals(content))
             return next;
         next = next.remove(content);
@@ -38,7 +38,7 @@ class ListNode<C> extends ListItem<C> {
         this.content = content;
     }
 
-    void setNext(ListItem<C> next) {
+    void setNext(ListElement<C> next) {
         this.next = next;
     }
 }

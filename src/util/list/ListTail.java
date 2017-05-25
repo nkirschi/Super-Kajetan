@@ -1,22 +1,24 @@
 package util.list;
 
+import java.util.NoSuchElementException;
+
 /**
- * Konkreter Listenabschluss
+ * Konkreter Listenabschluss ("Leaf")
  */
-class ListTail<C> extends ListItem<C> {
-    ListItem<C> add(C content) {
+class ListTail<C> extends ListElement<C> {
+    ListElement<C> add(C content) {
         ListNode<C> node = new ListNode<>();
         node.setContent(content);
         node.setNext(this);
         return node;
     }
 
-    ListItem<C> remove(C content) {
+    ListElement<C> remove(C content) {
         return this;
     }
 
     C get(int i) {
-        return null;
+        throw new NoSuchElementException("No content at [" + i + "] in list!");
     }
 
     int size() {
