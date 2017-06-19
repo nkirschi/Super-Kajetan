@@ -1,6 +1,6 @@
 class MainMenuView extends AbstractView{
   private MainFrame mainframe;
-  private static LevelLobbyView instance;
+  private static MainMenuView instance;
   
   private MainMenuView (MainFrame mainframe){
     super(mainframe);
