@@ -1,6 +1,18 @@
 class MainMenuView extends AbstractView{
   private MainFrame mainframe;
+  private static LevelLobbyView instance;
   
-  private void update(){
+  private MainMenuView (MainFrame mainframe){
+    super(mainframe);
   }
+  
+  public static MainMenuView instance(MainFrame mainframe){
+    if(instance==null){
+      instance = new MainMenuView(mainframe);
+    }
+    return instance;
+  }
+  
+  public void update(){
+}
 }
