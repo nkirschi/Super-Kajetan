@@ -35,7 +35,7 @@ public class MainFrame extends JFrame implements WindowListener {
             e.printStackTrace();
             Logger.log(Logger.WARNING, e);
         }
-        changeTo(MainMenuView.instance);
+        changeTo(MainMenuView.getInstance(this));
         setVisible(true);
     }
 
@@ -67,7 +67,6 @@ public class MainFrame extends JFrame implements WindowListener {
         revalidate();
         repaint();
         currentView.revalidate();
-        currentView.update();
         currentView.repaint();
     }
 

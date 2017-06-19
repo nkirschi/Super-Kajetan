@@ -1,18 +1,16 @@
-class HighScoreView extends AbstractView{
-  private MainFrame mainframe;
-  private static HighScoreView instance;
-  
-  private HighScoreView (MainFrame mainframe){
-    super(mainframe);
-  }
-  
-  public static HighScoreView instance(MainFrame mainframe){
-    if(instance==null){
-      instance = new HighScoreView(mainframe);
+package gui;
+
+class HighScoreView extends AbstractView {
+    private MainFrame mainFrame;
+    private static HighScoreView instance;
+
+    private HighScoreView(MainFrame mainFrame) {
+        super(mainFrame);
     }
-    return instance;
-  }
-  
-  public void update(){
-  }
+
+    static HighScoreView getInstance(MainFrame mainFrame) {
+        if (instance == null)
+            instance = new HighScoreView(mainFrame);
+        return instance;
+    }
 }

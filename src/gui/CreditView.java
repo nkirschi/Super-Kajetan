@@ -1,18 +1,16 @@
-class CreditView extends AbstractView{
-  private MainFrame mainframe;
-  private static CreditView instance;
-  
-  private CreditView (MainFrame mainframe){
-    super(mainframe);
-  }
-  
-  public static CreditView instance(MainFrame mainframe){
-    if(instance==null){
-      instance = new CreditView(mainframe);
+package gui;
+
+class CreditView extends AbstractView {
+    private MainFrame mainFrame;
+    private static CreditView instance;
+
+    private CreditView(MainFrame mainFrame) {
+        super(mainFrame);
     }
-    return instance;
-  }
-  
-  public void update(){
-  }
+
+    static CreditView getInstance(MainFrame mainFrame) {
+        if (instance == null)
+            instance = new CreditView(mainFrame);
+        return instance;
+    }
 }

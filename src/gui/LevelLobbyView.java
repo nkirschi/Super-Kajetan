@@ -1,18 +1,16 @@
-class LevelLobbyView extends AbstractView{
-  private MainFrame mainframe;
-  private static LevelLobbyView instance;
-  
-  private LevelLobbyView (MainFrame mainframe){
-    super(mainframe);
-  }
-  
-  public static LevelLobbyView instance(MainFrame mainframe){
-    if(instance==null){
-      instance = new LevelLobbyView(mainframe);
+package gui;
+
+class LevelLobbyView extends AbstractView {
+    private MainFrame mainFrame;
+    private static LevelLobbyView instance;
+
+    private LevelLobbyView(MainFrame mainFrame) {
+        super(mainFrame);
     }
-    return instance;
-  }
-  
-  public void update(){
-  }
+
+    static LevelLobbyView getInstance(MainFrame mainFrame) {
+        if (instance == null)
+            instance = new LevelLobbyView(mainFrame);
+        return instance;
+    }
 }
