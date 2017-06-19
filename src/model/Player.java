@@ -3,16 +3,14 @@ package model;
 import util.Point;
 
 public class Player extends Entity {
-
-    public Point position;
-
     public Player(Point position) {
-        // Player spawnt auf Position (0,0)
-        position = new Point(0, 0);
+        // Player spawnt standardmäßig auf Position (0,0)
+        position = new Point();
     }
 
     /**
-     * gibt Position des Spielers aus
+     * Getter-Methode für die aktuelle Spielerposition
+     * @return Position des Spielers als Point
      */
     public Point getPosition() {
         return position;
