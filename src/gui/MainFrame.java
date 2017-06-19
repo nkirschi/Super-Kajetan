@@ -35,6 +35,7 @@ public class MainFrame extends JFrame implements WindowListener {
             e.printStackTrace();
             Logger.log(Logger.WARNING, e);
         }
+        changeTo(MainMenuView.instance);
         setVisible(true);
     }
 
