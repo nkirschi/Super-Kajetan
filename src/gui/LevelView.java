@@ -7,6 +7,7 @@ import model.Level;
 
 public class LevelView extends AbstractView {
     private MainFrame mainFrame;
+    private Level level;
 
     private int fps = 60;
     private int frameCount = 0;
@@ -15,12 +16,8 @@ public class LevelView extends AbstractView {
 
     LevelView(Level level, MainFrame mainFrame) {
         super(mainFrame);
-        load(level);
+        this.level = level;
         run();
-    }
-
-    public void load(Level level) {
-        // bla
     }
 
     public void run() {
@@ -96,7 +93,7 @@ public class LevelView extends AbstractView {
         
         // 2. Move Enemies + Gravitation + check Collision
         
-        // 3. Arrow
+        // 3. Move Arrows + Gravitation + check Collision
         
         // 4. Damage
         
