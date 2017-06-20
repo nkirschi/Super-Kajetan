@@ -92,10 +92,28 @@ public class LevelView extends AbstractView {
     }
 
     public void update() {
-
+        // 1. Move Player + Gravitation + check Collision
+        
+        // 2. Move Enemies + Gravitation + check Collision
+        
+        // 3. Arrow
+        
+        // 4. Damage
+        
+        // 5. Kill
     }
 
     public void render() {
-
+        // 1. Sidescroll
+        
+        // 2. Draw Background
+        
+        // 3. Draw Baseline
+        
+        // 4. Draw Player
+        
+        // 5. Draw Enemies
+        
+        // 6. Draw Obstacles
     }
 }
