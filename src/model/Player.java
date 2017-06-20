@@ -1,6 +1,9 @@
 package model;
 
+import util.ImageUtil;
 import util.Point;
+
+import java.io.IOException;
 
 public class Player extends Entity {
     public Player(Point position) {
@@ -8,27 +11,30 @@ public class Player extends Entity {
         position = new Point();
     }
 
-        /**
-        * Getter-Methode für die aktuelle Spielerposition
-        * @return Position des Spielers als Point
-        */
+    /**
+     * Getter-Methode für die aktuelle Spielerposition
+     *
+     * @return Position des Spielers als Point
+     */
     public Point getPosition() {
         return position;
     }
-    
-        /**
-        * bewegt den Spieler
-        */
-    
+
+    /**
+     * bewegtt den Spieler
+     */
     public void move(double x, double y) {
         position.move(x, y);
     }
-    
-        /**
-        * läd Bild aus images/...
-        */
-    
-    public void loadImage () {
-        ImageUtil.getImage(images/);
+
+    /**
+     * lädt Bild aus images/...
+     */
+    public void loadImage() {
+        try {
+            ImageUtil.getImage("images");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

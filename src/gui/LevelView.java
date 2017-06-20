@@ -1,9 +1,7 @@
 package gui;
 
-import java.awt.*;
-import javax.swing.*;
-
 import model.Level;
+import physics.GameConstants;
 
 public class LevelView extends AbstractView {
     private MainFrame mainFrame;
@@ -21,21 +19,18 @@ public class LevelView extends AbstractView {
     }
 
     public void run() {
-        //This value would probably be stored elsewhere.
-        final double GAME_HERTZ = 30.0;
+        running = true;
+
         //Calculate how many ns each frame should take for our target game hertz.
-        final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
+        final double TIME_BETWEEN_UPDATES = 1000000000 / GameConstants.GAME_HERTZ;
         //At the very most we will update the game this many times before a new render.
         //If you're worried about visual hitches more than perfect timing, set this to 1.
         final int MAX_UPDATES_BEFORE_RENDER = 5;
-        //We will need the last update time.
+
         double lastUpdateTime = System.nanoTime();
-        //Store the last time we rendered.
         double lastRenderTime = System.nanoTime();
 
-        //If we are able to get as high as this FPS, don't render again.
-        final double TARGET_FPS = 60;
-        final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
+        final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / GameConstants.TARGET_FPS;
 
         //Simple way of finding FPS.
         int lastSecondTime = (int) (lastUpdateTime / 1000000000);
@@ -64,7 +59,7 @@ public class LevelView extends AbstractView {
                 //Update the frames we got.
                 int thisSecond = (int) (lastUpdateTime / 1000000000);
                 if (thisSecond > lastSecondTime) {
-                    System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
+                    System.out.println("In second " + thisSecond + ": " + frameCount + " fps");
                     fps = frameCount;
                     frameCount = 0;
                     lastSecondTime = thisSecond;
@@ -90,27 +85,33 @@ public class LevelView extends AbstractView {
 
     public void update() {
         // 1. Move Player + Gravitation + check Collision
-        
+
         // 2. Move Enemies + Gravitation + check Collision
-        
+
         // 3. Move Arrows + Gravitation + check Collision
-        
+
         // 4. Damage
-        
+
         // 5. Kill
     }
 
     public void render() {
         // 1. Sidescroll
-        
+
         // 2. Draw Background
-        
+
         // 3. Draw Baseline
-        
+
         // 4. Draw Player
-        
+
         // 5. Draw Enemies
-        
+
         // 6. Draw Obstacles
+        frameCount++;
+    }
+
+    public static void main(String[] args) {
+        new LevelView(new Level("", new util.list.List<>(), new util.list.List<>(), 0), null).run();
+
     }
 }

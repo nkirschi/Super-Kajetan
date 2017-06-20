@@ -1,5 +1,8 @@
 package gui;
 
+import model.Level;
+import util.list.List;
+
 class LobbyView extends AbstractView {
     private MainFrame mainFrame;
     private static LobbyView instance;
@@ -13,8 +16,11 @@ class LobbyView extends AbstractView {
             instance = new LobbyView(mainFrame);
         return instance;
     }
-    
+
+    /**
+     * Hässliche Hardcoded-Level-Methode
+     */
     private void createLevel1() {
-        Level level1 = new Level("images/background1.png", new List<Entity>, new List<Obstacle>, 1000);
+        Level level1 = new Level("images/background1.png", new List<>(), new List<>(), 1000);
     }
 }

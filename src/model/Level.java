@@ -14,24 +14,24 @@ public class Level {
         this.entities = entities;
         this.length = length;
     }
-    
+
     public String getBackgroundFilePath() {
         return backgroundFilePath;
     }
-    
+
     public List<Obstacle> getObstacles() {
         return obstacles;
     }
-    
+
     public List<Entity> getEntities() {
         return entities;
     }
-    
+
     public double getLength() {
         return length;
     }
-    
+
     public Player getPlayer() {
-        return entities.get(0); // Player ist in Entity-List immer an Index 0
+        return (Player) entities.get(0); // Player ist in Entity-List immer an Index 0
     }
 }
