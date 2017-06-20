@@ -30,4 +30,8 @@ public class Level {
     public double getLength() {
         return length;
     }
+    
+    public Player getPlayer() {
+        return entities.get(0); // Player ist in Entity-List immer an Index 0
+    }
 }
