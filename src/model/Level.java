@@ -8,10 +8,11 @@ public class Level {
     private List<Entity> entities;
     private double length; // Länge des Levels in px
 
-    public Level(String backgroundFilePath, List<Obstacle> obstacles, List<Entity> entities) {
+    public Level(String backgroundFilePath, List<Obstacle> obstacles, List<Entity> entities, double length) {
         this.backgroundFilePath = backgroundFilePath;
         this.obstacles = obstacles;
         this.entities = entities;
+        this.length = length;
     }
     
     public String getBackgroundFilePath() {
