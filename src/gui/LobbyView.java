@@ -13,4 +13,8 @@ class LobbyView extends AbstractView {
             instance = new LobbyView(mainFrame);
         return instance;
     }
+    
+    private void createLevel1() {
+        Level level1 = new Level("images/background1.png", new List<Entity>, new List<Obstacle>, 1000);
+    }
 }
