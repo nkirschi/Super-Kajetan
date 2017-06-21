@@ -2,8 +2,11 @@ package gui;
 
 import model.Level;
 import physics.GameConstants;
+import util.ImageUtil;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class LevelView extends AbstractView {
     private Level level;
@@ -16,7 +19,7 @@ public class LevelView extends AbstractView {
     LevelView(Level level, MainFrame mainFrame) {
         super(mainFrame);
         this.level = level;
-        run();
+        //run();
     }
 
     public void run() {
@@ -119,6 +122,21 @@ public class LevelView extends AbstractView {
 
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+        try {
+            BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
+
+            // Verarbeitung des aktuell darzustellenden Subimages
+            double rel = (double) getWidth() / (double) getHeight();
+            image = image.getSubimage(100, 0, (int) Math.round(rel * image.getHeight()), image.getHeight());
+
+            // Zeichnen des Subimages
+            int width = image.getWidth(null);
+            int height = image.getHeight(null);
+            double factor = getHeight() / (double) height; // Skalierungsfaktor
+            g2.drawImage(image, 0, 0, (int) (width * factor), (int) (height * factor), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
