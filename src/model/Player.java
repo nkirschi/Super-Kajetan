@@ -3,12 +3,16 @@ package model;
 import util.ImageUtil;
 import util.Point;
 
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 public class Player extends Entity {
+    private final double PLAYER_WIDTH = 100;
+    private final double PLAYER_HEIGHT = 300;
+
     public Player(Point position) {
-        // Player spawnt standardmäßig auf Position (0,0)
-        position = new Point();
+        this.position = position;
+        hitbox = new Rectangle2D.Double(position.getX() - PLAYER_WIDTH / 2, position.getY() - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
 
     /**
@@ -18,13 +22,6 @@ public class Player extends Entity {
      */
     public Point getPosition() {
         return position;
-    }
-
-    /**
-     * bewegtt den Spieler
-     */
-    public void move(double x, double y) {
-        position.move(x, y);
     }
 
     /**

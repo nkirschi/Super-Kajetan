@@ -7,15 +7,7 @@ import java.io.IOException;
 
 public class Knight extends Enemy {
     public Knight(Point position) {
-        position = new Point();
-    }
-
-    public Point getPosition() {
-        return position;
-    }
-
-    public void move(double x, double y) {
-        position.move(x, y);
+        this.position = position;
     }
 
     public void loadImage() {

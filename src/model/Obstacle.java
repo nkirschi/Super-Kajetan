@@ -3,13 +3,18 @@ package model;
 import physics.Collidable;
 import util.Point;
 
-import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public abstract class Obstacle implements Collidable {
     protected Point position;
-    protected Rectangle hitbox;
+    protected Rectangle2D.Double hitbox;
 
-    public Rectangle getHitbox() {
+    Point getPosition() {
+        return position;
+    }
+
+    @Override
+    public Rectangle2D.Double getHitbox() {
         return hitbox;
     }
 }

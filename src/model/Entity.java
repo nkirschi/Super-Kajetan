@@ -3,41 +3,43 @@ package model;
 import physics.Collidable;
 import util.Point;
 
-import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public abstract class Entity implements Collidable {
-    protected Point position;
-    protected Rectangle hitbox;
+    protected Point position; // Der Punkt in der Mitte unten am Entity
+    protected Rectangle2D.Double hitbox;
     protected int health;
 
-    public Rectangle getHitbox() {
-        return hitbox;
-    }
-
-    /* FEHLERHAFT
-
-    public default Point getPosition() {
+    Point getPosition() {
         return position;
     }
 
-    */
+    @Override
+    public Rectangle2D.Double getHitbox() {
+        return hitbox;
+    }
 
     /**
-     @param damage Hinzuzufügender Schaden
-     @return Wahrheitswert, ob entity noch lebt.
+     * Bewegung der Entität um Koordinatendifferenzen
+     *
+     * @param x Delta-x, um das verschoben wird
+     * @param y Delta-y, um das verschoben wird
      */
-
-    /* FEHLERHAFT
-
-    public default boolean sufferDamage(int damage) {
-        health -= damage;
-        return health <= 0 ? false : true;
+    void move(double x, double y) {
+        position.move(x, y);
+        hitbox.setRect(hitbox.getX() + x, hitbox.getY() + y, hitbox.getWidth(), hitbox.getHeight());
     }
 
-    public default int getHealth() {
+    /**
+     * @param damage Hinzuzufügender Schaden
+     * @return Wahrheitswert, ob entity noch lebt.
+     */
+    boolean sufferDamage(int damage) {
+        health -= damage;
+        return health > 0;
+    }
+
+    int getHealth() {
         return health;
     }
-
-    */
-
 }
