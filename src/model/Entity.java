@@ -13,4 +13,17 @@ public abstract class Entity implements Collidable {
     public Rectangle getHitbox() {
         return hitbox;
     }
+    
+    public default Point getPosition() {
+        return position;
+    }
+    
+    public default boolean sufferDamage(int damage) {
+        health -= damage;
+        return health <= 0 ? false : true;
+    }
+    
+    public default int getHealth() {
+        return health;
+    }
 }
