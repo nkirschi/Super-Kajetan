@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class LevelView extends AbstractView {
+public class LevelView extends AbstractView implements Runnable {
     private Level level;
 
     private int fps = 60;
@@ -19,16 +19,17 @@ public class LevelView extends AbstractView {
     LevelView(Level level, MainFrame mainFrame) {
         super(mainFrame);
         this.level = level;
+        new Thread(this).start();
         //run();
     }
 
     public void run() {
         running = true;
 
-        //Calculate how many ns each frame should take for our target game hertz.
+        // Zeit pro Update
         final double TIME_BETWEEN_UPDATES = 1000000000 / GameConstants.GAME_HERTZ;
-        //At the very most we will update the game this many times before a new render.
-        //If you're worried about visual hitches more than perfect timing, set this to 1.
+
+        // Maximale Zahl an hintereinanderfolgenden Updates
         final int MAX_UPDATES_BEFORE_RENDER = 5;
 
         double lastUpdateTime = System.nanoTime();
@@ -36,52 +37,49 @@ public class LevelView extends AbstractView {
 
         final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / GameConstants.TARGET_FPS;
 
-        //Simple way of finding FPS.
+        // Für die FPS-Bestimmung
         int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 
         while (running) {
-            double now = System.nanoTime();
+            double currentTime = System.nanoTime();
             int updateCount = 0;
 
             if (!paused) {
-                //Do as many game updates as we need to, potentially playing catchup.
-                while (now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER) {
+
+                // So viele Spielupdates wie nötig, evtl. Aufholen nötig!
+                while (currentTime - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER) {
                     update();
                     lastUpdateTime += TIME_BETWEEN_UPDATES;
                     updateCount++;
                 }
 
-                //If for some reason an update takes forever, we don't want to do an insane number of catchups.
-                //If you were doing some sort of game that needed to keep EXACT time, you would get rid of this.
-                if (now - lastUpdateTime > TIME_BETWEEN_UPDATES) {
-                    lastUpdateTime = now - TIME_BETWEEN_UPDATES;
+                // Falls ein Update zu lange gebraucht hat, wird hier das nachfolgende übersprungen
+                if (currentTime - lastUpdateTime > TIME_BETWEEN_UPDATES) {
+                    lastUpdateTime = currentTime - TIME_BETWEEN_UPDATES;
                 }
 
                 render();
-                lastRenderTime = now;
+                lastRenderTime = currentTime;
 
-                //Update the frames we got.
-                int thisSecond = (int) (lastUpdateTime / 1000000000);
-                if (thisSecond > lastSecondTime) {
-                    System.out.println("In second " + thisSecond + ": " + frameCount + " fps");
+                // Framezahl-Update
+                int thisSecondTime = (int) (lastUpdateTime / 1000000000);
+                if (thisSecondTime > lastSecondTime) {
                     fps = frameCount;
+                    System.out.println("FPS: " + fps);
                     frameCount = 0;
-                    lastSecondTime = thisSecond;
+                    lastSecondTime = thisSecondTime;
                 }
 
-                //Yield until it has been at least the target time between renders. This saves the CPU from hogging.
-                while (now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && now - lastUpdateTime < TIME_BETWEEN_UPDATES) {
-                    Thread.yield();
 
-                    //This stops the app from consuming all your CPU. It makes this slightly less accurate, but is worth it.
-                    //You can remove this line and it will still work (better), your CPU just climbs on certain OSes.
-                    //FYI on some OS's this can cause pretty bad stuttering. Scroll down and have a look at different peoples' solutions to this.
+                // Dieser Abschnitt sorgt im Grunde für VSync auf 60 fps
+                while (currentTime - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && currentTime - lastUpdateTime < TIME_BETWEEN_UPDATES) {
+                    Thread.yield(); // Ressourcenfreigabe für andere Prozesse
                     try {
-                        Thread.sleep(1);
-                    } catch (Exception e) {
+                        Thread.sleep(1); // Zeitvertreib bis zum nächsten Gameloop-Durchlauf
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-
-                    now = System.nanoTime();
+                    currentTime = System.nanoTime();
                 }
             }
         }
