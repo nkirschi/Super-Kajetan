@@ -67,6 +67,7 @@ public class MainFrame extends JFrame implements WindowListener {
         revalidate();
         repaint();
         currentView.revalidate();
+        currentView.update();
         currentView.repaint();
     }
 

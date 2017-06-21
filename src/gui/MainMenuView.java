@@ -1,13 +1,15 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 class MainMenuView extends AbstractView {
-    private MainFrame mainFrame;
     private static MainMenuView instance;
 
     private MainMenuView(MainFrame mainFrame) {
         super(mainFrame);
+        setLayout(new FlowLayout());
         setBackground(GUIConstants.menuBackground);
 
         initButtons();

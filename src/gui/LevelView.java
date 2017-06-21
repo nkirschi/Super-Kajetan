@@ -6,7 +6,6 @@ import physics.GameConstants;
 import java.awt.*;
 
 public class LevelView extends AbstractView {
-    private MainFrame mainFrame;
     private Level level;
 
     private int fps = 60;

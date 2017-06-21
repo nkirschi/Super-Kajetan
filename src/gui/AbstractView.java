@@ -9,9 +9,11 @@ abstract class AbstractView extends JPanel {
     protected MainFrame mainFrame;
 
     /**
-     * @param mainFrame Das für den weiteren Zugriff benötigte Hauptfenster
+     * @param mainframe Das für den weiteren Zugriff benötigte Hauptfenster
      */
-    AbstractView(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
+    AbstractView(MainFrame mainframe) {
+        this.mainFrame = mainframe;
     }
+
+    public abstract void update();
 }

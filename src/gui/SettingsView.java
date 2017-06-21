@@ -1,11 +1,14 @@
 package gui;
 
 class SettingsView extends AbstractView {
-    private MainFrame mainframe;
     private static SettingsView instance;
 
     private SettingsView(MainFrame mainframe) {
         super(mainframe);
+    }
+
+    public void update() {
+
     }
 
     public static SettingsView getInstance(MainFrame mainframe) {

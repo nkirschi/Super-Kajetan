@@ -4,16 +4,19 @@ import model.Level;
 import util.list.List;
 
 class LobbyView extends AbstractView {
-    private MainFrame mainFrame;
     private static LobbyView instance;
 
     private LobbyView(MainFrame mainFrame) {
         super(mainFrame);
     }
 
-    static LobbyView getInstance(MainFrame mainFrame) {
+    public void update() {
+
+    }
+
+    public static LobbyView getInstance(MainFrame mainframe) {
         if (instance == null)
-            instance = new LobbyView(mainFrame);
+            instance = new LobbyView(mainframe);
         return instance;
     }
 
