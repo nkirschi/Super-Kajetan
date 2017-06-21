@@ -1,6 +1,9 @@
 package model;
 
+import util.ImageUtil;
 import util.Point;
+
+import java.io.IOException;
 
 public class Spider extends Enemy {
     public Spider(Point position) {
@@ -14,12 +17,13 @@ public class Spider extends Enemy {
     public void move(double x, double y) {
         position.move(x, y);
     }
-    
+
     public void loadImage() {
         try {
-            ImageUtil.getImage("images");   
-        }   catch (IOExecption e) {
-            e.ptrintStackTrace();   
+            ImageUtil.getImage("images");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 }

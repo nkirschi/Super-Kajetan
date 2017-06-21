@@ -27,6 +27,7 @@ public class List<C> {
 
     /**
      * Rekursives Entfernen eines Objektes aus der Liste
+     *
      * @param content
      */
     public void remove(C content) {
@@ -42,6 +43,7 @@ public class List<C> {
 
     /**
      * Ermitteln der Größe der Liste
+     *
      * @return Anzahl an gespeicherten Objekten
      */
     public int size() {
@@ -50,6 +52,7 @@ public class List<C> {
 
     /**
      * Erfragen eines Objektes aus der Liste mit einem Index
+     *
      * @param i Position in der Liste, beginnend mit 0
      * @return Objekt an der Stelle i
      */
@@ -61,6 +64,7 @@ public class List<C> {
 
     /**
      * Überführen der Liste in ein Feld von Objekten
+     *
      * @return Array aller Listenobjekte in unveränderter Reihenfolge
      */
     public Object[] toArray() {

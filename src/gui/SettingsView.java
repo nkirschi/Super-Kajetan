@@ -8,7 +8,7 @@ class SettingsView extends AbstractView {
         super(mainframe);
     }
 
-    public static SettingsView instance(MainFrame mainframe) {
+    public static SettingsView getInstance(MainFrame mainframe) {
         if (instance == null)
             instance = new SettingsView(mainframe);
         return instance;

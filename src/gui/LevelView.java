@@ -3,6 +3,8 @@ package gui;
 import model.Level;
 import physics.GameConstants;
 
+import java.awt.*;
+
 public class LevelView extends AbstractView {
     private MainFrame mainFrame;
     private Level level;
@@ -85,20 +87,20 @@ public class LevelView extends AbstractView {
 
     public void update() {
         // 1. Move Player + Gravitation + check Collision
-            // Tastaturcheck, altobelli!
-            // Gravitationschecks
-            // Kollisionschecks
-        
+        // Tastaturcheck, altobelli!
+        // Gravitationschecks
+        // Kollisionschecks
+
         // 2. Move Enemies + Gravitation + check Collision
-            // Gravitationschecks
-            // Kollisionschecks
+        // Gravitationschecks
+        // Kollisionschecks
 
         // 3. Move Arrows + Gravitation + check Collision
-            // Später, mein Sohn!
+        // Später, mein Sohn!
 
         // 4. Damage & Kill
-            // Health-Updates
-            // Aufräumen
+        // Health-Updates
+        // Aufräumen
     }
 
     public void render() {
@@ -115,7 +117,7 @@ public class LevelView extends AbstractView {
         // 6. Draw Obstacles
         frameCount++;
     }
-    
+
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
     }
