@@ -18,6 +18,10 @@ public abstract class Entity implements Collidable {
         return position;
     }
     
+    /**
+    @param damage Hinzuzufügender Schaden
+    @return Wahrheitswert, ob entity noch lebt.
+    */
     public default boolean sufferDamage(int damage) {
         health -= damage;
         return health <= 0 ? false : true;
