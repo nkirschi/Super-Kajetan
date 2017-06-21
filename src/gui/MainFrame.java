@@ -45,11 +45,11 @@ public class MainFrame extends JFrame implements WindowListener {
      * @param args Irrelevante Kommandozeilenparamter
      */
     public static void main(String[] args) {
-        try {
+        /*try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         new MainFrame();
     }
 
@@ -89,7 +89,7 @@ public class MainFrame extends JFrame implements WindowListener {
     /**
      * Cleanup-Methode, die vor dem Beenden des Programms ausgeführt wird
      */
-    private void cleanUpBeforeClose() {
+    void cleanupAndExit() {
         Logger.log(Logger.INFO, "Applikation ordnungsgemäß beendet");
         Logger.close();
         System.exit(0);
@@ -102,7 +102,7 @@ public class MainFrame extends JFrame implements WindowListener {
      */
     @Override
     public void windowClosing(WindowEvent e) {
-        cleanUpBeforeClose();
+        cleanupAndExit();
     }
 
     @Override

@@ -2,49 +2,59 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 class MainMenuView extends AbstractView {
     private static MainMenuView instance;
+    private GridBagConstraints constraints;
 
     private MainMenuView(MainFrame mainFrame) {
         super(mainFrame);
-        setLayout(new FlowLayout());
-        setBackground(GUIConstants.menuBackgroundColor);
+        setLayout(new GridBagLayout());
+        constraints = new GridBagConstraints();
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 0, 5, 0);
+        setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
         //TODO DefaultButtonSize bestimmen (mit GUIConstants.setDefaultButtonSize())!!
-
+        GUIConstants.setDefaultButtonSize(new Dimension(250, 50));
         initButtons();
     }
 
     private void initButtons() {
+
         //Button-Initialisierung
-        JButton levelLobby = new JButton("PLAY");
-        JButton settings = new JButton("SETTINGS");
-        JButton highscore = new JButton("HIGHSCORES");
-        JButton credits = new JButton("CREDITS");
+        JButton lobbyButton = new JButton("SPIELEN");
+        JButton settingsButton = new JButton("EINSTELLUNGEN");
+        JButton highscoresButton = new JButton("HIGHSCORES");
+        JButton creditsButton = new JButton("CREDITS");
+        JButton exitButton = new JButton("BEENDEN");
 
         //Action-Listener hinzufügen
-        levelLobby.addActionListener(a -> mainFrame.changeTo(LobbyView.getInstance(mainFrame)));
-        settings.addActionListener(a -> mainFrame.changeTo(SettingsView.getInstance(mainFrame)));
-        highscore.addActionListener(a -> mainFrame.changeTo(HighscoreView.getInstance(mainFrame)));
-        credits.addActionListener(a -> mainFrame.changeTo(CreditsView.getInstance(mainFrame)));
+        lobbyButton.addActionListener(a -> mainFrame.changeTo(LobbyView.getInstance(mainFrame)));
+        settingsButton.addActionListener(a -> mainFrame.changeTo(SettingsView.getInstance(mainFrame)));
+        highscoresButton.addActionListener(a -> mainFrame.changeTo(HighscoresView.getInstance(mainFrame)));
+        creditsButton.addActionListener(a -> mainFrame.changeTo(CreditsView.getInstance(mainFrame)));
+        exitButton.addActionListener(a -> mainFrame.cleanupAndExit());
 
         //Aussehens-Parameter setzen
-        levelLobby.setPreferredSize(GUIConstants.defaultButtonSize);
-        settings.setPreferredSize(GUIConstants.defaultButtonSize);
-        highscore.setPreferredSize(GUIConstants.defaultButtonSize);
-        credits.setPreferredSize(GUIConstants.defaultButtonSize);
+        lobbyButton.setPreferredSize(GUIConstants.defaultButtonSize);
+        settingsButton.setPreferredSize(GUIConstants.defaultButtonSize);
+        highscoresButton.setPreferredSize(GUIConstants.defaultButtonSize);
+        creditsButton.setPreferredSize(GUIConstants.defaultButtonSize);
+        exitButton.setPreferredSize(GUIConstants.defaultButtonSize);
 
-        levelLobby.setBackground(GUIConstants.buttonColor);
-        settings.setBackground(GUIConstants.buttonColor);
-        highscore.setBackground(GUIConstants.buttonColor);
-        credits.setBackground(GUIConstants.buttonColor);
+        lobbyButton.setBackground(GUIConstants.BUTTON_COLOR);
+        settingsButton.setBackground(GUIConstants.BUTTON_COLOR);
+        highscoresButton.setBackground(GUIConstants.BUTTON_COLOR);
+        creditsButton.setBackground(GUIConstants.BUTTON_COLOR);
+        exitButton.setBackground(GUIConstants.BUTTON_COLOR);
 
         //Buttons hinzufügen
-        add(levelLobby);
-        add(settings);
-        add(highscore);
-        add(credits);
+        add(lobbyButton, constraints);
+        add(settingsButton, constraints);
+        add(highscoresButton, constraints);
+        add(creditsButton, constraints);
+        add(exitButton, constraints);
     }
 
     public static MainMenuView getInstance(MainFrame mainframe) {
