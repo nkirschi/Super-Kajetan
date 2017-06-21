@@ -10,7 +10,8 @@ class MainMenuView extends AbstractView {
     private MainMenuView(MainFrame mainFrame) {
         super(mainFrame);
         setLayout(new FlowLayout());
-        setBackground(GUIConstants.menuBackground);
+        setBackground(GUIConstants.menuBackgroundColor);
+        //TODO DefaultButtonSize bestimmen (mit GUIConstants.setDefaultButtonSize())!!
 
         initButtons();
     }
@@ -29,6 +30,15 @@ class MainMenuView extends AbstractView {
         credits.addActionListener(a -> mainFrame.changeTo(CreditsView.getInstance(mainFrame)));
 
         //Aussehens-Parameter setzen
+        levelLobby.setPreferredSize(GUIConstants.defaultButtonSize);
+        settings.setPreferredSize(GUIConstants.defaultButtonSize);
+        highscore.setPreferredSize(GUIConstants.defaultButtonSize);
+        credits.setPreferredSize(GUIConstants.defaultButtonSize);
+
+        levelLobby.setBackground(GUIConstants.buttonColor);
+        settings.setBackground(GUIConstants.buttonColor);
+        highscore.setBackground(GUIConstants.buttonColor);
+        credits.setBackground(GUIConstants.buttonColor);
 
         //Buttons hinzufügen
         add(levelLobby);

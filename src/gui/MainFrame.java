@@ -72,6 +72,12 @@ public class MainFrame extends JFrame implements WindowListener {
     }
 
     /**
+     * Hilfsmethode für die Menü-Konstanten
+     *
+     * @return Dimension des Frames
+     */
+
+    /**
      * Getter-Methode für die aktuelle Ansicht
      *
      * @return Momentan aktive Ansicht
