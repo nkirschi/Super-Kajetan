@@ -14,4 +14,12 @@ public class Spider extends Enemy {
     public void move(double x, double y) {
         position.move(x, y);
     }
+    
+    public void loadImage() {
+        try {
+            ImageUtil.getImage("images");   
+        }   catch (IOExecption e) {
+            e.ptrintStackTrace();   
+        }
+    }
 }
