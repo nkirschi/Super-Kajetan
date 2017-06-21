@@ -1,2 +1,3 @@
 # Hack 'n' Slay Side-Scroller
-Fancy Programmier-Gedöns featuring `Gewalt Disney`!
+xXx_D34gL3_Ac3_K1ll3r_xXx
+<3 Benedikt
