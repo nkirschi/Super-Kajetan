@@ -109,6 +109,10 @@ public class LevelView extends AbstractView {
         // 6. Draw Obstacles
         frameCount++;
     }
+    
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+    }
 
     public static void main(String[] args) {
         new LevelView(new Level("", new util.list.List<>(), new util.list.List<>(), 0), null).run();
