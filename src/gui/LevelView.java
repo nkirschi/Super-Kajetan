@@ -16,8 +16,8 @@ public class LevelView extends AbstractView implements Runnable {
     private boolean running;
     private boolean paused;
 
-    LevelView(Level level, MainFrame mainFrame) {
-        super(mainFrame);
+    LevelView(Level level) {
+        super();
         this.level = level;
         new Thread(this).start();
         //run();
@@ -138,7 +138,7 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public static void main(String[] args) {
-        new LevelView(new Level("", new util.list.List<>(), new util.list.List<>(), 0), null).run();
+        new LevelView(new Level("", new util.list.List<>(), new util.list.List<>(), 0)).run();
 
     }
 }

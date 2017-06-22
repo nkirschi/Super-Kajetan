@@ -8,10 +8,10 @@ import javax.swing.*;
 class LobbyView extends AbstractView {
     private static LobbyView instance;
 
-    private LobbyView(MainFrame mainFrame) {
-        super(mainFrame);
+    private LobbyView() {
+        super();
         JButton temp = new JButton("temp");
-        temp.addActionListener(a -> mainFrame.changeTo(new LevelView(createLevel1(), mainFrame)));
+        temp.addActionListener(a -> MainFrame.getInstance().changeTo(new LevelView(createLevel1())));
         add(temp);
     }
 
@@ -19,9 +19,9 @@ class LobbyView extends AbstractView {
 
     }
 
-    public static LobbyView getInstance(MainFrame mainframe) {
+    public static LobbyView getInstance() {
         if (instance == null)
-            instance = new LobbyView(mainframe);
+            instance = new LobbyView();
         return instance;
     }
 

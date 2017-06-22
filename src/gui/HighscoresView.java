@@ -3,17 +3,17 @@ package gui;
 class HighscoresView extends AbstractView {
     private static HighscoresView instance;
 
-    private HighscoresView(MainFrame mainFrame) {
-        super(mainFrame);
+    private HighscoresView() {
+        super();
     }
 
     public void update() {
 
     }
 
-    static HighscoresView getInstance(MainFrame mainFrame) {
+    static HighscoresView getInstance() {
         if (instance == null)
-            instance = new HighscoresView(mainFrame);
+            instance = new HighscoresView();
         return instance;
     }
 }

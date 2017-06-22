@@ -3,17 +3,17 @@ package gui;
 class CreditsView extends AbstractView {
     private static CreditsView instance;
 
-    private CreditsView(MainFrame mainFrame) {
-        super(mainFrame);
+    private CreditsView() {
+        super();
     }
 
     public void update() {
 
     }
 
-    static CreditsView getInstance(MainFrame mainFrame) {
+    static CreditsView getInstance() {
         if (instance == null)
-            instance = new CreditsView(mainFrame);
+            instance = new CreditsView();
         return instance;
     }
 }

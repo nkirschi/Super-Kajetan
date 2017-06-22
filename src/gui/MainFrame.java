@@ -13,6 +13,7 @@ import java.io.IOException;
  * Klasse des Hauptfensters
  */
 public class MainFrame extends JFrame implements WindowListener {
+    private static MainFrame instance;
     private AbstractView currentView;
 
     /**
@@ -35,8 +36,14 @@ public class MainFrame extends JFrame implements WindowListener {
             e.printStackTrace();
             Logger.log(Logger.WARNING, e);
         }
-        changeTo(MainMenuView.getInstance(this));
+        changeTo(MainMenuView.getInstance());
         setVisible(true);
+    }
+
+    public static MainFrame getInstance() {
+        if (instance == null)
+            instance = new MainFrame();
+        return instance;
     }
 
     /**
@@ -50,7 +57,7 @@ public class MainFrame extends JFrame implements WindowListener {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-        new MainFrame();
+        getInstance();
     }
 
     /**

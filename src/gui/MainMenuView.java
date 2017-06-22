@@ -7,8 +7,8 @@ class MainMenuView extends AbstractView {
     private static MainMenuView instance;
     private GridBagConstraints constraints;
 
-    private MainMenuView(MainFrame mainFrame) {
-        super(mainFrame);
+    private MainMenuView() {
+        super();
         setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -30,11 +30,11 @@ class MainMenuView extends AbstractView {
         JButton exitButton = new JButton("BEENDEN");
 
         //Action-Listener hinzufügen
-        lobbyButton.addActionListener(a -> mainFrame.changeTo(LobbyView.getInstance(mainFrame)));
-        settingsButton.addActionListener(a -> mainFrame.changeTo(SettingsView.getInstance(mainFrame)));
-        highscoresButton.addActionListener(a -> mainFrame.changeTo(HighscoresView.getInstance(mainFrame)));
-        creditsButton.addActionListener(a -> mainFrame.changeTo(CreditsView.getInstance(mainFrame)));
-        exitButton.addActionListener(a -> mainFrame.cleanupAndExit());
+        lobbyButton.addActionListener(a -> MainFrame.getInstance().changeTo(LobbyView.getInstance()));
+        settingsButton.addActionListener(a -> MainFrame.getInstance().changeTo(SettingsView.getInstance()));
+        highscoresButton.addActionListener(a -> MainFrame.getInstance().changeTo(HighscoresView.getInstance()));
+        creditsButton.addActionListener(a -> MainFrame.getInstance().changeTo(CreditsView.getInstance()));
+        exitButton.addActionListener(a -> MainFrame.getInstance().cleanupAndExit());
 
         //Aussehens-Parameter setzen
         lobbyButton.setPreferredSize(GUIConstants.defaultButtonSize);
@@ -57,9 +57,9 @@ class MainMenuView extends AbstractView {
         add(exitButton, constraints);
     }
 
-    public static MainMenuView getInstance(MainFrame mainframe) {
+    public static MainMenuView getInstance() {
         if (instance == null) {
-            instance = new MainMenuView(mainframe);
+            instance = new MainMenuView();
         }
         return instance;
     }

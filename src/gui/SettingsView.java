@@ -3,17 +3,17 @@ package gui;
 class SettingsView extends AbstractView {
     private static SettingsView instance;
 
-    private SettingsView(MainFrame mainframe) {
-        super(mainframe);
+    private SettingsView() {
+        super();
     }
 
     public void update() {
 
     }
 
-    public static SettingsView getInstance(MainFrame mainframe) {
+    public static SettingsView getInstance() {
         if (instance == null)
-            instance = new SettingsView(mainframe);
+            instance = new SettingsView();
         return instance;
     }
 }
