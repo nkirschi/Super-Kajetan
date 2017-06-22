@@ -11,7 +11,7 @@ import java.io.IOException;
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
 
-    private int fps = 60;
+    private int updateCount = 0;
     private int frameCount = 0;
     private boolean running;
     private boolean paused;
@@ -27,30 +27,24 @@ public class LevelView extends AbstractView implements Runnable {
         running = true;
 
         // Zeit pro Update
-        final double TIME_BETWEEN_UPDATES = 1000000000 / GameConstants.GAME_HERTZ;
-
-        // Maximale Zahl an hintereinanderfolgenden Updates
-        final int MAX_UPDATES_BEFORE_RENDER = 5;
+        final double TIME_BETWEEN_UPDATES = 1000000000 / GameConstants.UPDATE_FREQ;
+        final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / GameConstants.TARGET_FPS;
 
         double lastUpdateTime = System.nanoTime();
         double lastRenderTime = System.nanoTime();
 
-        final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / GameConstants.TARGET_FPS;
-
-        // Für die FPS-Bestimmung
+        // Performante FPS-Bestimmung
         int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 
         while (running) {
             double currentTime = System.nanoTime();
-            int updateCount = 0;
 
             if (!paused) {
-
-                // So viele Spielupdates wie nötig, evtl. Aufholen nötig!
-                while (currentTime - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER) {
+                // So viele Spielupdates wie nötig, evtl. Catchup
+                while (currentTime - lastUpdateTime > TIME_BETWEEN_UPDATES) {
                     update();
-                    lastUpdateTime += TIME_BETWEEN_UPDATES;
                     updateCount++;
+                    lastUpdateTime += TIME_BETWEEN_UPDATES;
                 }
 
                 // Falls ein Update zu lange gebraucht hat, wird hier das nachfolgende übersprungen
@@ -59,19 +53,20 @@ public class LevelView extends AbstractView implements Runnable {
                 }
 
                 render();
+                frameCount++;
                 lastRenderTime = currentTime;
 
                 // Framezahl-Update
                 int thisSecondTime = (int) (lastUpdateTime / 1000000000);
                 if (thisSecondTime > lastSecondTime) {
-                    fps = frameCount;
-                    System.out.println("FPS: " + fps);
+                    System.out.println(updateCount + "\u2009u/s, " + frameCount + "\u2009fps");
+                    updateCount = 0;
                     frameCount = 0;
                     lastSecondTime = thisSecondTime;
                 }
 
 
-                // Dieser Abschnitt sorgt im Grunde für VSync auf 60 fps
+                // Dieser Abschnitt sorgt im Grunde für VSync auf 60fps
                 while (currentTime - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && currentTime - lastUpdateTime < TIME_BETWEEN_UPDATES) {
                     Thread.yield(); // Ressourcenfreigabe für andere Prozesse
                     try {
@@ -115,7 +110,6 @@ public class LevelView extends AbstractView implements Runnable {
         // 5. Draw Enemies
 
         // 6. Draw Obstacles
-        frameCount++;
     }
 
     public void paintComponent(Graphics g) {
