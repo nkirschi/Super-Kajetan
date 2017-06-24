@@ -7,11 +7,16 @@ import util.ImageUtil;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.*;
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
+    private Rectangle2D.Double viewport; // Die aktuelle "Kamera"
+    private HashMap<Character, Boolean> keyStates;
+    private boolean aPressed = false;
 
     private int updateCount = 0;
     private int frameCount = 0;
@@ -20,17 +25,16 @@ public class LevelView extends AbstractView implements Runnable {
 
     LevelView(Level level) {
         this.level = level;
+        viewport = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
+        keyStates = new HashMap<>();
         addKeyListener(new KeyAdapter() {
-            @Override // Hier werden die Eingaben verarbeitet
+            @Override
             public void keyPressed(KeyEvent keyEvent) {
-                switch (keyEvent.getKeyCode()) {
-                    case KeyEvent.VK_A:
-                        System.out.println("nach links"); // hier würde natürlich ein sinnvoller Aufruf stehen ;D
-                        break;
-                    case KeyEvent.VK_D:
-                        System.out.println("nach RRREEECHTS!");
-                        break;
-                }
+                keyStates.put(keyEvent.getKeyChar(), true);
+            }
+
+            public void keyReleased(KeyEvent keyEvent) {
+                keyStates.put(keyEvent.getKeyChar(), false);
             }
         });
         new Thread(this).start();
@@ -94,8 +98,23 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void update() {
+
         // 1. Move Player + Gravitation + check Collision
         // Tastaturcheck, altobelli!
+
+        for (Map.Entry<Character, Boolean> entry : keyStates.entrySet()) {
+            switch (entry.getKey()) {
+                case 'a':
+                    if (entry.getValue())
+                        viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
+                    break;
+                case 'd':
+                    if (entry.getValue())
+                        viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
+                    break;
+            }
+        }
+
         // Gravitationschecks
         // Kollisionschecks
 
@@ -112,6 +131,24 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void render() {
+        Graphics2D g2 = (Graphics2D) getGraphics();
+        if (g2 == null)
+            return;
+        try {
+            BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
+            // Verarbeitung des aktuell darzustellenden Subimages
+            double rel = (double) getWidth() / (double) getHeight();
+            //image = image.getSubimage(0, 0, (int) Math.round(rel * image.getHeight()), image.getHeight());
+
+            // Zeichnen des Subimages
+            int width = image.getWidth(null);
+            int height = image.getHeight(null);
+            double factor = getHeight() / (double) height; // Skalierungsfaktor
+            g2.drawImage(image, -(int) viewport.getX(), 0, (int) (width * factor), (int) (height * factor), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // 1. Sidescroll
 
         // 2. Draw Background
@@ -123,25 +160,8 @@ public class LevelView extends AbstractView implements Runnable {
         // 5. Draw Enemies
 
         // 6. Draw Obstacles
-    }
 
-    public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        try {
-            BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
-
-            // Verarbeitung des aktuell darzustellenden Subimages
-            double rel = (double) getWidth() / (double) getHeight();
-            image = image.getSubimage(100, 0, (int) Math.round(rel * image.getHeight()), image.getHeight());
-
-            // Zeichnen des Subimages
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-            double factor = getHeight() / (double) height; // Skalierungsfaktor
-            g2.drawImage(image, 0, 0, (int) (width * factor), (int) (height * factor), null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        g2.dispose();
     }
 
     public static void main(String[] args) {
