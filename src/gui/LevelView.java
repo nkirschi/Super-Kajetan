@@ -2,6 +2,7 @@ package gui;
 
 import model.Level;
 import physics.GameConstants;
+import sun.applet.Main;
 import util.ImageUtil;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
@@ -22,9 +24,11 @@ public class LevelView extends AbstractView implements Runnable {
     private boolean paused;
 
     LevelView(Level level) {
+        setLayout(new BorderLayout());
         this.level = level;
         viewport = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
         keyStates = new HashMap<>();
+        setDoubleBuffered(true);
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -36,12 +40,12 @@ public class LevelView extends AbstractView implements Runnable {
                 keyStates.put(keyEvent.getKeyChar(), false);
             }
         });
+
         new Thread(this).start();
     }
 
     public void run() {
         running = true;
-
         int updateCount = 0;
         int frameCount = 0;
         long secondTime = 0;
@@ -60,7 +64,7 @@ public class LevelView extends AbstractView implements Runnable {
                 lag += elapsedTime;
                 secondTime += elapsedTime;
                 if (secondTime > 1000000000) {
-                    System.out.println(updateCount + "\u2009Hz, " + frameCount + "\u2009fps");
+                    //System.out.println(updateCount + "\u2009Hz, " + frameCount + "\u2009fps");
                     MainFrame.getInstance().setTitle("Sidescroller Alpha v1.1.2_01 [" + updateCount + "\u2009Hz, " + frameCount + "\u2009fps]");
                     secondTime = 0;
                     updateCount = 0;
@@ -87,7 +91,7 @@ public class LevelView extends AbstractView implements Runnable {
         for (Map.Entry<Character, Boolean> entry : keyStates.entrySet()) {
             if (!entry.getValue())
                 continue;
-            switch (entry.getKey()) {
+            switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case 'a':
                     viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
                     break;
@@ -114,8 +118,10 @@ public class LevelView extends AbstractView implements Runnable {
 
     public void render() {
         Graphics2D g2 = (Graphics2D) getGraphics();
+
         if (g2 == null)
             return;
+
         g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
@@ -130,7 +136,6 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawImage(image, -(int) viewport.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
-
         }
 
         // 1. Sidescroll
