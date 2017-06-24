@@ -4,6 +4,7 @@ import model.Level;
 import physics.GameConstants;
 import util.ImageUtil;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -16,10 +17,7 @@ public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Rectangle2D.Double viewport; // Die aktuelle "Kamera"
     private HashMap<Character, Boolean> keyStates;
-    private boolean aPressed = false;
 
-    private int updateCount = 0;
-    private int frameCount = 0;
     private boolean running;
     private boolean paused;
 
@@ -27,6 +25,7 @@ public class LevelView extends AbstractView implements Runnable {
         this.level = level;
         viewport = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
         keyStates = new HashMap<>();
+
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
@@ -43,56 +42,39 @@ public class LevelView extends AbstractView implements Runnable {
     public void run() {
         running = true;
 
-        // Zeit pro Update
-        final double TIME_BETWEEN_UPDATES = 1000000000 / GameConstants.UPDATE_FREQ;
-        final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / GameConstants.TARGET_FPS;
+        int updateCount = 0;
+        int frameCount = 0;
+        long secondTime = 0;
 
-        double lastUpdateTime = System.nanoTime();
-        double lastRenderTime = System.nanoTime();
-
-        // Performante FPS-Bestimmung
-        int lastSecondTime = (int) (lastUpdateTime / 1000000000);
+        final long TIME_PER_UPDATE = 1000000000 / GameConstants.UPDATE_CLOCK;
+        long lastTime = System.nanoTime();
+        long lag = 0;
 
         while (running) {
-            double currentTime = System.nanoTime();
+            long currentTime = System.nanoTime();
 
-            if (!paused) {
-                // So viele Spielupdates wie nötig, evtl. Catchup
-                while (currentTime - lastUpdateTime > TIME_BETWEEN_UPDATES) {
-                    update();
-                    updateCount++;
-                    lastUpdateTime += TIME_BETWEEN_UPDATES;
+            while (!paused) {
+                currentTime = System.nanoTime();
+                long elapsedTime = currentTime - lastTime;
+                lastTime = currentTime;
+                lag += elapsedTime;
+                secondTime += elapsedTime;
+                if (secondTime > 1000000000) {
+                    System.out.println(updateCount + "\u2009Hz, " + frameCount + "\u2009fps");
+                    MainFrame.getInstance().setTitle("Sidescroller Alpha v1.1.2_01 [" + updateCount + "\u2009Hz, " + frameCount + "\u2009fps]");
+                    secondTime = 0;
+                    updateCount = 0;
+                    frameCount = 0;
                 }
 
-                // Falls ein Update zu lange gebraucht hat, wird hier das nachfolgende übersprungen
-                if (currentTime - lastUpdateTime > TIME_BETWEEN_UPDATES) {
-                    lastUpdateTime = currentTime - TIME_BETWEEN_UPDATES;
+                while (lag >= TIME_PER_UPDATE) {
+                    update();
+                    updateCount++;
+                    lag -= TIME_PER_UPDATE;
                 }
 
                 render();
                 frameCount++;
-                lastRenderTime = currentTime;
-
-                // Framezahl-Update
-                int thisSecondTime = (int) (lastUpdateTime / 1000000000);
-                if (thisSecondTime > lastSecondTime) {
-                    System.out.println(updateCount + "\u2009u/s, " + frameCount + "\u2009fps");
-                    updateCount = 0;
-                    frameCount = 0;
-                    lastSecondTime = thisSecondTime;
-                }
-
-
-                // Dieser Abschnitt sorgt im Grunde für VSync auf 60fps
-                while (currentTime - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && currentTime - lastUpdateTime < TIME_BETWEEN_UPDATES) {
-                    Thread.yield(); // Ressourcenfreigabe für andere Prozesse
-                    try {
-                        Thread.sleep(1); // Zeitvertreib bis zum nächsten Gameloop-Durchlauf
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    currentTime = System.nanoTime();
-                }
             }
         }
     }
@@ -103,14 +85,14 @@ public class LevelView extends AbstractView implements Runnable {
         // Tastaturcheck, altobelli!
 
         for (Map.Entry<Character, Boolean> entry : keyStates.entrySet()) {
+            if (!entry.getValue())
+                continue;
             switch (entry.getKey()) {
                 case 'a':
-                    if (entry.getValue())
-                        viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
+                    viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
                     break;
                 case 'd':
-                    if (entry.getValue())
-                        viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
+                    viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
                     break;
             }
         }
@@ -134,6 +116,7 @@ public class LevelView extends AbstractView implements Runnable {
         Graphics2D g2 = (Graphics2D) getGraphics();
         if (g2 == null)
             return;
+        g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
             // Verarbeitung des aktuell darzustellenden Subimages
@@ -147,6 +130,7 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawImage(image, -(int) viewport.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
+
         }
 
         // 1. Sidescroll
