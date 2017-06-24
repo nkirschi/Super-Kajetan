@@ -25,7 +25,7 @@ public abstract class Entity implements Collidable {
      * @param x Delta-x, um das verschoben wird
      * @param y Delta-y, um das verschoben wird
      */
-    void move(double x, double y) {
+    public void move(double x, double y) {
         position.move(x, y);
         hitbox.setRect(hitbox.getX() + x, hitbox.getY() + y, hitbox.getWidth(), hitbox.getHeight());
     }
@@ -34,12 +34,12 @@ public abstract class Entity implements Collidable {
      * @param damage Hinzuzufügender Schaden
      * @return Wahrheitswert, ob entity noch lebt.
      */
-    boolean sufferDamage(int damage) {
+    public boolean sufferDamage(int damage) {
         health -= damage;
         return health > 0;
     }
 
-    int getHealth() {
+    public int getHealth() {
         return health;
     }
 }

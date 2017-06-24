@@ -1,6 +1,10 @@
 package gui;
 
+import model.Entity;
 import model.Level;
+import model.Obstacle;
+import model.Player;
+import util.Point;
 import util.list.List;
 
 import javax.swing.*;
@@ -36,7 +40,10 @@ class LobbyView extends AbstractView {
      * Hässliche Hardcoded-Level-Methode
      */
     private Level createLevel1() {
-        Level level1 = new Level("images/background1.jpg", new List<>(), new List<>(), 1000);
+        List<Obstacle> obstacles = new List<>();
+        List<Entity> entities = new List<>();
+        entities.add(new Player(new Point(getWidth() / 2, getHeight() - 20)));
+        Level level1 = new Level("images/background1.jpg", obstacles, entities, 1000);
         return level1;
     }
 }

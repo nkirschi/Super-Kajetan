@@ -94,9 +94,11 @@ public class LevelView extends AbstractView implements Runnable {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case 'a':
                     viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
+                    level.getPlayer().move(-2.5, 0);
                     break;
                 case 'd':
                     viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
+                    level.getPlayer().move(2.5, 0);
                     break;
             }
         }
