@@ -4,6 +4,8 @@ import model.Level;
 import util.list.List;
 
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
@@ -11,7 +13,12 @@ class LobbyView extends AbstractView {
     private LobbyView() {
         super();
         JButton temp = new JButton("temp");
-        temp.addActionListener(a -> MainFrame.getInstance().changeTo(new LevelView(createLevel1())));
+        temp.addActionListener(actionEvent -> {
+            LevelView levelView = new LevelView(createLevel1());
+            MainFrame.getInstance().changeTo(levelView);
+            levelView.setFocusable(true);
+            levelView.requestFocusInWindow();
+        });
         add(temp);
     }
 

@@ -5,6 +5,8 @@ import physics.GameConstants;
 import util.ImageUtil;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -17,10 +19,21 @@ public class LevelView extends AbstractView implements Runnable {
     private boolean paused;
 
     LevelView(Level level) {
-        super();
         this.level = level;
+        addKeyListener(new KeyAdapter() {
+            @Override // Hier werden die Eingaben verarbeitet
+            public void keyPressed(KeyEvent keyEvent) {
+                switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_A:
+                        System.out.println("nach links"); // hier würde natürlich ein sinnvoller Aufruf stehen ;D
+                        break;
+                    case KeyEvent.VK_D:
+                        System.out.println("nach RRREEECHTS!");
+                        break;
+                }
+            }
+        });
         new Thread(this).start();
-        //run();
     }
 
     public void run() {
