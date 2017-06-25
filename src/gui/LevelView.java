@@ -2,6 +2,7 @@ package gui;
 
 import model.Level;
 import physics.GameConstants;
+import util.AudioPlayer;
 import util.ImageUtil;
 
 import java.awt.*;
@@ -19,6 +20,8 @@ public class LevelView extends AbstractView implements Runnable {
     private Rectangle2D.Double viewport; // Die aktuelle "Kamera"
     private HashMap<Character, Boolean> keyStates;
 
+    private AudioPlayer audioPlayer;
+
     private boolean running;
     private boolean paused;
 
@@ -27,6 +30,8 @@ public class LevelView extends AbstractView implements Runnable {
         viewport = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
         keyStates = new HashMap<>();
         setDoubleBuffered(true);
+
+        audioPlayer = new AudioPlayer();
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -55,6 +60,8 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void run() {
+        new Thread(() -> audioPlayer.loop("sounds/gottmituns.ogg")).start();
+
         running = true;
         int updateCount = 0;
         int frameCount = 0;
