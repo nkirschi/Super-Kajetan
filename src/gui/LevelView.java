@@ -2,15 +2,14 @@ package gui;
 
 import model.Level;
 import physics.GameConstants;
-import sun.applet.Main;
 import util.ImageUtil;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
@@ -24,7 +23,6 @@ public class LevelView extends AbstractView implements Runnable {
     private boolean paused;
 
     LevelView(Level level) {
-        setLayout(new BorderLayout());
         this.level = level;
         viewport = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
         keyStates = new HashMap<>();
@@ -38,6 +36,18 @@ public class LevelView extends AbstractView implements Runnable {
 
             public void keyReleased(KeyEvent keyEvent) {
                 keyStates.put(keyEvent.getKeyChar(), false);
+            }
+        });
+
+        addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent focusEvent) {
+                paused = false;
+            }
+
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                paused = true;
             }
         });
 
@@ -55,10 +65,8 @@ public class LevelView extends AbstractView implements Runnable {
         long lag = 0;
 
         while (running) {
-            long currentTime = System.nanoTime();
-
             while (!paused) {
-                currentTime = System.nanoTime();
+                long currentTime = System.nanoTime();
                 long elapsedTime = currentTime - lastTime;
                 lastTime = currentTime;
                 lag += elapsedTime;
@@ -79,7 +87,20 @@ public class LevelView extends AbstractView implements Runnable {
 
                 render();
                 frameCount++;
+
+                /*
+                while (System.nanoTime() - currentTime < 16016667) {
+                    Thread.yield();
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                */
             }
+
+            lastTime = System.nanoTime();
         }
     }
 
@@ -139,7 +160,6 @@ public class LevelView extends AbstractView implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         // 1. Sidescroll
 
         // 2. Draw Background
