@@ -23,6 +23,9 @@ public class LevelView extends AbstractView implements Runnable {
 
     private AudioPlayer audioPlayer;
 
+    private boolean looksLeft;
+    private double jumpAmount = 16;
+
     private boolean running;
     private boolean paused;
     private int hz, fps;
@@ -66,10 +69,10 @@ public class LevelView extends AbstractView implements Runnable {
         running = true;
         int updateCount = 0;
         int frameCount = 0;
-        long secondTime = 0;
 
         final long TIME_PER_UPDATE = 1000000000 / GameConstants.UPDATE_CLOCK;
         long lastTime = System.nanoTime();
+        long secondTime = 0;
         long lag = 0;
 
         while (running) {
@@ -120,26 +123,44 @@ public class LevelView extends AbstractView implements Runnable {
         // Tastaturcheck, altobelli!
 
         for (Map.Entry<Character, Boolean> entry : keyStates.entrySet()) {
+            if (entry.getKey() == 'w' && !entry.getValue() && level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
+                if (jumpAmount > 0) {
+                    jumpAmount -= 0.5;
+                    level.getPlayer().move(0, -jumpAmount);
+                }
+            }
             if (!entry.getValue())
                 continue;
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case 'a':
                     viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
                     level.getPlayer().move(-2.5, 0);
+                    looksLeft = true;
                     break;
                 case 'd':
                     viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
                     level.getPlayer().move(2.5, 0);
+                    looksLeft = false;
                     break;
                 case 'w':
-                    viewport.setRect(viewport.x, viewport.y - 20, viewport.width, viewport.height);
-                    level.getPlayer().move(0, -20);
+                    if (jumpAmount > 0) {
+                        level.getPlayer().move(0, -jumpAmount);
+                    }
                     break;
                 case 's':
                     //ducken
                     break;
             }
             
+        }
+
+        if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
+            if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() < 5)
+                level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
+            else
+                level.getPlayer().move(0, 5);
+        } else {
+            jumpAmount = 16;
         }
 
         // Gravitationschecks
@@ -191,7 +212,10 @@ public class LevelView extends AbstractView implements Runnable {
             BufferedImage image = ImageUtil.getImage("images/char/char_walk_or_stand.png");
             int playerX = (int) Math.round(level.getPlayer().getPosition().getX() - image.getWidth() / 2 - viewport.getX());
             int playerY = (int) Math.round(level.getPlayer().getPosition().getY() - image.getHeight());
-            g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
+            if (!looksLeft)
+                g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
+            else
+                g2.drawImage(image, playerX + image.getWidth(), playerY, -image.getWidth(), image.getHeight(), this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -202,6 +226,9 @@ public class LevelView extends AbstractView implements Runnable {
         g2.drawString("Sidescroller Alpha 1.1.2_01", 20, 20);
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
+
+        String playerPosition = "Player position: " + level.getPlayer().getPosition();
+        g2.drawString(playerPosition, getWidth() / 2 - g2.getFontMetrics().stringWidth(playerPosition) / 2, 20);
     }
 
     public static void main(String[] args) {

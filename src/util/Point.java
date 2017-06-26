@@ -134,7 +134,7 @@ public class Point {
      */
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + x + "," + y + ")";
+        return "(" + x + "," + y + ")";
     }
 
     public static void main(String[] args) {
