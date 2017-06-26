@@ -8,6 +8,11 @@ public class GUIConstants {
     public static Dimension defaultButtonSize = new Dimension(250, 50);
     //TODO Default Font, Textgröße, ...
 
+    public static final String DB_TABLE = "Highscores";
+    public static final String DB_COLLUM_NAME = "Nickname";
+    public static final String DB_COLLUM_SCORE = "Score";
+    public static final String DB_COLLUM_DATE = "Datum";
+
     public static void setDefaultButtonSize(Dimension dimension){
         defaultButtonSize = dimension;
     }

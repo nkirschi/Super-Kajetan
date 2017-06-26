@@ -6,6 +6,7 @@ import java.awt.*;
 class MainMenuView extends AbstractView {
     private static MainMenuView instance;
     private GridBagConstraints constraints;
+    private String currentName;
 
     private MainMenuView() {
         super();
@@ -15,9 +16,9 @@ class MainMenuView extends AbstractView {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
         setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        //TODO DefaultButtonSize bestimmen (mit GUIConstants.setDefaultButtonSize())!!
         GUIConstants.setDefaultButtonSize(new Dimension(250, 50));
         initButtons();
+        //TODO Namenseingabefeld
     }
 
     private void initButtons() {
