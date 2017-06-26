@@ -41,10 +41,10 @@ public class DBConnection {
 
     public static void main(String[] args) throws Exception {
         try {
-            ResultSet rs = DBConnection.getInstance().query("SELECT * FROM Highscores;");
-            System.out.printf("%16s %6s %n", "Nickname", "Score");
+            ResultSet rs = DBConnection.getInstance().query("SELECT * FROM Highscores ORDER BY Score DESC LIMIT 10;");
+            System.out.printf("%16s %8s %10s%n", "Nickname", "Score", "Datum");
             while (rs.next())
-                System.out.printf("%16s %6d ", rs.getString(1), rs.getInt(2));
+                System.out.printf("%16s %8d %10s%n", rs.getString(1), rs.getInt(2), rs.getDate(3));
         } catch (SQLException e) {
             e.printStackTrace();
         }
