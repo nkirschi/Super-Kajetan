@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class LevelView extends AbstractView implements Runnable {
 
     private boolean running;
     private boolean paused;
+    private int hz, fps;
 
     LevelView(Level level) {
         this.level = level;
@@ -61,7 +63,6 @@ public class LevelView extends AbstractView implements Runnable {
 
     public void run() {
         new Thread(() -> audioPlayer.loop("sounds/gottmituns.ogg")).start();
-
         running = true;
         int updateCount = 0;
         int frameCount = 0;
@@ -80,7 +81,9 @@ public class LevelView extends AbstractView implements Runnable {
                 secondTime += elapsedTime;
                 if (secondTime > 1000000000) {
                     //System.out.println(updateCount + "\u2009Hz, " + frameCount + "\u2009fps");
-                    MainFrame.getInstance().setTitle("Sidescroller Alpha v1.1.2_01 [" + updateCount + "\u2009Hz, " + frameCount + "\u2009fps]");
+                    //MainFrame.getInstance().setTitle("Sidescroller Alpha v1.1.2_01 [" + updateCount + "\u2009Hz, " + frameCount + "\u2009fps]");
+                    hz = updateCount;
+                    fps = frameCount;
                     secondTime = 0;
                     updateCount = 0;
                     frameCount = 0;
@@ -155,11 +158,12 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void render() {
-        Graphics2D g2 = (Graphics2D) getGraphics();
+        repaint();
+    }
 
-        if (g2 == null)
-            return;
-
+    @Override
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
@@ -183,11 +187,21 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 4. Draw Player
 
-        // 5. Draw Enemies
+        try {
+            BufferedImage image = ImageUtil.getImage("images/char/char_walk_or_stand.png");
+            int playerX = (int) Math.round(level.getPlayer().getPosition().getX() - image.getWidth() / 2 - viewport.getX());
+            int playerY = (int) Math.round(level.getPlayer().getPosition().getY() - image.getHeight());
+            g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        // 6. Draw Obstacles
+        AffineTransform at = g2.getTransform();
 
-        g2.dispose();
+        g2.setColor(Color.BLACK);
+        g2.drawString("Sidescroller Alpha 1.1.2_01", 20, 20);
+        String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
+        g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
     }
 
     public static void main(String[] args) {

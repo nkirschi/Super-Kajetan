@@ -4,6 +4,7 @@ import model.Entity;
 import model.Level;
 import model.Obstacle;
 import model.Player;
+import physics.GameConstants;
 import util.Point;
 import util.list.List;
 
@@ -42,7 +43,7 @@ class LobbyView extends AbstractView {
     private Level createLevel1() {
         List<Obstacle> obstacles = new List<>();
         List<Entity> entities = new List<>();
-        entities.add(new Player(new Point(getWidth() / 2, getHeight() - 20)));
+        entities.add(new Player(new Point(getWidth() / 2, GameConstants.GROUND_LEVEL)));
         Level level1 = new Level("images/backgrounds/background.png", obstacles, entities, 1000);
         return level1;
     }
