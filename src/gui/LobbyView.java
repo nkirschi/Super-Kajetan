@@ -43,7 +43,7 @@ class LobbyView extends AbstractView {
         List<Obstacle> obstacles = new List<>();
         List<Entity> entities = new List<>();
         entities.add(new Player(new Point(getWidth() / 2, getHeight() - 20)));
-        Level level1 = new Level("images/background1.jpg", obstacles, entities, 1000);
+        Level level1 = new Level("images/backgrounds/background.png", obstacles, entities, 1000);
         return level1;
     }
 }
