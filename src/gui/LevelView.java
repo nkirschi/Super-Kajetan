@@ -25,7 +25,7 @@ public class LevelView extends AbstractView implements Runnable {
     private AudioPlayer audioPlayer;
 
     private boolean looksLeft;
-    private double jumpAmount = 16;
+    private double jumpAmount = 8;
 
     private boolean running;
     private boolean paused;
@@ -124,10 +124,15 @@ public class LevelView extends AbstractView implements Runnable {
         // Tastaturcheck, altobelli!
 
         for (Map.Entry<Character, Boolean> entry : keyStates.entrySet()) {
-            if (entry.getKey() == 'w' && !entry.getValue() && level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
-                if (jumpAmount > 0) {
-                    jumpAmount -= 0.5;
-                    level.getPlayer().move(0, -jumpAmount);
+            if (entry.getKey() == 'w' && !entry.getValue()) {
+                if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
+                    if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
+                        jumpAmount -= 0.5;
+                        level.getPlayer().move(0, -jumpAmount);
+                    } else
+                        level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
+                } else {
+                    jumpAmount = 8;
                 }
             }
             if (!entry.getValue())
@@ -144,8 +149,18 @@ public class LevelView extends AbstractView implements Runnable {
                     looksLeft = false;
                     break;
                 case 'w':
-                    if (jumpAmount > 0) {
+                    if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
                         level.getPlayer().move(0, -jumpAmount);
+                    else {
+                        if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
+                            if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
+                                jumpAmount -= 0.5;
+                                level.getPlayer().move(0, -jumpAmount);
+                            } else
+                                level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
+                        } else {
+                            jumpAmount = 8;
+                        }
                     }
                     break;
                 case 's':
@@ -155,6 +170,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         }
 
+        /*
         if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
             if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() < 5)
                 level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
@@ -162,7 +178,7 @@ public class LevelView extends AbstractView implements Runnable {
                 level.getPlayer().move(0, 5);
         } else {
             jumpAmount = 16;
-        }
+        }*/
 
         // Gravitationschecks
         // Kollisionschecks
