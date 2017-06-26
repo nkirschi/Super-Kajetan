@@ -14,7 +14,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
@@ -151,7 +152,7 @@ public class LevelView extends AbstractView implements Runnable {
                     //ducken
                     break;
             }
-            
+
         }
 
         if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
@@ -223,7 +224,7 @@ public class LevelView extends AbstractView implements Runnable {
         AffineTransform at = g2.getTransform();
 
         g2.setColor(Color.BLACK);
-        g2.drawString("Sidescroller Alpha 1.1.2_01", 20, 20);
+        g2.drawString("Sidescroller " + GUIConstants.GAME_VERSION, 20, 20);
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 

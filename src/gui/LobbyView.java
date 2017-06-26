@@ -10,8 +10,6 @@ import util.list.List;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;

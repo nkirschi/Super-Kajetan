@@ -31,7 +31,7 @@ class HighscoresView extends AbstractView {
 
     public void update() {
         try {
-            highScoreSet = DBConnection.getInstance().query("SELECT * FROM "+GUIConstants.DB_TABLE+" ORDER BY "+GUIConstants.DB_COLLUM_SCORE+" DESC LIMIT 10;");
+            highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + GUIConstants.DB_TABLE + " ORDER BY " + GUIConstants.DB_COLLUM_SCORE + " DESC LIMIT 10;");
         } catch (SQLException e) {
             e.printStackTrace();
         }

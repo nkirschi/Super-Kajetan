@@ -21,7 +21,7 @@ public class MainFrame extends JFrame implements WindowListener {
      * das ganz am Anfang in der statischen main()-Methode erzeugt wird
      */
     private MainFrame() {
-        setTitle("Sidescroller Alpha v1.1.2_01");
+        setTitle("Sidescroller " + GUIConstants.GAME_VERSION);
         setSize(1024, 768);
         setResizable(false);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
