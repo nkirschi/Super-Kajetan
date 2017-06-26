@@ -2,6 +2,8 @@ package gui;
 
 import util.DBConnection;
 
+import javax.swing.*;
+import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,15 +13,25 @@ class HighscoresView extends AbstractView {
 
     private HighscoresView() {
         super();
+        setLayout(new BorderLayout());
+        setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+
+        JButton backButton = new JButton("ZURÜCK");
+        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
+
+        buttonPanel.add(backButton);
+        add(buttonPanel, BorderLayout.PAGE_END);
+
         update();
     }
 
     public void update() {
         try {
             highScoreSet = DBConnection.getInstance().query("SELECT * FROM "+GUIConstants.DB_TABLE+" ORDER BY "+GUIConstants.DB_COLLUM_SCORE+" DESC LIMIT 10;");
-            while(highScoreSet.next()){
-                System.out.println(highScoreSet.getString(GUIConstants.DB_COLLUM_NAME)+"   "+highScoreSet.getInt(GUIConstants.DB_COLLUM_SCORE));
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

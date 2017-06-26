@@ -9,6 +9,7 @@ import util.Point;
 import util.list.List;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -17,6 +18,20 @@ class LobbyView extends AbstractView {
 
     private LobbyView() {
         super();
+        setLayout(new BorderLayout());
+        setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+
+        JButton backButton = new JButton("ZURÜCK");
+        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
+
+        buttonPanel.add(backButton);
+        add(buttonPanel, BorderLayout.PAGE_END);
+
+        //TODO Temporär, entfernen
         JButton temp = new JButton("temp");
         temp.addActionListener(actionEvent -> {
             LevelView levelView = new LevelView(createLevel1());
@@ -24,7 +39,7 @@ class LobbyView extends AbstractView {
             levelView.setFocusable(true);
             levelView.requestFocusInWindow();
         });
-        add(temp);
+        add(temp, BorderLayout.PAGE_START);
     }
 
     public void update() {
