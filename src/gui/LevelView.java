@@ -133,8 +133,10 @@ public class LevelView extends AbstractView implements Runnable {
                     level.getPlayer().move(0, -20);
                     break;
                 case 's':
+                    //ducken
                     break;
             }
+            
         }
 
         // Gravitationschecks
