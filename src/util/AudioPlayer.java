@@ -16,7 +16,7 @@ public class AudioPlayer {
         random = new Random();
     }
 
-    public void play(String filePath) {
+    private void play(String filePath) {
         try (final AudioInputStream in = getAudioInputStream(ClassLoader.getSystemResourceAsStream(filePath))) {
 
             final int ch = in.getFormat().getChannels();
@@ -45,26 +45,31 @@ public class AudioPlayer {
     }
 
     public void playLoop() {
-        playing = true;
-        while (playing) {
-            String filePath = "sounds/";
-            switch (random.nextInt(4)) {
-                case 0:
-                    filePath += "gott_mit_uns.ogg";
-                    break;
-                case 1:
-                    filePath += "panzerkampf.ogg";
-                    break;
-                case 2:
-                    filePath += "shiroyama.ogg";
-                    break;
-                case 3:
-                    filePath += "the_last_stand.ogg";
-                    break;
+        new Thread(() -> {
+            playing = true;
+            while (playing) {
+                String filePath = "sounds/";
+                switch (random.nextInt(4)) {
+                    case 0:
+                        filePath += "gott_mit_uns.ogg";
+                        break;
+                    case 1:
+                        filePath += "panzerkampf.ogg";
+                        break;
+                    case 2:
+                        filePath += "shiroyama.ogg";
+                        break;
+                    case 3:
+                        filePath += "the_last_stand.ogg";
+                        break;
+                }
+                play(filePath);
             }
-            play(filePath);
-        }
+        }).start();
+    }
 
+    public void playOnce(String filePath) {
+        new Thread(() -> play(filePath)).start();
     }
 
     public void stop() {

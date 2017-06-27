@@ -23,14 +23,12 @@ public class LevelView extends AbstractView implements Runnable {
     private HashMap<Integer, Boolean> keyStates;
 
     private AudioPlayer audioPlayer;
-    private Thread audioThread;
     private JButton backButton;
 
     private boolean looksLeft;
     private boolean jumping;
-    private double jumpAmount = 16;
+    private double jumpAmount = GameConstants.PLAYER_JUMP_AMOUNT;
     private boolean walking;
-    private int countToNextJump = 0;
     private int walkCount = 0;
     private boolean walkFlag;
 
@@ -44,7 +42,6 @@ public class LevelView extends AbstractView implements Runnable {
         keyStates = new HashMap<>();
 
         audioPlayer = new AudioPlayer();
-        audioThread = new Thread(() -> audioPlayer.playLoop());
 
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -88,7 +85,7 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void run() {
-        audioThread.start();
+        audioPlayer.playLoop();
         running = true;
         int updateCount = 0;
         int frameCount = 0;
@@ -121,10 +118,10 @@ public class LevelView extends AbstractView implements Runnable {
                     lag -= TIME_PER_UPDATE;
                 }
 
-                render();
+                repaint();
                 frameCount++;
 
-                /*
+                /* Theoretisch VSync
                 while (System.nanoTime() - currentTime < 16016667) {
                     Thread.yield();
                     try {
@@ -144,39 +141,46 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 1. Move Player + Gravitation + check Collision
         // Tastaturcheck, altobelli!
+        //walking = false;
+        level.getPlayer().setWalking(false);
 
         for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case KeyEvent.VK_A:
                     if (entry.getValue()) {
-                        walking = true;
-                        if (level.getPlayer().getPosition().getX() - getWidth() / 2 > 0) {
-                            viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
-                            level.getPlayer().move(-2.5, 0);
-                            walkCount++;
-                        }
-                        looksLeft = true;
+                        level.getPlayer().setWalking(false);//walking = true;
+                        double moveAmount = 0;
+                        if (level.getPlayer().getPosition().getX() - getWidth() / 2 > GameConstants.PLAYER_MOVE_AMOUNT) {
+                            moveAmount = level.getPlayer().isJumping() ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
 
-                    } else {
-                        walking = false;
+                            walkCount++;
+                        } else {
+                            moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
+                        }
+                        viewport.setRect(viewport.x - moveAmount, viewport.y, viewport.width, viewport.height);
+                        level.getPlayer().move(-moveAmount, 0);
+                        looksLeft = true;
                     }
                     break;
                 case KeyEvent.VK_D:
                     if (entry.getValue()) {
                         walking = true;
-                        if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength()) {
-                            viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
-                            level.getPlayer().move(2.5, 0);
+                        double moveAmount = 0;
+                        if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - GameConstants.PLAYER_MOVE_AMOUNT) {
+                            moveAmount = jumping ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
                             walkCount++;
+                        } else {
+                            moveAmount = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
+                            System.out.println(moveAmount);
                         }
+                        viewport.setRect(viewport.x + moveAmount, viewport.y, viewport.width, viewport.height);
+                        level.getPlayer().move(moveAmount, 0);
                         looksLeft = false;
-                    } else {
-                        walking = false;
                     }
                     break;
                 case KeyEvent.VK_W:
-                    jumping = true;
-                    if (entry.getValue() && countToNextJump == 0) {
+                    if (entry.getValue()) {
+                        jumping = true;
                         if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
                             level.getPlayer().move(0, -jumpAmount);
                         else {
@@ -187,7 +191,7 @@ public class LevelView extends AbstractView implements Runnable {
                                 } else
                                     level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                             } else {
-                                jumpAmount = 16;
+                                jumpAmount = GameConstants.PLAYER_JUMP_AMOUNT;
                                 jumping = false;
                             }
                         }
@@ -199,7 +203,6 @@ public class LevelView extends AbstractView implements Runnable {
                             } else
                                 level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                         } else {
-                            jumpAmount = 16;
                             jumping = false;
                         }
                     }
@@ -208,8 +211,12 @@ public class LevelView extends AbstractView implements Runnable {
                     //ducken
                     break;
                 case KeyEvent.VK_SHIFT:
-                    if (entry.getValue())
-                        System.out.println("SHIFTBOY");
+                    if (entry.getValue() && !jumping) {
+                        int signum = looksLeft ? -1 : 1;
+                        viewport.setRect(viewport.x + signum * GameConstants.PLAYER_MOVE_AMOUNT, viewport.y,
+                                viewport.width, viewport.height);
+                        level.getPlayer().move(signum * GameConstants.PLAYER_MOVE_AMOUNT, 0);
+                    }
             }
 
         }
@@ -218,16 +225,6 @@ public class LevelView extends AbstractView implements Runnable {
             walkFlag = !walkFlag;
             walkCount = 0;
         }
-
-        /*
-        if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
-            if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() < 5)
-                level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
-            else
-                level.getPlayer().move(0, 5);
-        } else {
-            jumpAmount = 16;
-        }*/
 
         // Gravitationschecks
         // Kollisionschecks
@@ -242,10 +239,6 @@ public class LevelView extends AbstractView implements Runnable {
         // 4. Damage & Kill
         // Health-Updates
         // Aufräumen
-    }
-
-    public void render() {
-        repaint();
     }
 
     @Override
@@ -295,12 +288,12 @@ public class LevelView extends AbstractView implements Runnable {
             e.printStackTrace();
         }
 
-        Stroke backup = g2.getStroke();
+        Stroke originalStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
         Rectangle2D playerHitbox = level.getPlayer().getHitbox();
         g2.drawRect((int) Math.round(playerHitbox.getX() - viewport.x), (int) Math.round(playerHitbox.getY()),
                 (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
-        g2.setStroke(backup);
+        g2.setStroke(originalStroke);
         //g2.setFont(new Font("Consolas", Font.PLAIN, 14));
         g2.setColor(Color.BLACK);
         g2.drawString("Sidescroller " + GUIConstants.GAME_VERSION, 20, 20);
