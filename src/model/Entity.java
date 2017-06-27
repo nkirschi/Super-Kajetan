@@ -59,5 +59,9 @@ public abstract class Entity implements Collidable {
     
     public void setCrouching(boolean crouching) {
         this.crouching = crouching;
+        if (crouching)
+            hitbox.setRect(hitbox.x, hitbox.y + GameConstants.CROUCHING_DELTA, hitbox.width, hitbox.height - GameConstants.CROUCHING_DELTA);
+        else
+            hitbox.setRect(hitbox.x, hitbox.y - GameConstants.CROUCHING_DELTA, hitbox.width, hitbox.height + GameConstants.CROUCHING_DELTA);
     }
 }
