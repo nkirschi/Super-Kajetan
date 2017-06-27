@@ -10,6 +10,7 @@ import static javax.sound.sampled.AudioSystem.getAudioInputStream;
 
 public class AudioPlayer {
     private Random random;
+    private boolean playing;
 
     public AudioPlayer() {
         random = new Random();
@@ -43,8 +44,9 @@ public class AudioPlayer {
         }
     }
 
-    public void randomLoop() {
-        while (true) {
+    public void playLoop() {
+        playing = true;
+        while (playing) {
             String filePath = "sounds/";
             switch (random.nextInt(4)) {
                 case 0:
@@ -65,10 +67,16 @@ public class AudioPlayer {
 
     }
 
+    public void stop() {
+        playing = false;
+    }
+
     private void stream(AudioInputStream in, SourceDataLine line)
             throws IOException {
         final byte[] buffer = new byte[65536];
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
+            if (!playing)
+                break;
             line.write(buffer, 0, n);
         }
     }

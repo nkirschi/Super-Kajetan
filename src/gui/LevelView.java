@@ -11,7 +11,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.util.Map;
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Rectangle2D.Double viewport; // Die aktuelle "Kamera"
-    private HashMap<Character, Boolean> keyStates;
+    private HashMap<Integer, Boolean> keyStates;
 
     private AudioPlayer audioPlayer;
     private Thread audioThread;
@@ -45,7 +44,7 @@ public class LevelView extends AbstractView implements Runnable {
         keyStates = new HashMap<>();
 
         audioPlayer = new AudioPlayer();
-        audioThread = new Thread(() -> audioPlayer.randomLoop());
+        audioThread = new Thread(() -> audioPlayer.playLoop());
 
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -54,7 +53,7 @@ public class LevelView extends AbstractView implements Runnable {
         backButton.setBackground(GUIConstants.BUTTON_COLOR);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
-            audioThread.stop();
+            audioPlayer.stop();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
 
@@ -65,11 +64,11 @@ public class LevelView extends AbstractView implements Runnable {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                keyStates.put(keyEvent.getKeyChar(), true);
+                keyStates.put(keyEvent.getKeyCode(), true);
             }
 
             public void keyReleased(KeyEvent keyEvent) {
-                keyStates.put(keyEvent.getKeyChar(), false);
+                keyStates.put(keyEvent.getKeyCode(), false);
             }
         });
 
@@ -146,9 +145,9 @@ public class LevelView extends AbstractView implements Runnable {
         // 1. Move Player + Gravitation + check Collision
         // Tastaturcheck, altobelli!
 
-        for (Map.Entry<Character, Boolean> entry : keyStates.entrySet()) {
+        for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
-                case 'a':
+                case KeyEvent.VK_A:
                     if (entry.getValue()) {
                         walking = true;
                         if (level.getPlayer().getPosition().getX() - getWidth() / 2 > 0) {
@@ -162,7 +161,7 @@ public class LevelView extends AbstractView implements Runnable {
                         walking = false;
                     }
                     break;
-                case 'd':
+                case KeyEvent.VK_D:
                     if (entry.getValue()) {
                         walking = true;
                         if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength()) {
@@ -175,7 +174,7 @@ public class LevelView extends AbstractView implements Runnable {
                         walking = false;
                     }
                     break;
-                case 'w':
+                case KeyEvent.VK_W:
                     jumping = true;
                     if (entry.getValue() && countToNextJump == 0) {
                         if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
@@ -205,9 +204,12 @@ public class LevelView extends AbstractView implements Runnable {
                         }
                     }
                     break;
-                case 's':
+                case KeyEvent.VK_S:
                     //ducken
                     break;
+                case KeyEvent.VK_SHIFT:
+                    if (entry.getValue())
+                        System.out.println("SHIFTBOY");
             }
 
         }
