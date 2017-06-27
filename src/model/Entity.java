@@ -9,6 +9,8 @@ public abstract class Entity implements Collidable {
     protected Point position; // Der Punkt in der Mitte unten am Entity
     protected Rectangle2D.Double hitbox;
     protected int health;
+    protected boolean jumping;
+    protected boolean crouching;
 
     Point getPosition() {
         return position;
@@ -41,5 +43,21 @@ public abstract class Entity implements Collidable {
 
     public int getHealth() {
         return health;
+    }
+    
+    public boolean isJumping() {
+        return jumping;
+    }
+    
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+    
+    public boolean isCrouching() {
+        return crouching;
+    }
+    
+    public void setCrouching(boolean crouching) {
+        this.crouching = crouching;
     }
 }
