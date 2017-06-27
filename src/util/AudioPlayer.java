@@ -3,11 +3,17 @@ package util;
 import javax.sound.sampled.*;
 import javax.sound.sampled.DataLine.Info;
 import java.io.IOException;
+import java.util.Random;
 
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 import static javax.sound.sampled.AudioSystem.getAudioInputStream;
 
 public class AudioPlayer {
+    private Random random;
+
+    public AudioPlayer() {
+        random = new Random();
+    }
 
     public void play(String filePath) {
         try (final AudioInputStream in = getAudioInputStream(ClassLoader.getSystemResourceAsStream(filePath))) {
@@ -37,9 +43,26 @@ public class AudioPlayer {
         }
     }
 
-    public void loop(String filePath) {
-        while (true)
+    public void randomLoop() {
+        while (true) {
+            String filePath = "sounds/";
+            switch (random.nextInt(4)) {
+                case 0:
+                    filePath += "gott_mit_uns.ogg";
+                    break;
+                case 1:
+                    filePath += "panzerkampf.ogg";
+                    break;
+                case 2:
+                    filePath += "shiroyama.ogg";
+                    break;
+                case 3:
+                    filePath += "the_last_stand.ogg";
+                    break;
+            }
             play(filePath);
+        }
+
     }
 
     private void stream(AudioInputStream in, SourceDataLine line)

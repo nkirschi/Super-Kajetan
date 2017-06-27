@@ -22,7 +22,7 @@ class LobbyView extends AbstractView {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
 
-        JButton backButton = new JButton("ZURÜCK");
+        JButton backButton = new JButton("Zurück");
         backButton.setBackground(GUIConstants.BUTTON_COLOR);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 
@@ -57,7 +57,7 @@ class LobbyView extends AbstractView {
         List<Obstacle> obstacles = new List<>();
         List<Entity> entities = new List<>();
         entities.add(new Player(new Point(getWidth() / 2, GameConstants.GROUND_LEVEL)));
-        Level level1 = new Level("images/backgrounds/background.png", obstacles, entities, 1000);
+        Level level1 = new Level("images/backgrounds/background.png", obstacles, entities, 6281);
         return level1;
     }
 }

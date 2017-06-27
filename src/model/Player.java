@@ -7,8 +7,8 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
 public class Player extends Entity {
-    private final double PLAYER_WIDTH = 100;
-    private final double PLAYER_HEIGHT = 300;
+    private final double PLAYER_WIDTH = 95;
+    private final double PLAYER_HEIGHT = 169;
 
     public Player(Point position) {
         this.position = position;
