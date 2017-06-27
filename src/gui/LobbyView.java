@@ -37,6 +37,7 @@ class LobbyView extends AbstractView {
             levelView.setFocusable(true);
             levelView.requestFocusInWindow();
         });
+
         add(temp, BorderLayout.PAGE_START);
     }
 
@@ -57,7 +58,7 @@ class LobbyView extends AbstractView {
         List<Obstacle> obstacles = new List<>();
         List<Entity> entities = new List<>();
         entities.add(new Player(new Point(getWidth() / 2, GameConstants.GROUND_LEVEL)));
-        Level level1 = new Level("images/backgrounds/background.png", obstacles, entities, 6281);
+        Level level1 = new Level("images/backgrounds/background.png", obstacles, entities);
         return level1;
     }
 }

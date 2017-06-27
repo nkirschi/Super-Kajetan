@@ -1,6 +1,11 @@
 package model;
 
+import gui.MainFrame;
+import util.ImageUtil;
 import util.list.List;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Level {
     private String backgroundFilePath;
@@ -8,11 +13,18 @@ public class Level {
     private List<Entity> entities;
     private double length; // Länge des Levels in px
 
-    public Level(String backgroundFilePath, List<Obstacle> obstacles, List<Entity> entities, double length) {
+    public Level(String backgroundFilePath, List<Obstacle> obstacles, List<Entity> entities) {
         this.backgroundFilePath = backgroundFilePath;
         this.obstacles = obstacles;
         this.entities = entities;
         this.length = length;
+        try {
+            BufferedImage image = ImageUtil.getImage(backgroundFilePath);
+            length = (740.0 / (double) image.getHeight()) * (double) image.getWidth();
+            System.out.println(length);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getBackgroundFilePath() {

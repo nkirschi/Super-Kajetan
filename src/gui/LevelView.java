@@ -216,7 +216,6 @@ public class LevelView extends AbstractView implements Runnable {
             walkFlag = !walkFlag;
             walkCount = 0;
         }
-        System.out.println(walking);
 
         /*
         if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
@@ -250,6 +249,8 @@ public class LevelView extends AbstractView implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
+
+        // 1. Draw Background
         g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
@@ -257,21 +258,18 @@ public class LevelView extends AbstractView implements Runnable {
             double rel = (double) getWidth() / (double) getHeight();
             //image = image.getSubimage(0, 0, (int) Math.round(rel * image.getHeight()), image.getHeight());
 
-            // Zeichnen des Subimages
             int width = image.getWidth(null);
             int height = image.getHeight(null);
             double factor = getHeight() / (double) height; // Skalierungsfaktor
+
             g2.drawImage(image, -(int) viewport.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // 1. Sidescroll
 
-        // 2. Draw Background
+        // 2. Draw Baseline
 
-        // 3. Draw Baseline
-
-        // 4. Draw Player
+        // 3. Draw Player
 
         try {
             BufferedImage image;
@@ -301,7 +299,7 @@ public class LevelView extends AbstractView implements Runnable {
         g2.drawRect((int) Math.round(playerHitbox.getX() - viewport.x), (int) Math.round(playerHitbox.getY()),
                 (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
         g2.setStroke(backup);
-
+        //g2.setFont(new Font("Consolas", Font.PLAIN, 14));
         g2.setColor(Color.BLACK);
         g2.drawString("Sidescroller " + GUIConstants.GAME_VERSION, 20, 20);
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
