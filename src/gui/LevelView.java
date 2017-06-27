@@ -71,11 +71,13 @@ public class LevelView extends AbstractView implements Runnable {
             @Override
             public void focusGained(FocusEvent focusEvent) {
                 paused = false;
+                audioPlayer.unpause();
             }
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
                 paused = true;
+                audioPlayer.pause();
             }
         });
 
@@ -150,7 +152,6 @@ public class LevelView extends AbstractView implements Runnable {
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() - getWidth() / 2 > GameConstants.PLAYER_MOVE_AMOUNT) {
                             moveAmount = level.getPlayer().isJumping() ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
-
                             walkCount++;
                         } else {
                             moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
@@ -169,7 +170,6 @@ public class LevelView extends AbstractView implements Runnable {
                             walkCount++;
                         } else {
                             moveAmount = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
-                            System.out.println(moveAmount);
                         }
                         viewport.setRect(viewport.x + moveAmount, viewport.y, viewport.width, viewport.height);
                         level.getPlayer().move(moveAmount, 0);

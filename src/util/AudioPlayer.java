@@ -11,6 +11,7 @@ import static javax.sound.sampled.AudioSystem.getAudioInputStream;
 public class AudioPlayer {
     private Random random;
     private boolean playing;
+    private boolean paused;
 
     public AudioPlayer() {
         random = new Random();
@@ -76,12 +77,27 @@ public class AudioPlayer {
         playing = false;
     }
 
+    public void pause() {
+        paused = true;
+    }
+
+    public void unpause() {
+        paused = false;
+    }
+
     private void stream(AudioInputStream in, SourceDataLine line)
             throws IOException {
         final byte[] buffer = new byte[65536];
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
             if (!playing)
                 break;
+            while (paused) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             line.write(buffer, 0, n);
         }
     }
