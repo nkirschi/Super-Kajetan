@@ -5,6 +5,7 @@ import physics.GameConstants;
 import util.AudioPlayer;
 import util.ImageUtil;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -23,11 +24,16 @@ public class LevelView extends AbstractView implements Runnable {
     private HashMap<Character, Boolean> keyStates;
 
     private AudioPlayer audioPlayer;
+    private Thread audioThread;
+    private JButton backButton;
 
     private boolean looksLeft;
     private boolean jumping;
+    private boolean walking;
     private double jumpAmount = 8;
     private int countToNextJump = 0;
+    private int walkCount = 0;
+    private boolean walkFlag;
 
     private boolean running;
     private boolean paused;
@@ -37,9 +43,24 @@ public class LevelView extends AbstractView implements Runnable {
         this.level = level;
         viewport = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
         keyStates = new HashMap<>();
-        setDoubleBuffered(true);
 
         audioPlayer = new AudioPlayer();
+        audioThread = new Thread(() -> audioPlayer.randomLoop());
+
+        setLayout(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        backButton = new JButton("Zurück");
+        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
+        backButton.addActionListener(a -> {
+            audioThread.stop();
+            MainFrame.getInstance().changeTo(LobbyView.getInstance());
+        });
+
+        buttonPanel.add(backButton);
+        buttonPanel.setOpaque(false);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -68,7 +89,7 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void run() {
-        new Thread(() -> audioPlayer.loop("sounds/gottmituns.ogg")).start();
+        audioThread.start();
         running = true;
         int updateCount = 0;
         int frameCount = 0;
@@ -129,16 +150,29 @@ public class LevelView extends AbstractView implements Runnable {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case 'a':
                     if (entry.getValue()) {
-                        viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
-                        level.getPlayer().move(-2.5, 0);
+                        walking = true;
+                        if (level.getPlayer().getPosition().getX() - getWidth() / 2 > 0) {
+                            viewport.setRect(viewport.x - 2.5, viewport.y, viewport.width, viewport.height);
+                            level.getPlayer().move(-2.5, 0);
+                            walkCount++;
+                        }
                         looksLeft = true;
+
+                    } else {
+                        walking = false;
                     }
                     break;
                 case 'd':
                     if (entry.getValue()) {
-                        viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
-                        level.getPlayer().move(2.5, 0);
+                        walking = true;
+                        if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength()) {
+                            viewport.setRect(viewport.x + 2.5, viewport.y, viewport.width, viewport.height);
+                            level.getPlayer().move(2.5, 0);
+                            walkCount++;
+                        }
                         looksLeft = false;
+                    } else {
+                        walking = false;
                     }
                     break;
                 case 'w':
@@ -177,6 +211,12 @@ public class LevelView extends AbstractView implements Runnable {
             }
 
         }
+
+        if (walkCount >= 15) {
+            walkFlag = !walkFlag;
+            walkCount = 0;
+        }
+        System.out.println(walking);
 
         /*
         if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
@@ -236,9 +276,15 @@ public class LevelView extends AbstractView implements Runnable {
         try {
             BufferedImage image;
             if (jumping)
-                image = ImageUtil.getImage("images/char/char_jump.png");
-            else
-                image = ImageUtil.getImage("images/char/char_walk_or_stand.png");
+                image = ImageUtil.getImage("images/char/char_jump_0.66.png");
+            else if (walking) {
+                if (walkFlag)
+                    image = ImageUtil.getImage("images/char/char_walk_1_0.66.png");
+                else
+                    image = ImageUtil.getImage("images/char/char_walk_2_0.66.png");
+            } else {
+                image = ImageUtil.getImage("images/char/char_stand_0.66.png");
+            }
             int playerX = (int) Math.round(level.getPlayer().getPosition().getX() - image.getWidth() / 2 - viewport.getX());
             int playerY = (int) Math.round(level.getPlayer().getPosition().getY() - image.getHeight());
             if (!looksLeft)
@@ -249,7 +295,12 @@ public class LevelView extends AbstractView implements Runnable {
             e.printStackTrace();
         }
 
-        AffineTransform at = g2.getTransform();
+        Stroke backup = g2.getStroke();
+        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        Rectangle2D playerHitbox = level.getPlayer().getHitbox();
+        g2.drawRect((int) Math.round(playerHitbox.getX() - viewport.x), (int) Math.round(playerHitbox.getY()),
+                (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
+        g2.setStroke(backup);
 
         g2.setColor(Color.BLACK);
         g2.drawString("Sidescroller " + GUIConstants.GAME_VERSION, 20, 20);
@@ -258,10 +309,5 @@ public class LevelView extends AbstractView implements Runnable {
 
         String playerPosition = "Player position: " + level.getPlayer().getPosition();
         g2.drawString(playerPosition, getWidth() / 2 - g2.getFontMetrics().stringWidth(playerPosition) / 2, 20);
-    }
-
-    public static void main(String[] args) {
-        new LevelView(new Level("", new util.list.List<>(), new util.list.List<>(), 0)).run();
-
     }
 }

@@ -1,6 +1,7 @@
 package model;
 
 import physics.Collidable;
+import physics.GameConstants;
 import util.Point;
 
 import java.awt.geom.Rectangle2D;
