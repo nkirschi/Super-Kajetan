@@ -12,6 +12,7 @@ public abstract class Entity implements Collidable {
     protected int health;
     protected boolean jumping;
     protected boolean crouching;
+    protected boolean walking;
 
     Point getPosition() {
         return position;
@@ -37,13 +38,21 @@ public abstract class Entity implements Collidable {
      * @param damage Hinzuzufügender Schaden
      * @return Wahrheitswert, ob entity noch lebt.
      */
-    public boolean sufferDamage(int damage) {
+    public boolean suffer(int damage) {
         health -= damage;
         return health > 0;
     }
 
     public int getHealth() {
         return health;
+    }
+    
+    public boolean isWalking() {
+        return walking;
+    }
+    
+    public void setWalking(boolean walking) {
+       this.walking = walking; 
     }
     
     public boolean isJumping() {
@@ -64,5 +73,10 @@ public abstract class Entity implements Collidable {
             hitbox.setRect(hitbox.x, hitbox.y + GameConstants.CROUCHING_DELTA, hitbox.width, hitbox.height - GameConstants.CROUCHING_DELTA);
         else
             hitbox.setRect(hitbox.x, hitbox.y - GameConstants.CROUCHING_DELTA, hitbox.width, hitbox.height + GameConstants.CROUCHING_DELTA);
+    }
+    
+    @Override
+    public String toString() {
+        return "Entity at " + position + ", health = " + health + ", walking = " + walking + ", jumping = " + jumping + ", crouching = " + crouching;
     }
 }
