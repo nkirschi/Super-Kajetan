@@ -26,7 +26,7 @@ public class LevelView extends AbstractView implements Runnable {
 
     private boolean looksLeft;
     private boolean jumping;
-    private double jumpAmount = 8;
+    private double jumpAmount = 16;
     private int countToNextJump = 0;
 
     private boolean running;
@@ -149,24 +149,24 @@ public class LevelView extends AbstractView implements Runnable {
                         else {
                             if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
                                 if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
-                                    jumpAmount -= 0.5;
+                                    jumpAmount -= 1;
                                     level.getPlayer().move(0, -jumpAmount);
                                 } else
                                     level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                             } else {
-                                jumpAmount = 8;
+                                jumpAmount = 16;
                                 jumping = false;
                             }
                         }
                     } else {
                         if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
                             if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
-                                jumpAmount -= 0.5;
+                                jumpAmount -= 1;
                                 level.getPlayer().move(0, -jumpAmount);
                             } else
                                 level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                         } else {
-                            jumpAmount = 8;
+                            jumpAmount = 16;
                             jumping = false;
                         }
                     }
