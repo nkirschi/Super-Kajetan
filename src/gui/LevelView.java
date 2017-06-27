@@ -26,9 +26,7 @@ public class LevelView extends AbstractView implements Runnable {
     private JButton backButton;
 
     private boolean looksLeft;
-    private boolean jumping;
     private double jumpAmount = GameConstants.PLAYER_JUMP_AMOUNT;
-    private boolean walking;
     private int walkCount = 0;
     private boolean walkFlag;
 
@@ -148,7 +146,7 @@ public class LevelView extends AbstractView implements Runnable {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case KeyEvent.VK_A:
                     if (entry.getValue()) {
-                        level.getPlayer().setWalking(false);//walking = true;
+                        level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() - getWidth() / 2 > GameConstants.PLAYER_MOVE_AMOUNT) {
                             moveAmount = level.getPlayer().isJumping() ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
@@ -164,10 +162,10 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case KeyEvent.VK_D:
                     if (entry.getValue()) {
-                        walking = true;
+                        level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - GameConstants.PLAYER_MOVE_AMOUNT) {
-                            moveAmount = jumping ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
+                            moveAmount = level.getPlayer().isJumping() ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
                             walkCount++;
                         } else {
                             moveAmount = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
@@ -180,7 +178,7 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case KeyEvent.VK_W:
                     if (entry.getValue()) {
-                        jumping = true;
+                        level.getPlayer().setJumping(true);//jumping = true;
                         if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
                             level.getPlayer().move(0, -jumpAmount);
                         else {
@@ -192,7 +190,7 @@ public class LevelView extends AbstractView implements Runnable {
                                     level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                             } else {
                                 jumpAmount = GameConstants.PLAYER_JUMP_AMOUNT;
-                                jumping = false;
+                                level.getPlayer().setJumping(false);//jumping = false;
                             }
                         }
                     } else {
@@ -203,7 +201,7 @@ public class LevelView extends AbstractView implements Runnable {
                             } else
                                 level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                         } else {
-                            jumping = false;
+                            level.getPlayer().setJumping(false);//jumping = false;
                         }
                     }
                     break;
@@ -211,7 +209,7 @@ public class LevelView extends AbstractView implements Runnable {
                     //ducken
                     break;
                 case KeyEvent.VK_SHIFT:
-                    if (entry.getValue() && !jumping) {
+                    if (entry.getValue() && !level.getPlayer().isJumping()) {
                         int signum = looksLeft ? -1 : 1;
                         viewport.setRect(viewport.x + signum * GameConstants.PLAYER_MOVE_AMOUNT, viewport.y,
                                 viewport.width, viewport.height);
@@ -268,9 +266,9 @@ public class LevelView extends AbstractView implements Runnable {
 
         try {
             BufferedImage image;
-            if (jumping)
+            if (level.getPlayer().isJumping())
                 image = ImageUtil.getImage("images/char/char_jump_0.66.png");
-            else if (walking) {
+            else if (level.getPlayer().isWalking()) {
                 if (walkFlag)
                     image = ImageUtil.getImage("images/char/char_walk_1_0.66.png");
                 else
