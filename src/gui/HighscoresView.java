@@ -43,35 +43,35 @@ class HighscoresView extends AbstractView {
 
 
         //Einzelne Spalten
-        JPanel name = new JPanel();
-        name.setLayout(new BoxLayout(name, BoxLayout.Y_AXIS));
-        name.setBorder(listCollumBorder);
-        name.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        list.add(name);
-        JPanel score = new JPanel();
-        score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
-        score.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        score.setBorder(listCollumBorder);
-        list.add(score);
-        JPanel date = new JPanel();
-        date.setLayout(new BoxLayout(date, BoxLayout.Y_AXIS));
-        date.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        date.setBorder(listCollumBorder);
-        list.add(date);
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
+        namePanel.setBorder(listCollumBorder);
+        namePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        list.add(namePanel);
+        JPanel scorePanel = new JPanel();
+        scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
+        scorePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        scorePanel.setBorder(listCollumBorder);
+        list.add(scorePanel);
+        JPanel datePanel = new JPanel();
+        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
+        datePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        datePanel.setBorder(listCollumBorder);
+        list.add(datePanel);
 
         //Überschriften der Spalten
         JLabel collumName = new JLabel(GUIConstants.DB_COLLUM_NAME);
         collumName.setAlignmentX(Component.CENTER_ALIGNMENT);
         collumName.setBorder(listCollumHeaderBorder);
-        name.add(collumName);
+        namePanel.add(collumName);
         JLabel collumScore = new JLabel(GUIConstants.DB_COLLUM_SCORE);
         collumScore.setAlignmentX(Component.CENTER_ALIGNMENT);
         collumScore.setBorder(listCollumHeaderBorder);
-        score.add(collumScore);
+        scorePanel.add(collumScore);
         JLabel collumDate = new JLabel(GUIConstants.DB_COLLUM_DATE);
         collumDate.setAlignmentX(Component.CENTER_ALIGNMENT);
         collumDate.setBorder(listCollumHeaderBorder);
-        date.add(collumDate);
+        datePanel.add(collumDate);
 
         //Füllen der Tabelle
         try {
@@ -80,22 +80,25 @@ class HighscoresView extends AbstractView {
                 JLabel nameCell = new JLabel(highScoreSet.getString(GUIConstants.DB_COLLUM_NAME));
                 nameCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 nameCell.setBorder(listCellBorder);
-                name.add(nameCell);
+                namePanel.add(nameCell);
 
                 JLabel scoreCell = new JLabel(Integer.toString(highScoreSet.getInt(GUIConstants.DB_COLLUM_SCORE)));
                 scoreCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 scoreCell.setBorder(listCellBorder);
-                score.add(scoreCell);
+                scorePanel.add(scoreCell);
+
+                Date asd = highScoreSet.getDate(GUIConstants.DB_COLLUM_DATE);
 
                 String dateString = "höhö"; //TODO date umschreiben
 
                 JLabel dateCell = new JLabel(dateString);
                 dateCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 dateCell.setBorder(listCellBorder);
-                date.add(dateCell);
+                datePanel.add(dateCell);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            scorePanel.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
         }
 
         return list;
