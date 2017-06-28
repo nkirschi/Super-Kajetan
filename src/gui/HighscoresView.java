@@ -60,8 +60,7 @@ class HighscoresView extends AbstractView {
             fancyCollumPanel.add(trophyLabel);
 
             //Setzt jetzt die Border der Spalten-Überschriften entsprechend, um für Höhe des Bildes zu kompensieren. (15/2 kompensiert für texthöhe. unschön, wissen wir ....)
-            //TODO textgröße irgendwie anders bestimmen!!!!!
-            listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight() / 2 - 15 / 2, 0, trophyImage.getIconHeight() / 2 - 15 / 2, 0);
+            listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0, trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,17 +94,17 @@ class HighscoresView extends AbstractView {
         JLabel nameColumn = new JLabel(Constants.DB_COLLUM_NAME);
         nameColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameColumn.setBorder(listCollumHeaderBorder);
-        nameColumn.setFont(Constants.DEFAULT_FONT);
+        nameColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         namePanel.add(nameColumn);
         JLabel scoreColumn = new JLabel(Constants.DB_COLLUM_SCORE);
         scoreColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         scoreColumn.setBorder(listCollumHeaderBorder);
-        scoreColumn.setFont(Constants.DEFAULT_FONT);
+        scoreColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         scorePanel.add(scoreColumn);
         JLabel dateColumn = new JLabel(Constants.DB_COLLUM_DATE);
         dateColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         dateColumn.setBorder(listCollumHeaderBorder);
-        dateColumn.setFont(Constants.DEFAULT_FONT);
+        dateColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         datePanel.add(dateColumn);
 
         //Füllen der Tabelle
