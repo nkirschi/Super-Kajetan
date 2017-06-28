@@ -31,10 +31,10 @@ public class Logger {
     /**
      * Allgemeine Methode für das Loggen eines Strings
      *
-     * @param level Das Level des zu loggenden Ereignisses
-     * @param msg   Die Nachricht zum entsprechenden Ereignis
+     * @param msg   Die Nachricht des zu loggenden Ereignisses
+     * @param level Das Level des entsprechenden Ereignisses
      */
-    public static void log(String level, String msg) {
+    public static void log(String msg, String level) {
         try {
             String timestamp = new SimpleDateFormat("[E, d.MM.yyyy hh:mm:ss.SSS] ").format(new Date());
             writer.write(timestamp);
@@ -50,10 +50,10 @@ public class Logger {
     /**
      * Spezialisierung der allgemeinen log-Methode für Exceptions
      *
-     * @param level Das Level der zu loggenden Exception
      * @param e     Die zu loggende Exception
+     * @param level Das Level der zu loggenden Exception
      */
-    public static void log(String level, Exception e) {
+    public static void log(Exception e, String level) {
         for (StackTraceElement i : e.getStackTrace()) {
             String s = e.toString().concat(" in ").concat(i.getClassName())
                     .concat(" in Methode ").concat(i.getMethodName()).concat("()")

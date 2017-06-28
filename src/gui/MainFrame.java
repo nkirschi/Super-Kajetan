@@ -34,9 +34,10 @@ public class MainFrame extends JFrame implements WindowListener {
             setIconImage(ImageUtil.getImage("images/icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log(Logger.WARNING, e);
+            Logger.log(e, Logger.WARNING);
         }
         changeTo(MainMenuView.getInstance());
+        Logger.log(Logger.INFO, "Applikation ordnungsgemäß gestartet");
         setVisible(true);
     }
 
@@ -97,7 +98,7 @@ public class MainFrame extends JFrame implements WindowListener {
      * Cleanup-Methode, die vor dem Beenden des Programms ausgeführt wird
      */
     void cleanupAndExit() {
-        Logger.log(Logger.INFO, "Applikation ordnungsgemäß beendet");
+        Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
         System.exit(0);
     }
