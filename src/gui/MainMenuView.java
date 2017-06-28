@@ -18,7 +18,6 @@ class MainMenuView extends AbstractView {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
         setBackground(GameConstants.MENU_BACKGROUND_COLOR);
-        GameConstants.setDefaultButtonSize(new Dimension(250, 50));
         initButtons();
         //TODO Namenseingabefeld
     }
