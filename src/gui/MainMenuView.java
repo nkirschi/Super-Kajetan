@@ -51,7 +51,7 @@ class MainMenuView extends AbstractView {
         creditsButton.setBackground(Constants.BUTTON_COLOR);
         exitButton.setBackground(Constants.BUTTON_COLOR);
 
-        Font buttonFont = Constants.FONT.deriveFont(18F);
+        Font buttonFont = Constants.DEFAULT_FONT.deriveFont(18F);
         lobbyButton.setFont(buttonFont);
         settingsButton.setFont(buttonFont);
         highscoresButton.setFont(buttonFont);
