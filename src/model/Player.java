@@ -12,11 +12,11 @@ public class Player extends Entity {
 
     public Player(Point position) {
         this.position = position;
-        walkCount = 0;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(position.getX() - PLAYER_WIDTH / 2, position.getY() - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
 
+    @Override
     public void setCrouching(boolean crouching) {
         double crouchingDelta = 50;
         if (crouching && !this.crouching)
@@ -29,7 +29,8 @@ public class Player extends Entity {
 
     @Override
     public void setWalking(boolean walking) {
-        walkCount++;
+        if (walking)
+            walkCount++;
         super.setWalking(walking);
     }
 

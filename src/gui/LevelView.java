@@ -139,14 +139,14 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 1. Move Player + Gravitation + check Collision
         // Tastaturcheck, altobelli!
-        //walking = false;
+
         level.getPlayer().setWalking(false);
 
         for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case Constants.KEY_LEFT:
                     if (entry.getValue()) {
-                        if (!level.getPlayer().isJumping())
+                        //if (!level.getPlayer().isJumping())
                             level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_MOVE_AMOUNT) {
@@ -162,7 +162,7 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case Constants.KEY_RIGHT:
                     if (entry.getValue()) {
-                        if (!level.getPlayer().isJumping())
+                        //if (!level.getPlayer().isJumping())
                             level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_MOVE_AMOUNT) {
@@ -178,6 +178,7 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case Constants.KEY_JUMP:
                     if (entry.getValue()) {
+                        level.getPlayer().setWalking(false);
                         level.getPlayer().setJumping(true);//jumping = true;
                         if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
                             level.getPlayer().move(0, -jumpAmount);
@@ -195,6 +196,7 @@ public class LevelView extends AbstractView implements Runnable {
                         }
                     } else {
                         if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
+                            level.getPlayer().setWalking(false);
                             if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
                                 jumpAmount -= 1;
                                 level.getPlayer().move(0, -jumpAmount);
