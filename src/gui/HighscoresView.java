@@ -12,8 +12,10 @@ import java.util.Date;
 
 class HighscoresView extends AbstractView {
     private static HighscoresView instance;
-    private Border listborder = BorderFactory.createEmptyBorder(10,50,0,50);
-    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,20,0);
+    private JPanel highScoreList;
+    private Border listCollumBorder = BorderFactory.createEmptyBorder(10,50,0,50); //bottom sollte immer 0 sein
+    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,20,0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
+    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(0,0,40,0); //top,left,right sollte immer 0 sein, sie ^
 
     private HighscoresView() {
         super();
@@ -31,8 +33,7 @@ class HighscoresView extends AbstractView {
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.PAGE_END);
 
-        add(initHighScoreList());
-
+        update(); //Initialisiert die eigentliche Liste, damit diese auch immer aktuell ist
     }
 
     private JPanel initHighScoreList(){
@@ -42,62 +43,75 @@ class HighscoresView extends AbstractView {
 
 
         //Einzelne Spalten
-        JPanel name = new JPanel();
-        name.setLayout(new BoxLayout(name, BoxLayout.Y_AXIS));
-        name.setBorder(listborder);
-        name.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        list.add(name);
-        JPanel score = new JPanel();
-        score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
-        score.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        score.setBorder(listborder);
-        list.add(score);
-        JPanel date = new JPanel();
-        date.setLayout(new BoxLayout(date, BoxLayout.Y_AXIS));
-        date.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        date.setBorder(listborder);
-        list.add(date);
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
+        namePanel.setBorder(listCollumBorder);
+        namePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        list.add(namePanel);
+        JPanel scorePanel = new JPanel();
+        scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
+        scorePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        scorePanel.setBorder(listCollumBorder);
+        list.add(scorePanel);
+        JPanel datePanel = new JPanel();
+        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
+        datePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        datePanel.setBorder(listCollumBorder);
+        list.add(datePanel);
 
         //Überschriften der Spalten
         JLabel collumName = new JLabel(GUIConstants.DB_COLLUM_NAME);
         collumName.setAlignmentX(Component.CENTER_ALIGNMENT);
-        name.add(collumName);
+        collumName.setBorder(listCollumHeaderBorder);
+        namePanel.add(collumName);
         JLabel collumScore = new JLabel(GUIConstants.DB_COLLUM_SCORE);
-        score.add(collumScore);
         collumScore.setAlignmentX(Component.CENTER_ALIGNMENT);
+        collumScore.setBorder(listCollumHeaderBorder);
+        scorePanel.add(collumScore);
         JLabel collumDate = new JLabel(GUIConstants.DB_COLLUM_DATE);
         collumDate.setAlignmentX(Component.CENTER_ALIGNMENT);
-        date.add(collumDate);
+        collumDate.setBorder(listCollumHeaderBorder);
+        datePanel.add(collumDate);
 
         //Füllen der Tabelle
         try {
             ResultSet highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + GUIConstants.DB_TABLE + " ORDER BY " + GUIConstants.DB_COLLUM_SCORE + " DESC LIMIT 10;");
-            for(int i = 0; highScoreSet.next(); i++){
+            while(highScoreSet.next()){
                 JLabel nameCell = new JLabel(highScoreSet.getString(GUIConstants.DB_COLLUM_NAME));
                 nameCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 nameCell.setBorder(listCellBorder);
-                name.add(nameCell);
+                namePanel.add(nameCell);
 
                 JLabel scoreCell = new JLabel(Integer.toString(highScoreSet.getInt(GUIConstants.DB_COLLUM_SCORE)));
                 scoreCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 scoreCell.setBorder(listCellBorder);
-                score.add(scoreCell);
+                scorePanel.add(scoreCell);
+
+                Date asd = highScoreSet.getDate(GUIConstants.DB_COLLUM_DATE);
 
                 String dateString = "höhö"; //TODO date umschreiben
 
                 JLabel dateCell = new JLabel(dateString);
                 dateCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 dateCell.setBorder(listCellBorder);
-                date.add(dateCell);
+                datePanel.add(dateCell);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            scorePanel.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
         }
 
         return list;
     }
 
     public void update() {
+        if(highScoreList != null){
+            remove(highScoreList);
+        }
+        highScoreList = initHighScoreList();
+        add(highScoreList);
+        revalidate();
+        repaint();
     }
 
     static HighscoresView getInstance() {
