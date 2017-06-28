@@ -18,6 +18,7 @@ class CreditsView extends AbstractView {
 
         JButton backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
+        backButton.setFont(Constants.DEFAULT_FONT);
         //backButton.setPreferredSize(GUIConstants.defaultButtonSize);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 

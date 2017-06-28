@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import model.Camera;
 import model.Direction;
 import model.Level;
@@ -45,6 +46,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
+        backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
             audioPlayer.stop();
@@ -292,7 +294,6 @@ public class LevelView extends AbstractView implements Runnable {
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 
-        String playerPosition = "Player position: " + level.getPlayer().getPosition();
         g2.drawString(level.getPlayer().toString(), getWidth() / 2 - g2.getFontMetrics().stringWidth(level.getPlayer().toString()) / 2, 20);
     }
 }
