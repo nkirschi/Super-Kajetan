@@ -2,10 +2,12 @@ package gui;
 
 import util.Constants;
 import util.DBConnection;
+import util.ImageUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -15,8 +17,8 @@ class HighscoresView extends AbstractView {
     private static HighscoresView instance;
     private JPanel highScoreList;
     private Border listCollumBorder = BorderFactory.createEmptyBorder(20,50,0,50); //bottom sollte immer 0 sein
-    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,40,0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
-    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(0,0,70,0); //top,left,right sollte immer 0 sein, sie ^
+    private Border listCellBorder = BorderFactory.createEmptyBorder(20,0,20,0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
+    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(35,0,35,0); //top,left,right sollte immer 0 sein, sie ^
 
     private HighscoresView() {
         super();
@@ -41,7 +43,33 @@ class HighscoresView extends AbstractView {
         JPanel list = new JPanel(new FlowLayout());
         list.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
+        //Tolle Spalte links mit Erster, Zweiter, ...
+        JPanel fancyCollumPanel =  new JPanel();
+        fancyCollumPanel.setLayout(new BoxLayout(fancyCollumPanel,BoxLayout.Y_AXIS));
+        fancyCollumPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        fancyCollumPanel.setBorder(listCollumBorder);
+        list.add(fancyCollumPanel);
 
+        try {
+            ImageIcon trophyImage = ImageUtil.getIcon("images/trophy.png");
+            System.out.println(trophyImage.getIconHeight()+"   "+trophyImage.getIconWidth());
+            JLabel trophyLabel = new JLabel(trophyImage);
+            trophyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            fancyCollumPanel.add(trophyLabel);
+
+            //Setzt jetzt die Border der Spalten-Überschriften entsprechend, um für Höhe des Bildes zu kompensieren. (15/2 kompensiert für texthöhe. unschön, wissen wir ....)
+            //TODO textgröße irgendwie anders bestimmen!!!!!
+            listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight()/2-15/2,0,trophyImage.getIconHeight()/2-15/2,0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 1;i<11;i++ ){
+            JLabel label = new JLabel("Platz "+i);
+            label.setAlignmentX(Component.CENTER_ALIGNMENT);
+            label.setBorder(listCellBorder);
+            fancyCollumPanel.add(label);
+        }
 
         //Einzelne Spalten
         JPanel namePanel = new JPanel();
