@@ -180,7 +180,7 @@ public class LevelView extends AbstractView implements Runnable {
                     if (entry.getValue()) {
                         level.getPlayer().setWalking(false);
                         level.getPlayer().setJumping(true);//jumping = true;
-                        if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
+                        if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0 && jumpAmount == Constants.PLAYER_JUMP_AMOUNT)
                             level.getPlayer().move(0, -jumpAmount);
                         else {
                             if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
@@ -216,9 +216,12 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case Constants.KEY_RUN:
                     if (entry.getValue() && !level.getPlayer().isJumping()) {
+                        level.getPlayer().setRunning(true);
                         int signum = level.getPlayer().getViewingDirection().equals(Direction.RIGHT) ? 1 : -1;
                         camera.scroll(signum * Constants.PLAYER_MOVE_AMOUNT);
                         level.getPlayer().move(signum * Constants.PLAYER_MOVE_AMOUNT, 0);
+                    } else {
+                        level.getPlayer().setRunning(false);
                     }
             }
 
