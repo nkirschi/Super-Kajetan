@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import model.Camera;
 import model.Direction;
 import model.Level;
@@ -45,6 +46,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
+        backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
             audioPlayer.stop();
@@ -139,14 +141,14 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 1. Move Player + Gravitation + check Collision
         // Tastaturcheck, altobelli!
-        //walking = false;
+
         level.getPlayer().setWalking(false);
 
         for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case Constants.KEY_LEFT:
                     if (entry.getValue()) {
-                        if (!level.getPlayer().isJumping())
+                        //if (!level.getPlayer().isJumping())
                             level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_MOVE_AMOUNT) {
@@ -162,7 +164,7 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case Constants.KEY_RIGHT:
                     if (entry.getValue()) {
-                        if (!level.getPlayer().isJumping())
+                        //if (!level.getPlayer().isJumping())
                             level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_MOVE_AMOUNT) {
@@ -178,8 +180,9 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case Constants.KEY_JUMP:
                     if (entry.getValue()) {
+                        level.getPlayer().setWalking(false);
                         level.getPlayer().setJumping(true);//jumping = true;
-                        if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
+                        if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0 && jumpAmount == Constants.PLAYER_JUMP_AMOUNT)
                             level.getPlayer().move(0, -jumpAmount);
                         else {
                             if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
@@ -195,6 +198,7 @@ public class LevelView extends AbstractView implements Runnable {
                         }
                     } else {
                         if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
+                            level.getPlayer().setWalking(false);
                             if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
                                 jumpAmount -= 1;
                                 level.getPlayer().move(0, -jumpAmount);
@@ -214,9 +218,12 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case Constants.KEY_RUN:
                     if (entry.getValue() && !level.getPlayer().isJumping()) {
+                        level.getPlayer().setRunning(true);
                         int signum = level.getPlayer().getViewingDirection().equals(Direction.RIGHT) ? 1 : -1;
                         camera.scroll(signum * Constants.PLAYER_MOVE_AMOUNT);
                         level.getPlayer().move(signum * Constants.PLAYER_MOVE_AMOUNT, 0);
+                    } else {
+                        level.getPlayer().setRunning(false);
                     }
             }
 
@@ -287,7 +294,6 @@ public class LevelView extends AbstractView implements Runnable {
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 
-        String playerPosition = "Player position: " + level.getPlayer().getPosition();
         g2.drawString(level.getPlayer().toString(), getWidth() / 2 - g2.getFontMetrics().stringWidth(level.getPlayer().toString()) / 2, 20);
     }
 }

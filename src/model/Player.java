@@ -12,11 +12,25 @@ public class Player extends Entity {
 
     public Player(Point position) {
         this.position = position;
-        walkCount = 0;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(position.getX() - PLAYER_WIDTH / 2, position.getY() - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
 
+    @Override
+    public void setWalking(boolean walking) {
+        if (walking)
+            walkCount++;
+        super.setWalking(walking);
+    }
+
+    @Override
+    public void setRunning(boolean running) {
+        if (running)
+            walkCount++;
+        super.setRunning(running);
+    }
+
+    @Override
     public void setCrouching(boolean crouching) {
         double crouchingDelta = 50;
         if (crouching && !this.crouching)
@@ -25,12 +39,6 @@ public class Player extends Entity {
             hitbox.setRect(hitbox.x, hitbox.y - crouchingDelta, hitbox.width, hitbox.height + crouchingDelta);
 
         super.setCrouching(crouching);
-    }
-
-    @Override
-    public void setWalking(boolean walking) {
-        walkCount++;
-        super.setWalking(walking);
     }
 
     public String getImagePath() {

@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import util.Constants;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ class SettingsView extends AbstractView {
 
         JButton backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
+        backButton.setFont(Constants.DEFAULT_FONT);
         //backButton.setPreferredSize(GUIConstants.defaultButtonSize);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 

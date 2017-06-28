@@ -11,6 +11,7 @@ public abstract class Entity implements Collidable {
     int health;
 
     boolean walking;
+    boolean running;
     boolean jumping;
     boolean crouching;
 
@@ -57,6 +58,14 @@ public abstract class Entity implements Collidable {
         this.walking = walking;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     public boolean isJumping() {
         return jumping;
     }
@@ -85,6 +94,7 @@ public abstract class Entity implements Collidable {
 
     @Override
     public String toString() {
-        return position + ": health = " + health + ", walking = " + walking + ", jumping = " + jumping + ", crouching = " + crouching;
+        return position + ": health = " + health + ", walking = " + walking + ", running = " + running +
+                ", jumping = " + jumping + ", crouching = " + crouching;
     }
 }
