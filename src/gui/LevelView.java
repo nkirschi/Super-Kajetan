@@ -147,7 +147,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
-                case KeyEvent.VK_A:
+                case GameConstants.KEY_LEFT:
                     if (entry.getValue()) {
                         level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
@@ -162,7 +162,7 @@ public class LevelView extends AbstractView implements Runnable {
                         looksLeft = true;
                     }
                     break;
-                case KeyEvent.VK_D:
+                case GameConstants.KEY_RIGHT:
                     if (entry.getValue()) {
                         level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
@@ -177,7 +177,7 @@ public class LevelView extends AbstractView implements Runnable {
                         looksLeft = false;
                     }
                     break;
-                case KeyEvent.VK_W:
+                case GameConstants.KEY_JUMP:
                     if (entry.getValue()) {
                         level.getPlayer().setJumping(true);//jumping = true;
                         if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
@@ -206,10 +206,16 @@ public class LevelView extends AbstractView implements Runnable {
                         }
                     }
                     break;
-                case KeyEvent.VK_S:
-                    //ducken
+                case GameConstants.KEY_CROUCH:
+                    if (entry.getValue()) {
+                        if (!level.getPlayer().isCrouching())
+                            level.getPlayer().setCrouching(true);
+                    } else {
+                        if (level.getPlayer().isCrouching())
+                            level.getPlayer().setCrouching(false);
+                    }
                     break;
-                case KeyEvent.VK_SHIFT:
+                case GameConstants.KEY_RUN:
                     if (entry.getValue() && !level.getPlayer().isJumping()) {
                         int signum = looksLeft ? -1 : 1;
                         camera.scroll(signum * GameConstants.PLAYER_MOVE_AMOUNT);
