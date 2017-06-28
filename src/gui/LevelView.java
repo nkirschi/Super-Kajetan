@@ -1,5 +1,6 @@
 package gui;
 
+import model.Camera;
 import model.Level;
 import physics.GameConstants;
 import util.AudioPlayer;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
-    private Rectangle2D.Double viewport; // Die aktuelle "Kamera"
+    private Camera camera; // Die aktuelle "Kamera"
     private HashMap<Integer, Boolean> keyStates;
 
     private AudioPlayer audioPlayer;
@@ -36,7 +37,7 @@ public class LevelView extends AbstractView implements Runnable {
 
     LevelView(Level level) {
         this.level = level;
-        viewport = new Rectangle2D.Double(0, 0, getWidth(), getHeight());
+        camera = new Camera(0, 0, getWidth(), getHeight());
         keyStates = new HashMap<>();
 
         audioPlayer = new AudioPlayer();
@@ -156,7 +157,7 @@ public class LevelView extends AbstractView implements Runnable {
                         } else {
                             moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
                         }
-                        viewport.setRect(viewport.x - moveAmount, viewport.y, viewport.width, viewport.height);
+                        camera.scroll(-moveAmount);
                         level.getPlayer().move(-moveAmount, 0);
                         looksLeft = true;
                     }
@@ -171,7 +172,7 @@ public class LevelView extends AbstractView implements Runnable {
                         } else {
                             moveAmount = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
                         }
-                        viewport.setRect(viewport.x + moveAmount, viewport.y, viewport.width, viewport.height);
+                        camera.scroll(moveAmount);
                         level.getPlayer().move(moveAmount, 0);
                         looksLeft = false;
                     }
@@ -211,8 +212,7 @@ public class LevelView extends AbstractView implements Runnable {
                 case KeyEvent.VK_SHIFT:
                     if (entry.getValue() && !level.getPlayer().isJumping()) {
                         int signum = looksLeft ? -1 : 1;
-                        viewport.setRect(viewport.x + signum * GameConstants.PLAYER_MOVE_AMOUNT, viewport.y,
-                                viewport.width, viewport.height);
+                        camera.scroll(signum * GameConstants.PLAYER_MOVE_AMOUNT);
                         level.getPlayer().move(signum * GameConstants.PLAYER_MOVE_AMOUNT, 0);
                     }
             }
@@ -255,7 +255,7 @@ public class LevelView extends AbstractView implements Runnable {
             int height = image.getHeight(null);
             double factor = getHeight() / (double) height; // Skalierungsfaktor
 
-            g2.drawImage(image, -(int) viewport.getX(), 0, (int) (width * factor), (int) (height * factor), null);
+            g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -276,7 +276,7 @@ public class LevelView extends AbstractView implements Runnable {
             } else {
                 image = ImageUtil.getImage("images/char/char_stand_0.66.png");
             }
-            int playerX = (int) Math.round(level.getPlayer().getPosition().getX() - image.getWidth() / 2 - viewport.getX());
+            int playerX = (int) Math.round(level.getPlayer().getPosition().getX() - image.getWidth() / 2 - camera.getX());
             int playerY = (int) Math.round(level.getPlayer().getPosition().getY() - image.getHeight());
             if (!looksLeft)
                 g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
@@ -289,7 +289,7 @@ public class LevelView extends AbstractView implements Runnable {
         Stroke originalStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
         Rectangle2D playerHitbox = level.getPlayer().getHitbox();
-        g2.drawRect((int) Math.round(playerHitbox.getX() - viewport.x), (int) Math.round(playerHitbox.getY()),
+        g2.drawRect((int) Math.round(playerHitbox.getX() - camera.x), (int) Math.round(playerHitbox.getY()),
                 (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
         g2.setStroke(originalStroke);
         //g2.setFont(new Font("Consolas", Font.PLAIN, 14));
