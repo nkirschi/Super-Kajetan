@@ -10,12 +10,14 @@ import static javax.sound.sampled.AudioSystem.getAudioInputStream;
 
 public class AudioPlayer {
     private Random random;
+    private boolean playing;
+    private boolean paused;
 
     public AudioPlayer() {
         random = new Random();
     }
 
-    public void play(String filePath) {
+    private void play(String filePath) {
         try (final AudioInputStream in = getAudioInputStream(ClassLoader.getSystemResourceAsStream(filePath))) {
 
             final int ch = in.getFormat().getChannels();
@@ -43,32 +45,59 @@ public class AudioPlayer {
         }
     }
 
-    public void randomLoop() {
-        while (true) {
-            String filePath = "sounds/";
-            switch (random.nextInt(4)) {
-                case 0:
-                    filePath += "gott_mit_uns.ogg";
-                    break;
-                case 1:
-                    filePath += "panzerkampf.ogg";
-                    break;
-                case 2:
-                    filePath += "shiroyama.ogg";
-                    break;
-                case 3:
-                    filePath += "the_last_stand.ogg";
-                    break;
+    public void playLoop() {
+        new Thread(() -> {
+            playing = true;
+            while (playing) {
+                String filePath = "sounds/";
+                switch (random.nextInt(4)) {
+                    case 0:
+                        filePath += "gott_mit_uns.ogg";
+                        break;
+                    case 1:
+                        filePath += "panzerkampf.ogg";
+                        break;
+                    case 2:
+                        filePath += "shiroyama.ogg";
+                        break;
+                    case 3:
+                        filePath += "the_last_stand.ogg";
+                        break;
+                }
+                play(filePath);
             }
-            play(filePath);
-        }
+        }).start();
+    }
 
+    public void playOnce(String filePath) {
+        new Thread(() -> play(filePath)).start();
+    }
+
+    public void stop() {
+        playing = false;
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void unpause() {
+        paused = false;
     }
 
     private void stream(AudioInputStream in, SourceDataLine line)
             throws IOException {
         final byte[] buffer = new byte[65536];
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
+            if (!playing)
+                break;
+            while (paused) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             line.write(buffer, 0, n);
         }
     }

@@ -14,6 +14,7 @@ public abstract class Entity implements Collidable {
     protected boolean crouching;
     protected boolean walking;
 
+
     Point getPosition() {
         return position;
     }

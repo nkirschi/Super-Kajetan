@@ -23,15 +23,4 @@ public class Player extends Entity {
     public Point getPosition() {
         return position;
     }
-
-    /**
-     * lädt Bild aus images/...
-     */
-    public void loadImage() {
-        try {
-            ImageUtil.getImage("images");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
