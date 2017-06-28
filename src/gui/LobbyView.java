@@ -4,7 +4,7 @@ import model.Entity;
 import model.Level;
 import model.Obstacle;
 import model.Player;
-import physics.GameConstants;
+import util.GameConstants;
 import util.Point;
 import util.list.List;
 
@@ -17,13 +17,13 @@ class LobbyView extends AbstractView {
     private LobbyView() {
         super();
         setLayout(new BorderLayout());
-        setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        setBackground(GameConstants.MENU_BACKGROUND_COLOR);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        buttonPanel.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
 
         JButton backButton = new JButton("Zurück");
-        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.setBackground(GameConstants.BUTTON_COLOR);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 
         buttonPanel.add(backButton);

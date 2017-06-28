@@ -1,6 +1,7 @@
 package gui;
 
 import util.DBConnection;
+import util.GameConstants;
 import util.ImageUtil;
 
 import javax.swing.*;
@@ -25,13 +26,13 @@ class HighscoresView extends AbstractView {
     private HighscoresView() {
         super();
         setLayout(new BorderLayout());
-        setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        setBackground(GameConstants.MENU_BACKGROUND_COLOR);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        buttonPanel.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
 
         JButton backButton = new JButton("Zurück");
-        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.setBackground(GameConstants.BUTTON_COLOR);
         //backButton.setPreferredSize(GUIConstants.defaultButtonSize);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 
@@ -43,7 +44,7 @@ class HighscoresView extends AbstractView {
 
     private JPanel initHighScoreList(){
         JPanel list = new JPanel(new FlowLayout());
-        list.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        list.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
 
 
 
@@ -80,48 +81,48 @@ class HighscoresView extends AbstractView {
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
         namePanel.setBorder(listCollumBorder);
-        namePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        namePanel.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
         list.add(namePanel);
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
-        scorePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        scorePanel.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
         scorePanel.setBorder(listCollumBorder);
         list.add(scorePanel);
         JPanel datePanel = new JPanel();
         datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
-        datePanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        datePanel.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
         datePanel.setBorder(listCollumBorder);
         list.add(datePanel);
 
         //Überschriften der Spalten
-        JLabel collumName = new JLabel(GUIConstants.DB_COLLUM_NAME);
+        JLabel collumName = new JLabel(GameConstants.DB_COLLUM_NAME);
         collumName.setAlignmentX(Component.CENTER_ALIGNMENT);
         collumName.setBorder(listCollumHeaderBorder);
         namePanel.add(collumName);
-        JLabel collumScore = new JLabel(GUIConstants.DB_COLLUM_SCORE);
+        JLabel collumScore = new JLabel(GameConstants.DB_COLLUM_SCORE);
         collumScore.setAlignmentX(Component.CENTER_ALIGNMENT);
         collumScore.setBorder(listCollumHeaderBorder);
         scorePanel.add(collumScore);
-        JLabel collumDate = new JLabel(GUIConstants.DB_COLLUM_DATE);
+        JLabel collumDate = new JLabel(GameConstants.DB_COLLUM_DATE);
         collumDate.setAlignmentX(Component.CENTER_ALIGNMENT);
         collumDate.setBorder(listCollumHeaderBorder);
         datePanel.add(collumDate);
 
         //Füllen der Tabelle
         try {
-            ResultSet highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + GUIConstants.DB_TABLE + " ORDER BY " + GUIConstants.DB_COLLUM_SCORE + " DESC LIMIT 10;");
+            ResultSet highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + GameConstants.DB_TABLE + " ORDER BY " + GameConstants.DB_COLLUM_SCORE + " DESC LIMIT 10;");
             while(highScoreSet.next()){
-                JLabel nameCell = new JLabel(highScoreSet.getString(GUIConstants.DB_COLLUM_NAME));
+                JLabel nameCell = new JLabel(highScoreSet.getString(GameConstants.DB_COLLUM_NAME));
                 nameCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 nameCell.setBorder(listCellBorder);
                 namePanel.add(nameCell);
 
-                JLabel scoreCell = new JLabel(Integer.toString(highScoreSet.getInt(GUIConstants.DB_COLLUM_SCORE)));
+                JLabel scoreCell = new JLabel(Integer.toString(highScoreSet.getInt(GameConstants.DB_COLLUM_SCORE)));
                 scoreCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 scoreCell.setBorder(listCellBorder);
                 scorePanel.add(scoreCell);
 
-                Date date = highScoreSet.getDate(GUIConstants.DB_COLLUM_DATE);
+                Date date = highScoreSet.getDate(GameConstants.DB_COLLUM_DATE);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
                 String dateString = dateFormat.format(date);
 

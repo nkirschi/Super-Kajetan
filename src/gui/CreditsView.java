@@ -1,5 +1,7 @@
 package gui;
 
+import util.GameConstants;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,13 +11,13 @@ class CreditsView extends AbstractView {
     private CreditsView() {
         super();
         setLayout(new BorderLayout());
-        setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        setBackground(GameConstants.MENU_BACKGROUND_COLOR);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        buttonPanel.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
 
         JButton backButton = new JButton("Zurück");
-        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.setBackground(GameConstants.BUTTON_COLOR);
         //backButton.setPreferredSize(GUIConstants.defaultButtonSize);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 
