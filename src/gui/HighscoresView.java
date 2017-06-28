@@ -4,9 +4,11 @@ import util.DBConnection;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -87,9 +89,9 @@ class HighscoresView extends AbstractView {
                 scoreCell.setBorder(listCellBorder);
                 scorePanel.add(scoreCell);
 
-                Date asd = highScoreSet.getDate(GUIConstants.DB_COLLUM_DATE);
-
-                String dateString = "höhö"; //TODO date umschreiben
+                Date date = highScoreSet.getDate(GUIConstants.DB_COLLUM_DATE);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
+                String dateString = dateFormat.format(date);
 
                 JLabel dateCell = new JLabel(dateString);
                 dateCell.setAlignmentX(Component.CENTER_ALIGNMENT);
