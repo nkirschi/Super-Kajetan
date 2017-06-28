@@ -3,26 +3,37 @@ package gui;
 import util.Constants;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 import java.awt.*;
 
 class MainMenuView extends AbstractView {
     private static MainMenuView instance;
     private GridBagConstraints constraints;
-    private String currentName;
+    private String currentName = "Ritter Arnold";
 
     private MainMenuView() {
         super();
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
+        setBackground(Constants.MENU_BACKGROUND_COLOR);
+
+        initButtonPanel();
+        initToolPanel();
+        //TODO Namenseingabefeld
+    }
+
+    private void initButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
-        setBackground(Constants.MENU_BACKGROUND_COLOR);
-        initButtons();
-        //TODO Namenseingabefeld
-    }
-
-    private void initButtons() {
+        buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         //Button-Initialisierung
         JButton lobbyButton = new JButton("SPIELEN");
@@ -59,11 +70,58 @@ class MainMenuView extends AbstractView {
         exitButton.setFont(buttonFont);
 
         //Buttons hinzufügen
-        add(lobbyButton, constraints);
-        add(settingsButton, constraints);
-        add(highscoresButton, constraints);
-        add(creditsButton, constraints);
-        add(exitButton, constraints);
+        buttonPanel.add(lobbyButton, constraints);
+        buttonPanel.add(settingsButton, constraints);
+        buttonPanel.add(highscoresButton, constraints);
+        buttonPanel.add(creditsButton, constraints);
+        buttonPanel.add(exitButton, constraints);
+
+        add(buttonPanel, BorderLayout.CENTER);
+    }
+
+    private void initToolPanel(){
+        JPanel toolPanel = new JPanel();
+        toolPanel.setLayout(new FlowLayout());
+        toolPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+
+        JLabel nameLabel = new JLabel("Gib deinen Namen hier ein: ");
+        nameLabel.setFont(Constants.DEFAULT_FONT);
+        toolPanel.add(nameLabel);
+
+        JTextField nameTextField = new JTextField(17){
+            @Override public void setBorder(Border border) {
+                // Nein, Böse!
+            }
+        };
+        nameTextField.setDocument(new JTextFieldLimit(20));
+        nameTextField.setText(currentName);
+        nameTextField.setBackground(Constants.BUTTON_COLOR);
+        nameTextField.setFont(Constants.DEFAULT_FONT);
+        nameTextField.setHorizontalAlignment(JTextField.CENTER);
+        toolPanel.add(nameTextField);
+        nameTextField.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent) {
+                currentName = nameTextField.getText();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {
+                currentName = nameTextField.getText();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {
+                currentName = nameTextField.getText();
+            }
+        });
+
+        add(toolPanel, BorderLayout.PAGE_END);
+    }
+
+    public String getCurrentName(){
+        return currentName;
     }
 
     public static MainMenuView getInstance() {
@@ -74,5 +132,23 @@ class MainMenuView extends AbstractView {
     }
 
     public void update() {
+    }
+}
+
+//Hilfsklasse, um die Schriftzahl des Names zu begrenzen ...
+class JTextFieldLimit extends PlainDocument {
+    private int limit;
+
+    JTextFieldLimit(int limit) {
+        super();
+        this.limit = limit;
+    }
+
+    public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException {
+        if (str == null) return;
+
+        if ((getLength() + str.length()) <= limit) {
+            super.insertString(offset, str, attr);
+        }
     }
 }

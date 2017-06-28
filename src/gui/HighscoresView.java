@@ -37,8 +37,6 @@ class HighscoresView extends AbstractView {
 
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.PAGE_END);
-
-        update(); //Initialisiert die eigentliche Liste, damit diese auch immer aktuell ist
     }
 
     private JPanel initHighScoreList() {
@@ -54,7 +52,6 @@ class HighscoresView extends AbstractView {
 
         try {
             ImageIcon trophyImage = ImageUtil.getIcon("images/trophy.png");
-            System.out.println(trophyImage.getIconHeight() + "   " + trophyImage.getIconWidth());
             JLabel trophyLabel = new JLabel(trophyImage);
             trophyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             fancyCollumPanel.add(trophyLabel);
@@ -132,6 +129,13 @@ class HighscoresView extends AbstractView {
                 dateCell.setBorder(listCellBorder);
                 dateCell.setFont(Constants.DEFAULT_FONT);
                 datePanel.add(dateCell);
+
+                if(highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName())==0){
+                    Color currentPlayerScores = new Color(230, 212, 93);
+                    nameCell.setForeground(currentPlayerScores);
+                    scoreCell.setForeground(currentPlayerScores);
+                    dateCell.setForeground(currentPlayerScores);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
