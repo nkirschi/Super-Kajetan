@@ -1,10 +1,14 @@
 package gui;
 
 import util.DBConnection;
+import util.ImageUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -13,9 +17,10 @@ import java.util.Date;
 class HighscoresView extends AbstractView {
     private static HighscoresView instance;
     private JPanel highScoreList;
+
     private Border listCollumBorder = BorderFactory.createEmptyBorder(20,50,0,50); //bottom sollte immer 0 sein
-    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,40,0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
-    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(0,0,70,0); //top,left,right sollte immer 0 sein, sie ^
+    private Border listCellBorder = BorderFactory.createEmptyBorder(20,0,20,0); //left, right sollte immer 0 sein
+    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(35,0,35,0); //left,right sollte immer 0
 
     private HighscoresView() {
         super();
@@ -33,7 +38,7 @@ class HighscoresView extends AbstractView {
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.PAGE_END);
 
-        update(); //Initialisiert die eigentliche Liste, damit diese auch immer aktuell ist
+        //update(); //Initialisiert die eigentliche Liste, damit diese auch immer aktuell ist, hier nicht benötigt, da Mainframe diese beim Wechsel sowieso immer aufruft
     }
 
     private JPanel initHighScoreList(){
@@ -42,7 +47,36 @@ class HighscoresView extends AbstractView {
 
 
 
-        //Einzelne Spalten
+        //Tolle Spalte links mit Erster, Zweiter, ...
+        JPanel fancyCollumPanel =  new JPanel();
+        fancyCollumPanel.setLayout(new BoxLayout(fancyCollumPanel,BoxLayout.Y_AXIS));
+        fancyCollumPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        fancyCollumPanel.setBorder(listCollumBorder);
+        list.add(fancyCollumPanel);
+
+        try {
+            ImageIcon trophyImage = ImageUtil.getIcon("images/trophy.png");
+            System.out.println(trophyImage.getIconHeight()+"   "+trophyImage.getIconWidth());
+            JLabel trophyLabel = new JLabel(trophyImage);
+            trophyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            fancyCollumPanel.add(trophyLabel);
+
+            //Setzt jetzt die Border der Spalten-Überschriften entsprechend, um für Höhe des Bildes zu kompensieren. (15/2 kompensiert für texthöhe. unschön, wissen wir ....)
+            //TODO textgröße irgendwie anders bestimmen!!!!!
+            listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight()/2-15/2,0,trophyImage.getIconHeight()/2-15/2,0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 1;i<11;i++ ){
+            JLabel label = new JLabel("Platz "+i);
+            label.setAlignmentX(Component.CENTER_ALIGNMENT);
+            label.setBorder(listCellBorder);
+            fancyCollumPanel.add(label);
+        }
+
+
+        //Tatsächliche Spalten
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
         namePanel.setBorder(listCollumBorder);
@@ -109,7 +143,7 @@ class HighscoresView extends AbstractView {
             remove(highScoreList);
         }
         highScoreList = initHighScoreList();
-        add(highScoreList);
+        add(highScoreList, BorderLayout.CENTER);
         revalidate();
         repaint();
     }
