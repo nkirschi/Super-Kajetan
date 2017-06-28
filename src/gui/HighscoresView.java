@@ -25,7 +25,7 @@ class HighscoresView extends AbstractView {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
 
-        JButton backButton = new JButton("ZURÜCK");
+        JButton backButton = new JButton("Zurück");
         backButton.setBackground(GUIConstants.BUTTON_COLOR);
         //backButton.setPreferredSize(GUIConstants.defaultButtonSize);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
