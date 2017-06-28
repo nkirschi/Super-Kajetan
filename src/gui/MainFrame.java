@@ -1,5 +1,6 @@
 package gui;
 
+import util.GameConstants;
 import util.ImageUtil;
 import util.Logger;
 
@@ -21,7 +22,7 @@ public class MainFrame extends JFrame implements WindowListener {
      * das ganz am Anfang in der statischen main()-Methode erzeugt wird
      */
     private MainFrame() {
-        setTitle("Sidescroller " + GUIConstants.GAME_VERSION);
+        setTitle("Sidescroller " + GameConstants.GAME_VERSION);
         setSize(1024, 768);
         setResizable(false);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

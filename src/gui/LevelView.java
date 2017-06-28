@@ -2,7 +2,7 @@ package gui;
 
 import model.Camera;
 import model.Level;
-import physics.GameConstants;
+import util.GameConstants;
 import util.AudioPlayer;
 import util.ImageUtil;
 
@@ -46,7 +46,7 @@ public class LevelView extends AbstractView implements Runnable {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         backButton = new JButton("Zurück");
-        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.setBackground(GameConstants.BUTTON_COLOR);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
             audioPlayer.stop();
@@ -300,7 +300,7 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setStroke(originalStroke);
         //g2.setFont(new Font("Consolas", Font.PLAIN, 14));
         g2.setColor(Color.BLACK);
-        g2.drawString("Sidescroller " + GUIConstants.GAME_VERSION, 20, 20);
+        g2.drawString("Sidescroller " + GameConstants.GAME_VERSION, 20, 20);
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 

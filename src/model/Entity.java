@@ -1,7 +1,6 @@
 package model;
 
-import physics.Collidable;
-import physics.GameConstants;
+import util.GameConstants;
 import util.Point;
 
 import java.awt.geom.Rectangle2D;
@@ -46,27 +45,27 @@ public abstract class Entity implements Collidable {
     public int getHealth() {
         return health;
     }
-    
+
     public boolean isWalking() {
         return walking;
     }
-    
+
     public void setWalking(boolean walking) {
-       this.walking = walking; 
+        this.walking = walking;
     }
-    
+
     public boolean isJumping() {
         return jumping;
     }
-    
+
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
     }
-    
+
     public boolean isCrouching() {
         return crouching;
     }
-    
+
     public void setCrouching(boolean crouching) {
         this.crouching = crouching;
         if (crouching)
@@ -74,7 +73,7 @@ public abstract class Entity implements Collidable {
         else
             hitbox.setRect(hitbox.x, hitbox.y - GameConstants.CROUCHING_DELTA, hitbox.width, hitbox.height + GameConstants.CROUCHING_DELTA);
     }
-    
+
     @Override
     public String toString() {
         return "Entity at " + position + ", health = " + health + ", walking = " + walking + ", jumping = " + jumping + ", crouching = " + crouching;
