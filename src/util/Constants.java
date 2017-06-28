@@ -2,8 +2,9 @@ package util;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
-public class GameConstants {
+public class Constants {
     public static final String GAME_VERSION = "Alpha v1.1.2_01";
 
     // GUI
@@ -20,7 +21,6 @@ public class GameConstants {
     // Spielmechanik
     public static final int UPDATE_CLOCK = 50;
     public static final int GROUND_LEVEL = 720;
-    public static final double CROUCHING_DELTA = 60;
     public static final double PLAYER_MOVE_AMOUNT = 2.5;
     public static final double PLAYER_JUMP_AMOUNT = 16;
 
@@ -32,8 +32,19 @@ public class GameConstants {
     public static final int KEY_RUN = KeyEvent.VK_SHIFT;
 
     // Bilder
-    public static final String PLAYER_STAND_IMAGE_PATH = "images/char/char_stand_0.66.png";
-    public static final String PLAYER_WALK_1_IMAGE_PATH = "images/char/char_walk_1_0.66.png";
-    public static final String PLAYER_WALK_2_IMAGE_PATH = "images/char/char_walk_2_0.66.png";
-    public static final String PLAYER_JUMP_IMAGE_PATH = "images/char/char_jump_0.66.png";
+    public static final String PLAYER_STAND_IMAGE_PATH = "images/char/char_stand.png";
+    public static final String PLAYER_WALK_1_IMAGE_PATH = "images/char/char_walk_1.png";
+    public static final String PLAYER_WALK_2_IMAGE_PATH = "images/char/char_walk_2.png";
+    public static final String PLAYER_JUMP_IMAGE_PATH = "images/char/char_jump.png";
+
+    static {
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, ClassLoader.getSystemResourceAsStream("04b.ttf")));
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static final Font FONT = new Font("04b", Font.PLAIN, 10);
 }

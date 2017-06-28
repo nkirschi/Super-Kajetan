@@ -1,8 +1,9 @@
 package gui;
 
 import model.Camera;
+import model.Direction;
 import model.Level;
-import util.GameConstants;
+import util.Constants;
 import util.AudioPlayer;
 import util.ImageUtil;
 
@@ -26,10 +27,7 @@ public class LevelView extends AbstractView implements Runnable {
     private AudioPlayer audioPlayer;
     private JButton backButton;
 
-    private boolean looksLeft;
-    private double jumpAmount = GameConstants.PLAYER_JUMP_AMOUNT;
-    private int walkCount = 0;
-    private boolean walkFlag;
+    private double jumpAmount = Constants.PLAYER_JUMP_AMOUNT;
 
     private boolean running;
     private boolean paused;
@@ -46,7 +44,7 @@ public class LevelView extends AbstractView implements Runnable {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         backButton = new JButton("Zurück");
-        backButton.setBackground(GameConstants.BUTTON_COLOR);
+        backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
             audioPlayer.stop();
@@ -91,7 +89,7 @@ public class LevelView extends AbstractView implements Runnable {
         int updateCount = 0;
         int frameCount = 0;
 
-        final long TIME_PER_UPDATE = 1000000000 / GameConstants.UPDATE_CLOCK;
+        final long TIME_PER_UPDATE = 1000000000 / Constants.UPDATE_CLOCK;
         long lastTime = System.nanoTime();
         long secondTime = 0;
         long lag = 0;
@@ -105,7 +103,6 @@ public class LevelView extends AbstractView implements Runnable {
                 secondTime += elapsedTime;
                 if (secondTime > 1000000000) {
                     //System.out.println(updateCount + "\u2009Hz, " + frameCount + "\u2009fps");
-                    //MainFrame.getInstance().setTitle("Sidescroller Alpha v1.1.2_01 [" + updateCount + "\u2009Hz, " + frameCount + "\u2009fps]");
                     hz = updateCount;
                     fps = frameCount;
                     secondTime = 0;
@@ -147,87 +144,82 @@ public class LevelView extends AbstractView implements Runnable {
 
         for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
-                case GameConstants.KEY_LEFT:
+                case Constants.KEY_LEFT:
                     if (entry.getValue()) {
-                        level.getPlayer().setWalking(true);//walking = true;
+                        if (!level.getPlayer().isJumping())
+                            level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
-                        if (level.getPlayer().getPosition().getX() - getWidth() / 2 > GameConstants.PLAYER_MOVE_AMOUNT) {
-                            moveAmount = level.getPlayer().isJumping() ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
-                            walkCount++;
+                        if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_MOVE_AMOUNT) {
+                            moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
                         } else {
                             moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
+                            level.getPlayer().setWalking(false);
                         }
                         camera.scroll(-moveAmount);
                         level.getPlayer().move(-moveAmount, 0);
-                        looksLeft = true;
+                        level.getPlayer().setViewingDirection(Direction.LEFT);
                     }
                     break;
-                case GameConstants.KEY_RIGHT:
+                case Constants.KEY_RIGHT:
                     if (entry.getValue()) {
-                        level.getPlayer().setWalking(true);//walking = true;
+                        if (!level.getPlayer().isJumping())
+                            level.getPlayer().setWalking(true);//walking = true;
                         double moveAmount = 0;
-                        if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - GameConstants.PLAYER_MOVE_AMOUNT) {
-                            moveAmount = level.getPlayer().isJumping() ? 2 * GameConstants.PLAYER_MOVE_AMOUNT : GameConstants.PLAYER_MOVE_AMOUNT;
-                            walkCount++;
+                        if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_MOVE_AMOUNT) {
+                            moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
                         } else {
                             moveAmount = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
+                            level.getPlayer().setWalking(false);
                         }
                         camera.scroll(moveAmount);
                         level.getPlayer().move(moveAmount, 0);
-                        looksLeft = false;
+                        level.getPlayer().setViewingDirection(Direction.RIGHT);
                     }
                     break;
-                case GameConstants.KEY_JUMP:
+                case Constants.KEY_JUMP:
                     if (entry.getValue()) {
                         level.getPlayer().setJumping(true);//jumping = true;
                         if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0)
                             level.getPlayer().move(0, -jumpAmount);
                         else {
-                            if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
-                                if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
+                            if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
+                                if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
                                     jumpAmount -= 1;
                                     level.getPlayer().move(0, -jumpAmount);
                                 } else
-                                    level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
+                                    level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                             } else {
-                                jumpAmount = GameConstants.PLAYER_JUMP_AMOUNT;
+                                jumpAmount = Constants.PLAYER_JUMP_AMOUNT;
                                 level.getPlayer().setJumping(false);//jumping = false;
                             }
                         }
                     } else {
-                        if (level.getPlayer().getPosition().getY() < GameConstants.GROUND_LEVEL) {
-                            if (GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
+                        if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
+                            if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
                                 jumpAmount -= 1;
                                 level.getPlayer().move(0, -jumpAmount);
                             } else
-                                level.getPlayer().move(0, GameConstants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
+                                level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                         } else {
                             level.getPlayer().setJumping(false);//jumping = false;
                         }
                     }
                     break;
-                case GameConstants.KEY_CROUCH:
+                case Constants.KEY_CROUCH:
                     if (entry.getValue()) {
-                        if (!level.getPlayer().isCrouching())
-                            level.getPlayer().setCrouching(true);
+                        level.getPlayer().setCrouching(true);
                     } else {
-                        if (level.getPlayer().isCrouching())
-                            level.getPlayer().setCrouching(false);
+                        level.getPlayer().setCrouching(false);
                     }
                     break;
-                case GameConstants.KEY_RUN:
+                case Constants.KEY_RUN:
                     if (entry.getValue() && !level.getPlayer().isJumping()) {
-                        int signum = looksLeft ? -1 : 1;
-                        camera.scroll(signum * GameConstants.PLAYER_MOVE_AMOUNT);
-                        level.getPlayer().move(signum * GameConstants.PLAYER_MOVE_AMOUNT, 0);
+                        int signum = level.getPlayer().getViewingDirection().equals(Direction.RIGHT) ? 1 : -1;
+                        camera.scroll(signum * Constants.PLAYER_MOVE_AMOUNT);
+                        level.getPlayer().move(signum * Constants.PLAYER_MOVE_AMOUNT, 0);
                     }
             }
 
-        }
-
-        if (walkCount >= 15) {
-            walkFlag = !walkFlag;
-            walkCount = 0;
         }
 
         // Gravitationschecks
@@ -272,19 +264,10 @@ public class LevelView extends AbstractView implements Runnable {
 
         try {
             BufferedImage image;
-            if (level.getPlayer().isJumping())
-                image = ImageUtil.getImage("images/char/char_jump_0.66.png");
-            else if (level.getPlayer().isWalking()) {
-                if (walkFlag)
-                    image = ImageUtil.getImage("images/char/char_walk_1_0.66.png");
-                else
-                    image = ImageUtil.getImage("images/char/char_walk_2_0.66.png");
-            } else {
-                image = ImageUtil.getImage("images/char/char_stand_0.66.png");
-            }
+            image = ImageUtil.getImage(level.getPlayer().getImagePath());
             int playerX = (int) Math.round(level.getPlayer().getPosition().getX() - image.getWidth() / 2 - camera.getX());
             int playerY = (int) Math.round(level.getPlayer().getPosition().getY() - image.getHeight());
-            if (!looksLeft)
+            if (level.getPlayer().getViewingDirection().equals(Direction.RIGHT))
                 g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
             else
                 g2.drawImage(image, playerX + image.getWidth(), playerY, -image.getWidth(), image.getHeight(), this);
@@ -300,11 +283,11 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setStroke(originalStroke);
         //g2.setFont(new Font("Consolas", Font.PLAIN, 14));
         g2.setColor(Color.BLACK);
-        g2.drawString("Sidescroller " + GameConstants.GAME_VERSION, 20, 20);
+        g2.drawString("Sidescroller " + Constants.GAME_VERSION, 20, 20);
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 
         String playerPosition = "Player position: " + level.getPlayer().getPosition();
-        g2.drawString(playerPosition, getWidth() / 2 - g2.getFontMetrics().stringWidth(playerPosition) / 2, 20);
+        g2.drawString(level.getPlayer().toString(), getWidth() / 2 - g2.getFontMetrics().stringWidth(level.getPlayer().toString()) / 2, 20);
     }
 }

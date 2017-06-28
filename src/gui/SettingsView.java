@@ -1,6 +1,6 @@
 package gui;
 
-import util.GameConstants;
+import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +11,13 @@ class SettingsView extends AbstractView {
     private SettingsView() {
         super();
         setLayout(new BorderLayout());
-        setBackground(GameConstants.MENU_BACKGROUND_COLOR);
+        setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(GameConstants.MENU_BACKGROUND_COLOR);
+        buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         JButton backButton = new JButton("Zurück");
-        backButton.setBackground(GameConstants.BUTTON_COLOR);
+        backButton.setBackground(Constants.BUTTON_COLOR);
         //backButton.setPreferredSize(GUIConstants.defaultButtonSize);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 
