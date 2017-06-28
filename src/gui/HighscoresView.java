@@ -12,8 +12,10 @@ import java.util.Date;
 
 class HighscoresView extends AbstractView {
     private static HighscoresView instance;
-    private Border listborder = BorderFactory.createEmptyBorder(10,50,0,50);
-    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,20,0);
+    private JPanel highScoreList;
+    private Border listCollumBorder = BorderFactory.createEmptyBorder(10,50,0,50); //bottom sollte immer 0 sein
+    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,20,0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
+    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(0,0,40,0); //top,left,right sollte immer 0 sein, sie ^
 
     private HighscoresView() {
         super();
@@ -31,8 +33,7 @@ class HighscoresView extends AbstractView {
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.PAGE_END);
 
-        add(initHighScoreList());
-
+        update(); //Initialisiert die eigentliche Liste, damit diese auch immer aktuell ist
     }
 
     private JPanel initHighScoreList(){
@@ -44,35 +45,38 @@ class HighscoresView extends AbstractView {
         //Einzelne Spalten
         JPanel name = new JPanel();
         name.setLayout(new BoxLayout(name, BoxLayout.Y_AXIS));
-        name.setBorder(listborder);
+        name.setBorder(listCollumBorder);
         name.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
         list.add(name);
         JPanel score = new JPanel();
         score.setLayout(new BoxLayout(score, BoxLayout.Y_AXIS));
         score.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        score.setBorder(listborder);
+        score.setBorder(listCollumBorder);
         list.add(score);
         JPanel date = new JPanel();
         date.setLayout(new BoxLayout(date, BoxLayout.Y_AXIS));
         date.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
-        date.setBorder(listborder);
+        date.setBorder(listCollumBorder);
         list.add(date);
 
         //Überschriften der Spalten
         JLabel collumName = new JLabel(GUIConstants.DB_COLLUM_NAME);
         collumName.setAlignmentX(Component.CENTER_ALIGNMENT);
+        collumName.setBorder(listCollumHeaderBorder);
         name.add(collumName);
         JLabel collumScore = new JLabel(GUIConstants.DB_COLLUM_SCORE);
-        score.add(collumScore);
         collumScore.setAlignmentX(Component.CENTER_ALIGNMENT);
+        collumScore.setBorder(listCollumHeaderBorder);
+        score.add(collumScore);
         JLabel collumDate = new JLabel(GUIConstants.DB_COLLUM_DATE);
         collumDate.setAlignmentX(Component.CENTER_ALIGNMENT);
+        collumDate.setBorder(listCollumHeaderBorder);
         date.add(collumDate);
 
         //Füllen der Tabelle
         try {
             ResultSet highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + GUIConstants.DB_TABLE + " ORDER BY " + GUIConstants.DB_COLLUM_SCORE + " DESC LIMIT 10;");
-            for(int i = 0; highScoreSet.next(); i++){
+            while(highScoreSet.next()){
                 JLabel nameCell = new JLabel(highScoreSet.getString(GUIConstants.DB_COLLUM_NAME));
                 nameCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 nameCell.setBorder(listCellBorder);
@@ -98,6 +102,13 @@ class HighscoresView extends AbstractView {
     }
 
     public void update() {
+        if(highScoreList != null){
+            remove(highScoreList);
+        }
+        highScoreList = initHighScoreList();
+        add(highScoreList);
+        revalidate();
+        repaint();
     }
 
     static HighscoresView getInstance() {
