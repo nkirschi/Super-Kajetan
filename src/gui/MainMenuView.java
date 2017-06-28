@@ -1,6 +1,6 @@
 package gui;
 
-import util.GameConstants;
+import util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ class MainMenuView extends AbstractView {
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
-        setBackground(GameConstants.MENU_BACKGROUND_COLOR);
+        setBackground(Constants.MENU_BACKGROUND_COLOR);
         initButtons();
         //TODO Namenseingabefeld
     }
@@ -39,17 +39,24 @@ class MainMenuView extends AbstractView {
         exitButton.addActionListener(a -> MainFrame.getInstance().cleanupAndExit());
 
         //Aussehens-Parameter setzen
-        lobbyButton.setPreferredSize(GameConstants.defaultButtonSize);
-        settingsButton.setPreferredSize(GameConstants.defaultButtonSize);
-        highscoresButton.setPreferredSize(GameConstants.defaultButtonSize);
-        creditsButton.setPreferredSize(GameConstants.defaultButtonSize);
-        exitButton.setPreferredSize(GameConstants.defaultButtonSize);
+        lobbyButton.setPreferredSize(Constants.defaultButtonSize);
+        settingsButton.setPreferredSize(Constants.defaultButtonSize);
+        highscoresButton.setPreferredSize(Constants.defaultButtonSize);
+        creditsButton.setPreferredSize(Constants.defaultButtonSize);
+        exitButton.setPreferredSize(Constants.defaultButtonSize);
 
-        lobbyButton.setBackground(GameConstants.BUTTON_COLOR);
-        settingsButton.setBackground(GameConstants.BUTTON_COLOR);
-        highscoresButton.setBackground(GameConstants.BUTTON_COLOR);
-        creditsButton.setBackground(GameConstants.BUTTON_COLOR);
-        exitButton.setBackground(GameConstants.BUTTON_COLOR);
+        lobbyButton.setBackground(Constants.BUTTON_COLOR);
+        settingsButton.setBackground(Constants.BUTTON_COLOR);
+        highscoresButton.setBackground(Constants.BUTTON_COLOR);
+        creditsButton.setBackground(Constants.BUTTON_COLOR);
+        exitButton.setBackground(Constants.BUTTON_COLOR);
+
+        Font buttonFont = Constants.FONT.deriveFont(18F);
+        lobbyButton.setFont(buttonFont);
+        settingsButton.setFont(buttonFont);
+        highscoresButton.setFont(buttonFont);
+        creditsButton.setFont(buttonFont);
+        exitButton.setFont(buttonFont);
 
         //Buttons hinzufügen
         add(lobbyButton, constraints);

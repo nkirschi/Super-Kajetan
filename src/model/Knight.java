@@ -9,4 +9,8 @@ public class Knight extends Enemy {
     public Knight(Point position) {
         this.position = position;
     }
+
+    public String getImagePath() {
+        return "";
+    }
 }
