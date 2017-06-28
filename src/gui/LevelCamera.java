@@ -1,4 +1,4 @@
-package hui;
+package gui;
 
 import util.ImageUtil;
 
