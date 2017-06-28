@@ -11,6 +11,7 @@ public class Constants {
     public static final Color MENU_BACKGROUND_COLOR = new Color(131, 131, 131);
     public static final Color BUTTON_COLOR = new Color(197, 197, 197);
     public static final Dimension defaultButtonSize = new Dimension(250, 50);
+    public static final Font DEFAULT_FONT = new Font("04b", Font.PLAIN, 10);
 
     // Datenbank
     public static final String DB_TABLE = "Highscores";
@@ -45,6 +46,4 @@ public class Constants {
             e.printStackTrace();
         }
     }
-
-    public static final Font FONT = new Font("04b", Font.PLAIN, 10);
 }
