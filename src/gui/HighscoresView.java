@@ -4,20 +4,18 @@ import util.DBConnection;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 class HighscoresView extends AbstractView {
     private static HighscoresView instance;
     private JPanel highScoreList;
-    private Border listCollumBorder = BorderFactory.createEmptyBorder(10,50,0,50); //bottom sollte immer 0 sein
-    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,20,0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
-    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(0,0,40,0); //top,left,right sollte immer 0 sein, sie ^
+    private Border listCollumBorder = BorderFactory.createEmptyBorder(20,50,0,50); //bottom sollte immer 0 sein
+    private Border listCellBorder = BorderFactory.createEmptyBorder(0,0,40,0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
+    private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(0,0,70,0); //top,left,right sollte immer 0 sein, sie ^
 
     private HighscoresView() {
         super();
