@@ -1,6 +1,7 @@
 package gui;
 
 import util.Constants;
+import util.DBConnection;
 import util.ImageUtil;
 import util.Logger;
 
@@ -9,6 +10,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Klasse des Hauptfensters
@@ -102,6 +104,11 @@ public class MainFrame extends JFrame implements WindowListener {
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
+        try {
+            DBConnection.getInstance().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         System.exit(0);
     }
 
