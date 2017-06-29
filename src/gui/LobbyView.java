@@ -1,6 +1,7 @@
 package gui;
 
 import model.Entity;
+import model.Knight;
 import model.Level;
 import model.Obstacle;
 import model.Player;
@@ -59,6 +60,7 @@ class LobbyView extends AbstractView {
         List<Obstacle> obstacles = new List<>();
         List<Entity> entities = new List<>();
         entities.add(new Player(new Point(getWidth() / 2, Constants.GROUND_LEVEL)));
+        entities.add(new Knight(new Point(1000, Constants.GROUND_LEVEL)));
         Level level1 = new Level("images/backgrounds/background.png", obstacles, entities);
         return level1;
     }
