@@ -16,4 +16,6 @@ public abstract class Obstacle implements Collidable {
     public Rectangle2D.Double getHitbox() {
         return hitbox;
     }
+    
+    public abstract String getImagePath();
 }
