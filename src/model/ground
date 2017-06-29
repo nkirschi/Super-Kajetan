@@ -1,0 +1,29 @@
+package model;
+
+import util.ImageUtil;
+import util.Point;
+
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+
+public abstract class Ground extends Obstacle {
+    protected int groundlevel;
+    protected int levellength;
+    protected Rectangle2D.Double hitbox;
+    
+    public Ground(int GROUND_LEVEL, int levellength) {
+        this.groundlevel = GROUND_LEVEL;
+        this.levellength = levellength;
+        hitbox = new Rectangle2D.Double(levellength / 2, groundlevel, levellength, 0);
+        
+    }
+
+    @Override
+    public Rectangle2D.Double getHitbox() {
+        return hitbox;
+    }
+    
+    public String getImagePath() {
+        return "";
+    }
+}
