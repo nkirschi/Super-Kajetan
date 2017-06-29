@@ -12,9 +12,11 @@ public class AudioPlayer {
     private Random random;
     private boolean playing;
     private boolean paused;
+    private float volume;
 
     public AudioPlayer() {
         random = new Random();
+        volume = 0.0F; // Hier würde dann die Lautstärke aus den Einstellungen geladen werden!
     }
 
     private void play(String filePath) {
@@ -31,6 +33,7 @@ public class AudioPlayer {
 
                 if (line != null) {
                     line.open(outFormat);
+                    FloatControl volume = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
                     line.start();
                     stream(getAudioInputStream(outFormat, in), line);
                     line.drain();
@@ -50,17 +53,23 @@ public class AudioPlayer {
             playing = true;
             while (playing) {
                 String filePath = "sounds/";
-                switch (random.nextInt(4)) {
+                switch (random.nextInt(6)) {
                     case 0:
                         filePath += "gott_mit_uns.ogg";
                         break;
                     case 1:
-                        filePath += "panzerkampf.ogg";
+                        filePath += "no_bullets_fly.ogg";
                         break;
                     case 2:
-                        filePath += "shiroyama.ogg";
+                        filePath += "panzerkampf.ogg";
                         break;
                     case 3:
+                        filePath += "resist_and_bite.ogg";
+                        break;
+                    case 4:
+                        filePath += "shiroyama.ogg";
+                        break;
+                    case 5:
                         filePath += "the_last_stand.ogg";
                         break;
                 }
