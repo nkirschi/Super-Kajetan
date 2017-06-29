@@ -8,16 +8,17 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Level {
-    private String backgroundFilePath;
+    private Player player;
+    private List<Enemy> enemies;
     private List<Obstacle> obstacles;
-    private List<Entity> entities;
+    private String backgroundFilePath;
     private double length; // Länge des Levels in px
 
-    public Level(String backgroundFilePath, List<Obstacle> obstacles, List<Entity> entities) {
-        this.backgroundFilePath = backgroundFilePath;
+    public Level(Player player, List<Enemy> enemies, List<Obstacle> obstacles, String backgroundFilePath) {
+        this.player = player;
+        this.enemies = enemies;
         this.obstacles = obstacles;
-        this.entities = entities;
-        this.length = length;
+        this.backgroundFilePath = backgroundFilePath;
         try {
             BufferedImage image = ImageUtil.getImage(backgroundFilePath);
             length = (740.0 / (double) image.getHeight()) * (double) image.getWidth();
@@ -27,23 +28,23 @@ public class Level {
         }
     }
 
-    public String getBackgroundFilePath() {
-        return backgroundFilePath;
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
     }
 
     public List<Obstacle> getObstacles() {
         return obstacles;
     }
 
-    public List<Entity> getEntities() {
-        return entities;
-    }
-
     public double getLength() {
         return length;
     }
 
-    public Player getPlayer() {
-        return (Player) entities.get(0); // Player ist in Entity-List immer an Index 0
+    public String getBackgroundFilePath() {
+        return backgroundFilePath;
     }
 }

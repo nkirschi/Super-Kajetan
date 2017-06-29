@@ -288,12 +288,23 @@ public class LevelView extends AbstractView implements Runnable {
         g2.drawRect((int) Math.round(playerHitbox.getX() - camera.x), (int) Math.round(playerHitbox.getY()),
                 (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
         g2.setStroke(originalStroke);
-        //g2.setFont(new Font("Consolas", Font.PLAIN, 14));
+
+
+        // 4. Draw Enemies
+        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+        g2.drawRect((int) Math.round(level.getEnemies().get(0).getHitbox().getX() - camera.getX()),
+                (int) Math.round(level.getEnemies().get(0).getHitbox().getY()),
+                (int) Math.round(level.getEnemies().get(0).getHitbox().getWidth()),
+                (int) Math.round(level.getEnemies().get(0).getHitbox().getHeight()));
+        g2.setStroke(originalStroke);
+
+        // 5. Draw Obstacles
+
+        // 6. Draw Onscreen Info
         g2.setColor(Color.BLACK);
         g2.drawString("Sidescroller " + Constants.GAME_VERSION, 20, 20);
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
-
         g2.drawString(level.getPlayer().toString(), getWidth() / 2 - g2.getFontMetrics().stringWidth(level.getPlayer().toString()) / 2, 20);
     }
 }
