@@ -60,6 +60,7 @@ class LobbyView extends AbstractView {
         privale int levellength;//provisorisch
         levellength = 1000000;//provisorisch
         obstacles.add(new ground(Constants.GROUND_LEVEL, levellength)));
+        obstacles.add(new Crate(new Point(3000, Constants.GROUND_LEVEL)));
         return new Level(player, enemies, obstacles, "images/backgrounds/background.png");
     }
 }
