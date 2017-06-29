@@ -4,14 +4,15 @@ import javax.sound.sampled.*;
 import javax.sound.sampled.DataLine.Info;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Scanner;
 
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 import static javax.sound.sampled.AudioSystem.getAudioInputStream;
 
 public class AudioPlayer {
     private Random random;
-    private boolean playing;
-    private boolean paused;
+    private static boolean playing;
+    private static boolean paused;
     private float volume;
 
     public AudioPlayer() {
@@ -19,33 +20,8 @@ public class AudioPlayer {
         volume = 0.0F; // Hier würde dann die Lautstärke aus den Einstellungen geladen werden!
     }
 
-    private void play(String filePath) {
-        try (final AudioInputStream in = getAudioInputStream(ClassLoader.getSystemResourceAsStream(filePath))) {
-
-            final int ch = in.getFormat().getChannels();
-            final float rate = in.getFormat().getSampleRate();
-            final AudioFormat outFormat = new AudioFormat(PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);
-
-            final Info info = new Info(SourceDataLine.class, outFormat);
-
-            try (final SourceDataLine line =
-                         (SourceDataLine) AudioSystem.getLine(info)) {
-
-                if (line != null) {
-                    line.open(outFormat);
-                    FloatControl volume = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-                    line.start();
-                    stream(getAudioInputStream(outFormat, in), line);
-                    line.drain();
-                    line.stop();
-                }
-            }
-
-        } catch (UnsupportedAudioFileException
-                | LineUnavailableException
-                | IOException e) {
-            throw new IllegalStateException(e);
-        }
+    public void playOnce(String filePath) {
+        new Thread(() -> play(filePath)).start();
     }
 
     public void playLoop() {
@@ -78,10 +54,6 @@ public class AudioPlayer {
         }).start();
     }
 
-    public void playOnce(String filePath) {
-        new Thread(() -> play(filePath)).start();
-    }
-
     public void stop() {
         playing = false;
     }
@@ -94,13 +66,42 @@ public class AudioPlayer {
         paused = false;
     }
 
-    private void stream(AudioInputStream in, SourceDataLine line)
-            throws IOException {
-        final byte[] buffer = new byte[65536];
+    private void play(String filePath) {
+        try (final AudioInputStream in = getAudioInputStream(ClassLoader.getSystemResourceAsStream(filePath))) {
+
+            final int ch = in.getFormat().getChannels();
+            final float rate = in.getFormat().getSampleRate();
+            final AudioFormat outFormat = new AudioFormat(PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);
+
+            final Info info = new Info(SourceDataLine.class, outFormat);
+
+            try (final SourceDataLine line =
+                         (SourceDataLine) AudioSystem.getLine(info)) {
+
+                if (line != null) {
+                    line.open(outFormat);
+                    FloatControl volume = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+                    line.start();
+                    stream(getAudioInputStream(outFormat, in), line);
+                    line.drain();
+                    line.stop();
+                }
+            }
+
+        } catch (UnsupportedAudioFileException
+                | LineUnavailableException
+                | IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private void stream(AudioInputStream in, SourceDataLine line) throws IOException {
+        final byte[] buffer = new byte[4096]; // original 65536
         for (int n = 0; n != -1; n = in.read(buffer, 0, buffer.length)) {
             if (!playing)
                 break;
             while (paused) {
+                Thread.yield();
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
