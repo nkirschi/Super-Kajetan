@@ -86,25 +86,26 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void run() {
-        audioPlayer.playLoop();
         running = true;
+        audioPlayer.playLoop();
+
         int updateCount = 0;
         int frameCount = 0;
 
-        final long TIME_PER_UPDATE = 1000000000 / Constants.UPDATE_CLOCK;
-        long lastTime = System.nanoTime();
-        long secondTime = 0;
-        long lag = 0;
+        final double TIME_PER_UPDATE = 1000000000 / Constants.UPDATE_CLOCK;
+        double lastTime = System.nanoTime();
+        double secondTime = 0;
+        double lag = 0;
 
         while (running) {
-            while (!paused) {
-                long currentTime = System.nanoTime();
-                long elapsedTime = currentTime - lastTime;
+            if (!paused) {
+                double currentTime = System.nanoTime();
+                double elapsedTime = currentTime - lastTime;
                 lastTime = currentTime;
                 lag += elapsedTime;
                 secondTime += elapsedTime;
+
                 if (secondTime > 1000000000) {
-                    //System.out.println(updateCount + "\u2009Hz, " + frameCount + "\u2009fps");
                     hz = updateCount;
                     fps = frameCount;
                     secondTime = 0;
@@ -121,8 +122,8 @@ public class LevelView extends AbstractView implements Runnable {
                 repaint();
                 frameCount++;
 
-                /* Theoretisch VSync
-                while (System.nanoTime() - currentTime < 16016667) {
+                /* Theoretisch VSync - is aber bissl laggy :(
+                while (System.nanoTime() - currentTime < 1000000000 / 60) {
                     Thread.yield();
                     try {
                         Thread.sleep(1);
@@ -131,9 +132,8 @@ public class LevelView extends AbstractView implements Runnable {
                     }
                 }
                 */
-            }
-
-            lastTime = System.nanoTime();
+            } else
+                lastTime = System.nanoTime();
         }
     }
 
@@ -141,15 +141,13 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 1. Move Player + Gravitation + check Collision
         // Tastaturcheck, altobelli!
-
         level.getPlayer().setWalking(false);
 
         for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
             switch (entry.getKey()) { // TODO alle Bewegungen implementieren
                 case Constants.KEY_LEFT:
                     if (entry.getValue()) {
-                        //if (!level.getPlayer().isJumping())
-                            level.getPlayer().setWalking(true);//walking = true;
+                        level.getPlayer().setWalking(true);
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_MOVE_AMOUNT) {
                             moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
@@ -164,8 +162,7 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
                 case Constants.KEY_RIGHT:
                     if (entry.getValue()) {
-                        //if (!level.getPlayer().isJumping())
-                            level.getPlayer().setWalking(true);//walking = true;
+                        level.getPlayer().setWalking(true);
                         double moveAmount = 0;
                         if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_MOVE_AMOUNT) {
                             moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
@@ -181,7 +178,7 @@ public class LevelView extends AbstractView implements Runnable {
                 case Constants.KEY_JUMP:
                     if (entry.getValue()) {
                         level.getPlayer().setWalking(false);
-                        level.getPlayer().setJumping(true);//jumping = true;
+                        level.getPlayer().setJumping(true);
                         if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0 && jumpAmount == Constants.PLAYER_JUMP_AMOUNT)
                             level.getPlayer().move(0, -jumpAmount);
                         else {
@@ -193,7 +190,7 @@ public class LevelView extends AbstractView implements Runnable {
                                     level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                             } else {
                                 jumpAmount = Constants.PLAYER_JUMP_AMOUNT;
-                                level.getPlayer().setJumping(false);//jumping = false;
+                                level.getPlayer().setJumping(false);
                             }
                         }
                     } else {
@@ -205,7 +202,7 @@ public class LevelView extends AbstractView implements Runnable {
                             } else
                                 level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                         } else {
-                            level.getPlayer().setJumping(false);//jumping = false;
+                            level.getPlayer().setJumping(false);
                         }
                     }
                     break;
