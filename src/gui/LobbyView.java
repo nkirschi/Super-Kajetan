@@ -57,9 +57,10 @@ class LobbyView extends AbstractView {
         List<Enemy> enemies = new List<>();
         enemies.add(new Knight(new Point(1500, Constants.GROUND_LEVEL)));
         List<Obstacle> obstacles = new List<>();
-        privale int levellength;//provisorisch
-        levellength = 1000000;//provisorisch
-        obstacles.add(new ground(Constants.GROUND_LEVEL, levellength)));
-        return new Level(player, enemies, obstacles, "images/backgrounds/background.png");
+        int imageWidth = 4096, imageHeight = 480;
+        double length = 740.0 / imageHeight * imageWidth;
+        System.out.println(length);
+        obstacles.add(new Ground(length));
+        return new Level(player, enemies, obstacles, "images/backgrounds/background.png", length);
     }
 }
