@@ -17,7 +17,7 @@ import java.util.Date;
 class HighscoresView extends AbstractView {
     private static HighscoresView instance;
     private JPanel highScoreList;
-    private Border listCollumBorder = BorderFactory.createEmptyBorder(20, 50, 0, 50); //bottom sollte immer 0 sein
+    private Border listCollumBorder = BorderFactory.createEmptyBorder(10, 50, 0, 50); //bottom sollte immer 0 sein
     private Border listCellBorder = BorderFactory.createEmptyBorder(20, 0, 20, 0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
     private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(35, 0, 35, 0); //top,left,right sollte immer 0 sein, sie ^
 
