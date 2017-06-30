@@ -43,6 +43,10 @@ public class Level {
         return obstacles;
     }
 
+    public List<Ground> getGrounds() {
+        return grounds;
+    }
+
     public double getLength() {
         return length;
     }

@@ -2,10 +2,9 @@ package gui;
 
 import model.Camera;
 import model.Direction;
+import model.Ground;
 import model.Level;
-import util.Constants;
-import util.AudioPlayer;
-import util.ImageUtil;
+import util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -176,9 +175,9 @@ public class LevelView extends AbstractView implements Runnable {
                         moveAmount1 = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
                         level.getPlayer().setWalking(false);
                     }
-                    camera.scroll(moveAmount1);
                     level.getPlayer().move(moveAmount1, 0);
                     level.getPlayer().setViewingDirection(Direction.RIGHT);
+                    camera.scroll(moveAmount1);
                     break;
                 case Constants.KEY_JUMP:
                     if (!jumpingPossible || verticalMoveAmount >= 0)
@@ -256,7 +255,14 @@ public class LevelView extends AbstractView implements Runnable {
             e.printStackTrace();
         }
 
-        // 2. Draw Baseline
+        // 2. Draw Grounds
+
+        for (Object object : level.getGrounds().toArray()) {
+            Ground ground = (Ground) object;
+            Rectangle2D.Double rectangle = new Rectangle2D.Double(ground.getHitbox().getX() - camera.getX(),
+                    ground.getHitbox().getY(), ground.getHitbox().getWidth(), ground.getHitbox().getHeight());
+            g2.draw(rectangle);
+        }
 
         // 3. Draw Player
 

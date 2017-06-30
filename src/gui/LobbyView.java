@@ -57,6 +57,8 @@ class LobbyView extends AbstractView {
         List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
+        grounds.add(new Ground(600, 1200, 20));
+        grounds.add(new Ground(1400, 400, 60));
         return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background.png");
     }
 }
