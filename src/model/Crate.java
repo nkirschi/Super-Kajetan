@@ -6,7 +6,7 @@ import util.Point;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 
-public abstract class Crate extends Obstacle {
+public class Crate extends Obstacle {
     private final double CRATE_WIDTH = 100;
     private final double CRATE_HEIGHT = 100;
     protected Rectangle2D.Double hitbox;
