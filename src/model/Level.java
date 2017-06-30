@@ -11,23 +11,24 @@ public class Level {
     private Player player;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
+    private List<Ground> grounds; // Liste von Bodenelementen
     private String backgroundFilePath;
     private double length; // Länge des Levels in px
 
-    public Level(Player player, List<Enemy> enemies, List<Obstacle> obstacles, String backgroundFilePath, double length) {
+    public Level(Player player, List<Enemy> enemies, List<Obstacle> obstacles, List<Ground> grounds,
+                 String backgroundFilePath) {
         this.player = player;
         this.enemies = enemies;
         this.obstacles = obstacles;
+        this.grounds = grounds;
         this.backgroundFilePath = backgroundFilePath;
-        this.length = length;
-        /*
         try {
             BufferedImage image = ImageUtil.getImage(backgroundFilePath);
             length = (740.0 / (double) image.getHeight()) * (double) image.getWidth();
             System.out.println(length);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public Player getPlayer() {

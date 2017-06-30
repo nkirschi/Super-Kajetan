@@ -14,9 +14,9 @@ public class Crate extends Obstacle {
     public Crate(Point position) {
         this.position = position;
         hitbox = new Rectangle2D.Double(position.getX() - CRATE_WIDTH / 2, position.getY() - CRATE_HEIGHT, CRATE_WIDTH, CRATE_HEIGHT);
-        
     }
-    
+
+    @Override
     public String getImagePath() {
         return "";
     }

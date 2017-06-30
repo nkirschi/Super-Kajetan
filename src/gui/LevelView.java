@@ -214,7 +214,7 @@ public class LevelView extends AbstractView implements Runnable {
                     }
                     break;
                 case Constants.KEY_RUN:
-                    if (entry.getValue() && !level.getPlayer().isJumping()) {
+                    if (entry.getValue() && !level.getPlayer().isJumping() && !level.getPlayer().isCrouching()) {
                         level.getPlayer().setRunning(true);
                         int signum = level.getPlayer().getViewingDirection().equals(Direction.RIGHT) ? 1 : -1;
                         camera.scroll(signum * Constants.PLAYER_MOVE_AMOUNT);
@@ -288,22 +288,8 @@ public class LevelView extends AbstractView implements Runnable {
 
 
         // 4. Draw Enemies
-        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
-        g2.drawRect((int) Math.round(level.getEnemies().get(0).getHitbox().getX() - camera.getX()),
-                (int) Math.round(level.getEnemies().get(0).getHitbox().getY()),
-                (int) Math.round(level.getEnemies().get(0).getHitbox().getWidth()),
-                (int) Math.round(level.getEnemies().get(0).getHitbox().getHeight()));
-        g2.setStroke(originalStroke);
 
         // 5. Draw Obstacles
-        /*
-        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
-        g2.drawRect((int) Math.round(level.getEnemies().get(0).getHitbox().getX() - camera.getX()),
-                (int) Math.round(level.getObstacles().get(0).getHitbox().getY()),
-                (int) Math.round(level.getObstacles().get(0).getHitbox().getWidth()),
-                (int) Math.round(level.getObstacles().get(0).getHitbox().getHeight()));
-        g2.setStroke(originalStroke);
-        */
 
         // 6. Draw Onscreen Info
         g2.setColor(Color.BLACK);

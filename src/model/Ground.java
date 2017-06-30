@@ -1,20 +1,27 @@
 package model;
 
-import util.Constants;
+import util.Point;
 
 import java.awt.geom.Rectangle2D;
 
-public class Ground extends Obstacle {
-    private double length;
+/**
+ * Modellklasse für Bodenelemente
+ * Denkbar wären z.B. Grasboden, Steinboden, Wasserboden (Tod bei Berührung)
+ */
+public class Ground implements Collidable {
+    private Point position;
     private Rectangle2D.Double hitbox;
 
-    public Ground(double length) {
-        this.length = length;
-        hitbox = new Rectangle2D.Double(0, Constants.GROUND_LEVEL, length, 0);
+    public Ground(Point position, double width, double height) {
+        hitbox = new Rectangle2D.Double(position.getX() - width / 2, position.getY() - height, width, height);
+    }
+
+    public String getImagePath() {
+        return "";
     }
 
     @Override
-    public String getImagePath() {
-        return "";
+    public Rectangle2D.Double getHitbox() {
+        return hitbox;
     }
 }
