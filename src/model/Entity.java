@@ -15,6 +15,7 @@ public abstract class Entity implements Collidable {
     boolean jumping;
     boolean crouching;
 
+
     protected Direction viewingDirection;
 
     public Point getPosition() {

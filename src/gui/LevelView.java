@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import model.Camera;
 import model.Direction;
 import model.Level;
@@ -17,18 +16,17 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Camera camera; // Die aktuelle "Kamera"
-    private HashMap<Integer, Boolean> keyStates;
+    private HashSet<Integer> pressedKeys;
 
     private AudioPlayer audioPlayer;
-    private JButton backButton;
 
-    private double jumpAmount = Constants.PLAYER_JUMP_AMOUNT;
+    private double verticalMoveAmount = 0;
+    private boolean jumpingPossible = true;
 
     private boolean running;
     private boolean paused;
@@ -37,14 +35,15 @@ public class LevelView extends AbstractView implements Runnable {
     LevelView(Level level) {
         this.level = level;
         camera = new Camera(0, 0, getWidth(), getHeight());
-        keyStates = new HashMap<>();
+        //keyStates = new HashMap<>();
+        pressedKeys = new HashSet<>();
 
         audioPlayer = new AudioPlayer();
 
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        backButton = new JButton("Zurück");
+        JButton backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
@@ -60,11 +59,13 @@ public class LevelView extends AbstractView implements Runnable {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                keyStates.put(keyEvent.getKeyCode(), true);
+                //keyStates.put(keyEvent.getKeyCode(), true);
+                pressedKeys.add(keyEvent.getKeyCode());
             }
 
             public void keyReleased(KeyEvent keyEvent) {
-                keyStates.put(keyEvent.getKeyCode(), false);
+                //keyStates.put(keyEvent.getKeyCode(), false);
+                pressedKeys.remove(keyEvent.getKeyCode());
             }
         });
 
@@ -142,88 +143,86 @@ public class LevelView extends AbstractView implements Runnable {
         // 1. Move Player + Gravitation + check Collision
         // Tastaturcheck, altobelli!
         level.getPlayer().setWalking(false);
+        level.getPlayer().setRunning(false);
+        level.getPlayer().setCrouching(false);
 
-        for (Map.Entry<Integer, Boolean> entry : keyStates.entrySet()) {
-            switch (entry.getKey()) { // TODO alle Bewegungen implementieren
+        for (int keyCode : pressedKeys) {
+            switch (keyCode) {
                 case Constants.KEY_LEFT:
-                    if (entry.getValue()) {
-                        level.getPlayer().setWalking(true);
-                        double moveAmount = 0;
-                        if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_MOVE_AMOUNT) {
-                            moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
-                        } else {
-                            moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
-                            level.getPlayer().setWalking(false);
-                        }
-                        camera.scroll(-moveAmount);
-                        level.getPlayer().move(-moveAmount, 0);
-                        level.getPlayer().setViewingDirection(Direction.LEFT);
+                    if (pressedKeys.contains(Constants.KEY_RIGHT))
+                        break;
+
+                    level.getPlayer().setWalking(true);
+                    double moveAmount = 0;
+                    if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_MOVE_AMOUNT) {
+                        moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
+                    } else {
+                        moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
+                        level.getPlayer().setWalking(false);
                     }
+                    camera.scroll(-moveAmount);
+                    level.getPlayer().move(-moveAmount, 0);
+                    level.getPlayer().setViewingDirection(Direction.LEFT);
                     break;
                 case Constants.KEY_RIGHT:
-                    if (entry.getValue()) {
-                        level.getPlayer().setWalking(true);
-                        double moveAmount = 0;
-                        if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_MOVE_AMOUNT) {
-                            moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
-                        } else {
-                            moveAmount = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
-                            level.getPlayer().setWalking(false);
-                        }
-                        camera.scroll(moveAmount);
-                        level.getPlayer().move(moveAmount, 0);
-                        level.getPlayer().setViewingDirection(Direction.RIGHT);
+                    if (pressedKeys.contains(Constants.KEY_LEFT))
+                        break;
+
+                    level.getPlayer().setWalking(true);
+                    double moveAmount1 = 0;
+                    if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_MOVE_AMOUNT) {
+                        moveAmount1 = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
+                    } else {
+                        moveAmount1 = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
+                        level.getPlayer().setWalking(false);
                     }
+                    camera.scroll(moveAmount1);
+                    level.getPlayer().move(moveAmount1, 0);
+                    level.getPlayer().setViewingDirection(Direction.RIGHT);
                     break;
                 case Constants.KEY_JUMP:
-                    if (entry.getValue()) {
-                        level.getPlayer().setWalking(false);
-                        level.getPlayer().setJumping(true);
-                        if (level.getPlayer().getPosition().getY() > 400 && jumpAmount > 0 && jumpAmount == Constants.PLAYER_JUMP_AMOUNT)
-                            level.getPlayer().move(0, -jumpAmount);
-                        else {
-                            if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
-                                if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
-                                    jumpAmount -= 1;
-                                    level.getPlayer().move(0, -jumpAmount);
-                                } else
-                                    level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
-                            } else {
-                                jumpAmount = Constants.PLAYER_JUMP_AMOUNT;
-                                level.getPlayer().setJumping(false);
-                            }
-                        }
-                    } else {
-                        if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
-                            level.getPlayer().setWalking(false);
-                            if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= Math.abs(jumpAmount)) {
-                                jumpAmount -= 1;
-                                level.getPlayer().move(0, -jumpAmount);
-                            } else
-                                level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
-                        } else {
-                            level.getPlayer().setJumping(false);
-                        }
+                    if (!jumpingPossible)
+                        break;
+                    if (level.getPlayer().getPosition().getY() < 400) {
+                        jumpingPossible = false;
+                        break;
                     }
-                    break;
-                case Constants.KEY_CROUCH:
-                    if (entry.getValue()) {
-                        level.getPlayer().setCrouching(true);
-                    } else {
-                        level.getPlayer().setCrouching(false);
-                    }
+                    verticalMoveAmount = -Constants.PLAYER_JUMP_AMOUNT;
+                    level.getPlayer().setWalking(false);
+                    level.getPlayer().setRunning(false);
+                    level.getPlayer().setJumping(true);
+                    level.getPlayer().move(0, verticalMoveAmount);
                     break;
                 case Constants.KEY_RUN:
-                    if (entry.getValue() && !level.getPlayer().isJumping() && !level.getPlayer().isCrouching()) {
+                    if ((pressedKeys.contains(Constants.KEY_LEFT) || pressedKeys.contains(Constants.KEY_RIGHT))
+                            && !level.getPlayer().isJumping()) {
                         level.getPlayer().setRunning(true);
                         int signum = level.getPlayer().getViewingDirection().equals(Direction.RIGHT) ? 1 : -1;
                         camera.scroll(signum * Constants.PLAYER_MOVE_AMOUNT);
                         level.getPlayer().move(signum * Constants.PLAYER_MOVE_AMOUNT, 0);
-                    } else {
-                        level.getPlayer().setRunning(false);
                     }
+                    break;
+                case Constants.KEY_CROUCH:
+                    level.getPlayer().setCrouching(true);
+                    break;
             }
+        }
 
+        if (!pressedKeys.contains(Constants.KEY_JUMP) && level.getPlayer().isJumping())
+            jumpingPossible = false;
+
+        if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
+            if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= verticalMoveAmount) {
+                level.getPlayer().setWalking(false);
+                level.getPlayer().setJumping(true);
+                level.getPlayer().move(0, verticalMoveAmount);
+                verticalMoveAmount += Constants.GRAVITATIONAL_ACCELERATION;
+            } else {
+                level.getPlayer().setJumping(false);
+                level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
+                verticalMoveAmount = 0;
+                jumpingPossible = true;
+            }
         }
 
         // Gravitationschecks
