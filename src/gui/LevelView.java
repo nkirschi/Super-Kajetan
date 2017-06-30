@@ -25,7 +25,7 @@ public class LevelView extends AbstractView implements Runnable {
 
     private AudioPlayer audioPlayer;
 
-    private double verticalMoveAmount = 0;
+    private double verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
     private boolean jumpingPossible = true;
 
     private boolean running;
@@ -154,8 +154,8 @@ public class LevelView extends AbstractView implements Runnable {
 
                     level.getPlayer().setWalking(true);
                     double moveAmount = 0;
-                    if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_MOVE_AMOUNT) {
-                        moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
+                    if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT) {
+                        moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT : Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
                     } else {
                         moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
                         level.getPlayer().setWalking(false);
@@ -170,8 +170,8 @@ public class LevelView extends AbstractView implements Runnable {
 
                     level.getPlayer().setWalking(true);
                     double moveAmount1 = 0;
-                    if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_MOVE_AMOUNT) {
-                        moveAmount1 = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_MOVE_AMOUNT : Constants.PLAYER_MOVE_AMOUNT;
+                    if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT) {
+                        moveAmount1 = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT : Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
                     } else {
                         moveAmount1 = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
                         level.getPlayer().setWalking(false);
@@ -181,13 +181,8 @@ public class LevelView extends AbstractView implements Runnable {
                     level.getPlayer().setViewingDirection(Direction.RIGHT);
                     break;
                 case Constants.KEY_JUMP:
-                    if (!jumpingPossible)
+                    if (!jumpingPossible || verticalMoveAmount >= 0)
                         break;
-                    if (level.getPlayer().getPosition().getY() < 400) {
-                        jumpingPossible = false;
-                        break;
-                    }
-                    verticalMoveAmount = -Constants.PLAYER_JUMP_AMOUNT;
                     level.getPlayer().setWalking(false);
                     level.getPlayer().setRunning(false);
                     level.getPlayer().setJumping(true);
@@ -198,8 +193,8 @@ public class LevelView extends AbstractView implements Runnable {
                             && !level.getPlayer().isJumping()) {
                         level.getPlayer().setRunning(true);
                         int signum = level.getPlayer().getViewingDirection().equals(Direction.RIGHT) ? 1 : -1;
-                        camera.scroll(signum * Constants.PLAYER_MOVE_AMOUNT);
-                        level.getPlayer().move(signum * Constants.PLAYER_MOVE_AMOUNT, 0);
+                        camera.scroll(signum * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT);
+                        level.getPlayer().move(signum * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT, 0);
                     }
                     break;
                 case Constants.KEY_CROUCH:
@@ -220,7 +215,7 @@ public class LevelView extends AbstractView implements Runnable {
             } else {
                 level.getPlayer().setJumping(false);
                 level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
-                verticalMoveAmount = 0;
+                verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
                 jumpingPossible = true;
             }
         }

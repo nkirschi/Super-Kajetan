@@ -22,8 +22,8 @@ public class Constants {
     // Spielmechanik
     public static final int UPDATE_CLOCK = 50;
     public static final int GROUND_LEVEL = 720;
-    public static final double PLAYER_MOVE_AMOUNT = 2.5;
-    public static final double PLAYER_JUMP_AMOUNT = 6;
+    public static final double PLAYER_HORIZONTAL_MOVE_AMOUNT = 2.5;
+    public static final double PLAYER_VERTICAL_MOVE_AMOUNT = 16;
     public static final double GRAVITATIONAL_ACCELERATION = 0.75;
 
     // Tastatur
