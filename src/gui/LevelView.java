@@ -202,6 +202,7 @@ public class LevelView extends AbstractView implements Runnable {
             }
         }
 
+        // Gravitation
         if (!pressedKeys.contains(Constants.KEY_JUMP) && level.getPlayer().isJumping())
             jumpingPossible = false;
 
@@ -218,8 +219,6 @@ public class LevelView extends AbstractView implements Runnable {
                 jumpingPossible = true;
             }
         }
-
-        // Gravitationschecks
         // Kollisionschecks
 
         // 2. Move Enemies + Gravitation + check Collision
