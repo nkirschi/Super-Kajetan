@@ -66,18 +66,23 @@ public class List<C> implements Iterable<C> {
     @Override
     public Iterator<C> iterator() {
         return new Iterator<C>() {
-            ListElement<C> currentElement = first;
+            ListElement<C> current = null;
 
             @Override
             public boolean hasNext() {
-                return currentElement.size() > 0;
+                if (current == null)
+                    return first instanceof ListNode;
+                return current.getNext() instanceof ListNode;
             }
 
             @Override
             public C next() {
-                C content = currentElement.getContent();
-                currentElement = currentElement.getNext();
-                return content;
+                if (current == null) {
+                    current = first;
+                    return current.getContent();
+                }
+                current = current.getNext();
+                return current.getContent();
             }
         };
     }
@@ -97,6 +102,7 @@ public class List<C> implements Iterable<C> {
         list.add(new Point(0, 0));
         list.add(new Point(1, 1));
         list.add(new Point(2, 2));
+        list.add(new Point(3, 3));
         System.out.println(list.get(2));
         System.out.println(list.size());
         for (Point point : list) {
