@@ -3,7 +3,7 @@ package gui;
 import model.*;
 import util.Constants;
 import util.Point;
-import util.list.List;
+import util.List;
 
 import javax.swing.*;
 import java.awt.*;

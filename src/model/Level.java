@@ -1,8 +1,7 @@
 package model;
 
-import gui.MainFrame;
 import util.ImageUtil;
-import util.list.List;
+import util.List;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
