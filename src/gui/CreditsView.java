@@ -53,9 +53,9 @@ class CreditsView extends AbstractView {
         p6.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
 
-        JLabel l1 = new JLabel("Nicholoas Kirschstein");
+        JLabel l1 = new JLabel("Nikolas Kirschstein");
         JLabel l2 = new JLabel("Max Strohmeier");
-        JLabel l3 = new JLabel("Benedikt Mödel");
+        JLabel l3 = new JLabel("Benedikt Mödl");
         JLabel l4 = new JLabel("Alexander Hammerl");
         JLabel l5 = new JLabel("Fabian Weinelt");
         JLabel l6 = new JLabel("Tim Mostert");
