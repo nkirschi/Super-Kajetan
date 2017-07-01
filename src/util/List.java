@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -20,7 +21,7 @@ public class List<C> implements Iterable<C> {
     /**
      * Rekursives Hinzufügen eines Objektes in die Liste
      *
-     * @param content
+     * @param content Hinzuzufügendes Inhaltsobjekt
      */
     public void add(C content) {
         first = first.add(content);
@@ -29,7 +30,7 @@ public class List<C> implements Iterable<C> {
     /**
      * Rekursives Entfernen eines Objektes aus der Liste
      *
-     * @param content
+     * @param content Zu entfernendes Inhaltsobjekt
      */
     public void remove(C content) {
         first = first.remove(content);
@@ -40,15 +41,6 @@ public class List<C> implements Iterable<C> {
      */
     public void clear() {
         first = new ListTail<>();
-    }
-
-    /**
-     * Ermitteln der Größe der Liste
-     *
-     * @return Anzahl an gespeicherten Objekten
-     */
-    public int size() {
-        return first.size();
     }
 
     /**
@@ -63,6 +55,34 @@ public class List<C> implements Iterable<C> {
         return first.get(i);
     }
 
+    /**
+     * Abprüfen der Existenz eines bestimmten Objekts in der Liste
+     *
+     * @param content Auf Enthalten zu prüfendes Inhzaltsobjekt
+     * @return Ergebnis der Überprüfung als Wahrheitswert
+     */
+    public boolean contains(C content) {
+        for (C c : this) {
+            if (c.equals(content))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Ermitteln der Größe der Liste
+     *
+     * @return Anzahl an gespeicherten Objekten
+     */
+    public int size() {
+        return first.size();
+    }
+
+    /**
+     * Implementierte Methode der Iterable-Schnittstelle
+     *
+     * @return Iterator-Objekt für die erweiterte for-Schleife
+     */
     @Override
     public Iterator<C> iterator() {
         return new Iterator<C>() {
@@ -94,7 +114,8 @@ public class List<C> implements Iterable<C> {
      */
     public Object[] toArray() {
         Object[] contents = new Object[size()];
-        return first.toArray(contents, 0);
+        first.toArray(contents, 0);
+        return contents;
     }
 
     public static void main(String[] args) throws Exception {
@@ -108,10 +129,13 @@ public class List<C> implements Iterable<C> {
         for (Point point : list) {
             System.out.println(point);
         }
+        System.out.println(list.contains(new Point(1, 1)));
         list.remove(new Point(1, 1));
+        System.out.println(Arrays.toString(list.toArray()));
+        System.out.println(list.contains(new Point(1, 1)));
         System.out.println(list.size());
         list.clear();
-        Thread.sleep(1000);
+        Thread.sleep(100);
         System.out.println(list.get(0)); // Das gibt eine saftige Ausnahme
     }
 }
@@ -132,7 +156,7 @@ abstract class ListElement<C> {
 
     abstract ListElement<C> getNext();
 
-    abstract Object[] toArray(Object[] contents, int i);
+    abstract void toArray(Object[] contents, int i);
 }
 
 /**
@@ -147,11 +171,13 @@ class ListNode<C> extends ListElement<C> {
         this.next = next;
     }
 
+    @Override
     ListElement<C> add(C content) {
         next = next.add(content);
         return this;
     }
 
+    @Override
     ListElement<C> remove(C content) {
         if (this.content.equals(content))
             return next;
@@ -159,27 +185,32 @@ class ListNode<C> extends ListElement<C> {
         return this;
     }
 
+    @Override
     C get(int i) {
         if (i == 0)
             return content;
         return next.get(i - 1);
     }
 
+    @Override
     int size() {
         return next.size() + 1;
     }
 
+    @Override
     C getContent() {
         return content;
     }
 
+    @Override
     ListElement<C> getNext() {
         return next;
     }
 
-    Object[] toArray(Object[] contents, int i) {
+    @Override
+    void toArray(Object[] contents, int i) {
         contents[i] = content;
-        return next.toArray(contents, i + 1);
+        next.toArray(contents, i + 1);
     }
 }
 
@@ -187,32 +218,38 @@ class ListNode<C> extends ListElement<C> {
  * Konkreter Listenabschluss ("Leaf")
  */
 class ListTail<C> extends ListElement<C> {
+    @Override
     ListElement<C> add(C content) {
-        ListNode<C> node = new ListNode<>(content, this);
-        return node;
+        return new ListNode<>(content, this);
     }
 
+    @Override
     ListElement<C> remove(C content) {
         return this;
     }
 
+    @Override
     C get(int i) {
         throw new NoSuchElementException("No content at [" + i + "] in list!");
     }
 
+    @Override
     int size() {
         return 0;
     }
 
+    @Override
     C getContent() {
         return null;
     }
 
+    @Override
     ListElement<C> getNext() {
         return this;
     }
 
-    Object[] toArray(Object[] contents, int i) {
-        return contents;
+    @Override
+    void toArray(Object[] contents, int i) {
+
     }
 }

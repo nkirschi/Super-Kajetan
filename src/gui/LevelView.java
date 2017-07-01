@@ -132,8 +132,10 @@ public class LevelView extends AbstractView implements Runnable {
                     }
                 }
                 */
-            } else
+            } else {
                 lastTime = System.nanoTime();
+                pressedKeys.clear();
+            }
         }
     }
 
