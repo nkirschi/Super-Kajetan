@@ -4,6 +4,7 @@ import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import util.Constants;
 import util.DBConnection;
 import util.ImageUtil;
+import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;

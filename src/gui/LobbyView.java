@@ -2,6 +2,7 @@ package gui;
 
 import model.*;
 import util.Constants;
+import util.Logger;
 import util.Point;
 import util.List;
 

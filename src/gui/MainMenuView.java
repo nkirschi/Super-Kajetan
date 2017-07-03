@@ -1,6 +1,7 @@
 package gui;
 
 import util.Constants;
+import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
