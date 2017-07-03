@@ -122,7 +122,7 @@ class HighscoresView extends AbstractView {
                 scorePanel.add(scoreCell);
 
                 Date date = highScoreSet.getDate(Constants.DB_COLLUM_DATE);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                 String dateString = dateFormat.format(date);
 
                 JLabel dateCell = new JLabel(dateString);
