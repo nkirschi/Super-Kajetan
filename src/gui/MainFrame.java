@@ -106,7 +106,7 @@ public class MainFrame extends JFrame implements WindowListener {
         Logger.close();
         try {
             DBConnection.getInstance().close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Logger.log(e, Logger.WARNING);
         }

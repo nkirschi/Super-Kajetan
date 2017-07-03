@@ -194,17 +194,37 @@ public class LevelView extends AbstractView implements Runnable {
             }
         }
 
+        if (level.getPlayer().getPosition().getX() < getWidth() / 2) {
+            double d = getWidth() / 2 - level.getPlayer().getPosition().getX();
+            level.getPlayer().move(d, 0);
+            camera.scroll(d);
+            level.getPlayer().setWalking(false);
+            level.getPlayer().setRunning(false);
+        } else if (level.getPlayer().getPosition().getX() > level.getLength() - getWidth() / 2) {
+            double d = level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
+            level.getPlayer().move(d, 0);
+            camera.scroll(Math.floor(d));
+            level.getPlayer().setWalking(false);
+            level.getPlayer().setRunning(false);
+        }
+
         if (xMovement < 0)
             level.getPlayer().setViewingDirection(Direction.LEFT);
         else if (xMovement > 0)
             level.getPlayer().setViewingDirection(Direction.RIGHT);
+        else
+            level.getPlayer().setRunning(false);
 
         if (level.getPlayer().isRunning() || level.getPlayer().isJumping()) {
             staminaBar.setValue(staminaBar.getValue() - 5);
             xMovement *= 2;
-        } else {
-            staminaBar.setValue(staminaBar.getValue() + 3);
         }
+
+        if (level.getPlayer().isCrouching())
+            staminaBar.setValue(staminaBar.getValue() - 3);
+
+        if (!level.getPlayer().isRunning() && !level.getPlayer().isJumping() && !level.getPlayer().isCrouching())
+            staminaBar.setValue(staminaBar.getValue() + 3);
 
         camera.scroll(xMovement);
         level.getPlayer().move(xMovement, yMovement);
@@ -219,16 +239,6 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (collidable != null) {
             System.out.println("Collision");
-        }
-
-        if (level.getPlayer().getPosition().getX() < getWidth() / 2) {
-            double d = getWidth() / 2 - level.getPlayer().getPosition().getX();
-            level.getPlayer().move(d, 0);
-            camera.scroll(d);
-        } else if (level.getPlayer().getPosition().getX() > level.getLength() - getWidth() / 2) {
-            double d = level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
-            level.getPlayer().move(d, 0);
-            camera.scroll(Math.floor(d));
         }
 
         // Gravitation

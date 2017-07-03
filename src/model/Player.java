@@ -32,7 +32,7 @@ public class Player extends Entity {
 
     @Override
     public void setCrouching(boolean crouching) {
-        double crouchingDelta = 50;
+        double crouchingDelta = 53;
         if (crouching && !this.crouching)
             hitbox.setRect(hitbox.x, hitbox.y + crouchingDelta, hitbox.width, hitbox.height - crouchingDelta);
         else if (!crouching && this.crouching)
@@ -42,6 +42,15 @@ public class Player extends Entity {
     }
 
     public String getImagePath() {
+        if (crouching) {
+            if (walkCount < 25)
+                return Constants.PLAYER_CROUCH_1_IMAGE_PATH;
+            else {
+                if (walkCount >= 50)
+                    walkCount = 0;
+                return Constants.PLAYER_CROUCH_2_IMAGE_PATH;
+            }
+        }
         if (jumping)
             return Constants.PLAYER_JUMP_IMAGE_PATH;
         if (walking) {
