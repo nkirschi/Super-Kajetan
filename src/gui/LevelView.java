@@ -254,6 +254,7 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
 
         // 2. Draw Grounds
@@ -278,6 +279,7 @@ public class LevelView extends AbstractView implements Runnable {
                 g2.drawImage(image, playerX + image.getWidth(), playerY, -image.getWidth(), image.getHeight(), this);
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
 
         Stroke originalStroke = g2.getStroke();
