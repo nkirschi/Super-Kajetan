@@ -84,7 +84,7 @@ class MainMenuView extends AbstractView {
         add(buttonPanel, BorderLayout.CENTER);
     }
 
-    private void initToolPanel(){
+    private void initToolPanel() {
         JPanel toolPanel = new JPanel();
         toolPanel.setLayout(new FlowLayout());
         toolPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
@@ -93,8 +93,9 @@ class MainMenuView extends AbstractView {
         nameLabel.setFont(Constants.DEFAULT_FONT);
         toolPanel.add(nameLabel);
 
-        JTextField nameTextField = new JTextField(17){
-            @Override public void setBorder(Border border) {
+        JTextField nameTextField = new JTextField(17) {
+            @Override
+            public void setBorder(Border border) {
                 // Nein, Böse!
             }
         };
@@ -125,7 +126,7 @@ class MainMenuView extends AbstractView {
         add(toolPanel, BorderLayout.PAGE_END);
     }
 
-    public String getCurrentName(){
+    public String getCurrentName() {
         return currentName;
     }
 
@@ -149,7 +150,7 @@ class JTextFieldLimit extends PlainDocument {
         this.limit = limit;
     }
 
-    public void insertString( int offset, String  str, AttributeSet attr ) throws BadLocationException {
+    public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
         if (str == null) return;
 
         if ((getLength() + str.length()) <= limit) {
