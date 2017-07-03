@@ -163,7 +163,7 @@ class HighscoresView extends AbstractView {
             remove(highScoreList);
         }
         highScoreList = initHighScoreList();
-        add(highScoreList);
+        add(highScoreList, BorderLayout.CENTER);
         revalidate();
         repaint();
     }
