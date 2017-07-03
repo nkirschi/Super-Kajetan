@@ -41,6 +41,7 @@ class MainMenuView extends AbstractView {
         JButton highscoresButton = new JButton("HIGHSCORES");
         JButton creditsButton = new JButton("CREDITS");
         JButton exitButton = new JButton("BEENDEN");
+        Logger.log("Main Menu: Buttons initialisiert", Logger.INFO);
 
         //Action-Listener hinzufügen
         lobbyButton.addActionListener(a -> MainFrame.getInstance().changeTo(LobbyView.getInstance()));
@@ -48,6 +49,7 @@ class MainMenuView extends AbstractView {
         highscoresButton.addActionListener(a -> MainFrame.getInstance().changeTo(HighscoresView.getInstance()));
         creditsButton.addActionListener(a -> MainFrame.getInstance().changeTo(CreditsView.getInstance()));
         exitButton.addActionListener(a -> MainFrame.getInstance().cleanupAndExit());
+        Logger.log("Main Menu: Action-Listener hinzugefügt", Logger.INFO);
 
         //Aussehens-Parameter setzen
         lobbyButton.setPreferredSize(Constants.defaultButtonSize);
@@ -68,6 +70,7 @@ class MainMenuView extends AbstractView {
         highscoresButton.setFont(buttonFont);
         creditsButton.setFont(buttonFont);
         exitButton.setFont(buttonFont);
+        Logger.log("Main Menu: Aussehens-Parameter gesetzt", Logger.INFO);
 
         //Buttons hinzufügen
         buttonPanel.add(lobbyButton, constraints);
@@ -75,6 +78,7 @@ class MainMenuView extends AbstractView {
         buttonPanel.add(highscoresButton, constraints);
         buttonPanel.add(creditsButton, constraints);
         buttonPanel.add(exitButton, constraints);
+        Logger.log("Main Menu: Buttons hinzugefügt", Logger.INFO);
 
         add(buttonPanel, BorderLayout.CENTER);
     }
