@@ -38,6 +38,8 @@ public class Constants {
     public static final String PLAYER_WALK_1_IMAGE_PATH = "images/char/char_walk_1.png";
     public static final String PLAYER_WALK_2_IMAGE_PATH = "images/char/char_walk_2.png";
     public static final String PLAYER_JUMP_IMAGE_PATH = "images/char/char_jump.png";
+    public static final String PLAYER_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
+    public static final String PLAYER_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
 
     static {
         try {
