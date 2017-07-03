@@ -45,17 +45,16 @@ class HighscoresView extends AbstractView {
         list.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         //Tolle Spalte links mit Erster, Zweiter, ...
-        JPanel fancyCollumPanel = new JPanel();
-        fancyCollumPanel.setLayout(new BoxLayout(fancyCollumPanel, BoxLayout.Y_AXIS));
-        fancyCollumPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        fancyCollumPanel.setBorder(listCollumBorder);
-        list.add(fancyCollumPanel);
+        JPanel fancyColumnPanel = new JPanel();
+        fancyColumnPanel.setLayout(new BoxLayout(fancyColumnPanel, BoxLayout.Y_AXIS));
+        fancyColumnPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        fancyColumnPanel.setBorder(listCollumBorder);
 
         try {
             ImageIcon trophyImage = ImageUtil.getIcon("images/trophy.png");
             JLabel trophyLabel = new JLabel(trophyImage);
             trophyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            fancyCollumPanel.add(trophyLabel);
+            fancyColumnPanel.add(trophyLabel);
 
             //Setzt jetzt die Border der Spalten-Überschriften entsprechend, um für Höhe des Bildes zu kompensieren. (15/2 kompensiert für texthöhe. unschön, wissen wir ....)
             listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0, trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0);
@@ -65,11 +64,11 @@ class HighscoresView extends AbstractView {
         }
 
         for (int i = 1; i <= 10; i++) {
-            JLabel label = new JLabel("Platz " + i);
+            JLabel label = new JLabel(i + ". Platz ");
             label.setAlignmentX(Component.CENTER_ALIGNMENT);
             label.setBorder(listCellBorder);
             label.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
-            fancyCollumPanel.add(label);
+            fancyColumnPanel.add(label);
         }
 
         //Einzelne Spalten
@@ -77,17 +76,14 @@ class HighscoresView extends AbstractView {
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
         namePanel.setBorder(listCollumBorder);
         namePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        list.add(namePanel);
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
         scorePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         scorePanel.setBorder(listCollumBorder);
-        list.add(scorePanel);
         JPanel datePanel = new JPanel();
         datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
         datePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         datePanel.setBorder(listCollumBorder);
-        list.add(datePanel);
 
         //Überschriften der Spalten
         JLabel nameColumn = new JLabel(Constants.DB_COLLUM_NAME);
@@ -95,11 +91,13 @@ class HighscoresView extends AbstractView {
         nameColumn.setBorder(listCollumHeaderBorder);
         nameColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         namePanel.add(nameColumn);
+
         JLabel scoreColumn = new JLabel(Constants.DB_COLLUM_SCORE);
         scoreColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         scoreColumn.setBorder(listCollumHeaderBorder);
         scoreColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         scorePanel.add(scoreColumn);
+
         JLabel dateColumn = new JLabel(Constants.DB_COLLUM_DATE);
         dateColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         dateColumn.setBorder(listCollumHeaderBorder);
@@ -138,10 +136,14 @@ class HighscoresView extends AbstractView {
                     scoreCell.setForeground(currentPlayerScores);
                     dateCell.setForeground(currentPlayerScores);
                 }
+                list.add(fancyColumnPanel);
+                list.add(datePanel);
+                list.add(namePanel);
+                list.add(scorePanel);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            scorePanel.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
+            list.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
             Logger.log(e, Logger.WARNING);
         }
         Logger.log("Highscores initialisiert", Logger.INFO);
