@@ -60,6 +60,7 @@ class HighscoresView extends AbstractView {
             listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0, trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0);
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
 
         for (int i = 1; i <= 10; i++) {
@@ -142,6 +143,7 @@ class HighscoresView extends AbstractView {
             scorePanel.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
             Logger.log(e, Logger.WARNING);
         }
+        Logger.log("Highscores initialisiert", Logger.INFO);
 
         return list;
     }
