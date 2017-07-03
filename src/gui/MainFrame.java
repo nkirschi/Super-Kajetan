@@ -41,9 +41,8 @@ public class MainFrame extends JFrame implements WindowListener {
         }
 
         changeTo(MainMenuView.getInstance());
-        Logger.log(Logger.INFO, "Applikation ordnungsgemäß gestartet");
+        Logger.log("Applikation ordnungsgemäß gestartet", Logger.INFO);
         setVisible(true);
-        Logger.log("MainFrame initialisiert", Logger.INFO);
     }
 
     public static MainFrame getInstance() {
