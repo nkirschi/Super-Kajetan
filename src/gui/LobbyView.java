@@ -1,14 +1,13 @@
 package gui;
 
-import model.Entity;
-import model.Level;
-import model.Obstacle;
-import model.Player;
-import physics.GameConstants;
+import model.*;
+import util.Constants;
+import util.List;
+import util.Logger;
 import util.Point;
-import util.list.List;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 class LobbyView extends AbstractView {
@@ -17,28 +16,68 @@ class LobbyView extends AbstractView {
     private LobbyView() {
         super();
         setLayout(new BorderLayout());
-        setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        setBackground(Constants.MENU_BACKGROUND_COLOR);
 
+        //ButtonPanel, im Prinzip nur der Zurück-Knopf
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(GUIConstants.MENU_BACKGROUND_COLOR);
+        buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
+        //Zurück-Button
         JButton backButton = new JButton("Zurück");
-        backButton.setBackground(GUIConstants.BUTTON_COLOR);
+        backButton.setBackground(Constants.BUTTON_COLOR);
+        backButton.setFont(Constants.DEFAULT_FONT);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
-
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.PAGE_END);
 
-        //TODO Temporär, entfernen
-        JButton temp = new JButton("temp");
-        temp.addActionListener(actionEvent -> {
+
+        //Level-Buttons-Panel, hardcoded weil LvL auch hardcoded sind
+        JPanel levelButtonPanel = new JPanel();
+        levelButtonPanel.setLayout(new GridBagLayout());
+        levelButtonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 0, 5, 0);
+
+        JScrollPane scrollPane = new JScrollPane(levelButtonPanel) {
+            @Override
+            public void setBorder(Border border) {
+                // Nein, Böse! Wieder mal!
+            }
+        };
+        scrollPane.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        add(scrollPane, BorderLayout.CENTER);
+
+
+        Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24F);
+        //Buttons für einzelne Lvl
+        //Level 1
+        JButton lvl1 = new JButton("Level 1");
+        lvl1.setBackground(Constants.BUTTON_COLOR);
+        lvl1.setPreferredSize(Constants.defaultButtonSize);
+        lvl1.setFont(buttonFont);
+        lvl1.addActionListener(a -> {
             LevelView levelView = new LevelView(createLevel1());
             MainFrame.getInstance().changeTo(levelView);
             levelView.setFocusable(true);
             levelView.requestFocusInWindow();
         });
+        levelButtonPanel.add(lvl1, constraints);
 
-        add(temp, BorderLayout.PAGE_START);
+        //Level 2
+        JButton lvl2 = new JButton("Level 2");
+        lvl2.setBackground(Constants.BUTTON_COLOR);
+        lvl2.setPreferredSize(Constants.defaultButtonSize);
+        lvl2.setFont(buttonFont);
+        lvl2.addActionListener(a -> {
+            LevelView levelView = new LevelView(createLevel2());
+            MainFrame.getInstance().changeTo(levelView);
+            levelView.setFocusable(true);
+            levelView.requestFocusInWindow();
+        });
+        levelButtonPanel.add(lvl2, constraints);
     }
 
     public void update() {
@@ -55,10 +94,23 @@ class LobbyView extends AbstractView {
      * Hässliche Hardcoded-Level-Methode
      */
     private Level createLevel1() {
+        Player player = new Player(new Point(getWidth() / 2, Constants.GROUND_LEVEL));
+        List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();
-        List<Entity> entities = new List<>();
-        entities.add(new Player(new Point(getWidth() / 2, GameConstants.GROUND_LEVEL)));
-        Level level1 = new Level("images/backgrounds/background.png", obstacles, entities);
-        return level1;
+        List<Ground> grounds = new List<>();
+        grounds.add(new Ground(600, 1200, 20));
+        grounds.add(new Ground(1400, 400, 60));
+        Logger.log("Level erstellt", Logger.INFO);
+        return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background.png");
+    }
+
+    private Level createLevel2() {
+        Player player = new Player(new Point(getWidth() / 2, Constants.GROUND_LEVEL));
+        List<Enemy> enemies = new List<>();
+        List<Obstacle> obstacles = new List<>();
+        List<Ground> grounds = new List<>();
+        grounds.add(new Ground(600, 1200, 20));
+        grounds.add(new Ground(1400, 400, 60));
+        return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background2.jpg");
     }
 }

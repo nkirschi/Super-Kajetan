@@ -1,21 +1,24 @@
 package model;
 
-import physics.Collidable;
-import physics.GameConstants;
 import util.Point;
 
 import java.awt.geom.Rectangle2D;
 
 public abstract class Entity implements Collidable {
-    protected Point position; // Der Punkt in der Mitte unten am Entity
-    protected Rectangle2D.Double hitbox;
-    protected int health;
-    protected boolean jumping;
-    protected boolean crouching;
-    protected boolean walking;
+    Point position; // Der Punkt in der Mitte unten am Entity
+    Rectangle2D.Double hitbox;
+
+    int health;
+
+    boolean walking;
+    boolean running;
+    boolean jumping;
+    boolean crouching;
 
 
-    Point getPosition() {
+    protected Direction viewingDirection;
+
+    public Point getPosition() {
         return position;
     }
 
@@ -35,6 +38,10 @@ public abstract class Entity implements Collidable {
         hitbox.setRect(hitbox.getX() + x, hitbox.getY() + y, hitbox.getWidth(), hitbox.getHeight());
     }
 
+    public int getHealth() {
+        return health;
+    }
+
     /**
      * @param damage Hinzuzufügender Schaden
      * @return Wahrheitswert, ob entity noch lebt.
@@ -44,40 +51,51 @@ public abstract class Entity implements Collidable {
         return health > 0;
     }
 
-    public int getHealth() {
-        return health;
-    }
-    
     public boolean isWalking() {
         return walking;
     }
-    
+
     public void setWalking(boolean walking) {
-       this.walking = walking; 
+        this.walking = walking;
     }
-    
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     public boolean isJumping() {
         return jumping;
     }
-    
+
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
     }
-    
+
     public boolean isCrouching() {
         return crouching;
     }
-    
+
     public void setCrouching(boolean crouching) {
         this.crouching = crouching;
-        if (crouching)
-            hitbox.setRect(hitbox.x, hitbox.y + GameConstants.CROUCHING_DELTA, hitbox.width, hitbox.height - GameConstants.CROUCHING_DELTA);
-        else
-            hitbox.setRect(hitbox.x, hitbox.y - GameConstants.CROUCHING_DELTA, hitbox.width, hitbox.height + GameConstants.CROUCHING_DELTA);
     }
-    
+
+    public Direction getViewingDirection() {
+        return viewingDirection;
+    }
+
+    public void setViewingDirection(Direction viewingDirection) {
+        this.viewingDirection = viewingDirection;
+    }
+
+    public abstract String getImagePath();
+
     @Override
     public String toString() {
-        return "Entity at " + position + ", health = " + health + ", walking = " + walking + ", jumping = " + jumping + ", crouching = " + crouching;
+        return position + ": health = " + health + ", walking = " + walking + ", running = " + running +
+                ", jumping = " + jumping + ", crouching = " + crouching;
     }
 }

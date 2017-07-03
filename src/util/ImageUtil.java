@@ -34,7 +34,7 @@ public class ImageUtil {
         if (!imageCache.containsKey(path)) {
             InputStream stream = ClassLoader.getSystemResourceAsStream(path);
             if (stream == null)
-                throw new IOException("Datei nicht gefunden"); // wichtig für die Nachvollziehbarkeit von Fehlern
+                throw new IOException("Datei" + path + " nicht gefunden"); // Nachvollziehbarkeit von Fehlern
             BufferedImage image = ImageIO.read(stream);
             imageCache.put(path, image);
         }

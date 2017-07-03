@@ -1,5 +1,7 @@
 package gui;
 
+import util.Constants;
+import util.DBConnection;
 import util.ImageUtil;
 import util.Logger;
 
@@ -8,6 +10,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Klasse des Hauptfensters
@@ -21,7 +24,7 @@ public class MainFrame extends JFrame implements WindowListener {
      * das ganz am Anfang in der statischen main()-Methode erzeugt wird
      */
     private MainFrame() {
-        setTitle("Sidescroller " + GUIConstants.GAME_VERSION);
+        setTitle("Sidescroller " + Constants.GAME_VERSION);
         setSize(1024, 768);
         setResizable(false);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -36,8 +39,9 @@ public class MainFrame extends JFrame implements WindowListener {
             e.printStackTrace();
             Logger.log(e, Logger.WARNING);
         }
+
         changeTo(MainMenuView.getInstance());
-        Logger.log(Logger.INFO, "Applikation ordnungsgemäß gestartet");
+        Logger.log("Applikation ordnungsgemäß gestartet", Logger.INFO);
         setVisible(true);
     }
 
@@ -100,6 +104,12 @@ public class MainFrame extends JFrame implements WindowListener {
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
+        try {
+            DBConnection.getInstance().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
+        }
         System.exit(0);
     }
 

@@ -58,7 +58,7 @@ public class Logger {
             String s = e.toString().concat(" in ").concat(i.getClassName())
                     .concat(" in Methode ").concat(i.getMethodName()).concat("()")
                     .concat(" in Zeile ").concat(Integer.toString(i.getLineNumber()));
-            log(level, s);
+            log(s, level);
         }
     }
 
