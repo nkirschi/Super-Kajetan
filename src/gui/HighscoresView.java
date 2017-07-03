@@ -140,6 +140,7 @@ class HighscoresView extends AbstractView {
         } catch (SQLException e) {
             e.printStackTrace();
             scorePanel.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
+            Logger.log(e, Logger.WARNING);
         }
 
         return list;
