@@ -4,7 +4,6 @@ import javax.sound.sampled.*;
 import javax.sound.sampled.DataLine.Info;
 import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
 
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 import static javax.sound.sampled.AudioSystem.getAudioInputStream;

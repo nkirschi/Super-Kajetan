@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import util.Constants;
 import util.DBConnection;
 import util.ImageUtil;
@@ -11,7 +10,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,6 +39,14 @@ class HighscoresView extends AbstractView {
     }
 
     private JPanel initHighScoreList() {
+        //Damit alles schön mittig ist (auf der Y-Achse)
+        JPanel listTopLevelPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 0, 5, 0);
+        listTopLevelPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+
         JPanel list = new JPanel(new FlowLayout());
         list.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
@@ -64,13 +70,6 @@ class HighscoresView extends AbstractView {
             Logger.log(e, Logger.WARNING);
         }
 
-        for (int i = 1; i <= 10; i++) {
-            JLabel label = new JLabel("Platz " + i);
-            label.setAlignmentX(Component.CENTER_ALIGNMENT);
-            label.setBorder(listCellBorder);
-            label.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
-            fancyCollumPanel.add(label);
-        }
 
         //Einzelne Spalten
         JPanel namePanel = new JPanel();
@@ -109,7 +108,7 @@ class HighscoresView extends AbstractView {
         //Füllen der Tabelle
         try {
             ResultSet highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + Constants.DB_TABLE + " ORDER BY " + Constants.DB_COLLUM_SCORE + " DESC LIMIT 10;");
-            while (highScoreSet.next()) {
+            for (int i = 1; highScoreSet.next(); i++) { //i wird für die Platznummer gebraucht ....
                 JLabel nameCell = new JLabel(highScoreSet.getString(Constants.DB_COLLUM_NAME));
                 nameCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 nameCell.setBorder(listCellBorder);
@@ -132,21 +131,31 @@ class HighscoresView extends AbstractView {
                 dateCell.setFont(Constants.DEFAULT_FONT);
                 datePanel.add(dateCell);
 
-                if(highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName())==0){
+                if (highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName()) == 0) {
                     Color currentPlayerScores = new Color(230, 212, 93);
                     nameCell.setForeground(currentPlayerScores);
                     scoreCell.setForeground(currentPlayerScores);
                     dateCell.setForeground(currentPlayerScores);
                 }
+
+                //Für jeden Platz das Fancy "Platz .." Schild in dem Fancy Seiten-Panel; wird hier erzeugt, damit es keine leeren Plätze gibt ( falls weniger als 10 Highscores existieren )
+                JLabel label = new JLabel("Platz " + i);
+                label.setAlignmentX(Component.CENTER_ALIGNMENT);
+                label.setBorder(listCellBorder);
+                label.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
+                fancyCollumPanel.add(label);
+
+                listTopLevelPanel.add(list, constraints);
+                Logger.log("Highscores initialisiert", Logger.INFO);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            scorePanel.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
+            listTopLevelPanel.add(new JLabel("HOPPLA! Da ist wohl was schief gegangen :/"), constraints);
+            Logger.log("Fehler beim initialisieren der Highscores", Logger.WARNING);
             Logger.log(e, Logger.WARNING);
         }
-        Logger.log("Highscores initialisiert", Logger.INFO);
 
-        return list;
+        return listTopLevelPanel;
     }
 
     public void update() {

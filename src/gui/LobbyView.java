@@ -2,9 +2,9 @@ package gui;
 
 import model.*;
 import util.Constants;
+import util.List;
 import util.Logger;
 import util.Point;
-import util.List;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -41,8 +41,9 @@ class LobbyView extends AbstractView {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
 
-        JScrollPane scrollPane = new JScrollPane(levelButtonPanel){
-            @Override public void setBorder(Border border) {
+        JScrollPane scrollPane = new JScrollPane(levelButtonPanel) {
+            @Override
+            public void setBorder(Border border) {
                 // Nein, Böse! Wieder mal!
             }
         };
@@ -103,7 +104,7 @@ class LobbyView extends AbstractView {
         return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background.png");
     }
 
-    private Level createLevel2(){
+    private Level createLevel2() {
         Player player = new Player(new Point(getWidth() / 2, Constants.GROUND_LEVEL));
         List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();

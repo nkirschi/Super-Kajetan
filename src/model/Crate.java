@@ -1,10 +1,8 @@
 package model;
 
-import util.ImageUtil;
 import util.Point;
 
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 
 public class Crate extends Obstacle {
     private final double CRATE_WIDTH = 100;
