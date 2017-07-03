@@ -48,12 +48,12 @@ class HighscoresView extends AbstractView {
         listTopLevelPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         JPanel list = new JPanel(new FlowLayout());
-        list.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        list.setBackground(Constants.BUTTON_COLOR);
 
         //Tolle Spalte links mit Erster, Zweiter, ...
         JPanel fancyCollumPanel = new JPanel();
         fancyCollumPanel.setLayout(new BoxLayout(fancyCollumPanel, BoxLayout.Y_AXIS));
-        fancyCollumPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        fancyCollumPanel.setBackground(Constants.BUTTON_COLOR);
         fancyCollumPanel.setBorder(listCollumBorder);
         list.add(fancyCollumPanel);
 
@@ -75,16 +75,16 @@ class HighscoresView extends AbstractView {
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
         namePanel.setBorder(listCollumBorder);
-        namePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        namePanel.setBackground(Constants.BUTTON_COLOR);
         list.add(namePanel);
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
-        scorePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        scorePanel.setBackground(Constants.BUTTON_COLOR);
         scorePanel.setBorder(listCollumBorder);
         list.add(scorePanel);
         JPanel datePanel = new JPanel();
         datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
-        datePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        datePanel.setBackground(Constants.BUTTON_COLOR);
         datePanel.setBorder(listCollumBorder);
         list.add(datePanel);
 
@@ -131,15 +131,8 @@ class HighscoresView extends AbstractView {
                 dateCell.setFont(Constants.DEFAULT_FONT);
                 datePanel.add(dateCell);
 
-                if (highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName()) == 0) {
-                    Color currentPlayerScores = new Color(230, 212, 93);
-                    nameCell.setForeground(currentPlayerScores);
-                    scoreCell.setForeground(currentPlayerScores);
-                    dateCell.setForeground(currentPlayerScores);
-                }
-
                 //Für jeden Platz das Fancy "Platz .." Schild in dem Fancy Seiten-Panel; wird hier erzeugt, damit es keine leeren Plätze gibt ( falls weniger als 10 Highscores existieren )
-                JLabel label = new JLabel("Platz " + i);
+                JLabel label = new JLabel(i + ". Platz");
                 label.setAlignmentX(Component.CENTER_ALIGNMENT);
                 label.setBorder(listCellBorder);
                 label.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
@@ -147,6 +140,14 @@ class HighscoresView extends AbstractView {
 
                 listTopLevelPanel.add(list, constraints);
                 Logger.log("Highscores initialisiert", Logger.INFO);
+
+                if (highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName()) == 0) {
+                    Color currentPlayerScores = new Color(29, 105, 224); //new Color(230, 212, 93);
+                    nameCell.setForeground(currentPlayerScores);
+                    scoreCell.setForeground(currentPlayerScores);
+                    dateCell.setForeground(currentPlayerScores);
+                    label.setForeground(currentPlayerScores);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

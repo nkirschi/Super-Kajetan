@@ -29,7 +29,7 @@ class CreditsView extends AbstractView {
         //Panel, dass die Credits beinhaltet, geliebtes GridbagLayout für ... Genau! damit alles Mittig ist. *genervt an Cola schlürf*
         JPanel creditsPanel = new JPanel();
         creditsPanel.setLayout(new GridBagLayout());
-        creditsPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        creditsPanel.setBackground(Constants.BUTTON_COLOR);
         add(creditsPanel, BorderLayout.CENTER);
 
         GridBagConstraints headerConstraints = new GridBagConstraints();

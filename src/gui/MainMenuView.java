@@ -38,45 +38,45 @@ class MainMenuView extends AbstractView {
 
         //Button-Initialisierung
         JButton lobbyButton = new JButton("SPIELEN");
-        JButton settingsButton = new JButton("EINSTELLUNGEN");
         JButton highscoresButton = new JButton("HIGHSCORES");
+        JButton settingsButton = new JButton("EINSTELLUNGEN");
         JButton creditsButton = new JButton("CREDITS");
         JButton exitButton = new JButton("BEENDEN");
         Logger.log("Main Menu: Buttons initialisiert", Logger.INFO);
 
         //Action-Listener hinzufügen
         lobbyButton.addActionListener(a -> MainFrame.getInstance().changeTo(LobbyView.getInstance()));
-        settingsButton.addActionListener(a -> MainFrame.getInstance().changeTo(SettingsView.getInstance()));
         highscoresButton.addActionListener(a -> MainFrame.getInstance().changeTo(HighscoresView.getInstance()));
+        settingsButton.addActionListener(a -> MainFrame.getInstance().changeTo(SettingsView.getInstance()));
         creditsButton.addActionListener(a -> MainFrame.getInstance().changeTo(CreditsView.getInstance()));
         exitButton.addActionListener(a -> MainFrame.getInstance().cleanupAndExit());
         Logger.log("Main Menu: Action-Listener hinzugefügt", Logger.INFO);
 
         //Aussehens-Parameter setzen
         lobbyButton.setPreferredSize(Constants.defaultButtonSize);
-        settingsButton.setPreferredSize(Constants.defaultButtonSize);
         highscoresButton.setPreferredSize(Constants.defaultButtonSize);
+        settingsButton.setPreferredSize(Constants.defaultButtonSize);
         creditsButton.setPreferredSize(Constants.defaultButtonSize);
         exitButton.setPreferredSize(Constants.defaultButtonSize);
 
         lobbyButton.setBackground(Constants.BUTTON_COLOR);
-        settingsButton.setBackground(Constants.BUTTON_COLOR);
         highscoresButton.setBackground(Constants.BUTTON_COLOR);
+        settingsButton.setBackground(Constants.BUTTON_COLOR);
         creditsButton.setBackground(Constants.BUTTON_COLOR);
         exitButton.setBackground(Constants.BUTTON_COLOR);
 
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24F);
         lobbyButton.setFont(buttonFont);
-        settingsButton.setFont(buttonFont);
         highscoresButton.setFont(buttonFont);
+        settingsButton.setFont(buttonFont);
         creditsButton.setFont(buttonFont);
         exitButton.setFont(buttonFont);
         Logger.log("Main Menu: Aussehens-Parameter gesetzt", Logger.INFO);
 
         //Buttons hinzufügen
         buttonPanel.add(lobbyButton, constraints);
-        buttonPanel.add(settingsButton, constraints);
         buttonPanel.add(highscoresButton, constraints);
+        buttonPanel.add(settingsButton, constraints);
         buttonPanel.add(creditsButton, constraints);
         buttonPanel.add(exitButton, constraints);
         Logger.log("Main Menu: Buttons hinzugefügt", Logger.INFO);
