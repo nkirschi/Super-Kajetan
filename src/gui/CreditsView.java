@@ -54,26 +54,44 @@ class CreditsView extends AbstractView {
 
 
         JLabel l1 = new JLabel("Nikolas Kirschstein");
+        JLabel t1 = new JLabel("Supervising Chief of Kaffeeholing");
         JLabel l2 = new JLabel("Max Strohmeier");
+        JLabel t2 = new JLabel("Assistent Kaffeeholer");
         JLabel l3 = new JLabel("Benedikt Mödl");
+        JLabel t3 = new JLabel("Senior Lumpenputzer");
         JLabel l4 = new JLabel("Alexander Hammerl");
+        JLabel t4 = new JLabel("Junior Son of Axl");
         JLabel l5 = new JLabel("Fabian Weinelt");
+        JLabel t5 = new JLabel("Senior Artist");
         JLabel l6 = new JLabel("Tim Mostert");
+        JLabel t6 = new JLabel("Assistent of Assisting all Assistents");
 
+        p1.add(t1);
         p1.add(l1);
+        p2.add(t2);
         p2.add(l2);
+        p3.add(t3);
         p3.add(l3);
+        p4.add(t4);
         p4.add(l4);
+        p5.add(t5);
         p5.add(l5);
+        p6.add(t6);
         p6.add(l6);
 
 
         l1.setFont(Constants.DEFAULT_FONT.deriveFont(24F));
+        t1.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F));
         l2.setFont(Constants.DEFAULT_FONT.deriveFont(24F));
+        t2.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F));
         l3.setFont(Constants.DEFAULT_FONT.deriveFont(24F));
+        t3.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F));
         l4.setFont(Constants.DEFAULT_FONT.deriveFont(24F));
+        t4.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F));
         l5.setFont(Constants.DEFAULT_FONT.deriveFont(24F));
+        t5.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F));
         l6.setFont(Constants.DEFAULT_FONT.deriveFont(24F));
+        t6.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F));
 
 
         JPanel creditsPanel = new JPanel();

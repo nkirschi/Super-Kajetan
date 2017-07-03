@@ -137,7 +137,7 @@ class HighscoresView extends AbstractView {
                     dateCell.setForeground(currentPlayerScores);
                 }
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             scorePanel.add(new JLabel("WARNUNG: DATENBANK KANN NICHT ERREICHT WERDEN!!! :/"));
         }
