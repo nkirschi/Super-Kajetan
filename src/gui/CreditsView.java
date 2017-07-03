@@ -92,7 +92,7 @@ class CreditsView extends AbstractView {
         add(creditsPanel, BorderLayout.CENTER);
 
 
-
+        Logger.log("Credits geladen", Logger.INFO);
 
 
     }
