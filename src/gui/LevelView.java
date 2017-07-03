@@ -81,8 +81,6 @@ public class LevelView extends AbstractView implements Runnable {
                 audioPlayer.pause();
             }
         });
-        
-        Logger.log("Level initialisiert", Logger.INFO);
 
         new Thread(this).start();
     }
@@ -205,6 +203,35 @@ public class LevelView extends AbstractView implements Runnable {
                     break;
             }
         }
+        
+        double xMovement = 0;
+        double yMovement = 0;
+        
+      for (int keyCode : pressedKeys) {
+          case Constants.KEY_LEFT:
+            level.getPlayer().setWalking(true);
+            xMovement -= Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
+            break;
+          case Constants.KEY_RIGHT:
+            level.getPlayer().setWalking(true);
+            xMovement += Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
+            break;
+          case Constants.KEY_JUMP:
+            level.getPlayer().setWalking(false);
+            level.getPlayer().setRunning(false);
+            level.getPlayer().setJumping(true);
+            yMovement -= verticalMoveAmount;
+            break;
+          case Constants.KEY_RUN:
+            level.getPlayer().setRunning(true);
+            xMovement *= 2;
+            break;
+          case Constants.KEY_CROUCH:
+            level.getPlayer().setCrouching(true);
+            break;
+      }
+        
+        Direction viewingDirection = xMovement > 0 ? Direction.RIGHT : Direction.LEFT;
 
         // Gravitation
         if (!pressedKeys.contains(Constants.KEY_JUMP) && level.getPlayer().isJumping())
@@ -256,7 +283,6 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
         }
 
         // 2. Draw Grounds
@@ -281,7 +307,6 @@ public class LevelView extends AbstractView implements Runnable {
                 g2.drawImage(image, playerX + image.getWidth(), playerY, -image.getWidth(), image.getHeight(), this);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
         }
 
         Stroke originalStroke = g2.getStroke();
