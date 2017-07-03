@@ -1,12 +1,11 @@
 package gui;
 
-import model.Camera;
-import model.Direction;
-import model.Ground;
-import model.Level;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import model.*;
 import util.*;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -23,6 +22,7 @@ public class LevelView extends AbstractView implements Runnable {
     private HashSet<Integer> pressedKeys;
 
     private AudioPlayer audioPlayer;
+    private JProgressBar staminaBar;
 
     private double verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
     private boolean jumpingPossible = true;
@@ -50,10 +50,26 @@ public class LevelView extends AbstractView implements Runnable {
             audioPlayer.stop();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
-
         buttonPanel.add(backButton);
         buttonPanel.setOpaque(false);
-        add(buttonPanel, BorderLayout.SOUTH);
+
+        JPanel staminaPanel = new JPanel();
+        staminaPanel.setLayout(new BoxLayout(staminaPanel, BoxLayout.Y_AXIS));
+        staminaPanel.add(new JLabel("Ausdauer: "));
+        staminaBar = new JProgressBar(0, 1000);
+        staminaBar.setValue(staminaBar.getMaximum());
+        staminaBar.setForeground(Constants.MENU_BACKGROUND_COLOR);
+        staminaBar.setBackground(Constants.BUTTON_COLOR);
+        staminaPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
+        staminaPanel.add(staminaBar);
+        staminaPanel.setOpaque(false);
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(buttonPanel, BorderLayout.WEST);
+        bottomPanel.add(staminaPanel, BorderLayout.EAST);
+        bottomPanel.setOpaque(false);
+
+        add(bottomPanel, BorderLayout.SOUTH);
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -147,39 +163,18 @@ public class LevelView extends AbstractView implements Runnable {
         level.getPlayer().setRunning(false);
         level.getPlayer().setCrouching(false);
 
+        double xMovement = 0;
+        double yMovement = 0;
+
         for (int keyCode : pressedKeys) {
             switch (keyCode) {
                 case Constants.KEY_LEFT:
-                    if (pressedKeys.contains(Constants.KEY_RIGHT))
-                        break;
-
                     level.getPlayer().setWalking(true);
-                    double moveAmount = 0;
-                    if (level.getPlayer().getPosition().getX() - getWidth() / 2 > Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT) {
-                        moveAmount = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT : Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
-                    } else {
-                        moveAmount = level.getPlayer().getPosition().getX() - getWidth() / 2;
-                        level.getPlayer().setWalking(false);
-                    }
-                    camera.scroll(-moveAmount);
-                    level.getPlayer().move(-moveAmount, 0);
-                    level.getPlayer().setViewingDirection(Direction.LEFT);
+                    xMovement -= Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
                     break;
                 case Constants.KEY_RIGHT:
-                    if (pressedKeys.contains(Constants.KEY_LEFT))
-                        break;
-
                     level.getPlayer().setWalking(true);
-                    double moveAmount1 = 0;
-                    if (level.getPlayer().getPosition().getX() + getWidth() / 2 < level.getLength() - Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT) {
-                        moveAmount1 = level.getPlayer().isJumping() ? 2 * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT : Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
-                    } else {
-                        moveAmount1 = (int) level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
-                        level.getPlayer().setWalking(false);
-                    }
-                    level.getPlayer().move(moveAmount1, 0);
-                    level.getPlayer().setViewingDirection(Direction.RIGHT);
-                    camera.scroll(moveAmount1);
+                    xMovement += Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
                     break;
                 case Constants.KEY_JUMP:
                     if (!jumpingPossible || verticalMoveAmount >= 0)
@@ -187,16 +182,10 @@ public class LevelView extends AbstractView implements Runnable {
                     level.getPlayer().setWalking(false);
                     level.getPlayer().setRunning(false);
                     level.getPlayer().setJumping(true);
-                    level.getPlayer().move(0, verticalMoveAmount);
+                    yMovement += verticalMoveAmount;
                     break;
                 case Constants.KEY_RUN:
-                    if ((pressedKeys.contains(Constants.KEY_LEFT) || pressedKeys.contains(Constants.KEY_RIGHT))
-                            && !level.getPlayer().isJumping()) {
-                        level.getPlayer().setRunning(true);
-                        int signum = level.getPlayer().getViewingDirection().equals(Direction.RIGHT) ? 1 : -1;
-                        camera.scroll(signum * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT);
-                        level.getPlayer().move(signum * Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT, 0);
-                    }
+                    level.getPlayer().setRunning(true);
                     break;
                 case Constants.KEY_CROUCH:
                     level.getPlayer().setCrouching(true);
@@ -204,13 +193,64 @@ public class LevelView extends AbstractView implements Runnable {
             }
         }
 
+        if (xMovement < 0)
+            level.getPlayer().setViewingDirection(Direction.LEFT);
+        else if (xMovement > 0)
+            level.getPlayer().setViewingDirection(Direction.RIGHT);
+
+        if (level.getPlayer().isRunning() || level.getPlayer().isJumping()) {
+            staminaBar.setValue(staminaBar.getValue() - 5);
+            xMovement *= 2;
+        } else {
+            staminaBar.setValue(staminaBar.getValue() + 3);
+        }
+
+        camera.scroll(xMovement);
+        level.getPlayer().move(xMovement, yMovement);
+
+        Collidable collidable = null;
+        for (Ground ground : level.getGrounds()) {
+            if (level.getPlayer().collidesWith(ground)) {
+                collidable = ground;
+                break;
+            }
+        }
+
+        if (collidable != null) {
+            System.out.println("Collision");
+        }
+
+        if (level.getPlayer().getPosition().getX() < getWidth() / 2) {
+            double d = getWidth() / 2 - level.getPlayer().getPosition().getX();
+            level.getPlayer().move(d, 0);
+            camera.scroll(d);
+        } else if (level.getPlayer().getPosition().getX() > level.getLength() - getWidth() / 2) {
+            double d = level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
+            level.getPlayer().move(d, 0);
+            camera.scroll(Math.floor(d));
+        }
+
         // Gravitation
         if (!pressedKeys.contains(Constants.KEY_JUMP) && level.getPlayer().isJumping())
             jumpingPossible = false;
 
         if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
+
+            collidable = null;
+            for (Ground ground : level.getGrounds()) {
+                if (level.getPlayer().collidesWith(ground)) {
+                    collidable = ground;
+                    break;
+                }
+            }
+
+            if (collidable != null) {
+                System.out.println("Collison");
+            }
+
             if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= verticalMoveAmount) {
                 level.getPlayer().setWalking(false);
+                level.getPlayer().setRunning(false);
                 level.getPlayer().setJumping(true);
                 level.getPlayer().move(0, verticalMoveAmount);
                 verticalMoveAmount += Constants.GRAVITATIONAL_ACCELERATION;
@@ -221,7 +261,6 @@ public class LevelView extends AbstractView implements Runnable {
                 jumpingPossible = true;
             }
         }
-        // Kollisionschecks
 
         // 2. Move Enemies + Gravitation + check Collision
         // Gravitationschecks

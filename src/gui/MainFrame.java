@@ -41,7 +41,7 @@ public class MainFrame extends JFrame implements WindowListener {
         }
 
         changeTo(MainMenuView.getInstance());
-        Logger.log(Logger.INFO, "Applikation ordnungsgemäß gestartet");
+        Logger.log("Applikation ordnungsgemäß gestartet", Logger.INFO);
         setVisible(true);
     }
 
@@ -108,6 +108,7 @@ public class MainFrame extends JFrame implements WindowListener {
             DBConnection.getInstance().close();
         } catch (SQLException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
         System.exit(0);
     }

@@ -1,6 +1,7 @@
 package gui;
 
 import util.Constants;
+import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -110,7 +111,7 @@ class CreditsView extends AbstractView {
         add(creditsPanel, BorderLayout.CENTER);
 
 
-
+        Logger.log("Credits geladen", Logger.INFO);
 
 
     }

@@ -2,6 +2,7 @@ package gui;
 
 import model.*;
 import util.Constants;
+import util.Logger;
 import util.Point;
 import util.List;
 
@@ -98,6 +99,7 @@ class LobbyView extends AbstractView {
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1200, 20));
         grounds.add(new Ground(1400, 400, 60));
+        Logger.log("Level erstellt", Logger.INFO);
         return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background.png");
     }
 
