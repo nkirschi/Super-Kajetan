@@ -229,7 +229,21 @@ public class LevelView extends AbstractView implements Runnable {
             staminaBar.setValue(staminaBar.getValue() + 3);
 
         camera.scroll(xMovement);
-        level.getPlayer().move(xMovement, yMovement);
+        level.getPlayer().move(xMovement, 0);
+
+        Collidable collidable = null;
+        for (Ground ground : level.getGrounds()) {
+            if (level.getPlayer().collidesWith(ground)) {
+                collidable = ground;
+                break;
+            }
+        }
+
+        if (collidable != null) {
+            
+        }
+
+        level.getPlayer().move(0, yMovement);
 
         Collidable collidable = null;
         for (Ground ground : level.getGrounds()) {

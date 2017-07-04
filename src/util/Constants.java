@@ -33,13 +33,21 @@ public class Constants {
     public static final int KEY_CROUCH = KeyEvent.VK_S;
     public static final int KEY_RUN = KeyEvent.VK_SHIFT;
 
-    // Bilder
+    //Player Bilder
     public static final String PLAYER_STAND_IMAGE_PATH = "images/char/char_stand.png";
     public static final String PLAYER_WALK_1_IMAGE_PATH = "images/char/char_walk_1.png";
     public static final String PLAYER_WALK_2_IMAGE_PATH = "images/char/char_walk_2.png";
     public static final String PLAYER_JUMP_IMAGE_PATH = "images/char/char_jump.png";
     public static final String PLAYER_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
     public static final String PLAYER_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
+
+    //Knight Bilder
+    public static final String KNIGHT_STAND_IMAGE_PATH = "images/char/char_stand.png";
+    public static final String KNIGHT_WALK_1_IMAGE_PATH = "images/char/char_walk_1.png";
+    public static final String KNIGHT_WALK_2_IMAGE_PATH = "images/char/char_walk_2.png";
+    public static final String KNIGHT_JUMP_IMAGE_PATH = "images/char/char_jump.png";
+    public static final String KNIGHT_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
+    public static final String KNIGHT_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
 
     static {
         try {
