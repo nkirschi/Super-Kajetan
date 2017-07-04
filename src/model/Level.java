@@ -27,6 +27,7 @@ public class Level {
             System.out.println(length);
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
     }
 
