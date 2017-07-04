@@ -245,7 +245,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         level.getPlayer().move(0, yMovement);
 
-        Collidable collidable = null;
+        //Collidable collidable = null;
         for (Ground ground : level.getGrounds()) {
             if (level.getPlayer().collidesWith(ground)) {
                 collidable = ground;
