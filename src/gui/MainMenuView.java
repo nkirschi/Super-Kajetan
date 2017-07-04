@@ -124,6 +124,7 @@ class MainMenuView extends AbstractView {
         });
 
         add(toolPanel, BorderLayout.PAGE_END);
+        Logger.log("Tool Panel initialisiert", Logger.INFO);
     }
 
     public String getCurrentName() {
@@ -139,6 +140,22 @@ class MainMenuView extends AbstractView {
 
     public void update() {
     }
+
+    @Override
+    public void paintComponent(Graphics g)
+    {
+        /*
+        Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
+        -> setOpaque(false)
+
+        try {
+            g.drawImage(util.ImageUtil.getImage("images/backgrounds/background.png"), 0, 0, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+        super.paintComponent(g);
+    }
 }
 
 //Hilfsklasse, um die Schriftzahl des Names zu begrenzen ...
@@ -148,6 +165,7 @@ class JTextFieldLimit extends PlainDocument {
     JTextFieldLimit(int limit) {
         super();
         this.limit = limit;
+
     }
 
     public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {

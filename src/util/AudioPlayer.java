@@ -16,7 +16,7 @@ public class AudioPlayer {
 
     public AudioPlayer() {
         random = new Random();
-        volume = 0.0F; // Hier würde dann die Lautstärke aus den Einstellungen geladen werden!
+        volume = gui.SettingsView.getInstance().getVolume();
     }
 
     public void playOnce(String filePath) {
@@ -83,14 +83,8 @@ public class AudioPlayer {
                         FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
                         volumeControl.setValue(volume);
                     } catch (Exception e) {
-                        try {
-                            FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
-                            volumeControl.setValue(volume);
-                        } catch (Exception f) {
-                            e.printStackTrace();
-                            Logger.log("Volume Control wird auf dem System nicht unterstützt", Logger.WARNING);
-                            Logger.log(e, Logger.WARNING);
-                        }
+                        Logger.log("Volume Control wird auf dem System nicht unterstützt", Logger.WARNING);
+                        Logger.log(e, Logger.WARNING);
                     }
                     line.start();
                     stream(getAudioInputStream(outFormat, in), line);
@@ -102,6 +96,7 @@ public class AudioPlayer {
         } catch (UnsupportedAudioFileException
                 | LineUnavailableException
                 | IOException e) {
+            Logger.log(e, Logger.WARNING);
             throw new IllegalStateException(e);
         }
     }
@@ -117,6 +112,7 @@ public class AudioPlayer {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    Logger.log(e, Logger.WARNING);
                 }
             }
             line.write(buffer, 0, n);

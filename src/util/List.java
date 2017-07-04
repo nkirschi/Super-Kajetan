@@ -1,6 +1,5 @@
 package util;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -116,27 +115,6 @@ public class List<C> implements Iterable<C> {
         Object[] contents = new Object[size()];
         first.toArray(contents, 0);
         return contents;
-    }
-
-    public static void main(String[] args) throws Exception {
-        List<Point> list = new List<>();
-        list.add(new Point(0, 0));
-        list.add(new Point(1, 1));
-        list.add(new Point(2, 2));
-        list.add(new Point(3, 3));
-        System.out.println(list.get(2));
-        System.out.println(list.size());
-        for (Point point : list) {
-            System.out.println(point);
-        }
-        System.out.println(list.contains(new Point(1, 1)));
-        list.remove(new Point(1, 1));
-        System.out.println(Arrays.toString(list.toArray()));
-        System.out.println(list.contains(new Point(1, 1)));
-        System.out.println(list.size());
-        list.clear();
-        Thread.sleep(100);
-        System.out.println(list.get(0)); // Das gibt eine saftige Ausnahme
     }
 }
 

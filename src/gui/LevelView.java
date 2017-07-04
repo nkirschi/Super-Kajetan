@@ -4,6 +4,7 @@ import model.*;
 import util.AudioPlayer;
 import util.Constants;
 import util.ImageUtil;
+import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -99,6 +100,7 @@ public class LevelView extends AbstractView implements Runnable {
             }
         });
 
+        Logger.log("Level initialisiert", Logger.INFO);
         new Thread(this).start();
     }
 
@@ -304,6 +306,7 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
 
         // 2. Draw Grounds
@@ -328,6 +331,7 @@ public class LevelView extends AbstractView implements Runnable {
                 g2.drawImage(image, playerX + image.getWidth(), playerY, -image.getWidth(), image.getHeight(), this);
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
 
         Stroke originalStroke = g2.getStroke();

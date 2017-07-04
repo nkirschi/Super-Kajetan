@@ -47,6 +47,7 @@ public class Constants {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, ClassLoader.getSystemResourceAsStream("PixelOperator.ttf")));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
     }
 }

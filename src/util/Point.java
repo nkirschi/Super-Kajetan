@@ -136,14 +136,4 @@ public class Point {
     public String toString() {
         return "(" + x + "," + y + ")";
     }
-
-    public static void main(String[] args) {
-        Point p = new Point(0, 0);
-        Point q = new Point(3, 4);
-        System.out.println(p.distanceTo(q));
-        p.move(-1, 2);
-        System.out.println(p);
-        q.setPosition(p);
-        System.out.println(p.equals(q));
-    }
 }
