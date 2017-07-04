@@ -99,7 +99,7 @@ public class LevelView extends AbstractView implements Runnable {
                 audioPlayer.pause();
             }
         });
-        
+
         Logger.log("Level initialisiert", Logger.INFO);
         new Thread(this).start();
     }

@@ -4,8 +4,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-import util.Logger;
-
 public class Constants {
     public static final String GAME_VERSION = "Alpha v1.1.2_01";
 

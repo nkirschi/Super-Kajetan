@@ -2,8 +2,6 @@ package util;
 
 import java.sql.*;
 
-import util.Logger;
-
 public class DBConnection {
     private static DBConnection instance;
     private Connection connection;

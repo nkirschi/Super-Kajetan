@@ -1,10 +1,7 @@
 package util;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import util.Logger;
 
 /**
  * Einfach verkettete Liste unter Verwendung des Composite Design Patterns

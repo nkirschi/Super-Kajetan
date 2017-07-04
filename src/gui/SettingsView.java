@@ -1,7 +1,7 @@
 package gui;
-import util.Logger;
 
 import util.Constants;
+import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -45,7 +45,7 @@ public class SettingsView extends AbstractView {
 
         Font labelFont = Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F);
 
-        constraints.insets = new Insets(0,0,0,20);
+        constraints.insets = new Insets(0, 0, 0, 20);
         constraints.gridwidth = GridBagConstraints.RELATIVE;
 
         //Lautstärke
@@ -55,14 +55,15 @@ public class SettingsView extends AbstractView {
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
 
-        JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, (int)minVolume, (int)maxVolume, (int)volume){
-            @Override public void setBorder(Border border){
+        JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, (int) minVolume, (int) maxVolume, (int) volume) {
+            @Override
+            public void setBorder(Border border) {
                 //Nein
             }
         };
         volumeSlider.setOpaque(false);
         volumeSlider.addChangeListener(c -> {
-            this.volume = (float)volumeSlider.getValue();
+            this.volume = (float) volumeSlider.getValue();
             //System.out.println(volumeSlider.getValue());
         });
         settingsPanel.add(volumeSlider, constraints);
@@ -78,7 +79,7 @@ public class SettingsView extends AbstractView {
 
     }
 
-    public float getVolume(){
+    public float getVolume() {
         return volume;
     }
 

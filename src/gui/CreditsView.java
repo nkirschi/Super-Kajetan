@@ -4,7 +4,6 @@ import util.Constants;
 import util.Logger;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 class CreditsView extends AbstractView {
@@ -43,7 +42,7 @@ class CreditsView extends AbstractView {
         creditsPanel.add(header, headerConstraints);
 
         //headerConstraints werden abgeändert, da sie ab jetzt für die Titel (Abteilungen, Zuständigkeiten??) verwendet werden ...
-        headerConstraints.insets = new Insets(15,0,5,0);
+        headerConstraints.insets = new Insets(15, 0, 5, 0);
         Font headerFont = Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F);
 
         //neue Constraints für die Namen ...

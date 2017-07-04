@@ -148,7 +148,7 @@ class JTextFieldLimit extends PlainDocument {
     JTextFieldLimit(int limit) {
         super();
         this.limit = limit;
-        
+
         Logger.log("Tool Panel initialisiert", Logger.INFO);
     }
 
