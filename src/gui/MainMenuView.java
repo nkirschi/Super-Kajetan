@@ -124,6 +124,7 @@ class MainMenuView extends AbstractView {
         });
 
         add(toolPanel, BorderLayout.PAGE_END);
+        Logger.log("Tool Panel initialisiert", Logger.INFO);
     }
 
     public String getCurrentName() {
@@ -165,7 +166,6 @@ class JTextFieldLimit extends PlainDocument {
         super();
         this.limit = limit;
 
-        Logger.log("Tool Panel initialisiert", Logger.INFO);
     }
 
     public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
