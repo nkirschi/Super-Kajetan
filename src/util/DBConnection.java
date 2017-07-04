@@ -2,6 +2,8 @@ package util;
 
 import java.sql.*;
 
+import util.Logger,
+
 public class DBConnection {
     private static DBConnection instance;
     private Connection connection;
@@ -12,6 +14,7 @@ public class DBConnection {
             connection = DriverManager.getConnection("jdbc:ucanaccess://highscores.accdb");
         } catch (Exception e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
     }
 
