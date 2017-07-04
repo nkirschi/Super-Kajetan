@@ -148,6 +148,8 @@ class JTextFieldLimit extends PlainDocument {
     JTextFieldLimit(int limit) {
         super();
         this.limit = limit;
+        
+        Logger.log("Tool Panel initialisiert", Logger.INFO);
     }
 
     public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
