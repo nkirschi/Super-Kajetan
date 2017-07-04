@@ -48,12 +48,12 @@ class HighscoresView extends AbstractView {
         listTopLevelPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         JPanel list = new JPanel(new FlowLayout());
-        list.setBackground(Constants.BUTTON_COLOR);
+        list.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         //Tolle Spalte links mit Erster, Zweiter, ...
         JPanel fancyCollumPanel = new JPanel();
         fancyCollumPanel.setLayout(new BoxLayout(fancyCollumPanel, BoxLayout.Y_AXIS));
-        fancyCollumPanel.setBackground(Constants.BUTTON_COLOR);
+        fancyCollumPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         fancyCollumPanel.setBorder(listCollumBorder);
         list.add(fancyCollumPanel);
 
@@ -75,16 +75,16 @@ class HighscoresView extends AbstractView {
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
         namePanel.setBorder(listCollumBorder);
-        namePanel.setBackground(Constants.BUTTON_COLOR);
+        namePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         list.add(namePanel);
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
-        scorePanel.setBackground(Constants.BUTTON_COLOR);
+        scorePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         scorePanel.setBorder(listCollumBorder);
         list.add(scorePanel);
         JPanel datePanel = new JPanel();
         datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
-        datePanel.setBackground(Constants.BUTTON_COLOR);
+        datePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         datePanel.setBorder(listCollumBorder);
         list.add(datePanel);
 
@@ -142,7 +142,7 @@ class HighscoresView extends AbstractView {
                 Logger.log("Highscores initialisiert", Logger.INFO);
 
                 if (highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName()) == 0) {
-                    Color currentPlayerScores = new Color(29, 105, 224); //new Color(230, 212, 93);
+                    Color currentPlayerScores = new Color(230, 212, 93);
                     nameCell.setForeground(currentPlayerScores);
                     scoreCell.setForeground(currentPlayerScores);
                     dateCell.setForeground(currentPlayerScores);

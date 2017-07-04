@@ -16,7 +16,7 @@ public class AudioPlayer {
 
     public AudioPlayer() {
         random = new Random();
-        volume = 0.0F; // Hier würde dann die Lautstärke aus den Einstellungen geladen werden!
+        volume = gui.SettingsView.getInstance().getVolume();
     }
 
     public void playOnce(String filePath) {
