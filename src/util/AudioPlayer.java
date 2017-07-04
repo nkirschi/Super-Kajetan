@@ -89,10 +89,10 @@ public class AudioPlayer {
                         try {
                             FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                             volumeControl.setValue(volume);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
                             Logger.log("Volume Control wird auf dem System nicht unterstützt", Logger.WARNING);
-                            Logger.log(e, Logger.WARNING);
+                            Logger.log(e1, Logger.WARNING);
                         }
                     }
                     line.start();
@@ -105,8 +105,8 @@ public class AudioPlayer {
         } catch (UnsupportedAudioFileException
                 | LineUnavailableException
                 | IOException e) {
-            throw new IllegalStateException(e);
             Logger.log(e, Logger.WARNING);
+            throw new IllegalStateException(e);
         }
     }
 

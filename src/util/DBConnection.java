@@ -2,7 +2,7 @@ package util;
 
 import java.sql.*;
 
-import util.Logger,
+import util.Logger;
 
 public class DBConnection {
     private static DBConnection instance;
