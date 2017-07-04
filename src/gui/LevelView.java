@@ -1,10 +1,7 @@
 package gui;
 
 import model.*;
-import util.AudioPlayer;
-import util.Constants;
-import util.ImageUtil;
-import util.Logger;
+import util.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,8 +20,6 @@ public class LevelView extends AbstractView implements Runnable {
     private Camera camera; // Die aktuelle "Kamera"
     private HashSet<Integer> pressedKeys;
 
-    private AudioPlayer audioPlayer;
-
     private double verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
     private boolean jumpingPossible = true;
     private boolean runningPossible = true;
@@ -40,8 +35,6 @@ public class LevelView extends AbstractView implements Runnable {
         //keyStates = new HashMap<>();
         pressedKeys = new HashSet<>();
 
-        audioPlayer = new AudioPlayer();
-
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -50,7 +43,7 @@ public class LevelView extends AbstractView implements Runnable {
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
-            audioPlayer.stop();
+            SoundUtil.stop();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
         buttonPanel.add(backButton);
@@ -75,13 +68,13 @@ public class LevelView extends AbstractView implements Runnable {
             @Override
             public void focusGained(FocusEvent focusEvent) {
                 paused = false;
-                audioPlayer.unpause();
+                SoundUtil.unpause();
             }
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
                 paused = true;
-                audioPlayer.pause();
+                SoundUtil.pause();
             }
         });
 
@@ -91,7 +84,7 @@ public class LevelView extends AbstractView implements Runnable {
 
     public void run() {
         running = true;
-        audioPlayer.playLoop();
+        SoundUtil.loop();
 
         int updateCount = 0;
         int frameCount = 0;
@@ -154,7 +147,6 @@ public class LevelView extends AbstractView implements Runnable {
         double xMovement = 0;
         double yMovement = 0;
 
-        System.out.println(pressedKeys.contains(Constants.KEY_JUMP));
         if (!pressedKeys.contains(Constants.KEY_RUN) && !pressedKeys.contains(Constants.KEY_JUMP) && !pressedKeys.contains(Constants.KEY_CROUCH)) {
             runningPossible = true;
             jumpingPossible = true;
