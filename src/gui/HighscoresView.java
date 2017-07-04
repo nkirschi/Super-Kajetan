@@ -155,7 +155,8 @@ class HighscoresView extends AbstractView {
             Logger.log("Fehler beim initialisieren der Highscores", Logger.WARNING);
             Logger.log(e, Logger.WARNING);
         }
-
+        
+        Logger.log("Highscores initialisiert", Logger.INFO);
         return listTopLevelPanel;
     }
 
