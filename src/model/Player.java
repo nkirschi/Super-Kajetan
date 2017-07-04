@@ -9,9 +9,11 @@ public class Player extends Entity {
     private final double PLAYER_WIDTH = 95;
     private final double PLAYER_HEIGHT = 169;
     private int walkCount;
+    private int stamina;
 
     public Player(Point position) {
         this.position = position;
+        stamina = 1000;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(position.getX() - PLAYER_WIDTH / 2, position.getY() - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
@@ -63,6 +65,19 @@ public class Player extends Entity {
             }
         }
         return Constants.PLAYER_STAND_IMAGE_PATH;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public void setStamina(int stamina) {
+        if (stamina < 0)
+            this.stamina = 0;
+        else if (stamina > 1000)
+            this.stamina = 1000;
+        else
+            this.stamina = stamina;
     }
 
     @Override

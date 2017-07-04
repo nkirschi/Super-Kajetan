@@ -24,10 +24,11 @@ public class LevelView extends AbstractView implements Runnable {
     private HashSet<Integer> pressedKeys;
 
     private AudioPlayer audioPlayer;
-    private JProgressBar staminaBar;
 
     private double verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
     private boolean jumpingPossible = true;
+    private boolean runningPossible = true;
+    private boolean crouchingPossible = true;
 
     private boolean running;
     private boolean paused;
@@ -55,23 +56,7 @@ public class LevelView extends AbstractView implements Runnable {
         buttonPanel.add(backButton);
         buttonPanel.setOpaque(false);
 
-        JPanel staminaPanel = new JPanel();
-        staminaPanel.setLayout(new BoxLayout(staminaPanel, BoxLayout.Y_AXIS));
-        staminaPanel.add(new JLabel("Ausdauer: "));
-        staminaBar = new JProgressBar(0, 1000);
-        staminaBar.setValue(staminaBar.getMaximum());
-        staminaBar.setForeground(Constants.MENU_BACKGROUND_COLOR);
-        staminaBar.setBackground(Constants.BUTTON_COLOR);
-        staminaPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
-        staminaPanel.add(staminaBar);
-        staminaPanel.setOpaque(false);
-
-        JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(buttonPanel, BorderLayout.WEST);
-        bottomPanel.add(staminaPanel, BorderLayout.EAST);
-        bottomPanel.setOpaque(false);
-
-        add(bottomPanel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -169,6 +154,22 @@ public class LevelView extends AbstractView implements Runnable {
         double xMovement = 0;
         double yMovement = 0;
 
+        System.out.println(pressedKeys.contains(Constants.KEY_JUMP));
+        if (!pressedKeys.contains(Constants.KEY_RUN) && !pressedKeys.contains(Constants.KEY_JUMP) && !pressedKeys.contains(Constants.KEY_CROUCH)) {
+            runningPossible = true;
+            jumpingPossible = true;
+            crouchingPossible = true;
+        }
+
+        if (level.getPlayer().getStamina() < 5) {
+            pressedKeys.remove(Constants.KEY_RUN);
+            pressedKeys.remove(Constants.KEY_JUMP);
+            pressedKeys.remove(Constants.KEY_CROUCH);
+            runningPossible = false;
+            jumpingPossible = false;
+            crouchingPossible = false;
+        }
+
         for (int keyCode : pressedKeys) {
             switch (keyCode) {
                 case Constants.KEY_LEFT:
@@ -180,35 +181,26 @@ public class LevelView extends AbstractView implements Runnable {
                     xMovement += Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
                     break;
                 case Constants.KEY_JUMP:
-                    if (!jumpingPossible || verticalMoveAmount >= 0)
-                        break;
-                    level.getPlayer().setWalking(false);
-                    level.getPlayer().setRunning(false);
-                    level.getPlayer().setJumping(true);
-                    yMovement += verticalMoveAmount;
+                    if (jumpingPossible && verticalMoveAmount < 0) {
+                        level.getPlayer().setWalking(false);
+                        level.getPlayer().setRunning(false);
+                        level.getPlayer().setJumping(true);
+                        yMovement += verticalMoveAmount;
+                    }
                     break;
                 case Constants.KEY_RUN:
-                    level.getPlayer().setRunning(true);
+                    if (runningPossible)
+                        level.getPlayer().setRunning(true);
                     break;
                 case Constants.KEY_CROUCH:
-                    level.getPlayer().setCrouching(true);
+                    if (crouchingPossible)
+                        level.getPlayer().setCrouching(true);
                     break;
             }
         }
 
-        if (level.getPlayer().getPosition().getX() < getWidth() / 2) {
-            double d = getWidth() / 2 - level.getPlayer().getPosition().getX();
-            level.getPlayer().move(d, 0);
-            camera.scroll(d);
-            level.getPlayer().setWalking(false);
-            level.getPlayer().setRunning(false);
-        } else if (level.getPlayer().getPosition().getX() > level.getLength() - getWidth() / 2) {
-            double d = level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
-            level.getPlayer().move(d, 0);
-            camera.scroll(Math.floor(d));
-            level.getPlayer().setWalking(false);
-            level.getPlayer().setRunning(false);
-        }
+        if ((level.getPlayer().isJumping() || level.getPlayer().isRunning()) && !level.getPlayer().isCrouching())
+            xMovement *= 2;
 
         if (xMovement < 0)
             level.getPlayer().setViewingDirection(Direction.LEFT);
@@ -217,16 +209,6 @@ public class LevelView extends AbstractView implements Runnable {
         else
             level.getPlayer().setRunning(false);
 
-        if (level.getPlayer().isRunning() || level.getPlayer().isJumping()) {
-            staminaBar.setValue(staminaBar.getValue() - 5);
-            xMovement *= 2;
-        }
-
-        if (level.getPlayer().isCrouching())
-            staminaBar.setValue(staminaBar.getValue() - 3);
-
-        if (!level.getPlayer().isRunning() && !level.getPlayer().isJumping() && !level.getPlayer().isCrouching())
-            staminaBar.setValue(staminaBar.getValue() + 3);
 
         camera.scroll(xMovement);
         level.getPlayer().move(xMovement, 0);
@@ -240,7 +222,7 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         if (collidable != null) {
-            
+
         }
 
         level.getPlayer().move(0, yMovement);
@@ -255,6 +237,32 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (collidable != null) {
             System.out.println("Collision");
+        }
+
+        if (level.getPlayer().getPosition().getX() < getWidth() / 2) {
+            double d = getWidth() / 2 - level.getPlayer().getPosition().getX();
+            level.getPlayer().move(d, 0);
+            camera.scroll(d);
+            level.getPlayer().setWalking(false);
+            level.getPlayer().setRunning(false);
+        } else if (level.getPlayer().getPosition().getX() > level.getLength() - getWidth() / 2) {
+            double d = level.getLength() - getWidth() / 2 - level.getPlayer().getPosition().getX();
+            level.getPlayer().move(Math.round(d), 0);
+            camera.scroll(Math.round(d));
+            level.getPlayer().setWalking(false);
+            level.getPlayer().setRunning(false);
+        }
+
+
+        // Ausdauerverbrauch
+        if (level.getPlayer().isCrouching())
+            level.getPlayer().setStamina(level.getPlayer().getStamina() - 2);
+        else if (level.getPlayer().isRunning() || level.getPlayer().isJumping()) {
+            level.getPlayer().setStamina(level.getPlayer().getStamina() - 4);
+        }
+
+        if (!level.getPlayer().isRunning() && !level.getPlayer().isJumping() && !level.getPlayer().isCrouching()) {
+            level.getPlayer().setStamina(level.getPlayer().getStamina() + 2);
         }
 
         // Gravitation
@@ -366,5 +374,16 @@ public class LevelView extends AbstractView implements Runnable {
         String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
         g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
         g2.drawString(level.getPlayer().toString(), getWidth() / 2 - g2.getFontMetrics().stringWidth(level.getPlayer().toString()) / 2, 20);
+
+        Rectangle2D staminaMask = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, 200, 15);
+        Rectangle2D staminaBar = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, level.getPlayer().getStamina() / 5, 15);
+        g2.setColor(Constants.BUTTON_COLOR);
+        g2.fill(staminaMask);
+        g2.setColor(Constants.MENU_BACKGROUND_COLOR);
+        g2.fill(staminaBar);
+        g2.setColor(Color.BLACK);
+
+        g2.setFont(Constants.DEFAULT_FONT);
+        g2.drawString("Ausdauer: " + level.getPlayer().getStamina() / 10 + "%", getWidth() - 215, getHeight() - 17);
     }
 }
