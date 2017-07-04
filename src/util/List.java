@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+impot util.Logger;
+
 /**
  * Einfach verkettete Liste unter Verwendung des Composite Design Patterns
  * Zur Benutzung siehe main()-Methode weiter unten
@@ -137,6 +139,8 @@ public class List<C> implements Iterable<C> {
         list.clear();
         Thread.sleep(100);
         System.out.println(list.get(0)); // Das gibt eine saftige Ausnahme
+        
+        Logger.log("Liste iniialisiert", Logger.INFO);
     }
 }
 

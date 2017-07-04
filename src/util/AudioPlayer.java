@@ -5,6 +5,8 @@ import javax.sound.sampled.DataLine.Info;
 import java.io.IOException;
 import java.util.Random;
 
+import util.Logger;
+
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 import static javax.sound.sampled.AudioSystem.getAudioInputStream;
 
@@ -83,10 +85,11 @@ public class AudioPlayer {
                         FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
                         volumeControl.setValue(volume);
                     } catch (Exception e) {
+                        Logger.log(e, Logger.WARNING);
                         try {
                             FloatControl volumeControl = (FloatControl) line.getControl(FloatControl.Type.VOLUME);
                             volumeControl.setValue(volume);
-                        } catch (Exception f) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                             Logger.log("Volume Control wird auf dem System nicht unterstützt", Logger.WARNING);
                             Logger.log(e, Logger.WARNING);
@@ -103,6 +106,7 @@ public class AudioPlayer {
                 | LineUnavailableException
                 | IOException e) {
             throw new IllegalStateException(e);
+            Logger.log(e, Logger.WARNING);
         }
     }
 
@@ -117,6 +121,7 @@ public class AudioPlayer {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    Logger.log(e, Logger.WARNING);
                 }
             }
             line.write(buffer, 0, n);

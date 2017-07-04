@@ -2,6 +2,7 @@ package model;
 
 import util.ImageUtil;
 import util.List;
+import util.Logger;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Level {
             System.out.println(length);
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
         }
     }
 

@@ -1,4 +1,5 @@
 package gui;
+import util.Logger;
 
 import util.Constants;
 
@@ -69,6 +70,8 @@ public class SettingsView extends AbstractView {
 
         add(settingsPanel, BorderLayout.CENTER);
 
+
+        Logger.log("Settings geladen", Logger.INFO);
     }
 
     public void update() {
