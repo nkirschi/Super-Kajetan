@@ -2,6 +2,7 @@ package model;
 
 import util.ImageUtil;
 import util.List;
+import util.Logger;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
