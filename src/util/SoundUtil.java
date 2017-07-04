@@ -1,5 +1,7 @@
 package util;
 
+import gui.SettingsView;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.io.IOException;
@@ -92,6 +94,8 @@ public class SoundUtil {
         byte[] data = new byte[4096];
         SourceDataLine line = getLine(targetFormat);
         if (line != null) {
+            FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+            control.setValue(SettingsView.getInstance().getVolume());
             // Start
             line.start();
             int nBytesRead = 0, nBytesWritten = 0;

@@ -44,6 +44,8 @@ public class LevelView extends AbstractView implements Runnable {
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
             SoundUtil.stop();
+            running = false;
+            paused = true;
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
         buttonPanel.add(backButton);

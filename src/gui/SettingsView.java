@@ -9,9 +9,9 @@ import java.awt.*;
 
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
-    private float maxVolume = 100F;
-    private float minVolume = 0F;
-    private float volume = maxVolume;
+    private float maxVolume = 6F;
+    private float minVolume = -6F;
+    private float volume = (maxVolume + minVolume) / 2;
 
     private SettingsView() {
         super();
