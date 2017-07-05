@@ -1,10 +1,12 @@
 package gui;
 
 import model.*;
-import util.*;
+import util.Constants;
+import util.ImageUtil;
+import util.Logger;
+import util.SoundUtil;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -165,31 +167,34 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         for (int keyCode : pressedKeys) {
-            switch (keyCode) {
-                case Constants.KEY_LEFT:
-                    level.getPlayer().setWalking(true);
-                    xMovement -= Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
-                    break;
-                case Constants.KEY_RIGHT:
-                    level.getPlayer().setWalking(true);
-                    xMovement += Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
-                    break;
-                case Constants.KEY_JUMP:
-                    if (jumpingPossible && verticalMoveAmount < 0) {
-                        level.getPlayer().setWalking(false);
-                        level.getPlayer().setRunning(false);
-                        level.getPlayer().setJumping(true);
-                        yMovement += verticalMoveAmount;
-                    }
-                    break;
-                case Constants.KEY_RUN:
-                    if (runningPossible)
-                        level.getPlayer().setRunning(true);
-                    break;
-                case Constants.KEY_CROUCH:
-                    if (crouchingPossible)
-                        level.getPlayer().setCrouching(true);
-                    break;
+            if (keyCode == Constants.KEY_LEFT) {
+                level.getPlayer().setWalking(true);
+                xMovement -= Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
+
+            }
+            if (keyCode == Constants.KEY_RIGHT) {
+                level.getPlayer().setWalking(true);
+                xMovement += Constants.PLAYER_HORIZONTAL_MOVE_AMOUNT;
+
+            }
+            if (keyCode == Constants.KEY_JUMP) {
+                if (jumpingPossible && verticalMoveAmount < 0) {
+                    level.getPlayer().setWalking(false);
+                    level.getPlayer().setRunning(false);
+                    level.getPlayer().setJumping(true);
+                    yMovement += verticalMoveAmount;
+                }
+
+            }
+            if (keyCode == Constants.KEY_RUN) {
+                if (runningPossible)
+                    level.getPlayer().setRunning(true);
+
+            }
+            if (keyCode == Constants.KEY_CROUCH) {
+                if (crouchingPossible)
+                    level.getPlayer().setCrouching(true);
+
             }
         }
 

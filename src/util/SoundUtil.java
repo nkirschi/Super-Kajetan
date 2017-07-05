@@ -94,8 +94,13 @@ public class SoundUtil {
         byte[] data = new byte[4096];
         SourceDataLine line = getLine(targetFormat);
         if (line != null) {
-            FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-            control.setValue(SettingsView.getInstance().getVolume());
+            try {
+                FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+                control.setValue(SettingsView.getInstance().getVolume());
+            }
+            catch(Exception e){
+                //e.printStackTrace();
+            }
             // Start
             line.start();
             int nBytesRead = 0, nBytesWritten = 0;

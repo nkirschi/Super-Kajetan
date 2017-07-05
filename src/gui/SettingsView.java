@@ -46,9 +46,9 @@ public class SettingsView extends AbstractView {
         Font labelFont = Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F);
 
         constraints.insets = new Insets(0, 0, 0, 20);
-        constraints.gridwidth = GridBagConstraints.RELATIVE;
 
         //Lautstärke
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
         JLabel volumeLabel = new JLabel("Lautstärke");
         volumeLabel.setFont(labelFont);
         settingsPanel.add(volumeLabel, constraints);
@@ -68,12 +68,26 @@ public class SettingsView extends AbstractView {
         });
         settingsPanel.add(volumeSlider, constraints);
 
+        //Steuerung
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel controllLabel = new JLabel("Alternativer Steuerungsmodus");
+        controllLabel.setFont(labelFont);
+        settingsPanel.add(controllLabel, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        JCheckBox controllCheckBox = new JCheckBox();
+
+        //Beschreibung der Steuerung
+
+
 
         add(settingsPanel, BorderLayout.CENTER);
 
 
         Logger.log("Settings geladen", Logger.INFO);
     }
+
+    //TODO Settings speichern
 
     public void update() {
 

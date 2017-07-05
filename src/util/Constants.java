@@ -1,5 +1,7 @@
 package util;
 
+import sun.awt.AWTAccessor;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -27,11 +29,11 @@ public class Constants {
     public static final double GRAVITATIONAL_ACCELERATION = 0.75;
 
     // Tastatur
-    public static final int KEY_JUMP = KeyEvent.VK_W;
-    public static final int KEY_LEFT = KeyEvent.VK_A;
-    public static final int KEY_RIGHT = KeyEvent.VK_D;
-    public static final int KEY_CROUCH = KeyEvent.VK_S;
-    public static final int KEY_RUN = KeyEvent.VK_SHIFT;
+    public static int KEY_JUMP = KeyEvent.VK_W;
+    public static int KEY_LEFT = KeyEvent.VK_A;
+    public static int KEY_RIGHT = KeyEvent.VK_D;
+    public static int KEY_CROUCH = KeyEvent.VK_S;
+    public static int KEY_RUN = KeyEvent.VK_SHIFT;
 
     //Player Bilder
     public static final String PLAYER_STAND_IMAGE_PATH = "images/char/char_stand.png";
