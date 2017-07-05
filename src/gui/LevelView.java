@@ -15,12 +15,12 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.*;
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Camera camera; // Die aktuelle "Kamera"
-    private HashSet<Integer> pressedKeys;
+    private Set<Integer> pressedKeys;
 
     private double verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
     private boolean jumpingPossible = true;
@@ -35,7 +35,7 @@ public class LevelView extends AbstractView implements Runnable {
         this.level = level;
         camera = new Camera(0, 0, getWidth(), getHeight());
         //keyStates = new HashMap<>();
-        pressedKeys = new HashSet<>();
+        pressedKeys = new TreeSet<>();
 
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -58,12 +58,10 @@ public class LevelView extends AbstractView implements Runnable {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                //keyStates.put(keyEvent.getKeyCode(), true);
                 pressedKeys.add(keyEvent.getKeyCode());
             }
 
             public void keyReleased(KeyEvent keyEvent) {
-                //keyStates.put(keyEvent.getKeyCode(), false);
                 pressedKeys.remove(keyEvent.getKeyCode());
             }
         });
@@ -157,10 +155,8 @@ public class LevelView extends AbstractView implements Runnable {
             crouchingPossible = true;
         }
 
+
         if (level.getPlayer().getStamina() < 5) {
-            pressedKeys.remove(Constants.KEY_RUN);
-            pressedKeys.remove(Constants.KEY_JUMP);
-            pressedKeys.remove(Constants.KEY_CROUCH);
             runningPossible = false;
             jumpingPossible = false;
             crouchingPossible = false;
@@ -198,8 +194,11 @@ public class LevelView extends AbstractView implements Runnable {
             }
         }
 
-        if ((level.getPlayer().isJumping() || level.getPlayer().isRunning()) && !level.getPlayer().isCrouching())
+        if ((level.getPlayer().isJumping() || level.getPlayer().isRunning() && !level.getPlayer().isCrouching()))
             xMovement *= 2;
+
+        if (level.getPlayer().isCrouching() && !level.getPlayer().isJumping())
+            xMovement /= 2;
 
         if (xMovement < 0)
             level.getPlayer().setViewingDirection(Direction.LEFT);
@@ -254,11 +253,17 @@ public class LevelView extends AbstractView implements Runnable {
 
 
         // Ausdauerverbrauch
+        if (level.getPlayer().isWalking() && !level.getPlayer().isJumping())
+            level.getPlayer().setStamina(level.getPlayer().getStamina() - 1);
+
         if (level.getPlayer().isCrouching())
             level.getPlayer().setStamina(level.getPlayer().getStamina() - 2);
         else if (level.getPlayer().isRunning() || level.getPlayer().isJumping()) {
-            level.getPlayer().setStamina(level.getPlayer().getStamina() - 4);
+            level.getPlayer().setStamina(level.getPlayer().getStamina() - 3);
         }
+
+        if (level.getPlayer().isJumping() && yMovement >= 0)
+            level.getPlayer().setStamina(level.getPlayer().getStamina() + 2);
 
         if (!level.getPlayer().isRunning() && !level.getPlayer().isJumping() && !level.getPlayer().isCrouching()) {
             level.getPlayer().setStamina(level.getPlayer().getStamina() + 2);
