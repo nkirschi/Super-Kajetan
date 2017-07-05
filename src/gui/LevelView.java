@@ -253,7 +253,7 @@ public class LevelView extends AbstractView implements Runnable {
 
 
         // Ausdauerverbrauch
-        if (level.getPlayer().isWalking() && !level.getPlayer().isJumping())
+        if (level.getPlayer().isWalking() && !level.getPlayer().isJumping() && !level.getPlayer().isCrouching())
             level.getPlayer().setStamina(level.getPlayer().getStamina() - 1);
 
         if (level.getPlayer().isCrouching())
