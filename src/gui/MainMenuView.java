@@ -11,9 +11,11 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
+import java.io.IOException;
 
 class MainMenuView extends AbstractView {
     private static MainMenuView instance;
+    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private GridBagConstraints constraints;
     private String currentName = "Ritter Arnold";
 
@@ -21,7 +23,7 @@ class MainMenuView extends AbstractView {
         super();
         setLayout(new BorderLayout());
         setBackground(Constants.MENU_BACKGROUND_COLOR);
-
+        //setOpaque(opaque);
         initButtonPanel();
         initToolPanel();
         //TODO Namenseingabefeld
@@ -29,6 +31,7 @@ class MainMenuView extends AbstractView {
 
     private void initButtonPanel() {
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(opaque);
         buttonPanel.setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -86,22 +89,28 @@ class MainMenuView extends AbstractView {
 
     private void initToolPanel() {
         JPanel toolPanel = new JPanel();
+        toolPanel.setOpaque(opaque);
         toolPanel.setLayout(new FlowLayout());
         toolPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         JLabel nameLabel = new JLabel("Gib deinen Namen hier ein: ");
         nameLabel.setFont(Constants.DEFAULT_FONT);
+        nameLabel.setForeground(Constants.FOREGROUND_COLOR);
         toolPanel.add(nameLabel);
 
         JTextField nameTextField = new JTextField(17) {
             @Override
             public void setBorder(Border border) {
-                // Nein, Böse!
+                if(!opaque){
+                    super.setBorder(border);
+                }
             }
         };
+        nameTextField.setOpaque(opaque);
         nameTextField.setDocument(new JTextFieldLimit(20));
         nameTextField.setText(currentName);
         nameTextField.setBackground(Constants.BUTTON_COLOR);
+        nameTextField.setForeground(Constants.FOREGROUND_COLOR);
         nameTextField.setFont(Constants.DEFAULT_FONT);
         nameTextField.setHorizontalAlignment(JTextField.CENTER);
         toolPanel.add(nameTextField);
@@ -144,17 +153,17 @@ class MainMenuView extends AbstractView {
     @Override
     public void paintComponent(Graphics g)
     {
-        /*
-        Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
-        -> setOpaque(false)
+        super.paintComponent(g);
 
+        //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
+        //-> setOpaque(false)
         try {
-            g.drawImage(util.ImageUtil.getImage("images/backgrounds/background.png"), 0, 0, null);
+            g.drawImage(util.ImageUtil.getImage("images/menubackground_nobanner.png"), 0, 0, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
-        super.paintComponent(g);
+
+
     }
 }
 

@@ -12,6 +12,7 @@ public class Constants {
     // GUI
     public static final Color MENU_BACKGROUND_COLOR = new Color(131, 131, 131);
     public static final Color BUTTON_COLOR = new Color(197, 197, 197);
+    public static final Color FOREGROUND_COLOR = new Color(0, 0, 0);
     public static final Dimension defaultButtonSize = new Dimension(250, 50);
     public static final Font DEFAULT_FONT = new Font("Pixel Operator", Font.PLAIN, 17);
 
