@@ -27,7 +27,7 @@ public class Constants {
     public static final int GROUND_LEVEL = 720;
     public static final double PLAYER_HORIZONTAL_MOVE_AMOUNT = 2.5;
     public static final double PLAYER_VERTICAL_MOVE_AMOUNT = 16;
-    public static final double GRAVITATIONAL_ACCELERATION = 0.75;
+    public static final double GRAVITATIONAL_ACCELERATION = 0.5;
 
     // Tastatur
     public static int KEY_JUMP = KeyEvent.VK_W;

@@ -1,5 +1,7 @@
 package gui;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.*;
 import util.Constants;
 import util.ImageUtil;
@@ -23,6 +25,7 @@ public class LevelView extends AbstractView implements Runnable {
     private Timer timer;
 
     private double verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
+    private double fallMoveAmount = 0;
     private boolean jumpingPossible = true;
     private boolean runningPossible = true;
     private boolean crouchingPossible = true;
@@ -172,7 +175,7 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
 
-        if (level.getPlayer().getStamina() < 5) {
+        if (level.getPlayer().getStamina() < 10) {
             runningPossible = false;
             jumpingPossible = false;
             crouchingPossible = false;
@@ -191,6 +194,7 @@ public class LevelView extends AbstractView implements Runnable {
             }
             if (keyCode == Constants.KEY_JUMP) {
                 if (jumpingPossible && verticalMoveAmount < 0) {
+                    fallMoveAmount = 0;
                     level.getPlayer().setWalking(false);
                     level.getPlayer().setRunning(false);
                     level.getPlayer().setJumping(true);
@@ -236,22 +240,21 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         if (collidable != null) {
-
+            System.out.println(collidable);
+            double d = 0;
+            if (xMovement > 0) {
+                d = collidable.getHitbox().getX()
+                        - level.getPlayer().getHitbox().getX() - level.getPlayer().getHitbox().getWidth();
+            } else if (xMovement < 0) {
+                d = collidable.getHitbox().getX() + collidable.getHitbox().getWidth() -
+                        level.getPlayer().getHitbox().getX();
+            }
+            level.getPlayer().move(d, 0);
+            camera.scroll(d);
         }
 
         level.getPlayer().move(0, yMovement);
 
-        //Collidable collidable = null;
-        for (Ground ground : level.getGrounds()) {
-            if (level.getPlayer().collidesWith(ground)) {
-                collidable = ground;
-                break;
-            }
-        }
-
-        if (collidable != null) {
-            System.out.println("Collision");
-        }
 
         if (level.getPlayer().getPosition().getX() < getWidth() / 2) {
             double d = getWidth() / 2 - level.getPlayer().getPosition().getX();
@@ -265,6 +268,17 @@ public class LevelView extends AbstractView implements Runnable {
             camera.scroll(Math.round(d));
             level.getPlayer().setWalking(false);
             level.getPlayer().setRunning(false);
+        }
+
+        for (Ground ground : level.getGrounds()) {
+            if (level.getPlayer().collidesWith(ground)) {
+                collidable = ground;
+                break;
+            }
+        }
+
+        if (collidable != null) {
+
         }
 
 
@@ -285,36 +299,45 @@ public class LevelView extends AbstractView implements Runnable {
             level.getPlayer().setStamina(level.getPlayer().getStamina() + 2);
         }
 
-        // Gravitation
+
         if (!pressedKeys.contains(Constants.KEY_JUMP) && level.getPlayer().isJumping())
             jumpingPossible = false;
 
-        if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
-
-            collidable = null;
-            for (Ground ground : level.getGrounds()) {
-                if (level.getPlayer().collidesWith(ground)) {
-                    collidable = ground;
-                    break;
-                }
-            }
-
-            if (collidable != null) {
-                System.out.println("Collison");
-            }
-
+        // Gravitation
+        /*if (level.getPlayer().getPosition().getY() < Constants.GROUND_LEVEL) {
             if (Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY() >= verticalMoveAmount) {
                 level.getPlayer().setWalking(false);
                 level.getPlayer().setRunning(false);
                 level.getPlayer().setJumping(true);
                 level.getPlayer().move(0, verticalMoveAmount);
-                verticalMoveAmount += Constants.GRAVITATIONAL_ACCELERATION;
+
             } else {
                 level.getPlayer().setJumping(false);
                 level.getPlayer().move(0, Constants.GROUND_LEVEL - level.getPlayer().getPosition().getY());
                 verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
                 jumpingPossible = true;
             }
+        }*/
+        level.getPlayer().move(0, fallMoveAmount);
+
+        boolean collisionHappened = false;
+        for (Ground ground : level.getGrounds()) {
+            if (level.getPlayer().collidesWith(ground)) {
+                level.getPlayer().move(0, ground.getHitbox().getY() - level.getPlayer().getPosition().getY());
+                collisionHappened = true;
+            }
+        }
+
+        if (collisionHappened) {
+            level.getPlayer().setJumping(false);
+            verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
+            fallMoveAmount = 0;
+        } else {
+            if (level.getPlayer().isJumping() && !pressedKeys.contains(Constants.KEY_JUMP) && verticalMoveAmount < 0) {
+                level.getPlayer().move(0, verticalMoveAmount);
+            } else if (!level.getPlayer().isJumping() || verticalMoveAmount >= 0)
+                fallMoveAmount += Constants.GRAVITATIONAL_ACCELERATION;
+            verticalMoveAmount += Constants.GRAVITATIONAL_ACCELERATION;
         }
 
         // 2. Move Enemies + Gravitation + check Collision
@@ -402,6 +425,9 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setColor(Constants.MENU_BACKGROUND_COLOR);
         g2.fill(staminaBar);
         g2.setColor(Color.BLACK);
+
+        g2.drawString("jumpMoveAmount = " + verticalMoveAmount, 10, 50);
+        g2.drawString("fallMoveAmount = " + fallMoveAmount, 10, 70);
 
         g2.setFont(Constants.DEFAULT_FONT);
         g2.drawString("Ausdauer: " + level.getPlayer().getStamina() / 10 + "%", getWidth() - 215, getHeight() - 17);

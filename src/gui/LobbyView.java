@@ -94,12 +94,18 @@ class LobbyView extends AbstractView {
      * Hässliche Hardcoded-Level-Methode
      */
     private Level createLevel1() {
-        Player player = new Player(new Point(getWidth() / 2, Constants.GROUND_LEVEL));
+        Player player = new Player(new Point(getWidth() / 2, 700));
         List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1200, 20));
         grounds.add(new Ground(1400, 400, 60));
+        grounds.add(new Ground(1750, 300, 100));
+        grounds.add(new Ground(2000, 200, 80));
+        grounds.add(new Ground(2200, 200, 60));
+        grounds.add(new Ground(2400, 200, 40));
+        grounds.add(new Ground(2600, 200, 20));
+        grounds.add(new Ground(2800, 200, 0));
         Logger.log("Level erstellt", Logger.INFO);
         return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background.png");
     }
