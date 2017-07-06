@@ -8,19 +8,19 @@ import util.SoundUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
+import java.util.Timer;
+
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Camera camera; // Die aktuelle "Kamera"
     private Set<Integer> pressedKeys;
+    private Timer timer;
 
     private double verticalMoveAmount = -Constants.PLAYER_VERTICAL_MOVE_AMOUNT;
     private boolean jumpingPossible = true;
@@ -29,7 +29,7 @@ public class LevelView extends AbstractView implements Runnable {
 
     private boolean running;
     private boolean paused;
-    private int hz, fps;
+    private int hz = 60, fps = 60;
 
     LevelView(Level level) {
         this.level = level;
@@ -48,6 +48,8 @@ public class LevelView extends AbstractView implements Runnable {
             SoundUtil.stop();
             running = false;
             paused = true;
+            timer.cancel();
+            timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
         buttonPanel.add(backButton);
@@ -70,18 +72,32 @@ public class LevelView extends AbstractView implements Runnable {
             @Override
             public void focusGained(FocusEvent focusEvent) {
                 paused = false;
+                pressedKeys.clear();
                 SoundUtil.unpause();
             }
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
                 paused = true;
+                pressedKeys.clear();
                 SoundUtil.pause();
             }
         });
 
         Logger.log("Level initialisiert", Logger.INFO);
-        new Thread(this).start();
+        //new Thread(this).start();
+
+        SoundUtil.loop();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!paused) {
+                    update();
+                    repaint();
+                }
+            }
+        }, 0, 1000 / 60);
     }
 
     public void run() {
