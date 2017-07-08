@@ -1,12 +1,8 @@
 package model;
 
-import util.Point;
-
-import java.awt.geom.Rectangle2D;
-
 public class Spider extends Enemy {
-    public Spider(Point position, Behavior behavior, Direction viewingDirection) {
-        super(position, behavior, viewingDirection);
+    public Spider(double x, double y, Behavior behavior, Direction viewingDirection) {
+        super(x, y, behavior, viewingDirection);
 
     }
 

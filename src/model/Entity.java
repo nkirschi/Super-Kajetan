@@ -1,11 +1,8 @@
 package model;
 
-import util.Point;
-
 import java.awt.geom.Rectangle2D;
 
 public abstract class Entity implements Collidable {
-    Point position; // Der Punkt in der Mitte unten am Entity
     Rectangle2D.Double hitbox;
 
     int health;
@@ -15,12 +12,12 @@ public abstract class Entity implements Collidable {
     boolean jumping;
     boolean crouching;
 
+    protected double x, y;
+
+    protected double velocityX, velocityY;
 
     protected Direction viewingDirection;
 
-    public Point getPosition() {
-        return position;
-    }
 
     @Override
     public Rectangle2D.Double getHitbox() {
@@ -28,14 +25,36 @@ public abstract class Entity implements Collidable {
     }
 
     /**
-     * Bewegung der Entität um Koordinatendifferenzen
-     *
-     * @param x Delta-x, um das verschoben wird
-     * @param y Delta-y, um das verschoben wird
+     * Ausführung der Bewegung in Abhängigkeit der Geschwindigkeitskomponenten
      */
-    public void move(double x, double y) {
-        position.move(x, y);
-        hitbox.setRect(hitbox.getX() + x, hitbox.getY() + y, hitbox.getWidth(), hitbox.getHeight());
+    public void move() {
+        this.x += velocityX;
+        this.y += velocityY;
+        hitbox.setRect(hitbox.getX() + velocityX, hitbox.getY() + velocityY, hitbox.getWidth(), hitbox.getHeight());
+    }
+
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+        hitbox.setRect(x - hitbox.getWidth() / 2, y - hitbox.getHeight(), hitbox.getWidth(), hitbox.getHeight());
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+        hitbox.setRect(x - hitbox.getWidth() / 2, hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+        hitbox.setRect(hitbox.getX(), y - hitbox.getHeight(), hitbox.getWidth(), hitbox.getHeight());
     }
 
     public int getHealth() {
@@ -95,7 +114,7 @@ public abstract class Entity implements Collidable {
 
     @Override
     public String toString() {
-        return position + ": health = " + health + ", walking = " + walking + ", running = " + running +
-                ", jumping = " + jumping + ", crouching = " + crouching;
+        return "(" + x + ", " + y + ") " + ": health = " + health + ", walking = " + walking +
+                ", running = " + running + ", jumping = " + jumping + ", crouching = " + crouching;
     }
 }

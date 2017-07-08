@@ -1,7 +1,6 @@
 package model;
 
 import util.Constants;
-import util.Point;
 
 import java.awt.geom.Rectangle2D;
 
@@ -11,11 +10,39 @@ public class Player extends Entity {
     private int walkCount;
     private int stamina;
 
-    public Player(Point position) {
-        this.position = position;
+    private boolean onGround;
+
+    public Player(double x, double y) {
+        this.x = x;
+        this.y = y;
+        velocityX = 0;
+        velocityY = 0;
+        onGround = true;
         stamina = 1000;
         viewingDirection = Direction.RIGHT;
-        hitbox = new Rectangle2D.Double(position.getX() - PLAYER_WIDTH / 2, position.getY() - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
+        hitbox = new Rectangle2D.Double(x - PLAYER_WIDTH / 2, y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
+    }
+
+    /**
+     * Copy-Konstruktor für Dummy-Objekte zum Kollisionscheck
+     *
+     * @param player Der zu kopierende Spieler
+     */
+    public Player(Player player) {
+        x = player.getX();
+        y = player.getY();
+        velocityX = player.getVelocityX();
+        velocityY = player.getVelocityY();
+        onGround = player.isOnGround();
+        health = player.getHealth();
+        stamina = player.getStamina();
+        viewingDirection = player.getViewingDirection();
+        hitbox = new Rectangle2D.Double(player.getHitbox().getX(), player.getHitbox().getY(),
+                player.getHitbox().getWidth(), player.getHitbox().getHeight());
+        walking = player.isWalking();
+        running = player.isRunning();
+        jumping = player.isJumping();
+        crouching = player.isCrouching();
     }
 
     @Override
@@ -79,6 +106,47 @@ public class Player extends Entity {
         else
             this.stamina = stamina;
     }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public void addVelocityX(double velocityX) {
+        this.velocityX += velocityX;
+    }
+
+    public void multiplyVelocityX(double factor) {
+        velocityX *= factor;
+    }
+
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public void addVelocityY(double velocityY) {
+        this.velocityY += velocityY;
+    }
+
+    public void mulitplyVelocityY(double factor) {
+        velocityY *= factor;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
+    }
+
 
     @Override
     public String toString() {

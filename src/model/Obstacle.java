@@ -1,16 +1,28 @@
 package model;
 
-import util.Point;
-
 import java.awt.geom.Rectangle2D;
 
 public abstract class Obstacle implements Collidable {
-    protected Point position;
     protected Rectangle2D.Double hitbox;
+    protected double x;
 
-    Point getPosition() {
-        return position;
+    public double getX() {
+        return x;
     }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    protected double y;
 
     @Override
     public Rectangle2D.Double getHitbox() {

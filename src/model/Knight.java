@@ -1,7 +1,6 @@
 package model;
 
 import util.Constants;
-import util.Point;
 
 import java.awt.geom.Rectangle2D;
 
@@ -9,9 +8,9 @@ public class Knight extends Enemy {
     private final double KNIGHT_WIDTH = 95;
     private final double KNIGHT_HEIGHT = 169;
 
-    public Knight(Point position, Behavior behavior, Direction viewingDirection) {
-        super(position, behavior, viewingDirection);
-        hitbox = new Rectangle2D.Double(position.getX() - KNIGHT_WIDTH / 2, position.getY() - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
+    public Knight(double x, double y, Behavior behavior, Direction viewingDirection) {
+        super(x, y, behavior, viewingDirection);
+        hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class Constants {
     public static final Color MENU_BACKGROUND_COLOR = new Color(109, 119, 131);
     public static final Color BUTTON_COLOR = new Color(197, 197, 197);
     public static final Color FOREGROUND_COLOR = new Color(0, 0, 0);
-    public static final Dimension defaultButtonSize = new Dimension(250, 50);
+    public static final Dimension DEFAULT_BUTTON_SIZE = new Dimension(250, 50);
     public static final Font DEFAULT_FONT = new Font("Pixel Operator", Font.PLAIN, 17);
 
     // Datenbank
@@ -25,8 +25,9 @@ public class Constants {
     // Spielmechanik
     public static final int UPDATE_CLOCK = 50;
     public static final int GROUND_LEVEL = 720;
-    public static final double PLAYER_HORIZONTAL_MOVE_AMOUNT = 2.5;
-    public static final double PLAYER_VERTICAL_MOVE_AMOUNT = 16;
+    public static final double SPEED_FACTOR = 2.0;
+    public static final double PLAYER_WALK_VELOCITY = 2.5;
+    public static final double PLAYER_INITIAL_JUMP_VELOCITY = 20;
     public static final double GRAVITATIONAL_ACCELERATION = 0.5;
 
     // Tastatur

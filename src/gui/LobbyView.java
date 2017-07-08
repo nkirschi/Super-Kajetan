@@ -4,7 +4,6 @@ import model.*;
 import util.Constants;
 import util.List;
 import util.Logger;
-import util.Point;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -56,7 +55,7 @@ class LobbyView extends AbstractView {
         //Level 1
         JButton lvl1 = new JButton("Level 1");
         lvl1.setBackground(Constants.BUTTON_COLOR);
-        lvl1.setPreferredSize(Constants.defaultButtonSize);
+        lvl1.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl1.setFont(buttonFont);
         lvl1.addActionListener(a -> {
             LevelView levelView = new LevelView(createLevel1());
@@ -69,7 +68,7 @@ class LobbyView extends AbstractView {
         //Level 2
         JButton lvl2 = new JButton("Level 2");
         lvl2.setBackground(Constants.BUTTON_COLOR);
-        lvl2.setPreferredSize(Constants.defaultButtonSize);
+        lvl2.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl2.setFont(buttonFont);
         lvl2.addActionListener(a -> {
             LevelView levelView = new LevelView(createLevel2());
@@ -94,7 +93,6 @@ class LobbyView extends AbstractView {
      * Hässliche Hardcoded-Level-Methode
      */
     private Level createLevel1() {
-        Player player = new Player(new Point(getWidth() / 2, 700));
         List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
@@ -107,16 +105,15 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(2600, 200, 20));
         grounds.add(new Ground(2800, 200, 0));
         Logger.log("Level erstellt", Logger.INFO);
-        return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background.png");
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png");
     }
 
     private Level createLevel2() {
-        Player player = new Player(new Point(getWidth() / 2, Constants.GROUND_LEVEL));
         List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1200, 20));
         grounds.add(new Ground(1400, 400, 60));
-        return new Level(player, enemies, obstacles, grounds, "images/backgrounds/background2.jpg");
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg");
     }
 }

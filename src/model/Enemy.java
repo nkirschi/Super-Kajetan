@@ -1,15 +1,12 @@
 package model;
 
-import util.Point;
-
-import java.awt.geom.Rectangle2D;
-
 public abstract class Enemy extends Entity {
     protected Behavior behavior;
     protected int walkCount;
 
-    public Enemy(Point position, Behavior behavior, Direction viewingDirection) {
-        this.position = position;
+    public Enemy(double x, double y, Behavior behavior, Direction viewingDirection) {
+        this.x = x;
+        this.y = y;
         this.behavior = behavior;
         this.viewingDirection = viewingDirection;
         walkCount = 0;

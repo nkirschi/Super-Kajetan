@@ -56,11 +56,11 @@ class MainMenuView extends AbstractView {
         Logger.log("Main Menu: Action-Listener hinzugefügt", Logger.INFO);
 
         //Aussehens-Parameter setzen
-        lobbyButton.setPreferredSize(Constants.defaultButtonSize);
-        highscoresButton.setPreferredSize(Constants.defaultButtonSize);
-        settingsButton.setPreferredSize(Constants.defaultButtonSize);
-        creditsButton.setPreferredSize(Constants.defaultButtonSize);
-        exitButton.setPreferredSize(Constants.defaultButtonSize);
+        lobbyButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        highscoresButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        settingsButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        creditsButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        exitButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
 
         lobbyButton.setBackground(Constants.BUTTON_COLOR);
         highscoresButton.setBackground(Constants.BUTTON_COLOR);
