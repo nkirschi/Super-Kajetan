@@ -5,6 +5,7 @@ import sun.awt.AWTAccessor;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.security.Key;
 
 public class Constants {
     public static final String GAME_VERSION = "Alpha v1.1.2_01";
@@ -25,7 +26,7 @@ public class Constants {
     // Spielmechanik
     public static final int UPDATE_CLOCK = 50;
     public static final int GROUND_LEVEL = 720;
-    public static final double SPEED_FACTOR = 2.0;
+    public static final double SPEED_FACTOR = 2;
     public static final double PLAYER_WALK_VELOCITY = 2.5;
     public static final double PLAYER_INITIAL_JUMP_VELOCITY = 20;
     public static final double GRAVITATIONAL_ACCELERATION = 0.5;
@@ -36,6 +37,8 @@ public class Constants {
     public static int KEY_RIGHT = KeyEvent.VK_D;
     public static int KEY_CROUCH = KeyEvent.VK_S;
     public static int KEY_RUN = KeyEvent.VK_SHIFT;
+    public static int KEY_MENU = KeyEvent.VK_ESCAPE;
+    public static int KEY_DEBUG = KeyEvent.VK_F1;
 
     //Player Bilder
     public static final String PLAYER_STAND_IMAGE_PATH = "images/char/char_stand.png";

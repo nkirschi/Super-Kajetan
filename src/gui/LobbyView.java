@@ -95,6 +95,7 @@ class LobbyView extends AbstractView {
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();
+        obstacles.add(new Crate(1750, 640));
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1200, 20));
         grounds.add(new Ground(1400, 400, 60));

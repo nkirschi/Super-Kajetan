@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.*;
 import util.Constants;
 import util.ImageUtil;
@@ -11,8 +12,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.Timer;
 
 
@@ -22,14 +25,9 @@ public class LevelView extends AbstractView implements Runnable {
     private Camera camera; // Die aktuelle "Kamera"
     private Timer timer;
 
-    private double verticalMoveAmount = -Constants.PLAYER_INITIAL_JUMP_VELOCITY;
-    private double fallMoveAmount = 0;
-    private boolean jumpingPossible = true;
-    private boolean runningPossible = true;
-    private boolean crouchingPossible = true;
     private boolean exhausted;
 
-    private boolean left, right, run, jump, crouch;
+    private boolean left, right, run, jump, crouch, menu, debug;
 
     private boolean running;
     private boolean paused;
@@ -75,6 +73,10 @@ public class LevelView extends AbstractView implements Runnable {
                     jump = true;
                 else if (keyCode == Constants.KEY_CROUCH)
                     crouch = true;
+                else if (keyCode == Constants.KEY_MENU)
+                    menu = !menu;
+                else if (keyCode == Constants.KEY_DEBUG)
+                    debug = !debug;
             }
 
             public void keyReleased(KeyEvent keyEvent) {
@@ -183,31 +185,46 @@ public class LevelView extends AbstractView implements Runnable {
 
     public void update() {
         // 1. Reset
-        player.setVelocityX(0);
         player.setWalking(false);
         player.setRunning(false);
         player.setCrouching(false);
 
         // 2. Input Handling
         if (left) {
-            player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY);
+            if (player.getVelocityX() > -Constants.PLAYER_WALK_VELOCITY)
+                player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY / 8);
+            else
+                player.setVelocityX(-Constants.PLAYER_WALK_VELOCITY);
             if (!right)
                 player.setViewingDirection(Direction.LEFT);
             player.setWalking(true);
+        } else {
+            if (player.getVelocityX() < 0)
+                player.addVelocityX(Constants.PLAYER_WALK_VELOCITY / 8);
+            else if (!right)
+                player.setVelocityX(0);
         }
 
         if (right) {
-            player.addVelocityX(Constants.PLAYER_WALK_VELOCITY);
+            if (player.getVelocityX() < Constants.PLAYER_WALK_VELOCITY)
+                player.addVelocityX(Constants.PLAYER_WALK_VELOCITY / 8);
+            else
+                player.setVelocityX(Constants.PLAYER_WALK_VELOCITY);
             if (!left)
                 player.setViewingDirection(Direction.RIGHT);
             player.setWalking(true);
+        } else {
+            if (player.getVelocityX() > 0)
+                player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY / 8);
+            else if (!left)
+                player.setVelocityX(0);
         }
 
-        if (run) {
+        if (run && !exhausted) {
             player.setRunning(true);
         }
 
-        if (jump && player.isOnGround()) {
+        if (jump && player.isOnGround() && !exhausted) {
             player.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
             player.setOnGround(false);
             player.setRunning(false);
@@ -218,20 +235,41 @@ public class LevelView extends AbstractView implements Runnable {
                 player.setVelocityY(-6);
         }
 
-        if (crouch) {
-            player.addVelocityX(-player.getVelocityX() / 2);
+        if (crouch && !exhausted) {
+            player.multiplyVelocityX(0.5);
             player.setCrouching(true);
         }
 
-        if (player.isRunning() || player.isJumping())
+        if (player.isRunning() || player.isJumping()) {
             player.multiplyVelocityX(Constants.SPEED_FACTOR);
+        }
 
         // 3. General Gravitation TODO Gravitation für jedermann
         player.addVelocityY(Constants.GRAVITATIONAL_ACCELERATION);
         player.setOnGround(false);
 
 
-        // 4. Kollision - vorerst nur Bodenelemente
+        // 4. Ausdauerverbrauch
+        if (player.isWalking() && !player.isJumping() && !player.isCrouching())
+            player.addStamina(-1);
+
+        if (player.isCrouching())
+            player.addStamina(-2);
+        else if (player.isRunning() || player.isJumping() && player.getVelocityY() < 0) {
+            player.addStamina(-3);
+        }
+
+        if (!player.isRunning() && !player.isJumping() && !player.isCrouching()) {
+            player.addStamina(2);
+        }
+
+        if (player.getStamina() < 10)
+            exhausted = true;
+
+        if (!run && !jump && !crouch)
+            exhausted = false;
+
+        // 5. Kollision - vorerst nur Bodenelemente
         Player dummy = new Player(player);
         dummy.setVelocityY(0);
         dummy.move();
@@ -244,7 +282,9 @@ public class LevelView extends AbstractView implements Runnable {
                     player.setVelocityX(ground.getHitbox().getX() + ground.getHitbox().getWidth() -
                             player.getHitbox().getX());
                 }
+                player.setVelocityX(0);
                 player.setWalking(false);
+                break;
             }
         }
 
@@ -263,10 +303,11 @@ public class LevelView extends AbstractView implements Runnable {
                             player.getHitbox().getHeight());
                     player.setVelocityY(0);
                 }
+                break;
             }
         }
 
-        // 5. Änderungen vornehmen
+        // 6. Änderungen vornehmen
         player.move();
         camera.scroll(player.getVelocityX());
 
@@ -276,203 +317,6 @@ public class LevelView extends AbstractView implements Runnable {
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
             JOptionPane.showMessageDialog(MainFrame.getInstance().getCurrentView(), "Game over!", "Pech", JOptionPane.INFORMATION_MESSAGE);
         }
-
-        // 1. Move Player + Gravitation + check Collision
-        // Tastaturcheck, altobelli!
-
-        /*
-        player.setWalking(false);
-        player.setRunning(false);
-        player.setCrouching(false);
-
-        double xMovement = 0;
-        double yMovement = 0;
-
-
-        if (!pressedKeys.contains(Constants.KEY_RUN) && !pressedKeys.contains(Constants.KEY_JUMP) && !pressedKeys.contains(Constants.KEY_CROUCH)) {
-            runningPossible = true;
-            jumpingPossible = true;
-            crouchingPossible = true;
-        }
-
-
-        if (player.getStamina() < 10) {
-            runningPossible = false;
-            jumpingPossible = false;
-            crouchingPossible = false;
-        }
-
-        for (int keyCode : pressedKeys) {
-            if (keyCode == Constants.KEY_LEFT) {
-                player.setWalking(true);
-                xMovement -= Constants.PLAYER_WALK_VELOCITY;
-
-            }
-            if (keyCode == Constants.KEY_RIGHT) {
-                player.setWalking(true);
-                xMovement += Constants.PLAYER_WALK_VELOCITY;
-
-            }
-            if (keyCode == Constants.KEY_JUMP) {
-                if (jumpingPossible && verticalMoveAmount < 0) {
-                    fallMoveAmount = 0;
-                    player.setWalking(false);
-                    player.setRunning(false);
-                    player.setJumping(true);
-                    yMovement += verticalMoveAmount;
-                }
-
-            }
-            if (keyCode == Constants.KEY_RUN) {
-                if (runningPossible)
-                    player.setRunning(true);
-
-            }
-            if (keyCode == Constants.KEY_CROUCH) {
-                if (crouchingPossible)
-                    player.setCrouching(true);
-
-            }
-        }
-
-        if ((player.isJumping() || player.isRunning() && !player.isCrouching()))
-            xMovement *= 2;
-
-        if (player.isCrouching() && !player.isJumping())
-            xMovement /= 2;
-
-        if (xMovement < 0)
-            player.setViewingDirection(Direction.LEFT);
-        else if (xMovement > 0)
-            player.setViewingDirection(Direction.RIGHT);
-        else
-            player.setRunning(false);
-
-
-        camera.scroll(xMovement);
-        player.move(xMovement, 0);
-
-        Collidable collidable = null;
-        for (Ground ground : level.getGrounds()) {
-            if (player.collidesWith(ground)) {
-                collidable = ground;
-                break;
-            }
-        }
-
-        if (collidable != null) {
-            System.out.println(collidable);
-            double d = 0;
-            if (xMovement > 0) {
-                d = collidable.getHitbox().getX()
-                        - player.getHitbox().getX() - player.getHitbox().getWidth();
-            } else if (xMovement < 0) {
-                d = collidable.getHitbox().getX() + collidable.getHitbox().getWidth() -
-                        player.getHitbox().getX();
-            }
-            player.move(d, 0);
-            camera.scroll(d);
-        }
-
-        player.move(0, yMovement);
-
-
-        if (player.getPosition().getX() < getWidth() / 2) {
-            double d = getWidth() / 2 - player.getPosition().getX();
-            player.move(d, 0);
-            camera.scroll(d);
-            player.setWalking(false);
-            player.setRunning(false);
-        } else if (player.getPosition().getX() > level.getLength() - getWidth() / 2) {
-            double d = level.getLength() - getWidth() / 2 - player.getPosition().getX();
-            player.move(Math.round(d), 0);
-            camera.scroll(Math.round(d));
-            player.setWalking(false);
-            player.setRunning(false);
-        }
-
-        for (Ground ground : level.getGrounds()) {
-            if (player.collidesWith(ground)) {
-                collidable = ground;
-                break;
-            }
-        }
-
-        if (collidable != null) {
-
-        }
-
-
-        // Ausdauerverbrauch
-        if (player.isWalking() && !player.isJumping() && !player.isCrouching())
-            player.setStamina(player.getStamina() - 1);
-
-        if (player.isCrouching())
-            player.setStamina(player.getStamina() - 2);
-        else if (player.isRunning() || player.isJumping()) {
-            player.setStamina(player.getStamina() - 3);
-        }
-
-        if (player.isJumping() && yMovement >= 0)
-            player.setStamina(player.getStamina() + 2);
-
-        if (!player.isRunning() && !player.isJumping() && !player.isCrouching()) {
-            player.setStamina(player.getStamina() + 2);
-        }
-
-
-        if (!pressedKeys.contains(Constants.KEY_JUMP) && player.isJumping())
-            jumpingPossible = false;
-        */
-        // Gravitation
-        /*if (player.getPosition().getY() < Constants.GROUND_LEVEL) {
-            if (Constants.GROUND_LEVEL - player.getPosition().getY() >= verticalMoveAmount) {
-                player.setWalking(false);
-                player.setRunning(false);
-                player.setJumping(true);
-                player.move(0, verticalMoveAmount);
-
-            } else {
-                player.setJumping(false);
-                player.move(0, Constants.GROUND_LEVEL - player.getPosition().getY());
-                verticalMoveAmount = -Constants.PLAYER_INITIAL_JUMP_VELOCITY;
-                jumpingPossible = true;
-            }
-        }*/
-
-        /*
-        player.move(0, fallMoveAmount);
-
-        boolean collisionHappened = false;
-        for (Ground ground : level.getGrounds()) {
-            if (player.collidesWith(ground)) {
-                player.move(0, ground.getHitbox().getY() - player.getPosition().getY());
-                collisionHappened = true;
-            }
-        }
-
-        if (collisionHappened) {
-            player.setJumping(false);
-            verticalMoveAmount = -Constants.PLAYER_INITIAL_JUMP_VELOCITY;
-            fallMoveAmount = 0;
-        } else {
-            if (player.isJumping() && !pressedKeys.contains(Constants.KEY_JUMP) && verticalMoveAmount < 0) {
-                player.move(0, verticalMoveAmount);
-            } else if (!player.isJumping() || verticalMoveAmount >= 0)
-                fallMoveAmount += Constants.GRAVITATIONAL_ACCELERATION;
-            verticalMoveAmount += Constants.GRAVITATIONAL_ACCELERATION;
-        }
-*/
-        // 2. Move Enemies + Gravitation + check Collision
-        // Gravitationschecks
-        // Kollisionschecks
-
-        // 3. Move Arrows + Gravitation + check Collision
-        // Später, mein Sohn!
-
-        // 4. Damage & Kill
-        // Health-Updates
-        // Aufräumen
     }
 
     @Override
@@ -533,14 +377,18 @@ public class LevelView extends AbstractView implements Runnable {
         // 4. Draw Enemies
 
         // 5. Draw Obstacles
+        for (Obstacle obstacle : level.getObstacles()) {
+            try {
+                BufferedImage image = ImageUtil.getImage(obstacle.getImagePath());
+                int x = (int) Math.round(obstacle.getX() - image.getWidth() / 2 - camera.getX());
+                int y = (int) Math.round(obstacle.getY() - image.getHeight());
+                g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        // 6. Draw Onscreen Info
-        g2.setColor(Color.BLACK);
-        g2.drawString("Sidescroller " + Constants.GAME_VERSION, 20, 20);
-        String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
-        g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
-        g2.drawString(player.toString(), getWidth() / 2 - g2.getFontMetrics().stringWidth(player.toString()) / 2, 20);
-
+        // 6. Draw Stamina Bar
         Rectangle2D staminaMask = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, 200, 15);
         Rectangle2D staminaBar = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, player.getStamina() / 5, 15);
         g2.setColor(Constants.BUTTON_COLOR);
@@ -548,11 +396,28 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setColor(Constants.MENU_BACKGROUND_COLOR);
         g2.fill(staminaBar);
         g2.setColor(Color.BLACK);
-
-        g2.drawString("jumpMoveAmount = " + verticalMoveAmount, 10, 50);
-        g2.drawString("fallMoveAmount = " + fallMoveAmount, 10, 70);
-
+        Font backup = g2.getFont();
         g2.setFont(Constants.DEFAULT_FONT);
         g2.drawString("Ausdauer: " + player.getStamina() / 10 + "%", getWidth() - 215, getHeight() - 17);
+        g2.setFont(backup);
+
+        // 7. Draw Debug Screen
+        if (debug) {
+            g2.setColor(Color.BLACK);
+            g2.drawString("Sidescroller " + Constants.GAME_VERSION, 20, 20);
+            String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
+            g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
+            g2.drawString(player.toString(), getWidth() / 2 - g2.getFontMetrics().stringWidth(player.toString()) / 2, 20);
+
+            g2.drawString("VelocityX = " + player.getVelocityX(), 10, 50);
+            g2.drawString("VelocityY = " + player.getVelocityY(), 10, 70);
+        }
+
+        // 8. Draw Menu
+        if (menu) {
+            g2.setFont(Constants.DEFAULT_FONT.deriveFont(40F));
+            g2.drawString("MENU", 100, getHeight() / 2);
+            g2.setFont(backup);
+        }
     }
 }

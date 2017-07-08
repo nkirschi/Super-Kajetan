@@ -4,7 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 public abstract class Obstacle implements Collidable {
     protected Rectangle2D.Double hitbox;
-    protected double x;
+    protected double x, y;
 
     public double getX() {
         return x;
@@ -12,6 +12,7 @@ public abstract class Obstacle implements Collidable {
 
     public void setX(double x) {
         this.x = x;
+        hitbox.setRect(x - hitbox.getWidth() / 2, hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
     }
 
     public double getY() {
@@ -20,9 +21,8 @@ public abstract class Obstacle implements Collidable {
 
     public void setY(double y) {
         this.y = y;
+        hitbox.setRect(hitbox.getX(), y - hitbox.getHeight(), hitbox.getWidth(), hitbox.getHeight());
     }
-
-    protected double y;
 
     @Override
     public Rectangle2D.Double getHitbox() {

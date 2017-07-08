@@ -98,6 +98,14 @@ public class Player extends Entity {
         return stamina;
     }
 
+    public void addStamina(int stamina) {
+        this.stamina += stamina;
+        if (this.stamina < 0)
+            this.stamina = 0;
+        else if (this.stamina > 1000)
+            this.stamina = 1000;
+    }
+
     public void setStamina(int stamina) {
         if (stamina < 0)
             this.stamina = 0;

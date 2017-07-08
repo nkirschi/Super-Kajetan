@@ -3,9 +3,8 @@ package model;
 import java.awt.geom.Rectangle2D;
 
 public class Crate extends Obstacle {
-    private final double CRATE_WIDTH = 100;
-    private final double CRATE_HEIGHT = 100;
-    protected Rectangle2D.Double hitbox;
+    private final double CRATE_WIDTH = 256;
+    private final double CRATE_HEIGHT = 256;
 
     public Crate(double x, double y) {
         this.x = x;
@@ -15,6 +14,6 @@ public class Crate extends Obstacle {
 
     @Override
     public String getImagePath() {
-        return "";
+        return "images/obstacles/crate.png";
     }
 }
