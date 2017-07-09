@@ -124,6 +124,7 @@ public class MainFrame extends JFrame implements WindowListener {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
         try (FileWriter writer = new FileWriter("settings.properties")) {
+            properties.put("jumpKey", Constants.KEY_JUMP);
             properties.store(writer, "");
         } catch (IOException e) {
             e.printStackTrace();
