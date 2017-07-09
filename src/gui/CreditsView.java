@@ -111,7 +111,7 @@ class CreditsView extends AbstractView {
         Logger.log("Credits geladen", Logger.INFO);
     }
 
-    public void update() {
+    public void refresh() {
 
     }
 

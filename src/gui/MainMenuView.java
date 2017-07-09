@@ -147,7 +147,7 @@ class MainMenuView extends AbstractView {
         return instance;
     }
 
-    public void update() {
+    public void refresh() {
     }
 
     @Override

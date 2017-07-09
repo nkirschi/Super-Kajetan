@@ -160,7 +160,7 @@ class HighscoresView extends AbstractView {
         return listTopLevelPanel;
     }
 
-    public void update() {
+    public void refresh() {
         if (highScoreList != null) {
             remove(highScoreList);
         }

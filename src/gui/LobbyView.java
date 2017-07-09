@@ -62,6 +62,7 @@ class LobbyView extends AbstractView {
             MainFrame.getInstance().changeTo(levelView);
             levelView.setFocusable(true);
             levelView.requestFocusInWindow();
+            new Thread(levelView).start();
         });
         levelButtonPanel.add(lvl1, constraints);
 
@@ -79,7 +80,7 @@ class LobbyView extends AbstractView {
         levelButtonPanel.add(lvl2, constraints);
     }
 
-    public void update() {
+    public void refresh() {
 
     }
 

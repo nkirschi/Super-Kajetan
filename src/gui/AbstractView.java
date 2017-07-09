@@ -10,5 +10,5 @@ abstract class AbstractView extends JPanel {
     AbstractView() {
     }
 
-    public abstract void update();
+    public abstract void refresh();
 }

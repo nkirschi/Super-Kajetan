@@ -89,7 +89,7 @@ public class SettingsView extends AbstractView {
 
     //TODO Settings speichern
 
-    public void update() {
+    public void refresh() {
 
     }
 

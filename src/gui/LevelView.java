@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import model.*;
 import util.Constants;
 import util.ImageUtil;
@@ -12,22 +11,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
-import java.util.Timer;
 
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Player player;
     private Camera camera; // Die aktuelle "Kamera"
-    private Timer timer;
+    private KeyState keyState;
+    //private Timer timer;
 
     private boolean exhausted;
-
-    private boolean left, right, run, jump, crouch, menu, debug;
 
     private boolean running;
     private boolean paused;
@@ -37,7 +31,7 @@ public class LevelView extends AbstractView implements Runnable {
         this.level = level;
         player = new Player(LobbyView.getInstance().getWidth() / 2, Constants.GROUND_LEVEL);
         camera = new Camera(0, 0, getWidth(), getHeight());
-
+        setIgnoreRepaint(true);
         setLayout(new BorderLayout());
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -49,8 +43,6 @@ public class LevelView extends AbstractView implements Runnable {
             SoundUtil.stop();
             running = false;
             paused = true;
-            timer.cancel();
-            timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
         buttonPanel.add(backButton);
@@ -58,42 +50,8 @@ public class LevelView extends AbstractView implements Runnable {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent keyEvent) {
-                int keyCode = keyEvent.getKeyCode();
-
-                if (keyCode == Constants.KEY_LEFT)
-                    left = true;
-                else if (keyCode == Constants.KEY_RIGHT)
-                    right = true;
-                else if (keyCode == Constants.KEY_RUN)
-                    run = true;
-                else if (keyCode == Constants.KEY_JUMP)
-                    jump = true;
-                else if (keyCode == Constants.KEY_CROUCH)
-                    crouch = true;
-                else if (keyCode == Constants.KEY_MENU)
-                    menu = !menu;
-                else if (keyCode == Constants.KEY_DEBUG)
-                    debug = !debug;
-            }
-
-            public void keyReleased(KeyEvent keyEvent) {
-                int keyCode = keyEvent.getKeyCode();
-
-                if (keyCode == Constants.KEY_LEFT)
-                    left = false;
-                else if (keyCode == Constants.KEY_RIGHT)
-                    right = false;
-                else if (keyCode == Constants.KEY_RUN)
-                    run = false;
-                else if (keyCode == Constants.KEY_JUMP)
-                    jump = false;
-                else if (keyCode == Constants.KEY_CROUCH)
-                    crouch = false;
-            }
-        });
+        keyState = new KeyState();
+        addKeyListener(keyState);
 
         addFocusListener(new FocusListener() {
             @Override
@@ -105,29 +63,28 @@ public class LevelView extends AbstractView implements Runnable {
             @Override
             public void focusLost(FocusEvent focusEvent) {
                 paused = true;
-                left = false;
-                right = false;
-                run = false;
-                jump = false;
-                crouch = false;
+                keyState.left = false;
+                keyState.right = false;
+                keyState.run = false;
+                keyState.jump = false;
+                keyState.crouch = false;
                 SoundUtil.pause();
             }
         });
 
         Logger.log("Level initialisiert", Logger.INFO);
-        //new Thread(this).start();
 
-        SoundUtil.loop();
-        timer = new Timer();
+        //SoundUtil.loop();
+        /*timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (!paused) {
-                    update();
+                    refresh();
                     repaint();
                 }
             }
-        }, 0, 1000 / 60);
+        }, 0, 1000 / 60);*/
     }
 
     public void run() {
@@ -167,8 +124,8 @@ public class LevelView extends AbstractView implements Runnable {
                 repaint();
                 frameCount++;
 
-                /* Theoretisch VSync - is aber bissl laggy :(
-                while (System.nanoTime() - currentTime < 1000000000 / 60) {
+                // Theoretisch VSync - is aber bissl laggy :(
+                /*while (System.nanoTime() - currentTime < 1000000000 / 60) {
                     Thread.yield();
                     try {
                         Thread.sleep(1);
@@ -190,52 +147,52 @@ public class LevelView extends AbstractView implements Runnable {
         player.setCrouching(false);
 
         // 2. Input Handling
-        if (left) {
+        if (keyState.left) {
             if (player.getVelocityX() > -Constants.PLAYER_WALK_VELOCITY)
                 player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY / 8);
             else
                 player.setVelocityX(-Constants.PLAYER_WALK_VELOCITY);
-            if (!right)
+            if (!keyState.right)
                 player.setViewingDirection(Direction.LEFT);
             player.setWalking(true);
         } else {
             if (player.getVelocityX() < 0)
                 player.addVelocityX(Constants.PLAYER_WALK_VELOCITY / 8);
-            else if (!right)
+            else if (!keyState.right)
                 player.setVelocityX(0);
         }
 
-        if (right) {
+        if (keyState.right) {
             if (player.getVelocityX() < Constants.PLAYER_WALK_VELOCITY)
                 player.addVelocityX(Constants.PLAYER_WALK_VELOCITY / 8);
             else
                 player.setVelocityX(Constants.PLAYER_WALK_VELOCITY);
-            if (!left)
+            if (!keyState.left)
                 player.setViewingDirection(Direction.RIGHT);
             player.setWalking(true);
         } else {
             if (player.getVelocityX() > 0)
                 player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY / 8);
-            else if (!left)
+            else if (!keyState.left)
                 player.setVelocityX(0);
         }
 
-        if (run && !exhausted) {
+        if (keyState.run && !exhausted) {
             player.setRunning(true);
         }
 
-        if (jump && player.isOnGround() && !exhausted) {
+        if (keyState.jump && player.isOnGround() && !exhausted) {
             player.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
             player.setOnGround(false);
             player.setRunning(false);
             player.setJumping(true);
             System.out.println(player.getVelocityX());
-        } else if (!jump && !player.isOnGround()) {
+        } else if (!keyState.jump && !player.isOnGround()) {
             if (player.getVelocityY() < -6)
                 player.setVelocityY(-6);
         }
 
-        if (crouch && !exhausted) {
+        if (keyState.crouch && !exhausted) {
             player.multiplyVelocityX(0.5);
             player.setCrouching(true);
         }
@@ -266,7 +223,7 @@ public class LevelView extends AbstractView implements Runnable {
         if (player.getStamina() < 10)
             exhausted = true;
 
-        if (!run && !jump && !crouch)
+        if (!keyState.run && !keyState.jump && !keyState.crouch)
             exhausted = false;
 
         // 5. Kollision - vorerst nur Bodenelemente
@@ -312,8 +269,8 @@ public class LevelView extends AbstractView implements Runnable {
         camera.scroll(player.getVelocityX());
 
         if (player.getY() > 1000) {
-            timer.cancel();
-            timer.purge();
+            //timer.cancel();
+            //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
             JOptionPane.showMessageDialog(MainFrame.getInstance().getCurrentView(), "Game over!", "Pech", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -402,7 +359,7 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setFont(backup);
 
         // 7. Draw Debug Screen
-        if (debug) {
+        if (keyState.debug) {
             g2.setColor(Color.BLACK);
             g2.drawString("Sidescroller " + Constants.GAME_VERSION, 20, 20);
             String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
@@ -414,10 +371,14 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         // 8. Draw Menu
-        if (menu) {
+        if (keyState.menu) {
             g2.setFont(Constants.DEFAULT_FONT.deriveFont(40F));
             g2.drawString("MENU", 100, getHeight() / 2);
             g2.setFont(backup);
         }
+    }
+
+    public void refresh() {
+
     }
 }

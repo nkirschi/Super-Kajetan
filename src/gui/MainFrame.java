@@ -7,9 +7,12 @@ import util.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Klasse des Hauptfensters
@@ -39,6 +42,8 @@ public class MainFrame extends JFrame implements WindowListener {
             Logger.log(e, Logger.WARNING);
         }
 
+        initProperties();
+
         changeTo(MainMenuView.getInstance());
         Logger.log("Applikation ordnungsgemäß gestartet", Logger.INFO);
         setVisible(true);
@@ -61,7 +66,7 @@ public class MainFrame extends JFrame implements WindowListener {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-        getInstance();
+        SwingUtilities.invokeLater(MainFrame::getInstance);
     }
 
     /**
@@ -78,8 +83,24 @@ public class MainFrame extends JFrame implements WindowListener {
         revalidate();
         repaint();
         currentView.revalidate();
-        currentView.update();
+        currentView.refresh();
         currentView.repaint();
+    }
+
+    public void initProperties() {
+        try {
+            Properties properties = new Properties();
+            FileReader reader = new FileReader("settings.properties");
+            properties.load(reader);
+
+            int jumpKey = Integer.parseInt(properties.getProperty("jumpKey", KeyEvent.VK_W + ""));
+            Constants.KEY_JUMP = jumpKey;
+            System.out.println(jumpKey);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

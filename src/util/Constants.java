@@ -24,7 +24,7 @@ public class Constants {
     public static final String DB_COLLUM_DATE = "Datum";
 
     // Spielmechanik
-    public static final int UPDATE_CLOCK = 50;
+    public static final int UPDATE_CLOCK = 60;
     public static final int GROUND_LEVEL = 720;
     public static final double SPEED_FACTOR = 2;
     public static final double PLAYER_WALK_VELOCITY = 2.5;
