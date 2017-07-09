@@ -10,6 +10,7 @@ public class Ground implements Collidable {
     private double x, y;
 
     private Rectangle2D.Double hitbox;
+
     public Ground(double x, double width, double height) {
         this.x = x;
         y = 740;

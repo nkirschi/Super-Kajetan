@@ -8,18 +8,22 @@ import util.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
+    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
 
     private LobbyView() {
         super();
         setLayout(new BorderLayout());
         setBackground(Constants.MENU_BACKGROUND_COLOR);
+        //setOpaque(opaque);
 
         //ButtonPanel, im Prinzip nur der Zurück-Knopf
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        buttonPanel.setOpaque(opaque);
 
         //Zurück-Button
         JButton backButton = new JButton("Zurück");
@@ -34,6 +38,7 @@ class LobbyView extends AbstractView {
         JPanel levelButtonPanel = new JPanel();
         levelButtonPanel.setLayout(new GridBagLayout());
         levelButtonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        levelButtonPanel.setOpaque(opaque);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -47,6 +52,7 @@ class LobbyView extends AbstractView {
             }
         };
         scrollPane.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        scrollPane.setOpaque(opaque);
         add(scrollPane, BorderLayout.CENTER);
 
 
@@ -88,6 +94,19 @@ class LobbyView extends AbstractView {
         if (instance == null)
             instance = new LobbyView();
         return instance;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
+        //-> setOpaque(false)
+        try {
+            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_NOBANNER), 0, 0, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -101,7 +101,7 @@ class MainMenuView extends AbstractView {
         JTextField nameTextField = new JTextField(17) {
             @Override
             public void setBorder(Border border) {
-                if(!opaque){
+                if (!opaque) {
                     super.setBorder(border);
                 }
             }
@@ -151,14 +151,13 @@ class MainMenuView extends AbstractView {
     }
 
     @Override
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
         //-> setOpaque(false)
         try {
-            g.drawImage(util.ImageUtil.getImage("images/menubackground_nobanner.png"), 0, 0, null);
+            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND), 0, 0, null);
         } catch (IOException e) {
             e.printStackTrace();
         }

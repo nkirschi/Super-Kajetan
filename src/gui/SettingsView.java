@@ -6,9 +6,11 @@ import util.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
 
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
+    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private float maxVolume = 6F;
     private float minVolume = -6F;
     private float volume = (maxVolume + minVolume) / 2;
@@ -17,10 +19,12 @@ public class SettingsView extends AbstractView {
         super();
         setLayout(new BorderLayout());
         setBackground(Constants.MENU_BACKGROUND_COLOR);
+        //setOpaque(opaque);
 
         //Zurück-Button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        buttonPanel.setOpaque(opaque);
 
         JButton backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
@@ -37,6 +41,7 @@ public class SettingsView extends AbstractView {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(0, 0, 20, 0);
         settingsPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
+        settingsPanel.setOpaque(opaque);
 
         //Header
         JLabel header = new JLabel("Einstellungen");
@@ -80,7 +85,6 @@ public class SettingsView extends AbstractView {
         //Beschreibung der Steuerung
 
 
-
         add(settingsPanel, BorderLayout.CENTER);
 
 
@@ -101,5 +105,18 @@ public class SettingsView extends AbstractView {
         if (instance == null)
             instance = new SettingsView();
         return instance;
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
+        //-> setOpaque(false)
+        try {
+            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_NOBANNER), 0, 0, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

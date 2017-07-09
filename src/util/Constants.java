@@ -1,11 +1,8 @@
 package util;
 
-import sun.awt.AWTAccessor;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.security.Key;
 
 public class Constants {
     public static final String GAME_VERSION = "Alpha v1.1.2_01";
@@ -16,6 +13,8 @@ public class Constants {
     public static final Color FOREGROUND_COLOR = new Color(0, 0, 0);
     public static final Dimension DEFAULT_BUTTON_SIZE = new Dimension(250, 50);
     public static final Font DEFAULT_FONT = new Font("Pixel Operator", Font.PLAIN, 17);
+    public static final String MENU_BACKGROUND = "images/menubackground_nobanner.png";
+    public static final String MENU_BACKGROUND_NOBANNER = "images/menubackground_nobanner.png";
 
     // Datenbank
     public static final String DB_TABLE = "Highscores";

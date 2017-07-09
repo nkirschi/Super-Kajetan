@@ -33,7 +33,7 @@ class CreditsView extends AbstractView {
         JPanel creditsPanel = new JPanel();
         creditsPanel.setLayout(new GridBagLayout());
         creditsPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        //creditsPanel.setOpaque(opaque);
+        creditsPanel.setOpaque(opaque);
         add(creditsPanel, BorderLayout.CENTER);
 
         GridBagConstraints headerConstraints = new GridBagConstraints();
@@ -122,14 +122,13 @@ class CreditsView extends AbstractView {
     }
 
     @Override
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
         //-> setOpaque(false)
         try {
-            g.drawImage(util.ImageUtil.getImage("images/menubackground_nobanner.png"), 0, 0, null);
+            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_NOBANNER), 0, 0, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
