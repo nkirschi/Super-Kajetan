@@ -97,8 +97,7 @@ public class SoundUtil {
             try {
                 FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
                 control.setValue(SettingsView.getInstance().getVolume());
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 //e.printStackTrace();
             }
             // Start

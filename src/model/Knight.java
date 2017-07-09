@@ -61,6 +61,7 @@ public class Knight extends Enemy {
         }
         return Constants.KNIGHT_STAND_IMAGE_PATH;
     }
+
     @Override
     public String toString() {
         return "Kight at " + super.toString();
