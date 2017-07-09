@@ -53,6 +53,7 @@ class LobbyView extends AbstractView {
         };
         scrollPane.setBackground(Constants.MENU_BACKGROUND_COLOR);
         scrollPane.setOpaque(opaque);
+        scrollPane.getViewport().setOpaque(opaque);
         add(scrollPane, BorderLayout.CENTER);
 
 
