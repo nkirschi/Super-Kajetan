@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -20,6 +21,7 @@ import java.util.Properties;
 public class MainFrame extends JFrame implements WindowListener {
     private static MainFrame instance;
     private AbstractView currentView;
+    private Properties properties;
 
     /**
      * Privater Konstruktor, da wir nur genau ein Hauptfenster zur Laufzeit benötigen,
@@ -88,16 +90,13 @@ public class MainFrame extends JFrame implements WindowListener {
     }
 
     public void initProperties() {
-        try {
-            Properties properties = new Properties();
-            FileReader reader = new FileReader("settings.properties");
-            properties.load(reader);
+        properties = new Properties();
 
+        try (FileReader reader = new FileReader("settings.properties")) {
+            properties.load(reader);
             int jumpKey = Integer.parseInt(properties.getProperty("jumpKey", KeyEvent.VK_W + ""));
             Constants.KEY_JUMP = jumpKey;
             System.out.println(jumpKey);
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,6 +123,13 @@ public class MainFrame extends JFrame implements WindowListener {
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
+        try (FileWriter writer = new FileWriter("settings.properties")) {
+            properties.store(writer, "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             DBConnection.getInstance().close();
         } catch (Exception e) {
