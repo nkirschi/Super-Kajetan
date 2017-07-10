@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class SettingsView extends AbstractView {
@@ -18,6 +19,7 @@ public class SettingsView extends AbstractView {
     //Einstellungsvariablen
     private float volume = (maxVolume + minVolume) / 2;
     private boolean alt_control = false;
+    private JCheckBox controllCheckBox;
 
     private SettingsView() {
         super();
@@ -35,6 +37,26 @@ public class SettingsView extends AbstractView {
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
         buttonPanel.add(backButton);
+
+        JLabel saveLabel = new JLabel();
+
+        JButton saveButton = new JButton("Save");
+        saveButton.setBackground(Constants.BUTTON_COLOR);
+        saveButton.setFont(Constants.DEFAULT_FONT);
+        saveButton.addActionListener(a -> {
+            MainFrame.getInstance().getProperties().put("control", getAltControlMode() ? "alternative" : "default");
+            try (FileWriter writer = new FileWriter("settings.properties")) {
+                MainFrame.getInstance().getProperties().store(writer, "Settings saved.");
+                saveLabel.setText("Speichern erfolgreich!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Logger.log(e, Logger.ERROR);
+                saveLabel.setText("Das ging in die Hose!");
+            }
+        });
+        buttonPanel.add(saveButton);
+        buttonPanel.add(saveLabel);
+
         add(buttonPanel, BorderLayout.PAGE_END);
 
         //Einstellungspanel
@@ -84,7 +106,7 @@ public class SettingsView extends AbstractView {
         settingsPanel.add(controllLabel, constraints);
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
-        JCheckBox controllCheckBox = new JCheckBox();
+        controllCheckBox = new JCheckBox();
         controllCheckBox.setOpaque(false);
         controllCheckBox.setBorderPainted(false);
         controllCheckBox.setSelected(alt_control);
@@ -126,6 +148,7 @@ public class SettingsView extends AbstractView {
 
     public void setAltControlMode(boolean b) {
         alt_control = b;
+        controllCheckBox.setSelected(b);
     }
 
     public static SettingsView getInstance() {

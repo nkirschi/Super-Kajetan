@@ -96,6 +96,8 @@ public class MainFrame extends JFrame implements WindowListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        SettingsView.getInstance().setAltControlMode(properties.get("control").equals("alternative"));
     }
 
     /**
@@ -123,12 +125,6 @@ public class MainFrame extends JFrame implements WindowListener {
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
-        try (FileWriter writer = new FileWriter("settings.properties")) {
-            properties.store(writer, "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         try {
             DBConnection.getInstance().close();
