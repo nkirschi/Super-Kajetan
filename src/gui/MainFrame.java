@@ -1,9 +1,10 @@
 package gui;
 
-import util.Constants;
-import util.DBConnection;
-import util.ImageUtil;
-import util.Logger;
+import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.SoundSystemException;
+import paulscode.sound.codecs.CodecJOrbis;
+import paulscode.sound.libraries.LibraryJavaSound;
+import util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,6 +63,14 @@ public class MainFrame extends JFrame implements WindowListener {
      * @param args Irrelevante Kommandozeilenparamter
      */
     public static void main(String[] args) {
+        try {
+            SoundSystemConfig.addLibrary(LibraryJavaSound.class);
+            SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
+        } catch (SoundSystemException e) {
+            e.printStackTrace();
+        }
+        SoundUtil.soundSystem.loadSound("shiroyama.ogg");
+
         /*try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {

@@ -1,6 +1,11 @@
 package util;
 
 import gui.SettingsView;
+import paulscode.sound.SoundSystem;
+import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.SoundSystemException;
+import paulscode.sound.codecs.CodecJOrbis;
+import paulscode.sound.libraries.LibraryJavaSound;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -15,6 +20,8 @@ public class SoundUtil {
     private boolean paused = false;
     private boolean playing = true;
     private Random random = new Random();
+
+    public static SoundSystem soundSystem = new SoundSystem();
 
     private void play(String filename) {
         playing = true;

@@ -46,7 +46,8 @@ public class LevelView extends AbstractView implements Runnable {
         backButton.addActionListener(a -> {
             paused = false;
             running = false;
-            soundUtil.stop();
+            //soundUtil.stop();
+            SoundUtil.soundSystem.stop("background");
             //timer.cancel();
             //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
@@ -109,7 +110,8 @@ public class LevelView extends AbstractView implements Runnable {
 
     public void run() {
         running = true;
-        soundUtil.playRandom();
+        //soundUtil.playRandom();
+        SoundUtil.soundSystem.backgroundMusic("background", "shiroyama.ogg", true);
 
         int updateCount = 0;
         int frameCount = 0;
@@ -277,10 +279,7 @@ public class LevelView extends AbstractView implements Runnable {
         camera.scroll(player.getVelocityX());
 
         if (player.getY() > 1000) {
-            soundUtil.stop();
-            //timer.cancel();
-            //timer.purge();
-            MainFrame.getInstance().changeTo(LobbyView.getInstance());
+            running = false;
             JOptionPane.showMessageDialog(MainFrame.getInstance().getCurrentView(), "Game over!", "Pech", JOptionPane.INFORMATION_MESSAGE);
         }
     }
