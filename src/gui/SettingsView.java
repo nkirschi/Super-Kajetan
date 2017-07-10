@@ -1,7 +1,9 @@
 package gui;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import util.Constants;
 import util.Logger;
+import util.SoundUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,13 +15,14 @@ import java.io.IOException;
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
     private final boolean opaque = true; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
-    private float maxVolume = 6F;
-    private float minVolume = -6F;
+    private float maxVolume = 1F;
+    private float minVolume = 0F;
 
     //Einstellungsvariablen
     private float volume = (maxVolume + minVolume) / 2;
     private boolean alt_control = false;
     private JCheckBox controllCheckBox;
+    private JLabel saveLabel;
 
     private SettingsView() {
         super();
@@ -38,16 +41,18 @@ public class SettingsView extends AbstractView {
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
         buttonPanel.add(backButton);
 
-        JLabel saveLabel = new JLabel();
+        saveLabel = new JLabel();
 
         JButton saveButton = new JButton("Save");
         saveButton.setBackground(Constants.BUTTON_COLOR);
         saveButton.setFont(Constants.DEFAULT_FONT);
         saveButton.addActionListener(a -> {
+            SoundUtil.soundSystem.setMasterVolume(volume);
+
             setAltControlMode(controllCheckBox.isSelected());
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, getAltControlMode() ? "alternative" : "default");
             try (FileWriter writer = new FileWriter("settings.properties")) {
-                MainFrame.getInstance().getProperties().store(writer, "Settings saved.");
+                MainFrame.getInstance().getProperties().store(writer, "Sidescroller " + Constants.GAME_VERSION);
                 saveLabel.setText("Speichern erfolgreich!");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -87,7 +92,7 @@ public class SettingsView extends AbstractView {
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
 
-        JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, (int) minVolume, (int) maxVolume, (int) volume) {
+        JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, (int) (minVolume * 100), (int) (maxVolume * 100), (int) (volume * 100)) {
             @Override
             public void setBorder(Border border) {
                 //Nein
@@ -95,7 +100,7 @@ public class SettingsView extends AbstractView {
         };
         volumeSlider.setOpaque(false);
         volumeSlider.addChangeListener(c -> {
-            this.volume = (float) volumeSlider.getValue();
+            this.volume = (float) volumeSlider.getValue() / 100;
             //System.out.println(volumeSlider.getValue());
         });
         settingsPanel.add(volumeSlider, constraints);
@@ -126,6 +131,7 @@ public class SettingsView extends AbstractView {
 
     public void refresh() {
         controllCheckBox.setSelected(alt_control);
+        saveLabel.setText("");
     }
 
     public float getVolume() {
