@@ -6,14 +6,18 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SoundUtil {
-    private static List<Thread> threads = new List<>();
-    private static boolean paused = false;
-    private static Random random = new Random();
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private boolean paused = false;
+    private boolean playing = true;
+    private Random random = new Random();
 
-    synchronized private static void play(String filename) {
-        paused = false;
+    private void play(String filename) {
+        playing = true;
         try {
             // Get AudioInputStream from given file.
             AudioInputStream in = AudioSystem.getAudioInputStream(ClassLoader.getSystemResourceAsStream(filename));
@@ -39,59 +43,53 @@ public class SoundUtil {
         }
     }
 
-    synchronized public static void playOnce(String filePath) {
-        Thread thread = new Thread(() -> play(filePath));
-        threads.add(thread);
-        thread.start();
+    public void playOnce(String filePath) {
+        executorService.submit(() -> play(filePath));
     }
 
-    synchronized public static void loop() {
-        Thread thread = new Thread(() -> {
-            while (true) {
-                String filePath = "sounds/";
-                switch (random.nextInt(6)) {
-                    case 0:
-                        filePath += "gott_mit_uns.ogg";
-                        break;
-                    case 1:
-                        filePath += "no_bullets_fly.ogg";
-                        break;
-                    case 2:
-                        filePath += "panzerkampf.ogg";
-                        break;
-                    case 3:
-                        filePath += "resist_and_bite.ogg";
-                        break;
-                    case 4:
-                        filePath += "shiroyama.ogg";
-                        break;
-                    case 5:
-                        filePath += "the_last_stand.ogg";
-                        break;
-                }
-                play(filePath);
+    public void playRandom() {
+        executorService.submit(() -> {
+            String filePath = "sounds/";
+            switch (random.nextInt(6)) {
+                case 0:
+                    filePath += "gott_mit_uns.ogg";
+                    break;
+                case 1:
+                    filePath += "no_bullets_fly.ogg";
+                    break;
+                case 2:
+                    filePath += "panzerkampf.ogg";
+                    break;
+                case 3:
+                    filePath += "resist_and_bite.ogg";
+                    break;
+                case 4:
+                    filePath += "shiroyama.ogg";
+                    break;
+                case 5:
+                    filePath += "the_last_stand.ogg";
+                    break;
             }
+            play(filePath);
         });
-        threads.add(thread);
-        thread.start();
     }
 
-    public static void stop() {
-        for (Thread thread : threads)
-            thread.stop();
+    public void stop() {
+        paused = false;
+        playing = false;
     }
 
-    public static void pause() {
+    public void pause() {
         paused = true;
     }
 
-    public static void unpause() {
+    public void unpause() {
         paused = false;
     }
 
-    synchronized private static void rawplay(AudioFormat targetFormat,
-                                             AudioInputStream din) throws IOException, LineUnavailableException {
-        byte[] data = new byte[4096];
+    private synchronized void rawplay(AudioFormat targetFormat,
+                                      AudioInputStream din) throws IOException, LineUnavailableException {
+        byte[] data = new byte[4];
         SourceDataLine line = getLine(targetFormat);
         if (line != null) {
             try {
@@ -104,6 +102,11 @@ public class SoundUtil {
             line.start();
             int nBytesRead = 0, nBytesWritten = 0;
             while (nBytesRead != -1) {
+                nBytesRead = din.read(data, 0, data.length);
+                if (nBytesRead != -1) nBytesWritten = line.write(data, 0, nBytesRead);
+                if (!playing) {
+                    return;
+                }
                 while (paused) {
                     try {
                         Thread.sleep(1);
@@ -111,8 +114,6 @@ public class SoundUtil {
                         e.printStackTrace();
                     }
                 }
-                nBytesRead = din.read(data, 0, data.length);
-                if (nBytesRead != -1) nBytesWritten = line.write(data, 0, nBytesRead);
             }
             // Stop
             line.drain();
@@ -122,30 +123,11 @@ public class SoundUtil {
         }
     }
 
-    synchronized private static SourceDataLine getLine(AudioFormat audioFormat) throws LineUnavailableException {
+    private SourceDataLine getLine(AudioFormat audioFormat) throws LineUnavailableException {
         SourceDataLine res = null;
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
         res = (SourceDataLine) AudioSystem.getLine(info);
         res.open(audioFormat);
         return res;
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        JPanel panel = new JPanel();
-        JButton start = new JButton("Start");
-        start.addActionListener(a -> loop());
-        JButton pause = new JButton("(Un-)Pause");
-        pause.addActionListener(a -> paused = !paused);
-        JButton stop = new JButton("Stop");
-        stop.addActionListener(a -> stop());
-        panel.add(start);
-        panel.add(pause);
-        panel.add(stop);
-        frame.add(panel);
-        frame.setVisible(true);
     }
 }

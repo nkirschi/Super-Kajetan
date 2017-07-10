@@ -18,6 +18,8 @@ public class LevelView extends AbstractView implements Runnable {
     private Player player;
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler KeyHandler;
+    private SoundUtil soundUtil = new SoundUtil();
+    private boolean exit = false;
     //private Timer timer;
 
 
@@ -40,9 +42,9 @@ public class LevelView extends AbstractView implements Runnable {
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
-            SoundUtil.stop();
+            paused = false;
             running = false;
-            paused = true;
+            soundUtil.stop();
             //timer.cancel();
             //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
@@ -59,7 +61,7 @@ public class LevelView extends AbstractView implements Runnable {
             @Override
             public void focusGained(FocusEvent focusEvent) {
                 paused = false;
-                SoundUtil.unpause();
+                soundUtil.unpause();
             }
 
             @Override
@@ -70,7 +72,7 @@ public class LevelView extends AbstractView implements Runnable {
                 KeyHandler.run = false;
                 KeyHandler.jump = false;
                 KeyHandler.crouch = false;
-                SoundUtil.pause();
+                soundUtil.pause();
             }
         });
 
@@ -91,7 +93,7 @@ public class LevelView extends AbstractView implements Runnable {
 
     public void run() {
         running = true;
-        SoundUtil.loop();
+        soundUtil.playRandom();
 
         int updateCount = 0;
         int frameCount = 0;
@@ -100,7 +102,6 @@ public class LevelView extends AbstractView implements Runnable {
         double lastTime = System.nanoTime();
         double secondTime = 0;
         double lag = 0;
-
         while (running) {
             if (!paused) {
                 double currentTime = System.nanoTime();
@@ -138,8 +139,10 @@ public class LevelView extends AbstractView implements Runnable {
 
             } else {
                 lastTime = System.nanoTime();
+                System.out.println("ich bin pausiert");
             }
         }
+        System.out.println("ich bin raus");
     }
 
     public void update() {
@@ -175,7 +178,6 @@ public class LevelView extends AbstractView implements Runnable {
             player.setOnGround(false);
             player.setRunning(false);
             player.setJumping(true);
-            System.out.println(player.getVelocityX());
         } else if (!KeyHandler.jump && !player.isOnGround()) {
             if (player.getVelocityY() < -6)
                 player.setVelocityY(-6);
@@ -258,10 +260,9 @@ public class LevelView extends AbstractView implements Runnable {
         // 6. Änderungen vornehmen
         player.move();
         camera.scroll(player.getVelocityX());
-        System.out.println(player.getVelocityX());
 
         if (player.getY() > 1000) {
-            SoundUtil.stop();
+            soundUtil.stop();
             //timer.cancel();
             //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());

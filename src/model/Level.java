@@ -23,7 +23,6 @@ public class Level {
         try {
             BufferedImage image = ImageUtil.getImage(backgroundFilePath);
             length = (740.0 / (double) image.getHeight()) * (double) image.getWidth();
-            System.out.println(length);
         } catch (IOException e) {
             e.printStackTrace();
             Logger.log(e, Logger.WARNING);
