@@ -93,9 +93,6 @@ public class MainFrame extends JFrame implements WindowListener {
 
         try (FileReader reader = new FileReader("settings.properties")) {
             properties.load(reader);
-            int jumpKey = Integer.parseInt(properties.getProperty("jumpKey", Integer.toString(Constants.KEY_JUMP)));
-            Constants.KEY_JUMP = jumpKey;
-            System.out.println(jumpKey);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,6 +123,13 @@ public class MainFrame extends JFrame implements WindowListener {
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
+        try (FileWriter writer = new FileWriter("settings.properties")) {
+            properties.store(writer, "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             DBConnection.getInstance().close();
         } catch (Exception e) {
