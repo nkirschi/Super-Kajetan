@@ -13,6 +13,8 @@ import java.awt.event.WindowListener;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -69,8 +71,9 @@ public class MainFrame extends JFrame implements WindowListener {
         } catch (SoundSystemException e) {
             e.printStackTrace();
         }
-        SoundUtil.soundSystem.loadSound("shiroyama.ogg");
 
+        SoundUtil.soundSystem.newSource(false, "background", ClassLoader.getSystemResource("sounds/shiroyama.ogg"), "shiroyama.ogg", true,
+                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
         /*try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
@@ -102,8 +105,17 @@ public class MainFrame extends JFrame implements WindowListener {
 
         try (FileReader reader = new FileReader("settings.properties")) {
             properties.load(reader);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e1) {
+            Logger.log("Konfigurationsdatei nicht gefunden", Logger.WARNING);
+            Logger.log(e1, Logger.WARNING);
+            try {
+                Files.createFile(Paths.get("settings.properties"));
+            } catch (IOException e2) {
+                e1.printStackTrace();
+                e2.printStackTrace();
+                Logger.log("Neue Konfigurationsdatei konnte nicht erstellt werden", Logger.ERROR);
+                Logger.log(e2, Logger.ERROR);
+            }
         }
 
         SettingsView.getInstance().setAltControlMode("alternative".equals(properties.getProperty(Constants.PROPERTY_CONTROL_MODE)));

@@ -48,6 +48,7 @@ public class LevelView extends AbstractView implements Runnable {
             running = false;
             //soundUtil.stop();
             SoundUtil.soundSystem.stop("background");
+            SoundUtil.soundSystem.cull("background");
             //timer.cancel();
             //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
@@ -111,7 +112,8 @@ public class LevelView extends AbstractView implements Runnable {
     public void run() {
         running = true;
         //soundUtil.playRandom();
-        SoundUtil.soundSystem.backgroundMusic("background", "shiroyama.ogg", true);
+        SoundUtil.soundSystem.activate("background");
+        SoundUtil.soundSystem.play("background");
 
         int updateCount = 0;
         int frameCount = 0;
