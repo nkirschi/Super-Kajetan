@@ -9,6 +9,7 @@ public class Player extends Entity {
     private final double PLAYER_HEIGHT = 169;
     private int walkCount;
     private int stamina;
+    private boolean exhausted;
 
     private boolean onGround;
 
@@ -155,6 +156,13 @@ public class Player extends Entity {
         this.onGround = onGround;
     }
 
+    public boolean isExhausted() {
+        return exhausted;
+    }
+
+    public void setExhausted(boolean exhausted) {
+        this.exhausted = exhausted;
+    }
 
     @Override
     public String toString() {

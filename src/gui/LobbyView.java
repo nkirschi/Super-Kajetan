@@ -81,8 +81,7 @@ class LobbyView extends AbstractView {
         lvl2.addActionListener(a -> {
             LevelView levelView = new LevelView(createLevel2());
             MainFrame.getInstance().changeTo(levelView);
-            levelView.setFocusable(true);
-            levelView.requestFocusInWindow();
+            new Thread(levelView).start();
         });
         levelButtonPanel.add(lvl2, constraints);
     }
@@ -115,6 +114,7 @@ class LobbyView extends AbstractView {
      */
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
+        enemies.add(new Knight(2200, 680, Behavior.IDLE, Direction.LEFT));
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Crate(1750, 640));
         List<Ground> grounds = new List<>();

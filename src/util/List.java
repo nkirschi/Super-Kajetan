@@ -1,5 +1,6 @@
 package util;
 
+import java.awt.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -24,6 +25,15 @@ public class List<C> implements Iterable<C> {
      */
     public void add(C content) {
         first = first.add(content);
+    }
+
+    /**
+     * Anhängen einer anderen Liste am Ende
+     *
+     * @param list Anzuhängende Liste
+     */
+    public void append(List<C> list) {
+        first = first.append(list.first);
     }
 
     /**
@@ -124,6 +134,8 @@ public class List<C> implements Iterable<C> {
 abstract class ListElement<C> {
     abstract ListElement<C> add(C content);
 
+    abstract ListElement<C> append(ListElement<C> element);
+
     abstract ListElement<C> remove(C content);
 
     abstract C get(int i);
@@ -152,6 +164,12 @@ class ListNode<C> extends ListElement<C> {
     @Override
     ListElement<C> add(C content) {
         next = next.add(content);
+        return this;
+    }
+
+    @Override
+    ListElement<C> append(ListElement<C> element) {
+        next = next.append(element);
         return this;
     }
 
@@ -199,6 +217,11 @@ class ListTail<C> extends ListElement<C> {
     @Override
     ListElement<C> add(C content) {
         return new ListNode<>(content, this);
+    }
+
+    @Override
+    ListElement<C> append(ListElement<C> element) {
+        return element;
     }
 
     @Override
