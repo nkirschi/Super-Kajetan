@@ -13,8 +13,6 @@ import java.awt.event.FocusListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
-import java.util.Timer;
 
 
 public class LevelView extends AbstractView implements Runnable {
@@ -23,7 +21,6 @@ public class LevelView extends AbstractView implements Runnable {
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler KeyHandler;
     //private Timer timer;
-
 
 
     private boolean running;

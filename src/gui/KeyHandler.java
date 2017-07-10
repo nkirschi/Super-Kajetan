@@ -17,10 +17,9 @@ public class KeyHandler extends KeyAdapter {
     private int keyDebug;
 
 
-
-    public KeyHandler(){
+    public KeyHandler() {
         super();
-        if(SettingsView.getInstance().getAltControlMode()){
+        if (SettingsView.getInstance().getAltControlMode()) {
             keyJump = Constants.ALT_KEY_JUMP;
             keyLeft = Constants.ALT_KEY_LEFT;
             keyRight = Constants.ALT_KEY_RIGHT;
@@ -28,8 +27,7 @@ public class KeyHandler extends KeyAdapter {
             keyMenu = Constants.KEY_MENU;
             keyDebug = Constants.KEY_DEBUG;
             keyRun = Constants.KEY_RUN;
-        }
-        else{
+        } else {
             keyJump = Constants.KEY_JUMP;
             keyLeft = Constants.KEY_LEFT;
             keyRight = Constants.KEY_RIGHT;

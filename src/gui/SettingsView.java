@@ -89,10 +89,9 @@ public class SettingsView extends AbstractView {
         controllCheckBox.setBorderPainted(false);
         controllCheckBox.setSelected(alt_control);
         controllCheckBox.addItemListener(e -> {
-            if(e.getStateChange()==ItemEvent.SELECTED){
+            if (e.getStateChange() == ItemEvent.SELECTED) {
                 alt_control = true;
-            }
-            else{
+            } else {
                 alt_control = false;
             }
         });
@@ -116,15 +115,16 @@ public class SettingsView extends AbstractView {
     public float getVolume() {
         return volume;
     }
-    public void setVolume(float f){
+
+    public void setVolume(float f) {
         volume = f;
     }
 
-    public boolean getAltControlMode(){
+    public boolean getAltControlMode() {
         return alt_control;
     }
 
-    public void setAltControlMode(boolean b){
+    public void setAltControlMode(boolean b) {
         alt_control = b;
     }
 
