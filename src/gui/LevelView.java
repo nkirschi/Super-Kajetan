@@ -21,7 +21,7 @@ public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Player player;
     private Camera camera; // Die aktuelle "Kamera"
-    private KeyState keyState;
+    private KeyHandler KeyHandler;
     //private Timer timer;
 
 
@@ -55,8 +55,8 @@ public class LevelView extends AbstractView implements Runnable {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        keyState = new KeyState();
-        addKeyListener(keyState);
+        KeyHandler = new KeyHandler();
+        addKeyListener(KeyHandler);
 
         addFocusListener(new FocusListener() {
             @Override
@@ -68,11 +68,11 @@ public class LevelView extends AbstractView implements Runnable {
             @Override
             public void focusLost(FocusEvent focusEvent) {
                 paused = true;
-                keyState.left = false;
-                keyState.right = false;
-                keyState.run = false;
-                keyState.jump = false;
-                keyState.crouch = false;
+                KeyHandler.left = false;
+                KeyHandler.right = false;
+                KeyHandler.run = false;
+                KeyHandler.jump = false;
+                KeyHandler.crouch = false;
                 SoundUtil.pause();
             }
         });
@@ -153,38 +153,38 @@ public class LevelView extends AbstractView implements Runnable {
         player.setCrouching(false);
 
         // 2. Input Handling
-        if (keyState.left) {
+        if (KeyHandler.left) {
             player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY);
-            if (!keyState.right) {
+            if (!KeyHandler.right) {
                 player.setViewingDirection(Direction.LEFT);
                 player.setWalking(true);
             }
         }
 
-        if (keyState.right) {
+        if (KeyHandler.right) {
             player.addVelocityX(Constants.PLAYER_WALK_VELOCITY);
-            if (!keyState.left) {
+            if (!KeyHandler.left) {
                 player.setViewingDirection(Direction.RIGHT);
                 player.setWalking(true);
             }
         }
 
-        if (keyState.run && !player.isExhausted()) {
+        if (KeyHandler.run && !player.isExhausted()) {
             player.setRunning(true);
         }
 
-        if (keyState.jump && player.isOnGround() && !player.isExhausted()) {
+        if (KeyHandler.jump && player.isOnGround() && !player.isExhausted()) {
             player.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
             player.setOnGround(false);
             player.setRunning(false);
             player.setJumping(true);
             System.out.println(player.getVelocityX());
-        } else if (!keyState.jump && !player.isOnGround()) {
+        } else if (!KeyHandler.jump && !player.isOnGround()) {
             if (player.getVelocityY() < -6)
                 player.setVelocityY(-6);
         }
 
-        if (keyState.crouch && !player.isExhausted()) {
+        if (KeyHandler.crouch && !player.isExhausted()) {
             player.multiplyVelocityX(0.5);
             player.setCrouching(true);
         }
@@ -215,7 +215,7 @@ public class LevelView extends AbstractView implements Runnable {
         if (player.getStamina() < 10)
             player.setExhausted(true);
 
-        if (!keyState.run && !keyState.jump && !keyState.crouch)
+        if (!KeyHandler.run && !KeyHandler.jump && !KeyHandler.crouch)
             player.setExhausted(false);
 
         // 5. Kollision - vorerst nur Bodenelemente
@@ -430,7 +430,7 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setFont(backup);
 
         // 7. Draw Debug Screen
-        if (keyState.debug) {
+        if (KeyHandler.debug) {
             g2.setColor(Color.BLACK);
             g2.drawString("Sidescroller " + Constants.GAME_VERSION, 20, 20);
             String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
@@ -442,7 +442,7 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         // 8. Draw Menu
-        if (keyState.menu) {
+        if (KeyHandler.menu) {
             g2.setFont(Constants.DEFAULT_FONT.deriveFont(40F));
             g2.drawString("MENU", 100, getHeight() / 2);
             g2.setFont(backup);
