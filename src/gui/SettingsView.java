@@ -44,7 +44,8 @@ public class SettingsView extends AbstractView {
         saveButton.setBackground(Constants.BUTTON_COLOR);
         saveButton.setFont(Constants.DEFAULT_FONT);
         saveButton.addActionListener(a -> {
-            MainFrame.getInstance().getProperties().put("control", getAltControlMode() ? "alternative" : "default");
+            setAltControlMode(controllCheckBox.isSelected());
+            MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, getAltControlMode() ? "alternative" : "default");
             try (FileWriter writer = new FileWriter("settings.properties")) {
                 MainFrame.getInstance().getProperties().store(writer, "Settings saved.");
                 saveLabel.setText("Speichern erfolgreich!");
@@ -110,13 +111,6 @@ public class SettingsView extends AbstractView {
         controllCheckBox.setOpaque(false);
         controllCheckBox.setBorderPainted(false);
         controllCheckBox.setSelected(alt_control);
-        controllCheckBox.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                alt_control = true;
-            } else {
-                alt_control = false;
-            }
-        });
         settingsPanel.add(controllCheckBox, constraints);
 
         //Beschreibung der Steuerung
@@ -131,7 +125,7 @@ public class SettingsView extends AbstractView {
     //TODO Settings speichern
 
     public void refresh() {
-
+        controllCheckBox.setSelected(alt_control);
     }
 
     public float getVolume() {

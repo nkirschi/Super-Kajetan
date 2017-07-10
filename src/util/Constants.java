@@ -22,6 +22,9 @@ public class Constants {
     public static final String DB_COLLUM_SCORE = "Score";
     public static final String DB_COLLUM_DATE = "Datum";
 
+    // Properties
+    public static final String PROPERTY_CONTROL_MODE = "control-mode";
+
     // Spielmechanik
     public static final int UPDATE_CLOCK = 60;
     public static final int GROUND_LEVEL = 720;
