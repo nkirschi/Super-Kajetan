@@ -31,17 +31,18 @@ public class Constants {
     public static final double GRAVITATIONAL_ACCELERATION = 0.5;
 
     // Tastatur
-    public static final int KEY_JUMP = KeyEvent.VK_W;
-    public static final int KEY_LEFT = KeyEvent.VK_A;
-    public static final int KEY_RIGHT = KeyEvent.VK_D;
-    public static final int KEY_CROUCH = KeyEvent.VK_S;
     public static final int KEY_RUN = KeyEvent.VK_SHIFT;
     public static final int KEY_MENU = KeyEvent.VK_ESCAPE;
     public static final int KEY_DEBUG = KeyEvent.VK_F1;
 
-    public static final int ALT_KEY_JUMP = KeyEvent.VK_UP;
+    public static final int KEY_LEFT_DEFAULT = KeyEvent.VK_A;
+    public static final int KEY_RIGHT_DEFAULT = KeyEvent.VK_D;
+    public static final int KEY_JUMP_DEFAULT = KeyEvent.VK_W;
+    public static final int KEY_CROUCH_DEFAULT = KeyEvent.VK_S;
+
     public static final int ALT_KEY_LEFT = KeyEvent.VK_LEFT;
     public static final int ALT_KEY_RIGHT = KeyEvent.VK_RIGHT;
+    public static final int ALT_KEY_JUMP = KeyEvent.VK_UP;
     public static final int ALT_KEY_CROUCH = KeyEvent.VK_DOWN;
 
     //Player Bilder

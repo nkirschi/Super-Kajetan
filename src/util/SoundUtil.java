@@ -89,7 +89,7 @@ public class SoundUtil {
 
     private synchronized void rawplay(AudioFormat targetFormat,
                                       AudioInputStream din) throws IOException, LineUnavailableException {
-        byte[] data = new byte[4];
+        byte[] data = new byte[4096];
         SourceDataLine line = getLine(targetFormat);
         if (line != null) {
             try {

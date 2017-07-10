@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,7 +21,7 @@ public class LevelView extends AbstractView implements Runnable {
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler KeyHandler;
     private SoundUtil soundUtil = new SoundUtil();
-    private boolean exit = false;
+    private boolean blockPause;
     //private Timer timer;
 
 
@@ -49,6 +51,18 @@ public class LevelView extends AbstractView implements Runnable {
             //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+                blockPause = true;
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+                blockPause = false;
+            }
+        });
+
         buttonPanel.add(backButton);
         buttonPanel.setOpaque(false);
 
@@ -66,6 +80,8 @@ public class LevelView extends AbstractView implements Runnable {
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
+                if (blockPause)
+                    return;
                 paused = true;
                 KeyHandler.left = false;
                 KeyHandler.right = false;
@@ -139,10 +155,9 @@ public class LevelView extends AbstractView implements Runnable {
 
             } else {
                 lastTime = System.nanoTime();
-                System.out.println("ich bin pausiert");
             }
         }
-        System.out.println("ich bin raus");
+        System.out.println(this + " ist raus, Onkel Klaus!");
     }
 
     public void update() {
@@ -274,7 +289,7 @@ public class LevelView extends AbstractView implements Runnable {
         BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = buffer.createGraphics();
         paintComponent(g2);
-        getGraphics().drawImage(buffer, 0, 0, null);
+        getGraphics().drawImage(buffer, 0, 0, this);
         g2.dispose();
         getGraphics().dispose();
     }

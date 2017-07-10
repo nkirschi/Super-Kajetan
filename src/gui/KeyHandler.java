@@ -7,34 +7,33 @@ import java.awt.event.KeyEvent;
 
 public class KeyHandler extends KeyAdapter {
     boolean left, right, run, jump, crouch, menu, debug;
-    private int keyJump;
-    private int keyLeft;
-    private int keyRight;
-    private int keyCrouch;
 
-    private int keyRun;
-    private int keyMenu;
-    private int keyDebug;
-
+    private final int KEY_JUMP;
+    private final int KEY_LEFT;
+    private final int KEY_RIGHT;
+    private final int KEY_CROUCH;
+    private final int KEY_RUN;
+    private final int KEY_MENU;
+    private final int KEY_DEBUG;
 
     public KeyHandler() {
         super();
         if (SettingsView.getInstance().getAltControlMode()) {
-            keyJump = Constants.ALT_KEY_JUMP;
-            keyLeft = Constants.ALT_KEY_LEFT;
-            keyRight = Constants.ALT_KEY_RIGHT;
-            keyCrouch = Constants.ALT_KEY_CROUCH;
-            keyMenu = Constants.KEY_MENU;
-            keyDebug = Constants.KEY_DEBUG;
-            keyRun = Constants.KEY_RUN;
+            KEY_JUMP = Constants.ALT_KEY_JUMP;
+            KEY_LEFT = Constants.ALT_KEY_LEFT;
+            KEY_RIGHT = Constants.ALT_KEY_RIGHT;
+            KEY_CROUCH = Constants.ALT_KEY_CROUCH;
+            KEY_MENU = Constants.KEY_MENU;
+            KEY_DEBUG = Constants.KEY_DEBUG;
+            KEY_RUN = Constants.KEY_RUN;
         } else {
-            keyJump = Constants.KEY_JUMP;
-            keyLeft = Constants.KEY_LEFT;
-            keyRight = Constants.KEY_RIGHT;
-            keyCrouch = Constants.KEY_CROUCH;
-            keyMenu = Constants.KEY_MENU;
-            keyDebug = Constants.KEY_DEBUG;
-            keyRun = Constants.KEY_RUN;
+            KEY_JUMP = Constants.KEY_JUMP_DEFAULT;
+            KEY_LEFT = Constants.KEY_LEFT_DEFAULT;
+            KEY_RIGHT = Constants.KEY_RIGHT_DEFAULT;
+            KEY_CROUCH = Constants.KEY_CROUCH_DEFAULT;
+            KEY_MENU = Constants.KEY_MENU;
+            KEY_DEBUG = Constants.KEY_DEBUG;
+            KEY_RUN = Constants.KEY_RUN;
         }
     }
 
@@ -42,19 +41,19 @@ public class KeyHandler extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (keyCode == keyLeft)
+        if (keyCode == KEY_LEFT)
             left = true;
-        else if (keyCode == keyRight)
+        else if (keyCode == KEY_RIGHT)
             right = true;
-        else if (keyCode == keyRun)
+        else if (keyCode == KEY_RUN)
             run = true;
-        else if (keyCode == keyJump)
+        else if (keyCode == KEY_JUMP)
             jump = true;
-        else if (keyCode == keyCrouch)
+        else if (keyCode == KEY_CROUCH)
             crouch = true;
-        else if (keyCode == keyMenu)
+        else if (keyCode == KEY_MENU)
             menu = !menu;
-        else if (keyCode == keyDebug)
+        else if (keyCode == KEY_DEBUG)
             debug = !debug;
     }
 
@@ -62,15 +61,15 @@ public class KeyHandler extends KeyAdapter {
     public void keyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (keyCode == keyLeft)
+        if (keyCode == KEY_LEFT)
             left = false;
-        else if (keyCode == keyRight)
+        else if (keyCode == KEY_RIGHT)
             right = false;
-        else if (keyCode == keyRun)
+        else if (keyCode == KEY_RUN)
             run = false;
-        else if (keyCode == keyJump)
+        else if (keyCode == KEY_JUMP)
             jump = false;
-        else if (keyCode == keyCrouch)
+        else if (keyCode == KEY_CROUCH)
             crouch = false;
     }
 }

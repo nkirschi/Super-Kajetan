@@ -87,7 +87,7 @@ class LobbyView extends AbstractView {
     }
 
     public void refresh() {
-
+        System.out.println("active threads: " + Thread.activeCount());
     }
 
     public static LobbyView getInstance() {
