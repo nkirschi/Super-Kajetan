@@ -6,14 +6,18 @@ import util.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.io.IOException;
 
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
-    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
+    private final boolean opaque = true; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private float maxVolume = 6F;
     private float minVolume = -6F;
+
+    //Einstellungsvariablen
     private float volume = (maxVolume + minVolume) / 2;
+    private boolean alt_control = false;
 
     private SettingsView() {
         super();
@@ -81,6 +85,18 @@ public class SettingsView extends AbstractView {
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         JCheckBox controllCheckBox = new JCheckBox();
+        controllCheckBox.setOpaque(false);
+        controllCheckBox.setBorderPainted(false);
+        controllCheckBox.setSelected(alt_control);
+        controllCheckBox.addItemListener(e -> {
+            if(e.getStateChange()==ItemEvent.SELECTED){
+                alt_control = true;
+            }
+            else{
+                alt_control = false;
+            }
+        });
+        settingsPanel.add(controllCheckBox, constraints);
 
         //Beschreibung der Steuerung
 
@@ -99,6 +115,17 @@ public class SettingsView extends AbstractView {
 
     public float getVolume() {
         return volume;
+    }
+    public void setVolume(float f){
+        volume = f;
+    }
+
+    public boolean getAltControlMode(){
+        return alt_control;
+    }
+
+    public void setAltControlMode(boolean b){
+        alt_control = b;
     }
 
     public static SettingsView getInstance() {
