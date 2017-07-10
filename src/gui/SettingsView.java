@@ -6,6 +6,7 @@ import util.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class SettingsView extends AbstractView {
@@ -21,7 +22,7 @@ public class SettingsView extends AbstractView {
         setBackground(Constants.MENU_BACKGROUND_COLOR);
         //setOpaque(opaque);
 
-        //Zurück-Button
+        //Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         buttonPanel.setOpaque(opaque);
@@ -31,6 +32,26 @@ public class SettingsView extends AbstractView {
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
         buttonPanel.add(backButton);
+
+        JLabel saveLabel = new JLabel();
+
+        JButton saveButton = new JButton("Speichern");
+        saveButton.setBackground(Constants.BUTTON_COLOR);
+        saveButton.setFont(Constants.DEFAULT_FONT);
+        saveButton.addActionListener(a -> {
+            MainFrame.getInstance().getProperties().put("control", "alternative/default"); // Provisorium
+            try (FileWriter writer = new FileWriter("settings.properties")) {
+                MainFrame.getInstance().getProperties().store(writer, "Settings saved.");
+                saveLabel.setText("Speichern erfolgreich!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                Logger.log(e, Logger.WARNING);
+                saveLabel.setText("Das ging in die Hose :(");
+            }
+        });
+        buttonPanel.add(saveButton);
+        buttonPanel.add(saveLabel);
+
         add(buttonPanel, BorderLayout.PAGE_END);
 
         //Einstellungspanel

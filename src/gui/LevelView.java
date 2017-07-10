@@ -13,6 +13,8 @@ import java.awt.event.FocusListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.*;
+import java.util.Timer;
 
 
 public class LevelView extends AbstractView implements Runnable {
@@ -22,7 +24,7 @@ public class LevelView extends AbstractView implements Runnable {
     private KeyState keyState;
     //private Timer timer;
 
-    private boolean exhausted;
+
 
     private boolean running;
     private boolean paused;
@@ -44,6 +46,8 @@ public class LevelView extends AbstractView implements Runnable {
             SoundUtil.stop();
             running = false;
             paused = true;
+            //timer.cancel();
+            //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
         buttonPanel.add(backButton);
@@ -74,14 +78,14 @@ public class LevelView extends AbstractView implements Runnable {
         });
 
         Logger.log("Level initialisiert", Logger.INFO);
-
-        //SoundUtil.loop();
-        /*timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        /*
+        SoundUtil.loop();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if (!paused) {
-                    refresh();
+                    update();
                     repaint();
                 }
             }
@@ -143,46 +147,33 @@ public class LevelView extends AbstractView implements Runnable {
 
     public void update() {
         // 1. Reset
+        player.setVelocityX(0);
         player.setWalking(false);
         player.setRunning(false);
         player.setCrouching(false);
 
         // 2. Input Handling
         if (keyState.left) {
-            if (player.getVelocityX() > -Constants.PLAYER_WALK_VELOCITY)
-                player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY / 8);
-            else
-                player.setVelocityX(-Constants.PLAYER_WALK_VELOCITY);
-            if (!keyState.right)
+            player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY);
+            if (!keyState.right) {
                 player.setViewingDirection(Direction.LEFT);
-            player.setWalking(true);
-        } else {
-            if (player.getVelocityX() < 0)
-                player.addVelocityX(Constants.PLAYER_WALK_VELOCITY / 8);
-            else if (!keyState.right)
-                player.setVelocityX(0);
+                player.setWalking(true);
+            }
         }
 
         if (keyState.right) {
-            if (player.getVelocityX() < Constants.PLAYER_WALK_VELOCITY)
-                player.addVelocityX(Constants.PLAYER_WALK_VELOCITY / 8);
-            else
-                player.setVelocityX(Constants.PLAYER_WALK_VELOCITY);
-            if (!keyState.left)
+            player.addVelocityX(Constants.PLAYER_WALK_VELOCITY);
+            if (!keyState.left) {
                 player.setViewingDirection(Direction.RIGHT);
-            player.setWalking(true);
-        } else {
-            if (player.getVelocityX() > 0)
-                player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY / 8);
-            else if (!keyState.left)
-                player.setVelocityX(0);
+                player.setWalking(true);
+            }
         }
 
-        if (keyState.run && !exhausted) {
+        if (keyState.run && !player.isExhausted()) {
             player.setRunning(true);
         }
 
-        if (keyState.jump && player.isOnGround() && !exhausted) {
+        if (keyState.jump && player.isOnGround() && !player.isExhausted()) {
             player.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
             player.setOnGround(false);
             player.setRunning(false);
@@ -193,7 +184,7 @@ public class LevelView extends AbstractView implements Runnable {
                 player.setVelocityY(-6);
         }
 
-        if (keyState.crouch && !exhausted) {
+        if (keyState.crouch && !player.isExhausted()) {
             player.multiplyVelocityX(0.5);
             player.setCrouching(true);
         }
@@ -222,10 +213,10 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         if (player.getStamina() < 10)
-            exhausted = true;
+            player.setExhausted(true);
 
         if (!keyState.run && !keyState.jump && !keyState.crouch)
-            exhausted = false;
+            player.setExhausted(false);
 
         // 5. Kollision - vorerst nur Bodenelemente
         Player dummy = new Player(player);
@@ -238,6 +229,36 @@ public class LevelView extends AbstractView implements Runnable {
                             player.getHitbox().getX() - player.getHitbox().getWidth());
                 } else if (player.getVelocityX() < 0) {
                     player.setVelocityX(ground.getHitbox().getX() + ground.getHitbox().getWidth() -
+                            player.getHitbox().getX());
+                }
+                player.setVelocityX(0);
+                player.setWalking(false);
+                break;
+            }
+        }
+
+        for (Obstacle obstacle : level.getObstacles()) {
+            if (dummy.collidesWith(obstacle)) {
+                if (player.getVelocityX() > 0) {
+                    player.setVelocityX(obstacle.getHitbox().getX() -
+                            player.getHitbox().getX() - player.getHitbox().getWidth());
+                } else if (player.getVelocityX() < 0) {
+                    player.setVelocityX(obstacle.getHitbox().getX() + obstacle.getHitbox().getWidth() -
+                            player.getHitbox().getX());
+                }
+                player.setVelocityX(0);
+                player.setWalking(false);
+                break;
+            }
+        }
+
+        for (Enemy enemy : level.getEnemies()) {
+            if (dummy.collidesWith(enemy)) {
+                if (player.getVelocityX() > 0) {
+                    player.setVelocityX(enemy.getHitbox().getX() -
+                            player.getHitbox().getX() - player.getHitbox().getWidth());
+                } else if (player.getVelocityX() < 0) {
+                    player.setVelocityX(enemy.getHitbox().getX() + enemy.getHitbox().getWidth() -
                             player.getHitbox().getX());
                 }
                 player.setVelocityX(0);
@@ -265,11 +286,44 @@ public class LevelView extends AbstractView implements Runnable {
             }
         }
 
+        for (Obstacle obstacle : level.getObstacles()) {
+            if (dummy.collidesWith(obstacle)) {
+                if (player.getVelocityY() > 0) {
+                    player.setY(obstacle.getHitbox().getY());
+                    player.setVelocityY(0);
+                    player.setOnGround(true);
+                    player.setJumping(false);
+                } else if (player.getVelocityY() < 0) {
+                    player.setY(obstacle.getY() +
+                            player.getHitbox().getHeight());
+                    player.setVelocityY(0);
+                }
+                break;
+            }
+        }
+
+        for (Enemy enemy : level.getEnemies()) {
+            if (dummy.collidesWith(enemy)) {
+                if (player.getVelocityY() > 0) {
+                    player.setY(enemy.getHitbox().getY());
+                    player.setVelocityY(0);
+                    player.setOnGround(true);
+                    player.setJumping(false);
+                } else if (player.getVelocityY() < 0) {
+                    player.setY(enemy.getY() +
+                            player.getHitbox().getHeight());
+                    player.setVelocityY(0);
+                }
+                break;
+            }
+        }
+
         // 6. Änderungen vornehmen
         player.move();
         camera.scroll(player.getVelocityX());
 
         if (player.getY() > 1000) {
+            SoundUtil.stop();
             //timer.cancel();
             //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
@@ -333,6 +387,21 @@ public class LevelView extends AbstractView implements Runnable {
 
 
         // 4. Draw Enemies
+        for (Enemy enemy : level.getEnemies()) {
+            try {
+                BufferedImage image;
+                image = ImageUtil.getImage(enemy.getImagePath());
+                int x = (int) Math.round(enemy.getX() - image.getWidth() / 2 - camera.getX());
+                int y = (int) Math.round(enemy.getY() - image.getHeight());
+                if (enemy.getViewingDirection().equals(Direction.RIGHT))
+                    g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
+                else
+                    g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), this);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Logger.log(e, Logger.WARNING);
+            }
+        }
 
         // 5. Draw Obstacles
         for (Obstacle obstacle : level.getObstacles()) {
@@ -343,6 +412,7 @@ public class LevelView extends AbstractView implements Runnable {
                 g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.log(e, Logger.WARNING);
             }
         }
 
@@ -380,6 +450,7 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     public void refresh() {
-
+        setFocusable(true);
+        requestFocusInWindow();
     }
 }

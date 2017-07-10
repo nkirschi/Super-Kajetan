@@ -102,12 +102,6 @@ public class MainFrame extends JFrame implements WindowListener {
     }
 
     /**
-     * Hilfsmethode für die Menü-Konstanten
-     *
-     * @return Dimension des Frames
-     */
-
-    /**
      * Getter-Methode für die aktuelle Ansicht
      *
      * @return Momentan aktive Ansicht
@@ -117,19 +111,21 @@ public class MainFrame extends JFrame implements WindowListener {
     }
 
     /**
+     * Hilfsmethode für die Menü-Konstanten
+     *
+     * @return Dimension des Frames
+     */
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    /**
      * Cleanup-Methode, die vor dem Beenden des Programms ausgeführt wird
      */
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
-        try (FileWriter writer = new FileWriter("settings.properties")) {
-            properties.put("jumpKey", Integer.toString(Constants.KEY_JUMP));
-            properties.store(writer, "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
         try {
             DBConnection.getInstance().close();
         } catch (Exception e) {
