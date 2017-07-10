@@ -1,12 +1,13 @@
 package util;
 
+import model.*;
+
 import java.awt.*;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
  * Einfach verkettete Liste unter Verwendung des Composite Design Patterns
- * Zur Benutzung siehe main()-Methode weiter unten
  */
 public class List<C> implements Iterable<C> {
     private ListElement<C> first;
@@ -27,13 +28,13 @@ public class List<C> implements Iterable<C> {
         first = first.add(content);
     }
 
-    /**
-     * Anhängen einer anderen Liste am Ende
-     *
-     * @param list Anzuhängende Liste
-     */
-    public void append(List<C> list) {
-        first = first.append(list.first);
+    public static <S> List<S> concat(List<? extends S> a, List<? extends S> b) {
+        List<S> list = new List<>();
+        for (S s : a)
+            list.add(s);
+        for (S s : b)
+            list.add(s);
+        return list;
     }
 
     /**

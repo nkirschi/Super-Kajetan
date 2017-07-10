@@ -9,4 +9,9 @@ public class Spider extends Enemy {
     public String getImagePath() {
         return "";
     }
+
+    @Override
+    public String toString() {
+        return "Spider at " + super.toString();
+    }
 }
