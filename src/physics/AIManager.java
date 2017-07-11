@@ -1,4 +1,6 @@
-package model;
+package physics;
+
+import model.*;
 
 import static model.Behavior.ATTACK;
 import static model.Behavior.ELOPE;
@@ -6,7 +8,7 @@ import static model.Behavior.ELOPE;
 /**
  * Created by Max on 11.07.2017.
  */
-public class Logic {
+public class AIManager {
     public void handleAI(Level level, Player player) {
         for (Enemy enemy : level.getEnemies()) {
             switch (enemy.getBehavior()) {

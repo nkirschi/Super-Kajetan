@@ -5,8 +5,8 @@ import model.Player;
 import util.List;
 
 public class CollisionChecker {
-    Player player;
-    Level level;
+    private Player player;
+    private Level level;
 
     public CollisionChecker(Player player, Level level) {
         this.player = player;
@@ -36,7 +36,6 @@ public class CollisionChecker {
         dummy = new Player(player);
         dummy.setVelocityX(0);
         dummy.move();
-
         for (Collidable collidable : collidables) {
             if (dummy.collidesWith(collidable)) {
                 if (player.getVelocityY() > 0) {

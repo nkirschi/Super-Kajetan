@@ -62,10 +62,13 @@ public class Player extends Entity {
     @Override
     public void setCrouching(boolean crouching) {
         double crouchingDelta = 53;
-        if (crouching && !this.crouching)
+        if (crouching && !this.crouching) {
             hitbox.setRect(hitbox.x, hitbox.y + crouchingDelta, hitbox.width, hitbox.height - crouchingDelta);
-        else if (!crouching && this.crouching)
+            System.out.println("set");
+        } else if (!crouching && this.crouching) {
             hitbox.setRect(hitbox.x, hitbox.y - crouchingDelta, hitbox.width, hitbox.height + crouchingDelta);
+            System.out.println("unset");
+        }
 
         super.setCrouching(crouching);
     }
@@ -124,10 +127,10 @@ public class Player extends Entity {
     }
 
     public void reset() {
-        velocityX = 0;
-        walking = false;
-        running = false;
-        crouching = false;
+        setVelocityX(0);
+        setWalking(false);
+        setRunning(false);
+        setCrouching(false);
     }
 
     @Override

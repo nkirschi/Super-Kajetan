@@ -1,6 +1,7 @@
 package gui;
 
 import model.*;
+import physics.AIManager;
 import physics.CollisionChecker;
 import physics.LawMaster;
 import util.*;
@@ -20,6 +21,7 @@ public class LevelView extends AbstractView implements Runnable {
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler keyHandler;
     private CollisionChecker collisionChecker;
+    private AIManager aiManager;
     private LawMaster lawMaster;
     private JPanel menuPanel;
 
@@ -33,6 +35,7 @@ public class LevelView extends AbstractView implements Runnable {
         camera = new Camera(player, 0, 0, getWidth(), getHeight());
         collisionChecker = new CollisionChecker(player, level);
         lawMaster = new LawMaster();
+        aiManager = new AIManager();
         keyHandler = new KeyHandler(player);
         addKeyListener(keyHandler);
 
@@ -105,12 +108,14 @@ public class LevelView extends AbstractView implements Runnable {
         for (Enemy enemy : level.getEnemies())
             lawMaster.applyGravitation(enemy);
 
-
         // 4. Ausdauerverbrauch
         lawMaster.updateStamina(player, keyHandler);
 
         // 5. Kollision - zuerst in x- dann in y-Richtung
         collisionChecker.forPlayer();
+
+        // Test
+        aiManager.handleAI(level, player);
 
         // 6. Änderungen vornehmen
         player.move();
