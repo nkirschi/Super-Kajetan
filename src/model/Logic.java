@@ -119,17 +119,25 @@ public class Logic {
     }
 
     public Obstacle nearestViewblocker(Enemy enemy, Level level){
-        
+        Obstacle blocker= new Crate(-999999, -999999)
         for (Obstacle obstacle : level.getObstacles()) {
             if(obstacle.getY()-enemy.getY()<(enemy.getHeight()/2)+(obstacle.getHeight()/2)){ /*Betrag*/
                 switch (enemy.getViewingDirection()){
                     case LEFT:
-                        if() {
-
+                        if(obstacle.getX() > blocker.getX()) {
+                            if(obstacle.getX() < enemy.getX()) {
+                                blocker = obstacle;
+                            }
                         }
                     case RIGHT:
+                        if(obstacle.getX() < blocker.getX()) {
+                            if(obstacle.getX() > enemy.getX()) {
+                                blocker = obstacle;
+                            }
+                        }
                 }
             }
         }
+        return blocker;
     }
 }
