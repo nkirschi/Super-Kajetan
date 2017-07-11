@@ -37,8 +37,18 @@ public class LevelView extends AbstractView implements Runnable {
         camera = new Camera(0, 0, getWidth(), getHeight());
         setIgnoreRepaint(true);
         setLayout(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
 
+        //Menü-Komponenten
+        add(buttonPanel, BorderLayout.CENTER);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 0, 5, 0);
+
+        JButton continueButton = new JButton("Weiter");
+
+        /*
         backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
@@ -65,10 +75,12 @@ public class LevelView extends AbstractView implements Runnable {
             }
         });
 
+
         buttonPanel.add(backButton);
         buttonPanel.setOpaque(false);
 
         add(buttonPanel, BorderLayout.SOUTH);
+        */
 
         KeyHandler = new KeyHandler();
         addKeyListener(KeyHandler);
@@ -159,6 +171,14 @@ public class LevelView extends AbstractView implements Runnable {
 
             } else {
                 lastTime = System.nanoTime();
+            }
+
+            //Menu
+            if (KeyHandler.menu) {
+                paused = true;
+            }
+            else{
+                paused = false;
             }
         }
         System.out.println(this + " ist raus, Onkel Klaus!");
@@ -411,13 +431,6 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawString("exhausted = " + player.isExhausted(), 20, 160);
             g2.drawString("onGround = " + player.isOnGround(), 20, 180);
 
-        }
-
-        // 8. Draw Menu
-        if (KeyHandler.menu) {
-            g2.setFont(Constants.DEFAULT_FONT.deriveFont(40F));
-            g2.drawString("MENU", 100, getHeight() / 2);
-            g2.setFont(backup);
         }
     }
 

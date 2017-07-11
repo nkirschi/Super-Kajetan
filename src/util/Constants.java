@@ -23,7 +23,8 @@ public class Constants {
     public static final String DB_COLLUM_DATE = "Datum";
 
     // Properties
-    public static final String PROPERTY_CONTROL_MODE = "control-mode";
+    public static final String PROPERTY_CONTROL_MODE = "alt_control-mode";
+    public static final String PROPERTY_VOLUME = "volume";
 
     // Spielmechanik
     public static final int UPDATE_CLOCK = 60;
