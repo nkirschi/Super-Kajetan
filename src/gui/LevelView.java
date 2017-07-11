@@ -1,8 +1,9 @@
 package gui;
 
 import model.*;
+import physics.CollisionChecker;
+import physics.LawMaster;
 import util.*;
-import util.List;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,84 +19,29 @@ public class LevelView extends AbstractView implements Runnable {
     private Player player;
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler keyHandler;
-
+    private CollisionChecker collisionChecker;
+    private LawMaster lawMaster;
     private JPanel menuPanel;
 
     private boolean running;
     private boolean paused;
-    private int focusHelperFlag = 0;
     private int hz = 60, fps = 60;
 
     LevelView(Level level) {
         this.level = level;
         player = new Player(LobbyView.getInstance().getWidth() / 2, Constants.GROUND_LEVEL);
-        camera = new Camera(0, 0, getWidth(), getHeight());
-        setIgnoreRepaint(true);
-        setLayout(new BorderLayout());
-        menuPanel = new JPanel(new GridBagLayout());
-
-        //Menü-Komponenten
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridwidth = GridBagConstraints.REMAINDER;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(5, 0, 5, 0);
-
-        Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24f);
-
-        JButton continueButton = new JButton("Fortsetzen");
-        continueButton.setBackground(Constants.BUTTON_COLOR);
-        continueButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
-        continueButton.setFont(buttonFont);
-        continueButton.addActionListener(a -> {
-            paused = false;
-            keyHandler.menu = false;
-        });
-
-        JButton backButton = new JButton("Zurück zur Lobby");
-        backButton.setBackground(Constants.BUTTON_COLOR);
-        backButton.setFont(buttonFont);
-        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
-        backButton.addActionListener(a -> {
-            paused = false;
-            running = false;
-            SoundUtil.soundSystem.stop("background");
-            SoundUtil.soundSystem.cull("background");
-            MainFrame.getInstance().changeTo(LobbyView.getInstance());
-        });
-
-
-        menuPanel.add(continueButton, constraints);
-        menuPanel.add(backButton, constraints);
-        menuPanel.setOpaque(false);
-        menuPanel.setVisible(false);
-
-        add(menuPanel, BorderLayout.CENTER);
-
-
-        keyHandler = new KeyHandler();
+        camera = new Camera(player, 0, 0, getWidth(), getHeight());
+        collisionChecker = new CollisionChecker(player, level);
+        lawMaster = new LawMaster();
+        keyHandler = new KeyHandler(player);
         addKeyListener(keyHandler);
 
-        addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-                if (focusHelperFlag > 5) {
-                    paused = false;
-                    SoundUtil.soundSystem.play("background");
-                } else
-                    focusHelperFlag++;
-            }
-
-            @Override
-            public void focusLost(FocusEvent focusEvent) {
-                paused = true;
-                SoundUtil.soundSystem.pause("background");
-            }
-        });
+        setIgnoreRepaint(true);
+        initMenu();
     }
 
     public void run() {
         running = true;
-
         SoundUtil.playRandomBackgroundMusic();
 
         int updateCount = 0;
@@ -139,7 +85,6 @@ public class LevelView extends AbstractView implements Runnable {
                         e.printStackTrace();
                     }
                 }*/
-
             } else {
                 lastTime = System.nanoTime();
                 repaint();
@@ -148,130 +93,42 @@ public class LevelView extends AbstractView implements Runnable {
         System.out.println(this + " ist raus, Onkel Klaus!");
     }
 
-    public void update() {
+    private void update() {
         // 1. Reset
-        player.setVelocityX(0);
-        player.setWalking(false);
-        player.setRunning(false);
-        player.setCrouching(false);
+        player.reset();
 
         // 2. Input Handling
-        if (keyHandler.left) {
-            player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY);
-            if (!keyHandler.right) {
-                player.setViewingDirection(Direction.LEFT);
-                player.setWalking(true);
-            }
-        }
-
-        if (keyHandler.right) {
-            player.addVelocityX(Constants.PLAYER_WALK_VELOCITY);
-            if (!keyHandler.left) {
-                player.setViewingDirection(Direction.RIGHT);
-                player.setWalking(true);
-            }
-        }
-
-        if (keyHandler.run && !player.isExhausted()) {
-            player.setRunning(true);
-        }
-
-        if (keyHandler.jump && player.isOnGround() && !player.isExhausted()) {
-            player.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
-            player.setOnGround(false);
-            player.setRunning(false);
-            player.setJumping(true);
-        } else if (!keyHandler.jump && !player.isOnGround()) {
-            if (player.getVelocityY() < -6)
-                player.setVelocityY(-6);
-        }
-
-        if (keyHandler.crouch && !player.isExhausted()) {
-            player.multiplyVelocityX(0.5);
-            player.setCrouching(true);
-        }
-
-        if (player.isRunning() || player.isJumping()) {
-            player.multiplyVelocityX(Constants.SPEED_FACTOR);
-        }
+        keyHandler.process();
 
         // 3. General Gravitation TODO Gravitation für jedermann
-        player.addVelocityY(Constants.GRAVITATIONAL_ACCELERATION);
-        player.setOnGround(false);
+        lawMaster.applyGravitation(player);
+        for (Enemy enemy : level.getEnemies())
+            lawMaster.applyGravitation(enemy);
 
 
         // 4. Ausdauerverbrauch
-        if (player.isWalking() && !player.isJumping() && !player.isCrouching())
-            player.addStamina(-1);
-
-        if (player.isCrouching())
-            player.addStamina(-2);
-        else if (player.isRunning() || player.isJumping() && player.getVelocityY() < 0) {
-            player.addStamina(-3);
-        }
-
-        if (!player.isRunning() && !player.isJumping() && !player.isCrouching()) {
-            player.addStamina(2);
-        }
-
-        if (player.getStamina() < 10)
-            player.setExhausted(true);
-
-        if (!keyHandler.run && !keyHandler.jump && !keyHandler.crouch)
-            player.setExhausted(false);
-
-        util.List<Collidable> collidables = List.concat(List.concat(level.getGrounds(), level.getObstacles()), level.getEnemies());
+        lawMaster.updateStamina(player, keyHandler);
 
         // 5. Kollision - zuerst in x- dann in y-Richtung
-        Player dummy = new Player(player);
-        dummy.setVelocityY(0);
-        dummy.move();
-        for (Collidable collidable : collidables) {
-            if (dummy.collidesWith(collidable)) {
-                if (player.getVelocityX() > 0) {
-                    player.setX(collidable.getHitbox().getX() - player.getHitbox().getWidth() / 2);
-                } else if (player.getVelocityX() < 0) {
-                    player.setX(collidable.getHitbox().getX() + collidable.getHitbox().getWidth() +
-                            player.getHitbox().getWidth() / 2);
-                }
-                player.setVelocityX(0);
-                player.setWalking(false);
-                break;
-            }
-        }
-
-        dummy = new Player(player);
-        dummy.setVelocityX(0);
-        dummy.move();
-
-        for (Collidable collidable : collidables) {
-            if (dummy.collidesWith(collidable)) {
-                if (player.getVelocityY() > 0) {
-                    player.setY(collidable.getHitbox().getY());
-                    player.setVelocityY(0);
-                    player.setOnGround(true);
-                    player.setJumping(false);
-                } else if (player.getVelocityY() < 0) {
-                    player.setY(collidable.getHitbox().getY() + collidable.getHitbox().getHeight() +
-                            player.getHitbox().getHeight());
-                    player.setVelocityY(0);
-                }
-                break;
-            }
-        }
+        collisionChecker.forPlayer();
 
         // 6. Änderungen vornehmen
         player.move();
-        camera.scroll(player.getVelocityX());
+        camera.move();
 
+        // Pseudotod
         if (player.getY() > 1000) {
             paused = true;
+            player.suffer(1000);
             keyHandler.menu = true;
         }
+
+        if (!hasFocus())
+            keyHandler.clear();
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
         // 0. Reset
@@ -309,8 +166,8 @@ public class LevelView extends AbstractView implements Runnable {
         try {
             BufferedImage image;
             image = ImageUtil.getImage(player.getImagePath());
-            int playerX = (int) (player.getX() - image.getWidth() / 2 - camera.getX());
-            int playerY = (int) (player.getY() - image.getHeight());
+            int playerX = (int) Math.round(player.getX() - image.getWidth() / 2 - camera.getX());
+            int playerY = (int) Math.round(player.getY() - image.getHeight());
             if (player.getViewingDirection().equals(Direction.RIGHT))
                 g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
             else
@@ -320,13 +177,14 @@ public class LevelView extends AbstractView implements Runnable {
             Logger.log(e, Logger.WARNING);
         }
 
-        Stroke originalStroke = g2.getStroke();
-        g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
-        Rectangle2D playerHitbox = player.getHitbox();
-        g2.drawRect((int) Math.round(playerHitbox.getX() - camera.x), (int) Math.round(playerHitbox.getY()),
-                (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
-        g2.setStroke(originalStroke);
-
+        if (keyHandler.debug) {
+            Stroke originalStroke = g2.getStroke();
+            g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+            Rectangle2D playerHitbox = player.getHitbox();
+            g2.drawRect((int) Math.round(playerHitbox.getX() - camera.x), (int) Math.round(playerHitbox.getY()),
+                    (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
+            g2.setStroke(originalStroke);
+        }
 
         // 4. Enemies
         for (Enemy enemy : level.getEnemies()) {
@@ -396,10 +254,10 @@ public class LevelView extends AbstractView implements Runnable {
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
 
-        if (!paused && keyHandler.menu && hasFocus()) {
+        if (!paused && keyHandler.menu) {
             paused = true;
             SoundUtil.soundSystem.pause("background");
-        } else if (paused && !keyHandler.menu && hasFocus()) {
+        } else if (paused && !keyHandler.menu) {
             paused = false;
             SoundUtil.soundSystem.play("background");
         }
@@ -409,5 +267,45 @@ public class LevelView extends AbstractView implements Runnable {
     public void refresh() {
         setFocusable(true);
         requestFocusInWindow();
+    }
+
+    public void initMenu() {
+        setLayout(new BorderLayout());
+        menuPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(5, 0, 5, 0);
+
+        Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24f);
+
+        JButton continueButton = new JButton("Fortsetzen");
+        continueButton.setBackground(Constants.BUTTON_COLOR);
+        continueButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        continueButton.setFont(buttonFont);
+        continueButton.addActionListener(a -> {
+            paused = false;
+            keyHandler.menu = false;
+            SoundUtil.soundSystem.play("background");
+        });
+
+        JButton backButton = new JButton("Zurück zur Lobby");
+        backButton.setBackground(Constants.BUTTON_COLOR);
+        backButton.setFont(buttonFont);
+        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        backButton.addActionListener(a -> {
+            paused = false;
+            running = false;
+            SoundUtil.soundSystem.stop("background");
+            SoundUtil.soundSystem.cull("background");
+            MainFrame.getInstance().changeTo(LobbyView.getInstance());
+        });
+
+        menuPanel.add(continueButton, constraints);
+        menuPanel.add(backButton, constraints);
+        menuPanel.setOpaque(false);
+        menuPanel.setVisible(false);
+
+        add(menuPanel, BorderLayout.CENTER);
     }
 }

@@ -128,13 +128,7 @@ public class MainFrame extends JFrame implements WindowListener {
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         Logger.close();
-
-        try {
-            DBConnection.getInstance().close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
-        }
+        SoundUtil.soundSystem.cleanup();
         System.exit(0);
     }
 

@@ -1,22 +1,21 @@
 package model;
 
+import physics.Collidable;
+
 import java.awt.geom.Rectangle2D;
 
 public abstract class Entity implements Collidable {
+    protected double x, y;
+    protected double velocityX, velocityY;
     Rectangle2D.Double hitbox;
 
     int health;
-
     boolean walking;
     boolean running;
     boolean jumping;
     boolean crouching;
-
-    protected double x, y;
-
-    protected double velocityX, velocityY;
-
-    protected Direction viewingDirection;
+    boolean onGround;
+    Direction viewingDirection;
 
 
     @Override
@@ -108,6 +107,46 @@ public abstract class Entity implements Collidable {
 
     public void setViewingDirection(Direction viewingDirection) {
         this.viewingDirection = viewingDirection;
+    }
+
+    public double getVelocityX() {
+        return velocityX;
+    }
+
+    public void addVelocityX(double velocityX) {
+        this.velocityX += velocityX;
+    }
+
+    public void multiplyVelocityX(double factor) {
+        velocityX *= factor;
+    }
+
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public double getVelocityY() {
+        return velocityY;
+    }
+
+    public void addVelocityY(double velocityY) {
+        this.velocityY += velocityY;
+    }
+
+    public void mulitplyVelocityY(double factor) {
+        velocityY *= factor;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
     }
 
     public abstract String getImagePath();

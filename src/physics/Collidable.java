@@ -1,4 +1,4 @@
-package model;
+package physics;
 
 import java.awt.geom.Rectangle2D;
 

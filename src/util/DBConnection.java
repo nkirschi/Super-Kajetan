@@ -9,34 +9,45 @@ public class DBConnection {
     private DBConnection() {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            connection = DriverManager.getConnection("jdbc:ucanaccess://highscores.accdb");
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             Logger.log(e, Logger.WARNING);
         }
     }
 
-    public static synchronized DBConnection getInstance() {
+    public static DBConnection getInstance() {
         if (instance == null)
             instance = new DBConnection();
         return instance;
     }
 
-    public synchronized ResultSet query(String query) throws SQLException {
+    public ResultSet query(String query) throws SQLException {
+        open();
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet rs = statement.executeQuery();
         statement.close();
+        close();
         return rs;
     }
 
-    public synchronized void update(String update) throws SQLException {
+    public void update(String update) throws SQLException {
+        open();
         PreparedStatement statement = connection.prepareStatement(update);
         statement.executeUpdate();
         statement.close();
+        close();
     }
 
-    public synchronized void close() throws SQLException {
+    public void open() throws SQLException {
+        try {
+            connection = DriverManager.getConnection("jdbc:ucanaccess://highscores.accdb");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Logger.log(e, Logger.WARNING);
+        }
+    }
+
+    public void close() throws SQLException {
         connection.close();
-        instance = null;
     }
 }

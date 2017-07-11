@@ -1,12 +1,16 @@
 package gui;
 
+import model.Direction;
+import model.Player;
 import util.Constants;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class KeyHandler extends KeyAdapter {
-    boolean left, right, run, jump, crouch, menu, debug;
+    private Player player;
+
+    public boolean left, right, run, jump, crouch, menu, debug;
 
     private final int KEY_JUMP;
     private final int KEY_LEFT;
@@ -16,8 +20,10 @@ public class KeyHandler extends KeyAdapter {
     private final int KEY_MENU;
     private final int KEY_DEBUG;
 
-    public KeyHandler() {
+    public KeyHandler(Player player) {
         super();
+        this.player = player;
+
         if (SettingsView.getInstance().getAltControlMode()) {
             KEY_JUMP = Constants.ALT_KEY_JUMP;
             KEY_LEFT = Constants.ALT_KEY_LEFT;
@@ -73,13 +79,52 @@ public class KeyHandler extends KeyAdapter {
             crouch = false;
     }
 
+    public void process() {
+        if (left) {
+            player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY);
+            if (!right) {
+                player.setViewingDirection(Direction.LEFT);
+                player.setWalking(true);
+            }
+        }
+
+        if (right) {
+            player.addVelocityX(Constants.PLAYER_WALK_VELOCITY);
+            if (!left) {
+                player.setViewingDirection(Direction.RIGHT);
+                player.setWalking(true);
+            }
+        }
+
+        if (run && !player.isExhausted()) {
+            player.setRunning(true);
+        }
+
+        if (jump && player.isOnGround() && !player.isExhausted()) {
+            player.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
+            player.setOnGround(false);
+            player.setRunning(false);
+            player.setJumping(true);
+        } else if (!jump && !player.isOnGround()) {
+            if (player.getVelocityY() < -6)
+                player.setVelocityY(-6);
+        }
+
+        if (crouch && !player.isExhausted()) {
+            player.multiplyVelocityX(0.5);
+            player.setCrouching(true);
+        }
+
+        if (player.isRunning() || player.isJumping()) {
+            player.multiplyVelocityX(Constants.SPEED_FACTOR);
+        }
+    }
+
     public void clear() {
         left = false;
         right = false;
         run = false;
         jump = false;
         crouch = false;
-        menu = false;
-        debug = false;
     }
 }

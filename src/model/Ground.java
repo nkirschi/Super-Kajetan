@@ -1,5 +1,7 @@
 package model;
 
+import physics.Collidable;
+
 import java.awt.geom.Rectangle2D;
 
 /**

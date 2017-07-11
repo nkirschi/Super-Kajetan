@@ -11,7 +11,6 @@ public class Player extends Entity {
     private int stamina;
     private boolean exhausted;
 
-    private boolean onGround;
 
     public Player(double x, double y) {
         this.x = x;
@@ -116,52 +115,19 @@ public class Player extends Entity {
             this.stamina = stamina;
     }
 
-    public double getVelocityX() {
-        return velocityX;
-    }
-
-    public void addVelocityX(double velocityX) {
-        this.velocityX += velocityX;
-    }
-
-    public void multiplyVelocityX(double factor) {
-        velocityX *= factor;
-    }
-
-    public void setVelocityX(double velocityX) {
-        this.velocityX = velocityX;
-    }
-
-    public double getVelocityY() {
-        return velocityY;
-    }
-
-    public void addVelocityY(double velocityY) {
-        this.velocityY += velocityY;
-    }
-
-    public void mulitplyVelocityY(double factor) {
-        velocityY *= factor;
-    }
-
-    public void setVelocityY(double velocityY) {
-        this.velocityY = velocityY;
-    }
-
-    public boolean isOnGround() {
-        return onGround;
-    }
-
-    public void setOnGround(boolean onGround) {
-        this.onGround = onGround;
-    }
-
     public boolean isExhausted() {
         return exhausted;
     }
 
     public void setExhausted(boolean exhausted) {
         this.exhausted = exhausted;
+    }
+
+    public void reset() {
+        velocityX = 0;
+        walking = false;
+        running = false;
+        crouching = false;
     }
 
     @Override

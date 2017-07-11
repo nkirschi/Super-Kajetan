@@ -164,7 +164,9 @@ class HighscoresView extends AbstractView {
                     dateCell.setForeground(currentPlayerScores);
                     label.setForeground(currentPlayerScores);
                 }
+
             }
+            highScoreSet.close(); // gaaanz wichtig!!
         } catch (Exception e) {
             e.printStackTrace();
             listTopLevelPanel.add(new JLabel("HOPPLA! Da ist wohl was schief gegangen :/"), constraints);
