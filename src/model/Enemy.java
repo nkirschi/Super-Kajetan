@@ -4,6 +4,9 @@ public abstract class Enemy extends Entity {
     protected Behavior behavior;
     protected int walkCount;
 
+    protected double viewingRange;
+    protected double attackRange;
+
     public Enemy(double x, double y, Behavior behavior, Direction viewingDirection) {
         this.x = x;
         this.y = y;
@@ -18,5 +21,13 @@ public abstract class Enemy extends Entity {
 
     public void setBehavior(Behavior behavior) {
         this.behavior = behavior;
+    }
+
+    public double getViewingRange() {
+        return viewingRange;
+    }
+
+    public double getAttackRange() {
+        return attackRange;
     }
 }

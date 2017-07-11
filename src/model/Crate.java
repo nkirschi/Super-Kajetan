@@ -3,8 +3,8 @@ package model;
 import java.awt.geom.Rectangle2D;
 
 public class Crate extends Obstacle {
-    private final double CRATE_WIDTH = 256;
-    private final double CRATE_HEIGHT = 256;
+    private final double CRATE_WIDTH = 128;
+    private final double CRATE_HEIGHT = 128;
 
     public Crate(double x, double y) {
         this.x = x;
