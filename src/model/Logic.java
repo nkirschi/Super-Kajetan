@@ -33,7 +33,7 @@ public class Logic {
                                 }
                             }
                     }
-                    break
+                    break;
                 case ATTACK:
                     System.out.println("Ich bin AGRESSIV");
                     if(distance(player, enemy)<enemy.getAttackRange()){
@@ -52,7 +52,7 @@ public class Logic {
                             moveRight(enemy);
                         }
                     }
-                    break
+                    break;
                 case IDLE:
                     System.out.println("Ich warte");
                     if(distance(player, enemy)<enemy.getAttackRange()){
@@ -74,11 +74,12 @@ public class Logic {
                         }
                         attack(enemy);
                     } else {
-                    switch (enemy.getViewingDirection()){
-                        case LEFT:
-                            moveLeft(enemy);
-                        case RIGHT:
-                            moveRight(enemy);
+                        switch (enemy.getViewingDirection()) {
+                            case LEFT:
+                                moveLeft(enemy);
+                            case RIGHT:
+                                moveRight(enemy);
+                        }
                     }
                     break;
                 case ELOPE:
@@ -98,6 +99,7 @@ public class Logic {
     public double distance(Entity entity1, Entity entity2){
         return Math.sqrt((entity1.getX() - entity2.getX())*(entity1.getX() - entity2.getX()) + (entity1.getY() - entity2.getY())*(entity1.getY() - entity2.getY()));
     }
+
     public void moveLeft(Enemy enemy){
         if (true/*links Hindernis*/) {
             //enemy.jump()
@@ -119,7 +121,7 @@ public class Logic {
     }
 
     public Obstacle nearestViewblocker(Enemy enemy, Level level){
-        Obstacle blocker= new Crate(-999999, -999999)
+        Obstacle blocker= new Crate(-999999, -999999);
         for (Obstacle obstacle : level.getObstacles()) {
             if(obstacle.getY()-enemy.getY()<(enemy.getHeight()/2)+(obstacle.getHeight()/2)){ /*Betrag*/
                 switch (enemy.getViewingDirection()){
