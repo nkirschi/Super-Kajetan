@@ -10,8 +10,6 @@ public class Spider extends Enemy {
         super(x, y, behavior, viewingDirection);
         viewingRange = 100;
         attackRange = 10;
-        height = SPIDER_HEIGHT;
-        width = SPIDER_WIDTH;
     }
 
     public String getImagePath() {
