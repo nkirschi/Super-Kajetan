@@ -2,7 +2,9 @@ package model;
 
 public abstract class Enemy extends Entity {
     protected Behavior behavior;
-    protected int walkCount;
+
+    protected double height;
+    protected double width;
 
     protected double viewingRange;
     protected double attackRange;
@@ -30,4 +32,10 @@ public abstract class Enemy extends Entity {
     public double getAttackRange() {
         return attackRange;
     }
+
+    protected int walkCount;
+
+    public double getHeight() { return height; }
+
+    public double getWidth() { return width; }
 }
