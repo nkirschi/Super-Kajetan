@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.Key;
 
 
 public class LevelView extends AbstractView implements Runnable {
@@ -21,11 +22,11 @@ public class LevelView extends AbstractView implements Runnable {
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler KeyHandler;
     private SoundUtil soundUtil = new SoundUtil();
-    private boolean blockPause;
     //private Timer timer;
 
 
     private JButton backButton;
+    private JPanel buttonPanel;
 
     private boolean running;
     private boolean paused;
@@ -37,22 +38,26 @@ public class LevelView extends AbstractView implements Runnable {
         camera = new Camera(0, 0, getWidth(), getHeight());
         setIgnoreRepaint(true);
         setLayout(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        buttonPanel = new JPanel(new GridBagLayout());
 
         //Menü-Komponenten
-        add(buttonPanel, BorderLayout.CENTER);
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
 
         JButton continueButton = new JButton("Weiter");
+        continueButton.setBackground(Constants.BUTTON_COLOR);
+        continueButton.setFont(Constants.DEFAULT_FONT);
+        continueButton.addActionListener(a -> {
+            paused = false;
+            KeyHandler.menu = false;
+        });
 
-        /*
+
         backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
-        backButton.setLocation(20, getHeight() - backButton.getHeight() - 20);
         backButton.addActionListener(a -> {
             paused = false;
             running = false;
@@ -63,24 +68,15 @@ public class LevelView extends AbstractView implements Runnable {
             //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
-        backButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-                blockPause = true;
-            }
-
-            @Override
-            public void mouseExited(MouseEvent mouseEvent) {
-                blockPause = false;
-            }
-        });
 
 
+        buttonPanel.add(continueButton);
         buttonPanel.add(backButton);
         buttonPanel.setOpaque(false);
+        buttonPanel.setVisible(false);
 
-        add(buttonPanel, BorderLayout.SOUTH);
-        */
+        add(buttonPanel, BorderLayout.CENTER);
+
 
         KeyHandler = new KeyHandler();
         addKeyListener(KeyHandler);
@@ -94,8 +90,6 @@ public class LevelView extends AbstractView implements Runnable {
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
-                if (blockPause)
-                    return;
                 paused = true;
                 KeyHandler.left = false;
                 KeyHandler.right = false;
@@ -156,7 +150,7 @@ public class LevelView extends AbstractView implements Runnable {
                     lag -= TIME_PER_UPDATE;
                 }
 
-                render();
+                repaint();
                 frameCount++;
 
                 // Theoretisch VSync - is aber bissl laggy :(
@@ -174,11 +168,15 @@ public class LevelView extends AbstractView implements Runnable {
             }
 
             //Menu
+            if (!paused && KeyHandler.menu)
+                SoundUtil.soundSystem.pause("background");
+            else if (paused && !KeyHandler.menu)
+                SoundUtil.soundSystem.play("background");
+            paused = KeyHandler.menu;
             if (KeyHandler.menu) {
-                paused = true;
-            }
-            else{
-                paused = false;
+                buttonPanel.setVisible(true);
+            } else {
+                buttonPanel.setVisible(false);
             }
         }
         System.out.println(this + " ist raus, Onkel Klaus!");
