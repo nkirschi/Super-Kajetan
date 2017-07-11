@@ -72,4 +72,14 @@ public class KeyHandler extends KeyAdapter {
         else if (keyCode == KEY_CROUCH)
             crouch = false;
     }
+
+    public void clear() {
+        left = false;
+        right = false;
+        run = false;
+        jump = false;
+        crouch = false;
+        menu = false;
+        debug = false;
+    }
 }

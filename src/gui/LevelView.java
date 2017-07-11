@@ -8,28 +8,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.security.Key;
 
 
 public class LevelView extends AbstractView implements Runnable {
     private Level level;
     private Player player;
     private Camera camera; // Die aktuelle "Kamera"
-    private KeyHandler KeyHandler;
-    private SoundUtil soundUtil = new SoundUtil();
-    //private Timer timer;
+    private KeyHandler keyHandler;
 
-
-    private JButton backButton;
     private JPanel buttonPanel;
 
     private boolean running;
     private boolean paused;
+    private boolean focusHelperFlag;
     private int hz = 60, fps = 60;
 
     LevelView(Level level) {
@@ -51,21 +45,18 @@ public class LevelView extends AbstractView implements Runnable {
         continueButton.setFont(Constants.DEFAULT_FONT);
         continueButton.addActionListener(a -> {
             paused = false;
-            KeyHandler.menu = false;
+            keyHandler.menu = false;
         });
 
 
-        backButton = new JButton("Zurück");
+        JButton backButton = new JButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.addActionListener(a -> {
             paused = false;
             running = false;
-            //soundUtil.stop();
             SoundUtil.soundSystem.stop("background");
             SoundUtil.soundSystem.cull("background");
-            //timer.cancel();
-            //timer.purge();
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
 
@@ -78,48 +69,31 @@ public class LevelView extends AbstractView implements Runnable {
         add(buttonPanel, BorderLayout.CENTER);
 
 
-        KeyHandler = new KeyHandler();
-        addKeyListener(KeyHandler);
+        keyHandler = new KeyHandler();
+        addKeyListener(keyHandler);
 
         addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent focusEvent) {
-                paused = false;
-                soundUtil.unpause();
+                if (focusHelperFlag) {
+                    paused = false;
+                    SoundUtil.soundSystem.play("background");
+                } else
+                    focusHelperFlag = true;
             }
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
                 paused = true;
-                KeyHandler.left = false;
-                KeyHandler.right = false;
-                KeyHandler.run = false;
-                KeyHandler.jump = false;
-                KeyHandler.crouch = false;
-                soundUtil.pause();
+                SoundUtil.soundSystem.pause("background");
             }
         });
-
-        Logger.log("Level initialisiert", Logger.INFO);
-        /*
-        SoundUtil.loop();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!paused) {
-                    update();
-                    repaint();
-                }
-            }
-        }, 0, 1000 / 60);*/
     }
 
     public void run() {
         running = true;
-        //soundUtil.playRandom();
-        SoundUtil.soundSystem.activate("background");
-        SoundUtil.soundSystem.play("background");
+
+        SoundUtil.playRandomBackgroundMusic();
 
         int updateCount = 0;
         int frameCount = 0;
@@ -165,18 +139,7 @@ public class LevelView extends AbstractView implements Runnable {
 
             } else {
                 lastTime = System.nanoTime();
-            }
-
-            //Menu
-            if (!paused && KeyHandler.menu)
-                SoundUtil.soundSystem.pause("background");
-            else if (paused && !KeyHandler.menu)
-                SoundUtil.soundSystem.play("background");
-            paused = KeyHandler.menu;
-            if (KeyHandler.menu) {
-                buttonPanel.setVisible(true);
-            } else {
-                buttonPanel.setVisible(false);
+                repaint();
             }
         }
         System.out.println(this + " ist raus, Onkel Klaus!");
@@ -190,37 +153,37 @@ public class LevelView extends AbstractView implements Runnable {
         player.setCrouching(false);
 
         // 2. Input Handling
-        if (KeyHandler.left) {
+        if (keyHandler.left) {
             player.addVelocityX(-Constants.PLAYER_WALK_VELOCITY);
-            if (!KeyHandler.right) {
+            if (!keyHandler.right) {
                 player.setViewingDirection(Direction.LEFT);
                 player.setWalking(true);
             }
         }
 
-        if (KeyHandler.right) {
+        if (keyHandler.right) {
             player.addVelocityX(Constants.PLAYER_WALK_VELOCITY);
-            if (!KeyHandler.left) {
+            if (!keyHandler.left) {
                 player.setViewingDirection(Direction.RIGHT);
                 player.setWalking(true);
             }
         }
 
-        if (KeyHandler.run && !player.isExhausted()) {
+        if (keyHandler.run && !player.isExhausted()) {
             player.setRunning(true);
         }
 
-        if (KeyHandler.jump && player.isOnGround() && !player.isExhausted()) {
+        if (keyHandler.jump && player.isOnGround() && !player.isExhausted()) {
             player.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
             player.setOnGround(false);
             player.setRunning(false);
             player.setJumping(true);
-        } else if (!KeyHandler.jump && !player.isOnGround()) {
+        } else if (!keyHandler.jump && !player.isOnGround()) {
             if (player.getVelocityY() < -6)
                 player.setVelocityY(-6);
         }
 
-        if (KeyHandler.crouch && !player.isExhausted()) {
+        if (keyHandler.crouch && !player.isExhausted()) {
             player.multiplyVelocityX(0.5);
             player.setCrouching(true);
         }
@@ -251,7 +214,7 @@ public class LevelView extends AbstractView implements Runnable {
         if (player.getStamina() < 10)
             player.setExhausted(true);
 
-        if (!KeyHandler.run && !KeyHandler.jump && !KeyHandler.crouch)
+        if (!keyHandler.run && !keyHandler.jump && !keyHandler.crouch)
             player.setExhausted(false);
 
         util.List<Collidable> collidables = List.concat(List.concat(level.getGrounds(), level.getObstacles()), level.getEnemies());
@@ -299,8 +262,8 @@ public class LevelView extends AbstractView implements Runnable {
         camera.scroll(player.getVelocityX());
 
         if (player.getY() > 1000) {
-            running = false;
-            JOptionPane.showMessageDialog(MainFrame.getInstance().getCurrentView(), "Game over!", "Pech", JOptionPane.INFORMATION_MESSAGE);
+            paused = true;
+            keyHandler.menu = true;
         }
     }
 
@@ -317,7 +280,10 @@ public class LevelView extends AbstractView implements Runnable {
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
-        // 1. Draw Background
+        // 0. Reset
+        g2.clearRect(0, 0, getWidth(), getHeight());
+
+        // 1. Background
         g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
@@ -335,7 +301,7 @@ public class LevelView extends AbstractView implements Runnable {
             Logger.log(e, Logger.WARNING);
         }
 
-        // 2. Draw Grounds
+        // 2. Grounds
 
         for (Object object : level.getGrounds().toArray()) {
             Ground ground = (Ground) object;
@@ -344,7 +310,7 @@ public class LevelView extends AbstractView implements Runnable {
             g2.draw(rectangle);
         }
 
-        // 3. Draw Player
+        // 3. Player
 
         try {
             BufferedImage image;
@@ -368,7 +334,7 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setStroke(originalStroke);
 
 
-        // 4. Draw Enemies
+        // 4. Enemies
         for (Enemy enemy : level.getEnemies()) {
             try {
                 BufferedImage image;
@@ -385,7 +351,7 @@ public class LevelView extends AbstractView implements Runnable {
             }
         }
 
-        // 5. Draw Obstacles
+        // 5. Obstacles
         for (Obstacle obstacle : level.getObstacles()) {
             try {
                 BufferedImage image = ImageUtil.getImage(obstacle.getImagePath());
@@ -398,7 +364,7 @@ public class LevelView extends AbstractView implements Runnable {
             }
         }
 
-        // 6. Draw Stamina Bar
+        // 6. Stamina Bar
         Rectangle2D staminaMask = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, 200, 15);
         Rectangle2D staminaBar = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, player.getStamina() / 5, 15);
         g2.setColor(Constants.BUTTON_COLOR);
@@ -411,8 +377,8 @@ public class LevelView extends AbstractView implements Runnable {
         g2.drawString("Ausdauer: " + player.getStamina() / 10 + "%", getWidth() - 215, getHeight() - 17);
         g2.setFont(backup);
 
-        // 7. Draw Debug Screen
-        if (KeyHandler.debug) {
+        // 7. Debug Screen
+        if (keyHandler.debug) {
             g2.setColor(Color.BLACK);
             String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
             g2.drawString(s, getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
@@ -429,8 +395,16 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawString("crouching = " + player.isCrouching(), 20, 140);
             g2.drawString("exhausted = " + player.isExhausted(), 20, 160);
             g2.drawString("onGround = " + player.isOnGround(), 20, 180);
-
         }
+
+        if (!paused && keyHandler.menu && hasFocus()) {
+            paused = true;
+            SoundUtil.soundSystem.pause("background");
+        } else if (paused && !keyHandler.menu && hasFocus()) {
+            paused = false;
+            SoundUtil.soundSystem.play("background");
+        }
+        buttonPanel.setVisible(keyHandler.menu);
     }
 
     public void refresh() {

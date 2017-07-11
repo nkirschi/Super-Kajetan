@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class SoundUtil {
@@ -23,6 +24,7 @@ public class SoundUtil {
 
     public static SoundSystem soundSystem = new SoundSystem();
 
+    /*
     private void play(String filename) {
         playing = true;
         try {
@@ -136,5 +138,32 @@ public class SoundUtil {
         res = (SourceDataLine) AudioSystem.getLine(info);
         res.open(audioFormat);
         return res;
+    }
+    */
+    public static void playRandomBackgroundMusic() {
+        String f = "sounds/";
+        String s = "";
+        switch (ThreadLocalRandom.current().nextInt(1, 7)) {
+            case 0:
+                s = "gott_mit_uns.ogg";
+                break;
+            case 1:
+                s = "no_bullets_fly.ogg";
+                break;
+            case 2:
+                s = "panzerkampf.ogg";
+                break;
+            case 3:
+                s = "resist_and_bite.ogg";
+                break;
+            case 4:
+                s = "shiroyama.ogg";
+                break;
+            case 5:
+                s = "the_last_stand.ogg";
+                break;
+        }
+        soundSystem.backgroundMusic("background",
+                ClassLoader.getSystemResource(f + s), s, true);
     }
 }

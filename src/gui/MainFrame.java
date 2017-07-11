@@ -72,8 +72,27 @@ public class MainFrame extends JFrame implements WindowListener {
             e.printStackTrace();
         }
 
-        SoundUtil.soundSystem.newSource(false, "background", ClassLoader.getSystemResource("sounds/shiroyama.ogg"), "shiroyama.ogg", true,
+        /*
+        SoundUtil.soundSystem.newSource(false, "shiroyama",
+                ClassLoader.getSystemResource("sounds/shiroyama.ogg"), "shiroyama.ogg", true,
                 0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+        SoundUtil.soundSystem.newSource(false, "resist_and_bite",
+                ClassLoader.getSystemResource("sounds/resist_and_bite.ogg"), "resist_and_bite.ogg", true,
+                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+        SoundUtil.soundSystem.newSource(false, "no_bullets_fly",
+                ClassLoader.getSystemResource("sounds/no_bullets_fly.ogg"), "no_bullets_fly.ogg", true,
+                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+        SoundUtil.soundSystem.newSource(false, "panzerkampf",
+                ClassLoader.getSystemResource("sounds/panzerkampf.ogg"), "panzerkampf.ogg", true,
+                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+        SoundUtil.soundSystem.newSource(false, "the_last_stand",
+                ClassLoader.getSystemResource("sounds/the_last_stand.ogg"), "the_last_stand.ogg", true,
+                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+        SoundUtil.soundSystem.newSource(false, "gott_mit_uns",
+                ClassLoader.getSystemResource("sounds/gott_mit_uns.ogg"), "gott_mit_uns.ogg", true,
+                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+                */
+
         /*try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
