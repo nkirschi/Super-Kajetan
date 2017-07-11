@@ -19,7 +19,7 @@ public class SettingsView extends AbstractView {
     private float minVolume = 0F;
 
     //Einstellungsvariablen
-    private float volume = (maxVolume + minVolume) / 2;
+    private float volume = (maxVolume + minVolume)/2;
     private boolean alt_control = false;
     private JCheckBox controllCheckBox;
     private JLabel saveLabel;
@@ -41,6 +41,7 @@ public class SettingsView extends AbstractView {
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
         buttonPanel.add(backButton);
 
+        //Speichern
         saveLabel = new JLabel();
 
         JButton saveButton = new JButton("Save");
@@ -50,7 +51,8 @@ public class SettingsView extends AbstractView {
             SoundUtil.soundSystem.setMasterVolume(volume);
 
             setAltControlMode(controllCheckBox.isSelected());
-            MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, getAltControlMode() ? "alternative" : "default");
+            MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, Boolean.toString(alt_control));
+            MainFrame.getInstance().getProperties().put(Constants.PROPERTY_VOLUME, Float.toString(volume));
             try (FileWriter writer = new FileWriter("settings.properties")) {
                 MainFrame.getInstance().getProperties().store(writer, "Sidescroller " + Constants.GAME_VERSION);
                 saveLabel.setText("Speichern erfolgreich!");
@@ -84,6 +86,21 @@ public class SettingsView extends AbstractView {
 
         constraints.insets = new Insets(0, 0, 0, 20);
 
+        //Einstellungen aus Properties holen
+        try {
+            volume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_VOLUME));
+        }
+        catch(Exception e){
+            Logger.log(e, Logger.WARNING);
+        }
+
+        try {
+            alt_control = Boolean.parseBoolean(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_CONTROL_MODE));
+        }
+        catch(Exception e){
+            Logger.log(e, Logger.WARNING);
+        }
+
         //Lautstärke
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         JLabel volumeLabel = new JLabel("Lautstärke");
@@ -101,7 +118,6 @@ public class SettingsView extends AbstractView {
         volumeSlider.setOpaque(false);
         volumeSlider.addChangeListener(c -> {
             this.volume = (float) volumeSlider.getValue() / 100;
-            //System.out.println(volumeSlider.getValue());
         });
         settingsPanel.add(volumeSlider, constraints);
 
