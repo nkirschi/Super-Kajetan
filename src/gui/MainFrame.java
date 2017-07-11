@@ -43,13 +43,11 @@ public class MainFrame extends JFrame implements WindowListener {
             setIconImage(ImageUtil.getImage("images/icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
         }
 
         initProperties();
 
         changeTo(MainMenuView.getInstance());
-        Logger.log("Applikation ordnungsgemäß gestartet", Logger.INFO);
         setVisible(true);
     }
 
@@ -65,39 +63,7 @@ public class MainFrame extends JFrame implements WindowListener {
      * @param args Irrelevante Kommandozeilenparamter
      */
     public static void main(String[] args) {
-        try {
-            SoundSystemConfig.addLibrary(LibraryJavaSound.class);
-            SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
-        } catch (SoundSystemException e) {
-            e.printStackTrace();
-        }
-
-        /*
-        SoundUtil.soundSystem.newSource(false, "shiroyama",
-                ClassLoader.getSystemResource("sounds/shiroyama.ogg"), "shiroyama.ogg", true,
-                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
-        SoundUtil.soundSystem.newSource(false, "resist_and_bite",
-                ClassLoader.getSystemResource("sounds/resist_and_bite.ogg"), "resist_and_bite.ogg", true,
-                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
-        SoundUtil.soundSystem.newSource(false, "no_bullets_fly",
-                ClassLoader.getSystemResource("sounds/no_bullets_fly.ogg"), "no_bullets_fly.ogg", true,
-                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
-        SoundUtil.soundSystem.newSource(false, "panzerkampf",
-                ClassLoader.getSystemResource("sounds/panzerkampf.ogg"), "panzerkampf.ogg", true,
-                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
-        SoundUtil.soundSystem.newSource(false, "the_last_stand",
-                ClassLoader.getSystemResource("sounds/the_last_stand.ogg"), "the_last_stand.ogg", true,
-                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
-        SoundUtil.soundSystem.newSource(false, "gott_mit_uns",
-                ClassLoader.getSystemResource("sounds/gott_mit_uns.ogg"), "gott_mit_uns.ogg", true,
-                0, 0, 0, SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
-                */
-
-        /*try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        SoundUtil.init();
         SwingUtilities.invokeLater(MainFrame::getInstance);
     }
 
@@ -125,14 +91,11 @@ public class MainFrame extends JFrame implements WindowListener {
         try (FileReader reader = new FileReader("settings.properties")) {
             properties.load(reader);
         } catch (IOException e1) {
-            Logger.log("Konfigurationsdatei nicht gefunden", Logger.WARNING);
-            Logger.log(e1, Logger.WARNING);
             try {
                 Files.createFile(Paths.get("settings.properties"));
             } catch (IOException e2) {
                 e1.printStackTrace();
                 e2.printStackTrace();
-                Logger.log("Neue Konfigurationsdatei konnte nicht erstellt werden", Logger.ERROR);
                 Logger.log(e2, Logger.ERROR);
             }
         }

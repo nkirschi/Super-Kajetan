@@ -95,7 +95,7 @@ class MainMenuView extends AbstractView {
 
         JLabel nameLabel = new JLabel("Gib deinen Namen hier ein: ");
         nameLabel.setFont(Constants.DEFAULT_FONT);
-        nameLabel.setForeground(Constants.FOREGROUND_COLOR);
+        nameLabel.setForeground(Color.WHITE);
         toolPanel.add(nameLabel);
 
         JTextField nameTextField = new JTextField(17) {
@@ -106,11 +106,11 @@ class MainMenuView extends AbstractView {
                 }
             }
         };
-        nameTextField.setOpaque(opaque);
+        nameTextField.setOpaque(true);
         nameTextField.setDocument(new JTextFieldLimit(20));
         nameTextField.setText(currentName);
-        nameTextField.setBackground(Constants.BUTTON_COLOR);
-        nameTextField.setForeground(Constants.FOREGROUND_COLOR);
+        nameTextField.setBackground(new Color(0, 0, 0, 0.5f));
+        nameTextField.setForeground(Color.WHITE);
         nameTextField.setFont(Constants.DEFAULT_FONT);
         nameTextField.setHorizontalAlignment(JTextField.CENTER);
         toolPanel.add(nameTextField);

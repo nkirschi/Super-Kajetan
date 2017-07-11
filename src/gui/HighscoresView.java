@@ -101,16 +101,19 @@ class HighscoresView extends AbstractView {
         JLabel nameColumn = new JLabel(Constants.DB_COLLUM_NAME);
         nameColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameColumn.setBorder(listCollumHeaderBorder);
+        nameColumn.setForeground(Color.WHITE);
         nameColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         namePanel.add(nameColumn);
         JLabel scoreColumn = new JLabel(Constants.DB_COLLUM_SCORE);
         scoreColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         scoreColumn.setBorder(listCollumHeaderBorder);
+        scoreColumn.setForeground(Color.WHITE);
         scoreColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         scorePanel.add(scoreColumn);
         JLabel dateColumn = new JLabel(Constants.DB_COLLUM_DATE);
         dateColumn.setAlignmentX(Component.CENTER_ALIGNMENT);
         dateColumn.setBorder(listCollumHeaderBorder);
+        dateColumn.setForeground(Color.WHITE);
         dateColumn.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
         datePanel.add(dateColumn);
 
@@ -121,12 +124,14 @@ class HighscoresView extends AbstractView {
                 JLabel nameCell = new JLabel(highScoreSet.getString(Constants.DB_COLLUM_NAME));
                 nameCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 nameCell.setBorder(listCellBorder);
+                nameCell.setForeground(Color.WHITE);
                 nameCell.setFont(Constants.DEFAULT_FONT);
                 namePanel.add(nameCell);
 
                 JLabel scoreCell = new JLabel(Integer.toString(highScoreSet.getInt(Constants.DB_COLLUM_SCORE)));
                 scoreCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 scoreCell.setBorder(listCellBorder);
+                scoreCell.setForeground(Color.WHITE);
                 scoreCell.setFont(Constants.DEFAULT_FONT);
                 scorePanel.add(scoreCell);
 
@@ -137,6 +142,7 @@ class HighscoresView extends AbstractView {
                 JLabel dateCell = new JLabel(dateString);
                 dateCell.setAlignmentX(Component.CENTER_ALIGNMENT);
                 dateCell.setBorder(listCellBorder);
+                dateCell.setForeground(Color.WHITE);
                 dateCell.setFont(Constants.DEFAULT_FONT);
                 datePanel.add(dateCell);
 
@@ -144,6 +150,7 @@ class HighscoresView extends AbstractView {
                 JLabel label = new JLabel(i + ". Platz");
                 label.setAlignmentX(Component.CENTER_ALIGNMENT);
                 label.setBorder(listCellBorder);
+                label.setForeground(Color.WHITE);
                 label.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD));
                 fancyCollumPanel.add(label);
 
@@ -197,6 +204,7 @@ class HighscoresView extends AbstractView {
             e.printStackTrace();
         }
 
-
+        g.setColor(new Color(0, 0, 0, 0.6f));
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 }
