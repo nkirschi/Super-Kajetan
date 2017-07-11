@@ -102,7 +102,7 @@ public class Logic {
 
     public void moveLeft(Enemy enemy){
         if (true/*links Hindernis*/) {
-            //enemy.jump()
+            //spring
         }else{
             //geh links
         }
@@ -110,7 +110,7 @@ public class Logic {
 
     public void moveRight(Enemy enemy){
         if (false/*rechts Hindernis*/) {
-            //enemy.jump()
+            //spring
         }else{
             //geh rechts
         }
