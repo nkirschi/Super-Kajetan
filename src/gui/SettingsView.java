@@ -54,7 +54,7 @@ public class SettingsView extends AbstractView {
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, Boolean.toString(alt_control));
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_VOLUME, Float.toString(volume));
             try (FileWriter writer = new FileWriter("settings.properties")) {
-                MainFrame.getInstance().getProperties().store(writer, "Sidescroller " + Constants.GAME_VERSION);
+                MainFrame.getInstance().getProperties().store(writer, Constants.GAME_TITLE + " " + Constants.GAME_VERSION);
                 saveLabel.setText("Speichern erfolgreich!");
             } catch (IOException e) {
                 e.printStackTrace();

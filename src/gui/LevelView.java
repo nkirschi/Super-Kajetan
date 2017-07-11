@@ -414,7 +414,8 @@ public class LevelView extends AbstractView implements Runnable {
         // 7. Draw Debug Screen
         if (KeyHandler.debug) {
             g2.setColor(Color.BLACK);
-            g2.drawString("Sidescroller " + Constants.GAME_VERSION, getWidth() / 2 - g2.getFontMetrics().stringWidth("Sidescroller"), 20);
+            String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
+            g2.drawString(s, getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
 
             String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
             g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
