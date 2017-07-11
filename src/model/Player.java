@@ -120,13 +120,15 @@ public class Player extends Entity {
         return velocityX;
     }
 
+    public double getHeight() { return PLAYER_HEIGHT; }
+
+    public double getWidth() { return PLAYER_WIDTH; }
+
     public void addVelocityX(double velocityX) {
         this.velocityX += velocityX;
     }
 
-    public void multiplyVelocityX(double factor) {
-        velocityX *= factor;
-    }
+    public void multiplyVelocityX(double factor) { velocityX *= factor; }
 
     public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;

@@ -3,6 +3,9 @@ package model;
 import java.awt.geom.Rectangle2D;
 
 public abstract class Obstacle implements Collidable {
+    protected double height;
+    protected double width;
+
     protected Rectangle2D.Double hitbox;
     protected double x, y;
 
@@ -30,4 +33,8 @@ public abstract class Obstacle implements Collidable {
     }
 
     public abstract String getImagePath();
+
+    public double getHeight() { return height; }
+
+    public double getWidth() { return width; }
 }

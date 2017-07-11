@@ -10,6 +10,8 @@ public class Crate extends Obstacle {
         this.x = x;
         this.y = y;
         hitbox = new Rectangle2D.Double(x - CRATE_WIDTH / 2, y - CRATE_HEIGHT, CRATE_WIDTH, CRATE_HEIGHT);
+        height = CRATE_HEIGHT;
+        width = CRATE_WIDTH;
     }
 
     @Override
