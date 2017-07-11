@@ -171,8 +171,8 @@ public class LevelView extends AbstractView implements Runnable {
         try {
             BufferedImage image;
             image = ImageUtil.getImage(player.getImagePath());
-            int playerX = (int) Math.round(player.getX() - image.getWidth() / 2 - camera.getX());
-            int playerY = (int) Math.round(player.getY() - image.getHeight());
+            int playerX = (int) (player.getX() - image.getWidth() / 2 - camera.getX());
+            int playerY = (int) (player.getY() - image.getHeight());
             if (player.getViewingDirection().equals(Direction.RIGHT))
                 g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
             else
@@ -186,8 +186,8 @@ public class LevelView extends AbstractView implements Runnable {
             Stroke originalStroke = g2.getStroke();
             g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
             Rectangle2D playerHitbox = player.getHitbox();
-            g2.drawRect((int) Math.round(playerHitbox.getX() - camera.x), (int) Math.round(playerHitbox.getY()),
-                    (int) Math.round(playerHitbox.getWidth()), (int) Math.round(playerHitbox.getHeight()));
+            g2.drawRect((int) (playerHitbox.getX() - camera.x), (int) (playerHitbox.getY()),
+                    (int) (playerHitbox.getWidth()), (int) (playerHitbox.getHeight()));
             g2.setStroke(originalStroke);
         }
 
@@ -196,8 +196,8 @@ public class LevelView extends AbstractView implements Runnable {
             try {
                 BufferedImage image;
                 image = ImageUtil.getImage(enemy.getImagePath());
-                int x = (int) Math.round(enemy.getX() - image.getWidth() / 2 - camera.getX());
-                int y = (int) Math.round(enemy.getY() - image.getHeight());
+                int x = (int) (enemy.getX() - image.getWidth() / 2 - camera.getX());
+                int y = (int) (enemy.getY() - image.getHeight());
                 if (enemy.getViewingDirection().equals(Direction.RIGHT))
                     g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
                 else
@@ -212,8 +212,8 @@ public class LevelView extends AbstractView implements Runnable {
         for (Obstacle obstacle : level.getObstacles()) {
             try {
                 BufferedImage image = ImageUtil.getImage(obstacle.getImagePath());
-                int x = (int) Math.round(obstacle.getX() - image.getWidth() / 2 - camera.getX());
-                int y = (int) Math.round(obstacle.getY() - image.getHeight());
+                int x = (int) (obstacle.getX() - image.getWidth() / 2 - camera.getX());
+                int y = (int) (obstacle.getY() - image.getHeight());
                 g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
             } catch (IOException e) {
                 e.printStackTrace();
