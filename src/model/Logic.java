@@ -37,7 +37,7 @@ public class Logic {
         return Math.sqrt((entity1.getX() - entity2.getX())*(entity1.getX() - entity2.getX()) + (entity1.getY() - entity2.getY())*(entity1.getY() - entity2.getY()));
     }
     public void moveLeft(Enemy enemy){
-        if(/*links Hindernis*/){
+        if (true/*links Hindernis*/) {
             //enemy.jump()
         }else{
             //geh links
@@ -45,7 +45,7 @@ public class Logic {
     }
 
     public void moveRight(Enemy enemy){
-        if(/*rechts Hindernis*/){
+        if (false/*rechts Hindernis*/) {
             //enemy.jump()
         }else{
             //geh rechts
