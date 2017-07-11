@@ -19,11 +19,11 @@ public class LevelView extends AbstractView implements Runnable {
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler keyHandler;
 
-    private JPanel buttonPanel;
+    private JPanel menuPanel;
 
     private boolean running;
     private boolean paused;
-    private boolean focusHelperFlag;
+    private int focusHelperFlag = 0;
     private int hz = 60, fps = 60;
 
     LevelView(Level level) {
@@ -32,7 +32,7 @@ public class LevelView extends AbstractView implements Runnable {
         camera = new Camera(0, 0, getWidth(), getHeight());
         setIgnoreRepaint(true);
         setLayout(new BorderLayout());
-        buttonPanel = new JPanel(new GridBagLayout());
+        menuPanel = new JPanel(new GridBagLayout());
 
         //Menü-Komponenten
         GridBagConstraints constraints = new GridBagConstraints();
@@ -40,18 +40,21 @@ public class LevelView extends AbstractView implements Runnable {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
 
-        JButton continueButton = new JButton("Weiter");
+        Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24f);
+
+        JButton continueButton = new JButton("Fortsetzen");
         continueButton.setBackground(Constants.BUTTON_COLOR);
-        continueButton.setFont(Constants.DEFAULT_FONT);
+        continueButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        continueButton.setFont(buttonFont);
         continueButton.addActionListener(a -> {
             paused = false;
             keyHandler.menu = false;
         });
 
-
-        JButton backButton = new JButton("Zurück");
+        JButton backButton = new JButton("Zurück zur Lobby");
         backButton.setBackground(Constants.BUTTON_COLOR);
-        backButton.setFont(Constants.DEFAULT_FONT);
+        backButton.setFont(buttonFont);
+        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         backButton.addActionListener(a -> {
             paused = false;
             running = false;
@@ -61,12 +64,12 @@ public class LevelView extends AbstractView implements Runnable {
         });
 
 
-        buttonPanel.add(continueButton);
-        buttonPanel.add(backButton);
-        buttonPanel.setOpaque(false);
-        buttonPanel.setVisible(false);
+        menuPanel.add(continueButton, constraints);
+        menuPanel.add(backButton, constraints);
+        menuPanel.setOpaque(false);
+        menuPanel.setVisible(false);
 
-        add(buttonPanel, BorderLayout.CENTER);
+        add(menuPanel, BorderLayout.CENTER);
 
 
         keyHandler = new KeyHandler();
@@ -75,11 +78,11 @@ public class LevelView extends AbstractView implements Runnable {
         addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent focusEvent) {
-                if (focusHelperFlag) {
+                if (focusHelperFlag > 5) {
                     paused = false;
                     SoundUtil.soundSystem.play("background");
                 } else
-                    focusHelperFlag = true;
+                    focusHelperFlag++;
             }
 
             @Override
@@ -267,15 +270,6 @@ public class LevelView extends AbstractView implements Runnable {
         }
     }
 
-    public void render() {
-        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = buffer.createGraphics();
-        paintComponent(g2);
-        getGraphics().drawImage(buffer, 0, 0, this);
-        g2.dispose();
-        getGraphics().dispose();
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -397,6 +391,11 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawString("onGround = " + player.isOnGround(), 20, 180);
         }
 
+        if (keyHandler.menu) {
+            g2.setColor(new Color(0, 0, 0, 0.8f));
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+
         if (!paused && keyHandler.menu && hasFocus()) {
             paused = true;
             SoundUtil.soundSystem.pause("background");
@@ -404,7 +403,7 @@ public class LevelView extends AbstractView implements Runnable {
             paused = false;
             SoundUtil.soundSystem.play("background");
         }
-        buttonPanel.setVisible(keyHandler.menu);
+        menuPanel.setVisible(keyHandler.menu);
     }
 
     public void refresh() {
