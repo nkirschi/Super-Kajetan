@@ -9,6 +9,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Hashtable;
 
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
@@ -20,6 +21,7 @@ public class SettingsView extends AbstractView {
     private boolean alt_control = false;
     private JCheckBox controllCheckBox;
     private JLabel saveLabel;
+    private JSlider volumeSlider;
 
     private SettingsView() {
         super();
@@ -45,6 +47,7 @@ public class SettingsView extends AbstractView {
         saveButton.setFont(Constants.DEFAULT_FONT);
         saveButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         saveButton.addActionListener(a -> {
+            volume = (float) volumeSlider.getValue() / 100;
             SoundUtil.soundSystem.setMasterVolume(volume);
 
             setAltControlMode(controllCheckBox.isSelected());
@@ -108,17 +111,40 @@ public class SettingsView extends AbstractView {
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
 
-        JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, (int) (minVolume * 100), (int) (maxVolume * 100), (int) (volume * 100)) {
+        volumeSlider = new JSlider(JSlider.HORIZONTAL, (int) (minVolume * 100), (int) (maxVolume * 100), (int) (volume * 100)) {
             @Override
             public void setBorder(Border border) {
                 //Nein
             }
         };
+        volumeSlider.setPreferredSize(new Dimension(350, 50));
+
+        Hashtable<Integer, JLabel> labels = new Hashtable<>();
+        JLabel label1 = new JLabel("Grabesstille");
+        JLabel label2 = new JLabel("Bergwind");
+        JLabel label3 = new JLabel("Markt");
+        JLabel label4 = new JLabel("Taverne");
+        JLabel label5 = new JLabel("Schlachtfeld");
+        label1.setForeground(Color.WHITE);
+        label2.setForeground(Color.WHITE);
+        label3.setForeground(Color.WHITE);
+        label4.setForeground(Color.WHITE);
+        label5.setForeground(Color.WHITE);
+        labels.put(0, label1);
+        labels.put(25, label2);
+        labels.put(50, label3);
+        labels.put(75, label4);
+        labels.put(100, label5);
+        volumeSlider.setLabelTable(labels);
+        volumeSlider.setMajorTickSpacing(25);
+        volumeSlider.setSnapToTicks(true);
+        volumeSlider.setPaintLabels(true);
+        volumeSlider.setPaintTicks(true);
 
         volumeSlider.setOpaque(false);
-        volumeSlider.addChangeListener(c -> {
+        /*volumeSlider.addChangeListener(c -> {
             this.volume = (float) volumeSlider.getValue() / 100;
-        });
+        });*/
         settingsPanel.add(volumeSlider, constraints);
         constraints.insets.set(10, 0, 0, 10);
 
@@ -214,6 +240,7 @@ public class SettingsView extends AbstractView {
 
     public void refresh() {
         controllCheckBox.setSelected(alt_control);
+        volumeSlider.setValue((int) (volume * 100));
         saveLabel.setText("");
     }
 

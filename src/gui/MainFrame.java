@@ -97,8 +97,6 @@ public class MainFrame extends JFrame implements WindowListener {
                 Logger.log(e2, Logger.ERROR);
             }
         }
-
-        //SettingsView.getInstance().setAltControlMode("alternative".equals(properties.getProperty(Constants.PROPERTY_CONTROL_MODE)));
     }
 
     /**
