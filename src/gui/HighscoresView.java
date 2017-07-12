@@ -201,7 +201,7 @@ class HighscoresView extends AbstractView {
         //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
         //-> setOpaque(false)
         try {
-            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_2), 0, 0, null);
+            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_2), 0, 0, getWidth(), getHeight(), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
