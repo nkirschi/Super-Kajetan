@@ -26,6 +26,7 @@ public class LevelView extends AbstractView implements Runnable {
     private LawMaster lawMaster;
     private JPanel menuPanel;
     private JPanel deathPanel;
+    private final Stroke strichel;
 
     private boolean running;
     private boolean paused;
@@ -40,6 +41,7 @@ public class LevelView extends AbstractView implements Runnable {
         aiManager = new AIManager();
         keyHandler = new KeyHandler(player);
         addKeyListener(keyHandler);
+        strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
 
         setIgnoreRepaint(true);
         setLayout(new BorderLayout());
@@ -140,9 +142,9 @@ public class LevelView extends AbstractView implements Runnable {
         g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
-            // Verarbeitung des aktuell darzustellenden Subimages
+
+            // Relation von Breite zu Höhe
             double rel = (double) getWidth() / (double) getHeight();
-            //image = image.getSubimage(0, 0, (int) Math.round(rel * image.getHeight()), image.getHeight());
 
             int width = image.getWidth(null);
             int height = image.getHeight(null);
@@ -159,8 +161,13 @@ public class LevelView extends AbstractView implements Runnable {
         for (Ground ground : level.getGrounds()) {
             Rectangle2D.Double rectangle = new Rectangle2D.Double(ground.getHitbox().getX() - camera.getX(),
                     ground.getHitbox().getY(), ground.getHitbox().getWidth(), ground.getHitbox().getHeight());
-            g2.draw(rectangle);
             g2.drawImage(ground.getImage(), (int) rectangle.getX(), (int) rectangle.getY(), this);
+            if (keyHandler.debug) {
+                Stroke originalStroke = g2.getStroke();
+                g2.setStroke(strichel);
+                g2.draw(rectangle);
+                g2.setStroke(originalStroke);
+            }
         }
 
         // 3. Player
@@ -181,7 +188,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (keyHandler.debug) {
             Stroke originalStroke = g2.getStroke();
-            g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+            g2.setStroke(strichel);
             Rectangle2D playerHitbox = player.getHitbox();
             g2.drawRect((int) (playerHitbox.getX() - camera.x), (int) (playerHitbox.getY()),
                     (int) (playerHitbox.getWidth()), (int) (playerHitbox.getHeight()));
@@ -199,6 +206,14 @@ public class LevelView extends AbstractView implements Runnable {
                     g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
                 else
                     g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), this);
+                if (keyHandler.debug) {
+                    Stroke originalStroke = g2.getStroke();
+                    g2.setStroke(strichel);
+                    Rectangle2D.Double rect = new Rectangle2D.Double(enemy.getHitbox().getX() - camera.getX(),
+                            enemy.getHitbox().getY(), enemy.getHitbox().getWidth(), enemy.getHitbox().getHeight());
+                    g2.draw(rect);
+                    g2.setStroke(originalStroke);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Logger.log(e, Logger.WARNING);
@@ -212,6 +227,13 @@ public class LevelView extends AbstractView implements Runnable {
                 int x = (int) (obstacle.getX() - image.getWidth() / 2 - camera.getX());
                 int y = (int) (obstacle.getY() - image.getHeight());
                 g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
+
+                if (keyHandler.debug) {
+                    Stroke originalStroke = g2.getStroke();
+                    g2.setStroke(strichel);
+                    g2.drawRect(x, y, image.getWidth(), image.getHeight());
+                    g2.setStroke(originalStroke);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Logger.log(e, Logger.WARNING);
