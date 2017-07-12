@@ -1,13 +1,13 @@
 package gui;
 
+import logic.AIManager;
+import logic.CollisionHandler;
+import logic.LawMaster;
+import logic.Renderer;
 import model.Camera;
 import model.Enemy;
 import model.Level;
 import model.Player;
-import physics.AIManager;
-import physics.CollisionHandler;
-import physics.LawMaster;
-import physics.Renderer;
 import util.Constants;
 import util.SoundUtil;
 
@@ -101,18 +101,12 @@ public class LevelView extends AbstractView implements Runnable {
                     SoundUtil.soundSystem.play("background");
                 }
                 lastTime = System.nanoTime();
-                repaint();
             }
         }
         System.out.println(this + " ist raus, Onkel Klaus!");
     }
 
     private void update() {
-        if (keyHandler.menu) {
-            paused = true;
-            SoundUtil.soundSystem.pause("background");
-        }
-
         // 1. Reset
         player.reset();
 
@@ -139,6 +133,11 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (!hasFocus())
             keyHandler.clear();
+
+        if (keyHandler.menu) {
+            paused = true;
+            SoundUtil.soundSystem.pause("background");
+        }
     }
 
     @Override
@@ -178,13 +177,6 @@ public class LevelView extends AbstractView implements Runnable {
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
 
-        /*if (!paused && keyHandler.menu) {
-            paused = true;
-            SoundUtil.soundSystem.pause("background");
-        } else if (paused && !keyHandler.menu) {
-            paused = false;
-            SoundUtil.soundSystem.play("background");
-        }*/
         menuPanel.setVisible(keyHandler.menu);
 
         //9. Game-Over-Menü
@@ -267,10 +259,6 @@ public class LevelView extends AbstractView implements Runnable {
         deathPanel.add(backButton, constraints);
         deathPanel.setOpaque(false);
         deathPanel.setVisible(false);
-    }
-
-    public boolean isPaused() {
-        return paused;
     }
 
     public int getHz() {

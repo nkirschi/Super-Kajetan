@@ -1,4 +1,4 @@
-package model;
+package logic;
 
 public enum Behavior {
     IDLE, PATROL, ELOPE, ATTACK, GUARD

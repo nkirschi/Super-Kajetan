@@ -1,5 +1,6 @@
 package model;
 
+import logic.Behavior;
 import util.Constants;
 
 import java.awt.geom.Rectangle2D;

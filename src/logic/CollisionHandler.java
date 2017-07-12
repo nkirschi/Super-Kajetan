@@ -1,4 +1,4 @@
-package physics;
+package logic;
 
 import model.Enemy;
 import model.Level;

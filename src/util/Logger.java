@@ -10,15 +10,13 @@ import java.util.Date;
  * Nützliche Klasse für das Logging in eine Datei
  */
 public class Logger {
-    private static BufferedWriter writer;
-
     // Konstanten für die Angabe eines Logging-Levels
     public static final String INFO = "INFO: ";
     public static final String WARNING = "WARNUNG: ";
     public static final String ERROR = "FEHLER: ";
 
     /**
-     * Allgemeine Methode für das Loggen eines Strings
+     * Allgemeines Logging eines Strings
      *
      * @param msg   Die Nachricht des zu loggenden Ereignisses
      * @param level Das Level des entsprechenden Ereignisses

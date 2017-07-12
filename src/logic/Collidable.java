@@ -1,4 +1,4 @@
-package physics;
+package logic;
 
 import java.awt.geom.Rectangle2D;
 

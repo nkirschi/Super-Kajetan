@@ -1,5 +1,7 @@
 package model;
 
+import logic.Behavior;
+
 public class Spider extends Enemy {
     private final double SPIDER_WIDTH = 95;
     private final double SPIDER_HEIGHT = 50;

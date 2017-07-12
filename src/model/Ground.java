@@ -1,6 +1,6 @@
 package model;
 
-import physics.Collidable;
+import logic.Collidable;
 import util.ImageUtil;
 import util.Logger;
 

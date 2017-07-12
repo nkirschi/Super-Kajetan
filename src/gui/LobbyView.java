@@ -1,5 +1,6 @@
 package gui;
 
+import logic.Behavior;
 import model.*;
 import util.Constants;
 import util.List;

@@ -1,5 +1,7 @@
 package model;
 
+import logic.Behavior;
+
 import java.awt.geom.Rectangle2D;
 
 public class Enemy extends Entity implements Cloneable {

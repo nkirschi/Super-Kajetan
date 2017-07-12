@@ -1,4 +1,4 @@
-package physics;
+package logic;
 
 import gui.KeyHandler;
 import gui.LevelView;
@@ -43,6 +43,18 @@ public class Renderer {
         } catch (IOException e) {
             e.printStackTrace();
             Logger.log(e, Logger.WARNING);
+        }
+
+        try {
+            BufferedImage image = ImageUtil.getImage("images/sword/sword_giant_0.66.png");
+            if (player.getViewingDirection().equals(Direction.RIGHT))
+                g2.drawImage(image, (int) (player.getX() - camera.getX()), (int) (player.getY() - player.getHitbox().getHeight()), null);
+            else
+                g2.drawImage(image, (int) (player.getX() - camera.getX()),
+                        (int) (player.getY() - player.getHitbox().getHeight()),
+                        -image.getWidth(), image.getHeight(), null);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         if (keyHandler.debug) {

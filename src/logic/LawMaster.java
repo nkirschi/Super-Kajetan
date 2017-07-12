@@ -1,4 +1,4 @@
-package physics;
+package logic;
 
 import gui.KeyHandler;
 import model.Entity;

@@ -1,9 +1,9 @@
-package physics;
+package logic;
 
 import model.*;
 import util.Constants;
 
-import static model.Behavior.ATTACK;
+import static logic.Behavior.ATTACK;
 
 /**
  * Created by Max on 11.07.2017.

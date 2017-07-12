@@ -20,6 +20,7 @@ public class SoundUtil {
             e.printStackTrace();
         }
         soundSystem = new SoundSystem();
+        Logger.log("Soundsystem initialisiert", Logger.INFO);
     }
 
     public static void playRandomBackgroundMusic() {
