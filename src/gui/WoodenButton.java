@@ -9,7 +9,7 @@ import java.io.IOException;
 
 
 public class WoodenButton extends JButton {
-    public WoodenButton(String text) {
+    WoodenButton(String text) {
         super(text);
         setFocusPainted(false);
         setBackground(Constants.BUTTON_COLOR);
