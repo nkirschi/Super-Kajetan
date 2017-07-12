@@ -94,15 +94,13 @@ public class Player extends Entity {
                 return Constants.PLAYER_WALK_2_IMAGE_PATH;
             }
         }
-       
+        return Constants.PLAYER_STAND_IMAGE_PATH;
     }
-    
+
     public String getImagePathSword() {
-         return Constants.PLAYER_KNIGHT_WEAPON_IMAGE_PATH;
+        return Constants.KNIGHT_WEAPON_IMAGE_PATH;
     }
-    
-     public String getImagePath() {
-         return Constants.
+
 
     public int getStamina() {
         return stamina;

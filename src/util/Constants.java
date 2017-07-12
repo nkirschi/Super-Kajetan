@@ -15,8 +15,8 @@ public class Constants {
     public static final Dimension DEFAULT_BUTTON_SIZE = new Dimension(250, 50);
     public static final Dimension DEFAULT_BUTTON_SIZE_2 = new Dimension(100, 35);
     public static final Font DEFAULT_FONT = new Font("Pixel Operator", Font.PLAIN, 17);
-    public static final String MENU_BACKGROUND = "images/menubackground_nobanner.png";
-    public static final String MENU_BACKGROUND_NOBANNER = "images/menubackground_nobanner.png";
+    public static final String MENU_BACKGROUND = "images/gui/menubackground_nobanner_sign.png";
+    public static final String MENU_BACKGROUND_2 = "images/gui/menubackground_nobanner.png";
 
     // Datenbank
     public static final String DB_TABLE = "Highscores";
@@ -66,7 +66,7 @@ public class Constants {
     public static final String KNIGHT_JUMP_IMAGE_PATH = "images/char/char_jump.png";
     public static final String KNIGHT_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
     public static final String KNIGHT_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
-    
+
     //Waffe Bilder
     public static final String KNIGHT_WEAPON_IMAGE_PATH = "images/sword/sword_giant.png";
 

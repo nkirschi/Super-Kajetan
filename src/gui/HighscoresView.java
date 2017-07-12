@@ -64,7 +64,7 @@ class HighscoresView extends AbstractView {
         list.add(fancyCollumPanel);
 
         try {
-            ImageIcon trophyImage = ImageUtil.getIcon("images/trophy.png");
+            ImageIcon trophyImage = ImageUtil.getIcon("images/gui/trophy.png");
             JLabel trophyLabel = new JLabel(trophyImage);
             trophyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             fancyCollumPanel.add(trophyLabel);
@@ -201,7 +201,7 @@ class HighscoresView extends AbstractView {
         //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
         //-> setOpaque(false)
         try {
-            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_NOBANNER), 0, 0, null);
+            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_2), 0, 0, null);
         } catch (IOException e) {
             e.printStackTrace();
         }

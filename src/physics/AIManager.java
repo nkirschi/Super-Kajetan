@@ -3,7 +3,6 @@ package physics;
 import model.*;
 
 import static model.Behavior.ATTACK;
-import static model.Behavior.ELOPE;
 
 /**
  * Created by Max on 11.07.2017.

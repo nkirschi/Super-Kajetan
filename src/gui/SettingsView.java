@@ -17,7 +17,7 @@ public class SettingsView extends AbstractView {
     private float minVolume = 0F;
 
     //Einstellungsvariablen
-    private float volume = (maxVolume + minVolume)/2;
+    private float volume = (maxVolume + minVolume) / 2;
     private boolean alt_control = false;
     private JCheckBox controllCheckBox;
     private JLabel saveLabel;
@@ -90,15 +90,13 @@ public class SettingsView extends AbstractView {
         //Einstellungen aus Properties holen
         try {
             volume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_VOLUME));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Logger.log(e, Logger.WARNING);
         }
 
         try {
             alt_control = Boolean.parseBoolean(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_CONTROL_MODE));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             Logger.log(e, Logger.WARNING);
         }
 
@@ -210,7 +208,7 @@ public class SettingsView extends AbstractView {
         //Praktisch der Teil der für das Hintergrundbild sorgt. Man muss natürlich auch die ganzen Panels auf nicht opaque setzen
         //-> setOpaque(false)
         try {
-            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_NOBANNER), 0, 0, null);
+            g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_2), 0, 0, null);
         } catch (IOException e) {
             e.printStackTrace();
         }

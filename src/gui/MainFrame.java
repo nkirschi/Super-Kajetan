@@ -1,17 +1,15 @@
 package gui;
 
-import paulscode.sound.SoundSystemConfig;
-import paulscode.sound.SoundSystemException;
-import paulscode.sound.codecs.CodecJOrbis;
-import paulscode.sound.libraries.LibraryJavaSound;
-import util.*;
+import util.Constants;
+import util.ImageUtil;
+import util.Logger;
+import util.SoundUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -40,7 +38,7 @@ public class MainFrame extends JFrame implements WindowListener {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(this);
         try {
-            setIconImage(ImageUtil.getImage("images/icon.png"));
+            setIconImage(ImageUtil.getImage("images/gui/icon.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
