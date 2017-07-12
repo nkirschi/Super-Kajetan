@@ -123,14 +123,14 @@ class LobbyView extends AbstractView {
         obstacles.add(new Crate(1750, 640));
         obstacles.add(new Crate(1000, 300));
         List<Ground> grounds = new List<>();
-        grounds.add(new Ground(600, 1200, 20));
-        grounds.add(new Ground(1400, 400, 60));
-        grounds.add(new Ground(1750, 300, 100));
-        grounds.add(new Ground(2000, 200, 80));
-        grounds.add(new Ground(2200, 200, 60));
-        grounds.add(new Ground(2400, 200, 40));
-        grounds.add(new Ground(2600, 200, 20));
-        grounds.add(new Ground(2800, 200, 0));
+        grounds.add(new Ground(600, 1200, 20, Ground.Type.SOIL));
+        grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
+        grounds.add(new Ground(1750, 300, 100, Ground.Type.GRASS));
+        grounds.add(new Ground(2000, 200, 80, Ground.Type.ROCK));
+        grounds.add(new Ground(2200, 200, 60, Ground.Type.GRASS));
+        grounds.add(new Ground(2400, 200, 40, Ground.Type.SOIL));
+        grounds.add(new Ground(2600, 200, 20, Ground.Type.ROCK));
+        grounds.add(new Ground(2800, 200, 1, Ground.Type.GRASS));
         Logger.log("Level erstellt", Logger.INFO);
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png");
     }
@@ -139,8 +139,8 @@ class LobbyView extends AbstractView {
         List<Enemy> enemies = new List<>();
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
-        grounds.add(new Ground(600, 1200, 20));
-        grounds.add(new Ground(1400, 400, 60));
+        grounds.add(new Ground(600, 1200, 20, Ground.Type.SOIL));
+        grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg");
     }
 }
