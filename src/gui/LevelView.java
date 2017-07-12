@@ -122,6 +122,8 @@ public class LevelView extends AbstractView implements Runnable {
         player.move();
         camera.move();
 
+        if (!hasFocus())
+            keyHandler.clear();
     }
 
     @Override
