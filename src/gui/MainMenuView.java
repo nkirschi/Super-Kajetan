@@ -5,6 +5,7 @@ import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AttributeSet;
@@ -68,6 +69,12 @@ class MainMenuView extends AbstractView {
         creditsButton.setBackground(Constants.BUTTON_COLOR);
         exitButton.setBackground(Constants.BUTTON_COLOR);
 
+        lobbyButton.setForeground(Constants.FOREGROUND_COLOR);
+        highscoresButton.setForeground(Constants.FOREGROUND_COLOR);
+        settingsButton.setForeground(Constants.FOREGROUND_COLOR);
+        creditsButton.setForeground(Constants.FOREGROUND_COLOR);
+        exitButton.setForeground(Constants.FOREGROUND_COLOR);
+
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24F);
         lobbyButton.setFont(buttonFont);
         highscoresButton.setFont(buttonFont);
@@ -91,14 +98,15 @@ class MainMenuView extends AbstractView {
         JPanel toolPanel = new JPanel();
         toolPanel.setOpaque(opaque);
         toolPanel.setLayout(new FlowLayout());
+        toolPanel.setBorder(new EmptyBorder(0, 0, 27, 0));
         toolPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         JLabel nameLabel = new JLabel("Gib deinen Namen hier ein: ");
         nameLabel.setFont(Constants.DEFAULT_FONT);
-        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setForeground(Color.BLACK);
         toolPanel.add(nameLabel);
 
-        JTextField nameTextField = new JTextField(17) {
+        JTextField nameTextField = new JTextField(15) {
             @Override
             public void setBorder(Border border) {
                 if (!opaque) {
@@ -106,12 +114,13 @@ class MainMenuView extends AbstractView {
                 }
             }
         };
-        nameTextField.setOpaque(true);
-        nameTextField.setDocument(new JTextFieldLimit(20));
+        nameTextField.setOpaque(opaque);
+        nameTextField.setDocument(new JTextFieldLimit(18));
         nameTextField.setText(currentName);
-        nameTextField.setBackground(new Color(0, 0, 0, 0.5f));
-        nameTextField.setForeground(Color.WHITE);
+        //nameTextField.setBackground(new Color(0, 0, 0, 0.5f));
+        nameTextField.setForeground(Color.BLACK);
         nameTextField.setFont(Constants.DEFAULT_FONT);
+        nameTextField.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.WHITE));
         nameTextField.setHorizontalAlignment(JTextField.CENTER);
         toolPanel.add(nameTextField);
         nameTextField.getDocument().addDocumentListener(new DocumentListener() {
