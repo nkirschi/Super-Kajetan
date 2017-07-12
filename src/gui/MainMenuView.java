@@ -191,6 +191,11 @@ class MainMenuView extends AbstractView {
             e.printStackTrace();
         }
 
-
+        //Titel
+        g.setFont(Constants.DEFAULT_FONT.deriveFont(110F));
+        g.setColor(Constants.FOREGROUND_COLOR);
+        int x = (getWidth() - (int) g.getFontMetrics().getStringBounds(Constants.GAME_TITLE, g).getWidth()) / 2;
+        int y = (int) g.getFontMetrics().getStringBounds(Constants.GAME_TITLE, g).getHeight();
+        g.drawString(Constants.GAME_TITLE, x, y);
     }
 }
