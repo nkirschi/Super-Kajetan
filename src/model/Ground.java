@@ -47,35 +47,35 @@ public class Ground implements Collidable {
     }
 
     public Image getImage() {
-        if (image != null)
-            return image;
+        if (image == null) {
+            String path = "images/grounds/";
+            switch (type) {
+                case SOIL:
+                    path += "soil.png";
+                    break;
+                case GRASS:
+                    path += "grass.png";
+                    break;
+                case ROCK:
+                    path += "rock.png";
+                    break;
+            }
+            BufferedImage texture = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
+            Graphics g = texture.createGraphics();
+            try {
+                g.drawImage(ImageUtil.getImage(path), 0, 0, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 64, 64));
 
-        String path = "images/grounds/";
-        switch (type) {
-            case SOIL:
-                path += "soil.png";
-                break;
-            case GRASS:
-                path += "grass.png";
-                break;
-            case ROCK:
-                path += "rock.png";
-                break;
+            BufferedImage result = new BufferedImage((int) hitbox.getWidth(), (int) hitbox.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D h = result.createGraphics();
+            h.setPaint(paint);
+            h.fillRect(0, 0, result.getWidth(), result.getHeight());
+            image = result;
         }
-        BufferedImage texture = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = texture.createGraphics();
-        try {
-            g.drawImage(ImageUtil.getImage(path), 0, 0, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 64, 64));
-
-        BufferedImage result = new BufferedImage((int) hitbox.getWidth(), (int) hitbox.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D h = result.createGraphics();
-        h.setPaint(paint);
-        h.fillRect(0, 0, result.getWidth(), result.getHeight());
-        return result;
+        return image;
     }
 
     @Override
