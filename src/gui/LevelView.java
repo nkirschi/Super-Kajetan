@@ -156,11 +156,11 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 2. Grounds
 
-        for (Object object : level.getGrounds().toArray()) {
-            Ground ground = (Ground) object;
+        for (Ground ground : level.getGrounds()) {
             Rectangle2D.Double rectangle = new Rectangle2D.Double(ground.getHitbox().getX() - camera.getX(),
                     ground.getHitbox().getY(), ground.getHitbox().getWidth(), ground.getHitbox().getHeight());
             g2.draw(rectangle);
+            g2.drawImage(ground.getImage(), (int) rectangle.getX(), (int) rectangle.getY(), this);
         }
 
         // 3. Player
