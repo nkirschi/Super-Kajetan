@@ -14,7 +14,6 @@ public class WoodenButton extends JButton {
         setFocusPainted(false);
         setBackground(Constants.BUTTON_COLOR);
         setContentAreaFilled(false);
-        setOpaque(true);
         setBorderPainted(false);
     }
 
