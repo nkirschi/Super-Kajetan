@@ -156,6 +156,9 @@ public class LevelView extends AbstractView implements Runnable {
             Logger.log(e, Logger.WARNING);
         }
 
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/backgrounds/background.gif"));
+        g2.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+
         // 2. Grounds
 
         for (Ground ground : level.getGrounds()) {
