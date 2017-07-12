@@ -23,14 +23,6 @@ class LobbyView extends AbstractView {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.setOpaque(false);
 
-        //Zurück-Button
-        WoodenButton backButton = new WoodenButton("Zurück");
-        backButton.setFont(Constants.DEFAULT_FONT);
-        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
-        backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
-        buttonPanel.add(backButton);
-        add(buttonPanel, BorderLayout.PAGE_END);
-
 
         //Level-Buttons-Panel, hardcoded weil LvL auch hardcoded sind
         JPanel levelButtonPanel = new JPanel();
@@ -78,6 +70,14 @@ class LobbyView extends AbstractView {
             new Thread(levelView).start();
         });
         levelButtonPanel.add(lvl2, constraints);
+
+        constraints.insets.set(50, constraints.insets.left, constraints.insets.right, constraints.insets.bottom);
+        // Zurück
+        WoodenButton backButton = new WoodenButton("Zurück");
+        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        backButton.setFont(buttonFont);
+        backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
+        levelButtonPanel.add(backButton, constraints);
     }
 
     public void refresh() {
