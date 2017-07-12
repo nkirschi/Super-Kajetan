@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class Constants {
-    public static final String GAME_TITLE = "Wir brauchen noch einen gescheiten Namen! Max' Vorschlag: \"Rains of Castamere\"";
+    public static final String GAME_TITLE = "Super Kaietan";
     public static final String GAME_VERSION = "Alpha v1.1.2_01";
 
     // GUI
