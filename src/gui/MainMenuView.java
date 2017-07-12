@@ -18,7 +18,7 @@ class MainMenuView extends AbstractView {
     private static MainMenuView instance;
     private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private GridBagConstraints constraints;
-    private String currentName = "Ritter Arnold";
+    private String currentName = "Ritter Kajetan";
 
     private MainMenuView() {
         super();
