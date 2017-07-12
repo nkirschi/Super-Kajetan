@@ -12,7 +12,7 @@ public class Knight extends Enemy {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
         viewingRange = 300;
-        attackRange = 20;
+        attackRange = 200;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package physics;
 
 import model.*;
+import util.Constants;
 
 import static model.Behavior.ATTACK;
 
@@ -8,6 +9,14 @@ import static model.Behavior.ATTACK;
  * Created by Max on 11.07.2017.
  */
 public class AIManager {
+    CollisionChecker collisionChecker;
+    private int patrolCount;
+
+    public AIManager(CollisionChecker collisionChecker) {
+        this.collisionChecker = collisionChecker;
+        patrolCount = 0;
+    }
+
     public void handleAI(Level level, Player player) {
         for (Enemy enemy : level.getEnemies()) {
             switch (enemy.getBehavior()) {
@@ -66,8 +75,15 @@ public class AIManager {
                     }
                     break;
                 case PATROL:
-                    System.out.println("Ich marschiere");
+                    if (patrolCount > 200) {
+                        if (enemy.getViewingDirection().equals(Direction.LEFT))
+                            enemy.setViewingDirection(Direction.RIGHT);
+                        else
+                            enemy.setViewingDirection(Direction.LEFT);
+                        patrolCount = 0;
+                    }
                     if (distance(player, enemy) < enemy.getAttackRange()) {
+                        System.out.println("Spieler in Reichweite");
                         if (player.getX() < enemy.getX()) {
                             enemy.setViewingDirection(Direction.LEFT);
                         } else {
@@ -77,10 +93,15 @@ public class AIManager {
                     } else {
                         switch (enemy.getViewingDirection()) {
                             case LEFT:
+                                System.out.println("Ich marschiere links");
                                 moveLeft(enemy);
+                                break;
                             case RIGHT:
+                                System.out.println("Ich marschiere rechts");
                                 moveRight(enemy);
+                                break;
                         }
+                        patrolCount++;
                     }
                     break;
                 case ELOPE:
@@ -104,14 +125,19 @@ public class AIManager {
     public void moveLeft(Enemy enemy) {
         if (true/*links Hindernis*/) {
             //spring
+            enemy.setVelocityX(-Constants.PLAYER_WALK_VELOCITY);
+            collisionChecker.forEnemy(enemy);
+            enemy.move();
         } else {
             //geh links
         }
     }
 
     public void moveRight(Enemy enemy) {
-        if (false/*rechts Hindernis*/) {
-            //spring
+        if (true/*rechts Hindernis*/) {
+            enemy.setVelocityX(Constants.PLAYER_WALK_VELOCITY);
+            collisionChecker.forEnemy(enemy);
+            enemy.move();
         } else {
             //geh rechts
         }

@@ -1,6 +1,8 @@
 package model;
 
-public abstract class Enemy extends Entity {
+import java.awt.geom.Rectangle2D;
+
+public class Enemy extends Entity implements Cloneable {
     protected Behavior behavior;
 
     protected double viewingRange;
@@ -11,6 +13,30 @@ public abstract class Enemy extends Entity {
         this.y = y;
         this.behavior = behavior;
         this.viewingDirection = viewingDirection;
+        walkCount = 0;
+    }
+
+    /**
+     * Copy-Konstruktor
+     *
+     * @param enemy Zu kopierender Gegner
+     */
+    public Enemy(Enemy enemy) {
+        x = enemy.getX();
+        y = enemy.getY();
+        velocityX = enemy.getVelocityX();
+        velocityY = enemy.getVelocityY();
+        behavior = enemy.getBehavior();
+        viewingDirection = enemy.getViewingDirection();
+        attackRange = enemy.getAttackRange();
+        health = enemy.getHealth();
+        onGround = enemy.isOnGround();
+        hitbox = new Rectangle2D.Double(enemy.getHitbox().getX(), enemy.getHitbox().getY(),
+                enemy.getHitbox().getWidth(), enemy.getHitbox().getHeight());
+        walking = enemy.isWalking();
+        running = enemy.isRunning();
+        jumping = enemy.isJumping();
+        crouching = enemy.isCrouching();
         walkCount = 0;
     }
 
@@ -28,6 +54,11 @@ public abstract class Enemy extends Entity {
 
     public double getAttackRange() {
         return attackRange;
+    }
+
+    @Override
+    public String getImagePath() {
+        return "";
     }
 
     protected int walkCount;

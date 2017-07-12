@@ -38,7 +38,7 @@ public class LevelView extends AbstractView implements Runnable {
         camera = new Camera(player, 0, 0, getWidth(), getHeight());
         collisionChecker = new CollisionChecker(player, level);
         lawMaster = new LawMaster();
-        aiManager = new AIManager();
+        aiManager = new AIManager(collisionChecker);
         keyHandler = new KeyHandler(player);
         addKeyListener(keyHandler);
         strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
