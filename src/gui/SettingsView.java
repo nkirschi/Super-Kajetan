@@ -42,6 +42,7 @@ public class SettingsView extends AbstractView {
 
         //Speichern
         saveLabel = new JLabel();
+        saveLabel.setForeground(Constants.FOREGROUND_COLOR);
 
         WoodenButton saveButton = new WoodenButton("Save");
         saveButton.setBackground(Constants.BUTTON_COLOR);
