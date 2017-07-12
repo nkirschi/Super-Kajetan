@@ -65,6 +65,9 @@ public class Constants {
     public static final String KNIGHT_JUMP_IMAGE_PATH = "images/char/char_jump.png";
     public static final String KNIGHT_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
     public static final String KNIGHT_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
+    
+    //Waffe Bilder
+    public static final String KNIGHT_WEAPON_IMAGE_PATH = "images/sword/sword_giant.png";
 
     static {
         try {
