@@ -158,7 +158,7 @@ class HighscoresView extends AbstractView {
                 Logger.log("Highscores initialisiert", Logger.INFO);
 
                 if (highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName()) == 0) {
-                    Color currentPlayerScores = new Color(230, 212, 93);
+                    Color currentPlayerScores = new Color(177, 108, 0);
                     nameCell.setForeground(currentPlayerScores);
                     scoreCell.setForeground(currentPlayerScores);
                     dateCell.setForeground(currentPlayerScores);

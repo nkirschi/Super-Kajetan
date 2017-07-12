@@ -39,12 +39,7 @@ public class DBConnection {
     }
 
     public void open() throws SQLException {
-        try {
-            connection = DriverManager.getConnection("jdbc:ucanaccess://highscores.accdb");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
-        }
+        connection = DriverManager.getConnection("jdbc:ucanaccess://highscores.accdb");
     }
 
     public void close() throws SQLException {
