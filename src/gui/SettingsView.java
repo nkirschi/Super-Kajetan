@@ -236,8 +236,6 @@ public class SettingsView extends AbstractView {
         Logger.log("Settings geladen", Logger.INFO);
     }
 
-    //TODO Settings speichern
-
     public void refresh() {
         controllCheckBox.setSelected(alt_control);
         volumeSlider.setValue((int) (volume * 100));
