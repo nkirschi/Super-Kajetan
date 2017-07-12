@@ -12,22 +12,18 @@ import java.io.IOException;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
-    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
 
     private LobbyView() {
         super();
         setLayout(new BorderLayout());
         setBackground(Constants.MENU_BACKGROUND_COLOR);
-        //setOpaque(opaque);
 
         //ButtonPanel, im Prinzip nur der Zurück-Knopf
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        buttonPanel.setOpaque(opaque);
+        buttonPanel.setOpaque(false);
 
         //Zurück-Button
         WoodenButton backButton = new WoodenButton("Zurück");
-        backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
@@ -38,8 +34,7 @@ class LobbyView extends AbstractView {
         //Level-Buttons-Panel, hardcoded weil LvL auch hardcoded sind
         JPanel levelButtonPanel = new JPanel();
         levelButtonPanel.setLayout(new GridBagLayout());
-        levelButtonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        levelButtonPanel.setOpaque(opaque);
+        levelButtonPanel.setOpaque(false);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -52,9 +47,8 @@ class LobbyView extends AbstractView {
                 // Nein, Böse! Wieder mal!
             }
         };
-        scrollPane.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        scrollPane.setOpaque(opaque);
-        scrollPane.getViewport().setOpaque(opaque);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         add(scrollPane, BorderLayout.CENTER);
 
 
@@ -62,7 +56,6 @@ class LobbyView extends AbstractView {
         //Buttons für einzelne Lvl
         //Level 1
         WoodenButton lvl1 = new WoodenButton("Level 1");
-        lvl1.setBackground(Constants.BUTTON_COLOR);
         lvl1.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl1.setFont(buttonFont);
         lvl1.addActionListener(a -> {
@@ -76,7 +69,6 @@ class LobbyView extends AbstractView {
 
         //Level 2
         WoodenButton lvl2 = new WoodenButton("Level 2");
-        lvl2.setBackground(Constants.BUTTON_COLOR);
         lvl2.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl2.setFont(buttonFont);
         lvl2.addActionListener(a -> {
@@ -105,12 +97,13 @@ class LobbyView extends AbstractView {
         //-> setOpaque(false)
         try {
             g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_2), 0, 0, getWidth(), getHeight(), null);
+            g.setColor(new Color(0, 0, 0, 0.7f));
+            g.fillRect(0, 0, getWidth(), getHeight());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        g.setColor(new Color(0, 0, 0, 0.7f));
-        g.fillRect(0, 0, getWidth(), getHeight());
+
     }
 
     /**

@@ -25,6 +25,7 @@ public class LevelView extends AbstractView implements Runnable {
     private AIManager aiManager;
     private LawMaster lawMaster;
     private JPanel menuPanel;
+    private JPanel deathPanel;
 
     private boolean running;
     private boolean paused;
@@ -41,7 +42,8 @@ public class LevelView extends AbstractView implements Runnable {
         addKeyListener(keyHandler);
 
         setIgnoreRepaint(true);
-        initMenu();
+        setLayout(new BorderLayout());
+        initPauseMenu();
     }
 
     public void run() {
@@ -271,8 +273,7 @@ public class LevelView extends AbstractView implements Runnable {
         requestFocusInWindow();
     }
 
-    public void initMenu() {
-        setLayout(new BorderLayout());
+    private void initPauseMenu() {
         menuPanel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -309,5 +310,9 @@ public class LevelView extends AbstractView implements Runnable {
         menuPanel.setVisible(false);
 
         add(menuPanel, BorderLayout.CENTER);
+    }
+
+    private void initDeathPanel() {
+
     }
 }
