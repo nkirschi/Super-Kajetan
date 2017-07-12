@@ -18,24 +18,13 @@ public class Logger {
     public static final String ERROR = "FEHLER: ";
 
     /**
-     * Statischer Block, der beim Laden der Klasse ausgeführt wird (konstruktorähnlich)
-     */
-    static {
-        try {
-            writer = new BufferedWriter(new FileWriter("log.txt", true));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Allgemeine Methode für das Loggen eines Strings
      *
      * @param msg   Die Nachricht des zu loggenden Ereignisses
      * @param level Das Level des entsprechenden Ereignisses
      */
     public static void log(String msg, String level) {
-        try {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("log.txt", true))) {
             String timestamp = new SimpleDateFormat("[E, d.MM.yyyy hh:mm:ss.SSS] ").format(new Date());
             writer.write(timestamp);
             writer.write(level);
@@ -59,17 +48,6 @@ public class Logger {
                     .concat(" in Methode ").concat(i.getMethodName()).concat("()")
                     .concat(" in Zeile ").concat(Integer.toString(i.getLineNumber()));
             log(s, level);
-        }
-    }
-
-    /**
-     * Methode zur Ressourcenfreigabe nach korrekter Beendigung des Programms
-     */
-    public static void close() {
-        try {
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

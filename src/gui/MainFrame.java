@@ -123,7 +123,6 @@ public class MainFrame extends JFrame implements WindowListener {
      */
     void cleanupAndExit() {
         Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
-        Logger.close();
         SoundUtil.soundSystem.cleanup();
         System.exit(0);
     }

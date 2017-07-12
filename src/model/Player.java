@@ -64,10 +64,8 @@ public class Player extends Entity {
         double crouchingDelta = 53;
         if (crouching && !this.crouching) {
             hitbox.setRect(hitbox.x, hitbox.y + crouchingDelta, hitbox.width, hitbox.height - crouchingDelta);
-            System.out.println("set");
         } else if (!crouching && this.crouching) {
             hitbox.setRect(hitbox.x, hitbox.y - crouchingDelta, hitbox.width, hitbox.height + crouchingDelta);
-            System.out.println("unset");
         }
 
         super.setCrouching(crouching);

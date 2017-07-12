@@ -1,19 +1,18 @@
 package gui;
 
-import model.*;
+import model.Camera;
+import model.Enemy;
+import model.Level;
+import model.Player;
 import physics.AIManager;
-import physics.CollisionChecker;
+import physics.CollisionHandler;
 import physics.LawMaster;
+import physics.Renderer;
 import util.Constants;
-import util.ImageUtil;
-import util.Logger;
 import util.SoundUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 
 public class LevelView extends AbstractView implements Runnable {
@@ -21,8 +20,9 @@ public class LevelView extends AbstractView implements Runnable {
     private Player player;
     private Camera camera; // Die aktuelle "Kamera"
     private KeyHandler keyHandler;
-    private CollisionChecker collisionChecker;
+    private CollisionHandler collisionHandler;
     private AIManager aiManager;
+    private Renderer renderer;
     private LawMaster lawMaster;
     private JPanel menuPanel;
     private JPanel deathPanel;
@@ -36,10 +36,11 @@ public class LevelView extends AbstractView implements Runnable {
         this.level = level;
         player = new Player(LobbyView.getInstance().getWidth() / 2, Constants.GROUND_LEVEL);
         camera = new Camera(player, 0, 0, getWidth(), getHeight());
-        collisionChecker = new CollisionChecker(player, level);
+        collisionHandler = new CollisionHandler(player, level);
         lawMaster = new LawMaster();
-        aiManager = new AIManager(collisionChecker);
+        aiManager = new AIManager(collisionHandler);
         keyHandler = new KeyHandler(player);
+        renderer = new Renderer(level, camera, player, keyHandler, this);
         addKeyListener(keyHandler);
         strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
 
@@ -95,6 +96,10 @@ public class LevelView extends AbstractView implements Runnable {
                     }
                 }*/
             } else {
+                if (!keyHandler.menu) {
+                    paused = false;
+                    SoundUtil.soundSystem.play("background");
+                }
                 lastTime = System.nanoTime();
                 repaint();
             }
@@ -103,6 +108,11 @@ public class LevelView extends AbstractView implements Runnable {
     }
 
     private void update() {
+        if (keyHandler.menu) {
+            paused = true;
+            SoundUtil.soundSystem.pause("background");
+        }
+
         // 1. Reset
         player.reset();
 
@@ -118,7 +128,7 @@ public class LevelView extends AbstractView implements Runnable {
         lawMaster.updateStamina(player, keyHandler);
 
         // 5. Kollision - zuerst in x- dann in y-Richtung
-        collisionChecker.forPlayer();
+        collisionHandler.forPlayer();
 
         // Test
         aiManager.handleAI(level, player);
@@ -139,141 +149,27 @@ public class LevelView extends AbstractView implements Runnable {
         g2.clearRect(0, 0, getWidth(), getHeight());
 
         // 1. Background
-        g2.setColor(Color.WHITE);
-        try {
-            BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
-
-            // Relation von Breite zu Höhe
-            double rel = (double) getWidth() / (double) getHeight();
-
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-            double factor = getHeight() / (double) height; // Skalierungsfaktor
-
-            g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
-        }
-
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/backgrounds/background.gif"));
-        g2.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
+        renderer.drawBackground(g2);
 
         // 2. Grounds
 
-        for (Ground ground : level.getGrounds()) {
-            Rectangle2D.Double rectangle = new Rectangle2D.Double(ground.getHitbox().getX() - camera.getX(),
-                    ground.getHitbox().getY(), ground.getHitbox().getWidth(), ground.getHitbox().getHeight());
-            g2.drawImage(ground.getImage(), (int) rectangle.getX(), (int) rectangle.getY(), this);
-            if (keyHandler.debug) {
-                Stroke originalStroke = g2.getStroke();
-                g2.setStroke(strichel);
-                g2.draw(rectangle);
-                g2.setStroke(originalStroke);
-            }
-        }
+        renderer.drawGrounds(g2);
 
         // 3. Player
-
-        try {
-            BufferedImage image;
-            image = ImageUtil.getImage(player.getImagePath());
-            int playerX = (int) (player.getX() - image.getWidth() / 2 - camera.getX());
-            int playerY = (int) (player.getY() - image.getHeight());
-            if (player.getViewingDirection().equals(Direction.RIGHT))
-                g2.drawImage(image, playerX, playerY, image.getWidth(), image.getHeight(), this);
-            else
-                g2.drawImage(image, playerX + image.getWidth(), playerY, -image.getWidth(), image.getHeight(), this);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
-        }
-
-        if (keyHandler.debug) {
-            Stroke originalStroke = g2.getStroke();
-            g2.setStroke(strichel);
-            Rectangle2D playerHitbox = player.getHitbox();
-            g2.drawRect((int) (playerHitbox.getX() - camera.x), (int) (playerHitbox.getY()),
-                    (int) (playerHitbox.getWidth()), (int) (playerHitbox.getHeight()));
-            g2.setStroke(originalStroke);
-        }
+        renderer.drawPlayer(g2);
 
         // 4. Enemies
-        for (Enemy enemy : level.getEnemies()) {
-            try {
-                BufferedImage image;
-                image = ImageUtil.getImage(enemy.getImagePath());
-                int x = (int) (enemy.getX() - image.getWidth() / 2 - camera.getX());
-                int y = (int) (enemy.getY() - image.getHeight());
-                if (enemy.getViewingDirection().equals(Direction.RIGHT))
-                    g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
-                else
-                    g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), this);
-                if (keyHandler.debug) {
-                    Stroke originalStroke = g2.getStroke();
-                    g2.setStroke(strichel);
-                    Rectangle2D.Double rect = new Rectangle2D.Double(enemy.getHitbox().getX() - camera.getX(),
-                            enemy.getHitbox().getY(), enemy.getHitbox().getWidth(), enemy.getHitbox().getHeight());
-                    g2.draw(rect);
-                    g2.setStroke(originalStroke);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Logger.log(e, Logger.WARNING);
-            }
-        }
+        renderer.drawEnemies(g2);
 
         // 5. Obstacles
-        for (Obstacle obstacle : level.getObstacles()) {
-            try {
-                BufferedImage image = ImageUtil.getImage(obstacle.getImagePath());
-                int x = (int) (obstacle.getX() - image.getWidth() / 2 - camera.getX());
-                int y = (int) (obstacle.getY() - image.getHeight());
-                g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), this);
-
-                if (keyHandler.debug) {
-                    Stroke originalStroke = g2.getStroke();
-                    g2.setStroke(strichel);
-                    g2.drawRect(x, y, image.getWidth(), image.getHeight());
-                    g2.setStroke(originalStroke);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Logger.log(e, Logger.WARNING);
-            }
-        }
+        renderer.drawObstacles(g2);
 
         // 6. Stamina Bar
-        Rectangle2D staminaMask = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, 200, 15);
-        Rectangle2D staminaBar = new Rectangle2D.Double(getWidth() - 220, getHeight() - 30, player.getStamina() / 5, 15);
-        g2.setColor(Constants.BUTTON_COLOR);
-        g2.fill(staminaMask);
-        g2.setColor(Constants.MENU_BACKGROUND_COLOR);
-        g2.fill(staminaBar);
-        g2.setColor(Color.BLACK);
-        Font backup = g2.getFont();
-        g2.setFont(Constants.DEFAULT_FONT);
-        g2.drawString("Ausdauer: " + player.getStamina() / 10 + "%", getWidth() - 215, getHeight() - 17);
-        g2.setFont(backup);
+        renderer.drawStaminaBar(g2);
 
         // 7. Debug Screen
         if (keyHandler.debug) {
-            g2.setColor(Color.BLACK);
-            String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
-            g2.drawString(s, getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
-
-            String debugInfo = hz + "\u2009Hz, " + fps + "\u2009fps";
-            g2.drawString(debugInfo, getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
-
-            g2.drawString("P(" + player.getX() + "," + player.getY() + ")", 20, 20);
-            g2.drawString("velocityX = " + player.getVelocityX(), 20, 40);
-            g2.drawString("velocityY = " + player.getVelocityY(), 20, 60);
-            g2.drawString("walking = " + player.isWalking(), 20, 80);
-            g2.drawString("running = " + player.isRunning(), 20, 100);
-            g2.drawString("jumping = " + player.isJumping(), 20, 120);
-            g2.drawString("crouching = " + player.isCrouching(), 20, 140);
-            g2.drawString("exhausted = " + player.isExhausted(), 20, 160);
-            g2.drawString("onGround = " + player.isOnGround(), 20, 180);
+            renderer.drawDebugScreen(g2);
         }
 
         //8. Pausen-Menü
@@ -282,13 +178,13 @@ public class LevelView extends AbstractView implements Runnable {
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
 
-        if (!paused && keyHandler.menu) {
+        /*if (!paused && keyHandler.menu) {
             paused = true;
             SoundUtil.soundSystem.pause("background");
         } else if (paused && !keyHandler.menu) {
             paused = false;
             SoundUtil.soundSystem.play("background");
-        }
+        }*/
         menuPanel.setVisible(keyHandler.menu);
 
         //9. Game-Over-Menü
@@ -371,5 +267,17 @@ public class LevelView extends AbstractView implements Runnable {
         deathPanel.add(backButton, constraints);
         deathPanel.setOpaque(false);
         deathPanel.setVisible(false);
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public int getHz() {
+        return hz;
+    }
+
+    public int getFps() {
+        return fps;
     }
 }

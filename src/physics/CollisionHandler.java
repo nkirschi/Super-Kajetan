@@ -1,17 +1,15 @@
 package physics;
 
 import model.Enemy;
-import model.Knight;
 import model.Level;
 import model.Player;
-import util.Constants;
 import util.List;
 
-public class CollisionChecker {
+public class CollisionHandler {
     private Player player;
     private Level level;
 
-    public CollisionChecker(Player player, Level level) {
+    public CollisionHandler(Player player, Level level) {
         this.player = player;
         this.level = level;
     }
@@ -58,6 +56,7 @@ public class CollisionChecker {
 
     public void forEnemy(Enemy enemy) {
         List<Collidable> collidables = List.concat(List.concat(level.getGrounds(), level.getObstacles()), level.getEnemies());
+        collidables.add(player);
 
         Enemy dummy = new Enemy(enemy);
         dummy.setVelocityY(0);
@@ -68,12 +67,15 @@ public class CollisionChecker {
                 continue;
             if (dummy.collidesWith(collidable)) {
                 if (enemy.getVelocityX() > 0) {
-                    enemy.setVelocityX(Constants.PLAYER_WALK_VELOCITY);
-                    enemy.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
+                    enemy.setX(collidable.getHitbox().getX() - enemy.getHitbox().getWidth() / 2);
                 } else if (enemy.getVelocityX() < 0) {
-                    enemy.setVelocityX(-Constants.PLAYER_WALK_VELOCITY);
-                    enemy.setVelocityY(-Constants.PLAYER_INITIAL_JUMP_VELOCITY);
+                    enemy.setX(collidable.getHitbox().getX() + collidable.getHitbox().getWidth() +
+                            enemy.getHitbox().getWidth() / 2);
                 }
+                if (!collidable.equals(player))
+                    enemy.setVelocityY((collidable.getHitbox().getY() - enemy.getY()));
+                System.out.println(collidable.getHitbox().getY() - enemy.getY());
+                enemy.setVelocityX(0);
                 enemy.setWalking(false);
                 break;
             }

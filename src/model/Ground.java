@@ -2,6 +2,7 @@ package model;
 
 import physics.Collidable;
 import util.ImageUtil;
+import util.Logger;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -53,19 +54,20 @@ public class Ground implements Collidable {
                 case SOIL:
                     path += "soil.png";
                     break;
-                case GRASS:
-                    path += "grass.png";
-                    break;
                 case ROCK:
                     path += "rock.png";
                     break;
+                case GRASS:
+                    path += "soil.png";
+                    break;
             }
-            BufferedImage texture = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
-            Graphics g = texture.createGraphics();
+
+            BufferedImage texture = null;
             try {
-                g.drawImage(ImageUtil.getImage(path), 0, 0, null);
+                texture = ImageUtil.getImage(path);
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.log("Textur konnte nicht geladen werden", Logger.ERROR);
             }
             TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 64, 64));
 
@@ -73,6 +75,19 @@ public class Ground implements Collidable {
             Graphics2D h = result.createGraphics();
             h.setPaint(paint);
             h.fillRect(0, 0, result.getWidth(), result.getHeight());
+
+            if (type == Type.GRASS) {
+                BufferedImage texture2 = null;
+                try {
+                    texture2 = ImageUtil.getImage("images/grounds/grass.png");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.log("Textur konnte nicht geladen werden", Logger.ERROR);
+                }
+                TexturePaint paint2 = new TexturePaint(texture2, new Rectangle(0, 0, 64, 64));
+                h.setPaint(paint2);
+                h.fillRect(0, 0, result.getWidth(), 64);
+            }
             image = result;
         }
         return image;
