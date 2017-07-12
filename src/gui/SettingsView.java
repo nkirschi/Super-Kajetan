@@ -6,6 +6,7 @@ import util.SoundUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -73,19 +74,20 @@ public class SettingsView extends AbstractView {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(0, 0, 20, 0);
+        constraints.insets = new Insets(0, 0, 0, 0);
         settingsPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         settingsPanel.setOpaque(opaque);
 
         //Header
         JLabel header = new JLabel("Einstellungen");
         header.setForeground(Constants.FOREGROUND_COLOR);
+        header.setHorizontalAlignment(SwingConstants.CENTER);
         header.setFont(Constants.DEFAULT_FONT.deriveFont(110F));
         settingsPanel.add(header, constraints);
 
         Font labelFont = Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F);
 
-        constraints.insets = new Insets(0, 0, 0, 20);
+        constraints.insets = new Insets(10, 0, 0, 10);
 
         //Einstellungen aus Properties holen
         try {
@@ -101,8 +103,10 @@ public class SettingsView extends AbstractView {
         }
 
         //Lautstärke
+        constraints.insets.set(50, 0, 0, 10);
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         JLabel volumeLabel = new JLabel("Lautstärke");
+        volumeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         volumeLabel.setForeground(Constants.FOREGROUND_COLOR);
         volumeLabel.setFont(labelFont);
         settingsPanel.add(volumeLabel, constraints);
@@ -115,15 +119,18 @@ public class SettingsView extends AbstractView {
                 //Nein
             }
         };
+
         volumeSlider.setOpaque(false);
         volumeSlider.addChangeListener(c -> {
             this.volume = (float) volumeSlider.getValue() / 100;
         });
         settingsPanel.add(volumeSlider, constraints);
+        constraints.insets.set(10, 0, 0, 10);
 
         //Steuerung
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         JLabel controllLabel = new JLabel("Alternativer Steuerungsmodus");
+        controllLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         controllLabel.setForeground(Constants.FOREGROUND_COLOR);
         controllLabel.setFont(labelFont);
         settingsPanel.add(controllLabel, constraints);
@@ -141,29 +148,66 @@ public class SettingsView extends AbstractView {
 
         constraints.insets = new Insets(20, 0, 20, 0);
         constraints.gridwidth = GridBagConstraints.RELATIVE;
-        JLabel b1 = new JLabel("Normale Steuerung:");
+        JLabel b1 = new JLabel("Normale Steuerung: WASD");
         b1.setFont(f);
         b1.setForeground(c);
         settingsPanel.add(b1, constraints);
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
-        JLabel b2 = new JLabel("Alternative Steuerung:");
+        JLabel b2 = new JLabel("Alternative Steuerung: Pfeiltasten");
         b2.setFont(f);
         b2.setForeground(c);
         settingsPanel.add(b2, constraints);
 
-        constraints.insets = new Insets(0, 0, 0, 0);
+        constraints.insets = new Insets(0, 30, 0, 0);
         constraints.gridwidth = GridBagConstraints.RELATIVE;
-        JLabel b11 = new JLabel("Bewegung mit WASD");
+        JLabel b11 = new JLabel("[A] Nach links");
         b11.setFont(f);
         b11.setForeground(c);
         settingsPanel.add(b11, constraints);
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
-        JLabel b21 = new JLabel("Bewegung mit Pfeiltasten");
+        JLabel b21 = new JLabel("[LEFT] Nach links");
         b21.setFont(f);
         b21.setForeground(c);
         settingsPanel.add(b21, constraints);
+
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel b12 = new JLabel("[D] Nach rechts");
+        b12.setFont(f);
+        b12.setForeground(c);
+        settingsPanel.add(b12, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        JLabel b22 = new JLabel("[RIGHT] Nach links");
+        b22.setFont(f);
+        b22.setForeground(c);
+        settingsPanel.add(b22, constraints);
+
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel b13 = new JLabel("[W] Springen");
+        b13.setFont(f);
+        b13.setForeground(c);
+        settingsPanel.add(b13, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        JLabel b23 = new JLabel("[UP] Springen");
+        b23.setFont(f);
+        b23.setForeground(c);
+        settingsPanel.add(b23, constraints);
+
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel b14 = new JLabel("[S] Ducken");
+        b14.setFont(f);
+        b14.setForeground(c);
+        settingsPanel.add(b14, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        JLabel b24 = new JLabel("[DOWN] Ducken");
+        b24.setFont(f);
+        b24.setForeground(c);
+        settingsPanel.add(b24, constraints);
+
 
         add(settingsPanel, BorderLayout.CENTER);
 
