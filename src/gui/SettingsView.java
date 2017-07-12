@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import util.Constants;
 import util.Logger;
 import util.SoundUtil;
@@ -8,13 +7,12 @@ import util.SoundUtil;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ItemEvent;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
-    private final boolean opaque = true; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
+    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private float maxVolume = 1F;
     private float minVolume = 0F;
 
@@ -35,18 +33,20 @@ public class SettingsView extends AbstractView {
         buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         buttonPanel.setOpaque(opaque);
 
-        JButton backButton = new JButton("Zurück");
+        WoodenButton backButton = new WoodenButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
+        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
         buttonPanel.add(backButton);
 
         //Speichern
         saveLabel = new JLabel();
 
-        JButton saveButton = new JButton("Save");
+        WoodenButton saveButton = new WoodenButton("Save");
         saveButton.setBackground(Constants.BUTTON_COLOR);
         saveButton.setFont(Constants.DEFAULT_FONT);
+        saveButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         saveButton.addActionListener(a -> {
             SoundUtil.soundSystem.setMasterVolume(volume);
 
@@ -79,6 +79,7 @@ public class SettingsView extends AbstractView {
 
         //Header
         JLabel header = new JLabel("Einstellungen");
+        header.setForeground(Constants.FOREGROUND_COLOR);
         header.setFont(Constants.DEFAULT_FONT.deriveFont(110F));
         settingsPanel.add(header, constraints);
 
@@ -104,6 +105,7 @@ public class SettingsView extends AbstractView {
         //Lautstärke
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         JLabel volumeLabel = new JLabel("Lautstärke");
+        volumeLabel.setForeground(Constants.FOREGROUND_COLOR);
         volumeLabel.setFont(labelFont);
         settingsPanel.add(volumeLabel, constraints);
 
@@ -124,6 +126,7 @@ public class SettingsView extends AbstractView {
         //Steuerung
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         JLabel controllLabel = new JLabel("Alternativer Steuerungsmodus");
+        controllLabel.setForeground(Constants.FOREGROUND_COLOR);
         controllLabel.setFont(labelFont);
         settingsPanel.add(controllLabel, constraints);
 
@@ -135,7 +138,34 @@ public class SettingsView extends AbstractView {
         settingsPanel.add(controllCheckBox, constraints);
 
         //Beschreibung der Steuerung
+        Color c = new Color(188, 188, 188);
+        Font f = Constants.DEFAULT_FONT.deriveFont(20F);
 
+        constraints.insets = new Insets(20, 0, 20, 0);
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel b1 = new JLabel("Normale Steuerung:");
+        b1.setFont(f);
+        b1.setForeground(c);
+        settingsPanel.add(b1, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        JLabel b2 = new JLabel("Alternative Steuerung:");
+        b2.setFont(f);
+        b2.setForeground(c);
+        settingsPanel.add(b2, constraints);
+
+        constraints.insets = new Insets(0, 0, 0, 0);
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel b11 = new JLabel("Bewegung mit WASD");
+        b11.setFont(f);
+        b11.setForeground(c);
+        settingsPanel.add(b11, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        JLabel b21 = new JLabel("Bewegung mit Pfeiltasten");
+        b21.setFont(f);
+        b21.setForeground(c);
+        settingsPanel.add(b21, constraints);
 
         add(settingsPanel, BorderLayout.CENTER);
 
@@ -184,5 +214,8 @@ public class SettingsView extends AbstractView {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        g.setColor(new Color(0, 0, 0, 0.7f));
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 }

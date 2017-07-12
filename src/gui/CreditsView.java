@@ -21,9 +21,10 @@ class CreditsView extends AbstractView {
         buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         buttonPanel.setOpaque(opaque);
 
-        JButton backButton = new JButton("Zurück");
+        WoodenButton backButton = new WoodenButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
+        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
 
         buttonPanel.add(backButton);
@@ -133,6 +134,7 @@ class CreditsView extends AbstractView {
             e.printStackTrace();
         }
 
-
+        g.setColor(new Color(0, 0, 0, 0.7f));
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 }

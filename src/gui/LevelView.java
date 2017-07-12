@@ -4,12 +4,13 @@ import model.*;
 import physics.AIManager;
 import physics.CollisionChecker;
 import physics.LawMaster;
-import util.*;
+import util.Constants;
+import util.ImageUtil;
+import util.Logger;
+import util.SoundUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -121,15 +122,6 @@ public class LevelView extends AbstractView implements Runnable {
         player.move();
         camera.move();
 
-        // Pseudotod
-        if (player.getY() > 1000) {
-            paused = true;
-            player.suffer(1000);
-            keyHandler.menu = true;
-        }
-
-        if (!hasFocus())
-            keyHandler.clear();
     }
 
     @Override
@@ -254,6 +246,7 @@ public class LevelView extends AbstractView implements Runnable {
             g2.drawString("onGround = " + player.isOnGround(), 20, 180);
         }
 
+        //8. Pausen-Menü
         if (keyHandler.menu) {
             g2.setColor(new Color(0, 0, 0, 0.8f));
             g2.fillRect(0, 0, getWidth(), getHeight());
@@ -267,6 +260,8 @@ public class LevelView extends AbstractView implements Runnable {
             SoundUtil.soundSystem.play("background");
         }
         menuPanel.setVisible(keyHandler.menu);
+
+        //9. Game-Over-Menü
     }
 
     public void refresh() {
@@ -284,7 +279,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24f);
 
-        JButton continueButton = new JButton("Fortsetzen");
+        WoodenButton continueButton = new WoodenButton("Fortsetzen");
         continueButton.setBackground(Constants.BUTTON_COLOR);
         continueButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         continueButton.setFont(buttonFont);
@@ -294,7 +289,7 @@ public class LevelView extends AbstractView implements Runnable {
             SoundUtil.soundSystem.play("background");
         });
 
-        JButton backButton = new JButton("Zurück zur Lobby");
+        WoodenButton backButton = new WoodenButton("Zurück zur Lobby");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(buttonFont);
         backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);

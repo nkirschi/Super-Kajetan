@@ -40,11 +40,11 @@ class MainMenuView extends AbstractView {
         buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         //Button-Initialisierung
-        JButton lobbyButton = new JButton("SPIELEN");
-        JButton highscoresButton = new JButton("HIGHSCORES");
-        JButton settingsButton = new JButton("EINSTELLUNGEN");
-        JButton creditsButton = new JButton("CREDITS");
-        JButton exitButton = new JButton("BEENDEN");
+        WoodenButton lobbyButton = new WoodenButton("SPIELEN");
+        WoodenButton highscoresButton = new WoodenButton("HIGHSCORES");
+        WoodenButton settingsButton = new WoodenButton("EINSTELLUNGEN");
+        WoodenButton creditsButton = new WoodenButton("CREDITS");
+        WoodenButton exitButton = new WoodenButton("BEENDEN");
         Logger.log("Main Menu: Buttons initialisiert", Logger.INFO);
 
         //Action-Listener hinzufügen

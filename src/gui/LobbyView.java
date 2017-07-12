@@ -26,9 +26,10 @@ class LobbyView extends AbstractView {
         buttonPanel.setOpaque(opaque);
 
         //Zurück-Button
-        JButton backButton = new JButton("Zurück");
+        WoodenButton backButton = new WoodenButton("Zurück");
         backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
+        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
         buttonPanel.add(backButton);
         add(buttonPanel, BorderLayout.PAGE_END);
@@ -60,7 +61,7 @@ class LobbyView extends AbstractView {
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24F);
         //Buttons für einzelne Lvl
         //Level 1
-        JButton lvl1 = new JButton("Level 1");
+        WoodenButton lvl1 = new WoodenButton("Level 1");
         lvl1.setBackground(Constants.BUTTON_COLOR);
         lvl1.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl1.setFont(buttonFont);
@@ -74,7 +75,7 @@ class LobbyView extends AbstractView {
         levelButtonPanel.add(lvl1, constraints);
 
         //Level 2
-        JButton lvl2 = new JButton("Level 2");
+        WoodenButton lvl2 = new WoodenButton("Level 2");
         lvl2.setBackground(Constants.BUTTON_COLOR);
         lvl2.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl2.setFont(buttonFont);
@@ -107,6 +108,9 @@ class LobbyView extends AbstractView {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        g.setColor(new Color(0, 0, 0, 0.7f));
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 
     /**
