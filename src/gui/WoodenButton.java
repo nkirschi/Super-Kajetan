@@ -14,7 +14,8 @@ public class WoodenButton extends JButton {
         setFocusPainted(false);
         setBackground(Constants.BUTTON_COLOR);
         setContentAreaFilled(false);
-        setBorderPainted(false);
+        setBorderPainted(true);
+
     }
 
     @Override
@@ -30,11 +31,13 @@ public class WoodenButton extends JButton {
 
         if (getModel().isPressed()) {
             g.drawImage(img, 0, getHeight(), getWidth(), -getHeight(), null);
+            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.BLACK));
         } else if (getModel().isRollover()) {
             g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
-            BorderFactory.createLineBorder(new Color(0, 0, 0)).paintBorder(this, g, 0, 0, getWidth(), getHeight()); //TODO schönere Border
+            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.DARK_GRAY));
         } else {
-            g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+            g.drawImage(img, 0, 0, getWidth(), getHeight(), null);//TODO schönere Border
+            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.WHITE));
         }
         super.paintComponent(g);
     }
