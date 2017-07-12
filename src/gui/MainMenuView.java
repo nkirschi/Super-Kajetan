@@ -115,6 +115,26 @@ class MainMenuView extends AbstractView {
             }
         };
         nameTextField.setOpaque(opaque);
+
+        //Hilfsklasse, um die Schriftzahl des Names zu begrenzen ...
+        class JTextFieldLimit extends PlainDocument {
+            private int limit;
+
+            JTextFieldLimit(int limit) {
+                super();
+                this.limit = limit;
+
+            }
+
+            public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+                if (str == null) return;
+
+                if ((getLength() + str.length()) <= limit) {
+                    super.insertString(offset, str, attr);
+                }
+            }
+        }
+
         nameTextField.setDocument(new JTextFieldLimit(18));
         nameTextField.setText(currentName);
         //nameTextField.setBackground(new Color(0, 0, 0, 0.5f));
@@ -172,24 +192,5 @@ class MainMenuView extends AbstractView {
         }
 
 
-    }
-}
-
-//Hilfsklasse, um die Schriftzahl des Names zu begrenzen ...
-class JTextFieldLimit extends PlainDocument {
-    private int limit;
-
-    JTextFieldLimit(int limit) {
-        super();
-        this.limit = limit;
-
-    }
-
-    public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
-        if (str == null) return;
-
-        if ((getLength() + str.length()) <= limit) {
-            super.insertString(offset, str, attr);
-        }
     }
 }
