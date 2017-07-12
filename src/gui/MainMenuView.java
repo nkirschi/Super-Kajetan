@@ -4,7 +4,6 @@ import util.Constants;
 import util.Logger;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -16,7 +15,6 @@ import java.io.IOException;
 
 class MainMenuView extends AbstractView {
     private static MainMenuView instance;
-    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private GridBagConstraints constraints;
     private String currentName = "Ritter Kajetan";
 
@@ -24,21 +22,19 @@ class MainMenuView extends AbstractView {
         super();
         setLayout(new BorderLayout());
         setBackground(Constants.MENU_BACKGROUND_COLOR);
-        //setOpaque(opaque);
+
         initButtonPanel();
         initToolPanel();
-        //TODO Namenseingabefeld
     }
 
     private void initButtonPanel() {
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(opaque);
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
-        buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         //Button-Initialisierung
         WoodenButton lobbyButton = new WoodenButton("SPIELEN");
@@ -63,18 +59,6 @@ class MainMenuView extends AbstractView {
         creditsButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         exitButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
 
-        lobbyButton.setBackground(Constants.BUTTON_COLOR);
-        highscoresButton.setBackground(Constants.BUTTON_COLOR);
-        settingsButton.setBackground(Constants.BUTTON_COLOR);
-        creditsButton.setBackground(Constants.BUTTON_COLOR);
-        exitButton.setBackground(Constants.BUTTON_COLOR);
-
-        lobbyButton.setForeground(Constants.FOREGROUND_COLOR);
-        highscoresButton.setForeground(Constants.FOREGROUND_COLOR);
-        settingsButton.setForeground(Constants.FOREGROUND_COLOR);
-        creditsButton.setForeground(Constants.FOREGROUND_COLOR);
-        exitButton.setForeground(Constants.FOREGROUND_COLOR);
-
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24F);
         lobbyButton.setFont(buttonFont);
         highscoresButton.setFont(buttonFont);
@@ -96,25 +80,17 @@ class MainMenuView extends AbstractView {
 
     private void initToolPanel() {
         JPanel toolPanel = new JPanel();
-        toolPanel.setOpaque(opaque);
+        toolPanel.setOpaque(false);
         toolPanel.setLayout(new FlowLayout());
         toolPanel.setBorder(new EmptyBorder(0, 0, 27, 0));
-        toolPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
 
         JLabel nameLabel = new JLabel("Gib deinen Namen hier ein: ");
         nameLabel.setFont(Constants.DEFAULT_FONT);
         nameLabel.setForeground(Color.BLACK);
         toolPanel.add(nameLabel);
 
-        JTextField nameTextField = new JTextField(15) {
-            @Override
-            public void setBorder(Border border) {
-                if (!opaque) {
-                    super.setBorder(border);
-                }
-            }
-        };
-        nameTextField.setOpaque(opaque);
+        JTextField nameTextField = new JTextField(15);
+        nameTextField.setOpaque(false);
 
         //Hilfsklasse, um die Schriftzahl des Names zu begrenzen ...
         class JTextFieldLimit extends PlainDocument {

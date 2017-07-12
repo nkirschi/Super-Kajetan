@@ -16,7 +16,6 @@ import java.util.Date;
 class HighscoresView extends AbstractView {
     private static HighscoresView instance;
     private JPanel highScoreList;
-    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private Border listCollumBorder = BorderFactory.createEmptyBorder(10, 50, 0, 50); //bottom sollte immer 0 sein
     private Border listCellBorder = BorderFactory.createEmptyBorder(20, 0, 20, 0); //left, right sollte immer 0 sein, wird von listCollumBorder übernommen
     private Border listCollumHeaderBorder = BorderFactory.createEmptyBorder(35, 0, 35, 0); //top,left,right sollte immer 0 sein, sie ^
@@ -25,14 +24,11 @@ class HighscoresView extends AbstractView {
         super();
         setLayout(new BorderLayout());
         setBackground(Constants.MENU_BACKGROUND_COLOR);
-        //setOpaque(opaque);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        buttonPanel.setOpaque(opaque);
+        buttonPanel.setOpaque(false);
 
         WoodenButton backButton = new WoodenButton("Zurück");
-        backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
@@ -48,19 +44,16 @@ class HighscoresView extends AbstractView {
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);
-        listTopLevelPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        listTopLevelPanel.setOpaque(opaque);
+        listTopLevelPanel.setOpaque(false);
 
         JPanel list = new JPanel(new FlowLayout());
-        list.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        list.setOpaque(opaque);
+        list.setOpaque(false);
 
         //Tolle Spalte links mit Erster, Zweiter, ...
         JPanel fancyCollumPanel = new JPanel();
         fancyCollumPanel.setLayout(new BoxLayout(fancyCollumPanel, BoxLayout.Y_AXIS));
-        fancyCollumPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         fancyCollumPanel.setBorder(listCollumBorder);
-        fancyCollumPanel.setOpaque(opaque);
+        fancyCollumPanel.setOpaque(false);
         list.add(fancyCollumPanel);
 
         try {
@@ -81,20 +74,17 @@ class HighscoresView extends AbstractView {
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
         namePanel.setBorder(listCollumBorder);
-        namePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        namePanel.setOpaque(opaque);
+        namePanel.setOpaque(false);
         list.add(namePanel);
         JPanel scorePanel = new JPanel();
         scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
-        scorePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         scorePanel.setBorder(listCollumBorder);
-        scorePanel.setOpaque(opaque);
+        scorePanel.setOpaque(false);
         list.add(scorePanel);
         JPanel datePanel = new JPanel();
         datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.Y_AXIS));
-        datePanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
         datePanel.setBorder(listCollumBorder);
-        datePanel.setOpaque(opaque);
+        datePanel.setOpaque(false);
         list.add(datePanel);
 
         //Überschriften der Spalten
@@ -202,11 +192,12 @@ class HighscoresView extends AbstractView {
         //-> setOpaque(false)
         try {
             g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_2), 0, 0, getWidth(), getHeight(), null);
+            g.setColor(new Color(0, 0, 0, 0.7f));
+            g.fillRect(0, 0, getWidth(), getHeight());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        g.setColor(new Color(0, 0, 0, 0.7f));
-        g.fillRect(0, 0, getWidth(), getHeight());
+
     }
 }

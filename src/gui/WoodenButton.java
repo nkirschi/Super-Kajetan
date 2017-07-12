@@ -13,6 +13,7 @@ public class WoodenButton extends JButton {
         super(text);
         setFocusPainted(false);
         setBackground(Constants.BUTTON_COLOR);
+        setForeground(Constants.FOREGROUND_COLOR);
         setContentAreaFilled(false);
         setBorderPainted(true);
 
@@ -23,7 +24,6 @@ public class WoodenButton extends JButton {
         BufferedImage img = null;
         try {
             img = util.ImageUtil.getImage("images/gui/wooden_button.png");
-            setForeground(Color.WHITE);
             setOpaque(false);
         } catch (IOException e) {
             e.printStackTrace();

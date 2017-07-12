@@ -6,14 +6,12 @@ import util.SoundUtil;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
-    private final boolean opaque = false; //Hiermit kann man alle Panels/TextFields/... gleichzeitig opaque setzen
     private float maxVolume = 1F;
     private float minVolume = 0F;
 
@@ -27,15 +25,13 @@ public class SettingsView extends AbstractView {
         super();
         setLayout(new BorderLayout());
         setBackground(Constants.MENU_BACKGROUND_COLOR);
-        //setOpaque(opaque);
+
 
         //Zurück-Button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttonPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        buttonPanel.setOpaque(opaque);
+        buttonPanel.setOpaque(false);
 
         WoodenButton backButton = new WoodenButton("Zurück");
-        backButton.setBackground(Constants.BUTTON_COLOR);
         backButton.setFont(Constants.DEFAULT_FONT);
         backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
@@ -46,7 +42,6 @@ public class SettingsView extends AbstractView {
         saveLabel.setForeground(Constants.FOREGROUND_COLOR);
 
         WoodenButton saveButton = new WoodenButton("Save");
-        saveButton.setBackground(Constants.BUTTON_COLOR);
         saveButton.setFont(Constants.DEFAULT_FONT);
         saveButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         saveButton.addActionListener(a -> {
@@ -76,8 +71,7 @@ public class SettingsView extends AbstractView {
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(0, 0, 0, 0);
-        settingsPanel.setBackground(Constants.MENU_BACKGROUND_COLOR);
-        settingsPanel.setOpaque(opaque);
+        settingsPanel.setOpaque(false);
 
         //Header
         JLabel header = new JLabel("Einstellungen");
@@ -254,11 +248,12 @@ public class SettingsView extends AbstractView {
         //-> setOpaque(false)
         try {
             g.drawImage(util.ImageUtil.getImage(Constants.MENU_BACKGROUND_2), 0, 0, getWidth(), getHeight(), null);
+            g.setColor(new Color(0, 0, 0, 0.7f));
+            g.fillRect(0, 0, getWidth(), getHeight());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        g.setColor(new Color(0, 0, 0, 0.7f));
-        g.fillRect(0, 0, getWidth(), getHeight());
+
     }
 }
