@@ -10,9 +10,7 @@ public abstract class Entity implements Collidable {
     Rectangle2D.Double hitbox;
 
     int health;
-
     int strength;
-
     boolean walking;
     boolean running;
     boolean jumping;
@@ -62,8 +60,9 @@ public abstract class Entity implements Collidable {
         return health;
     }
 
-    public int getStrength() { return strength; }
-
+    public int getMaxHealth() {
+        return 0;
+    }
     /**
      * @param damage Hinzuzufügender Schaden
      * @return Wahrheitswert, ob entity noch lebt.
@@ -73,8 +72,12 @@ public abstract class Entity implements Collidable {
         return health > 0;
     }
 
+    public int getStrength() {
+        return strength;
+    }
+
     public boolean isDead() {
-        return getHealth() < 0 || y > 1000;
+        return getHealth() <= 0 || y > 1000;
     }
 
     public boolean isWalking() {

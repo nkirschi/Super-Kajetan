@@ -2,6 +2,7 @@ package logic;
 
 import model.*;
 import util.Constants;
+import util.List;
 
 import static logic.Behavior.ATTACK;
 
@@ -18,7 +19,14 @@ public class AIManager {
     }
 
     public void handleAI(Level level, Player player) {
+        List<Enemy> dead = new List<>();
+
         for (Enemy enemy : level.getEnemies()) {
+            if (enemy.isDead()) {
+                dead.add(enemy);
+                continue;
+            }
+
             switch (enemy.getBehavior()) {
                 case GUARD:
                     switch (enemy.getViewingDirection()) {
@@ -119,6 +127,10 @@ public class AIManager {
                     break;
             }
         }
+
+        for (Enemy enemy : dead) {
+            level.getEnemies().remove(enemy);
+        }
     }
 
     private double distance(Entity entity1, Entity entity2) {
@@ -134,9 +146,8 @@ public class AIManager {
     }
 
     private void attack(Enemy enemy, Player player) {
-        if(distance(player, enemy)<enemy.getAttackRange()){
-            player.suffer(enemy.getStrength());
-        }
+        System.out.println("Hey");
+        player.suffer(enemy.getStrength());
     }
 
     private Obstacle nearestViewblocker(Enemy enemy, Level level) {

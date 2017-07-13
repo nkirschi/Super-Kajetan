@@ -7,12 +7,13 @@ import util.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Renderer {
+    private final int HEALTH_BAR_HEIGHT = 5;
+
     private Level level;
     private Camera camera;
     private Player player;
@@ -44,6 +45,14 @@ public class Renderer {
             Logger.log(e, Logger.WARNING);
         }
 
+        Color backup = g2.getColor();
+        g2.setColor(Color.GREEN);
+        int x = (int) (player.getHitbox().getX() - camera.getX());
+        int y = (int) (player.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
+        g2.fillRect(x, y, (int) ((double) player.getHealth() / player.getMaxHealth() * player.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
+        g2.setColor(backup);
+        g2.drawRect(x, y, (int) player.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+
         if (keyHandler.debug) {
             Stroke originalStroke = g2.getStroke();
             g2.setStroke(strichel);
@@ -54,14 +63,9 @@ public class Renderer {
         }
     }
 
-    public void drawSword(Graphics2D g2, int swordAngle) {
+    public void drawSword(Graphics2D g2) {
         try {
             BufferedImage image = ImageUtil.getImage("images/sword/sword_giant.png");
-
-            AffineTransform backup = g2.getTransform();
-            AffineTransform at = new AffineTransform();
-            at.rotate(Math.toRadians(swordAngle), player.getSword().getX() + 28, player.getSword().getY() - 28 + player.getSword().getHeight());
-            g2.transform(at);
 
             if (player.getViewingDirection().equals(Direction.RIGHT)) {
                 g2.drawImage(image, (int) (player.getSword().getX() - camera.getX()), (int) player.getSword().getY(), null);
@@ -78,7 +82,6 @@ public class Renderer {
                 g2.draw(rect);
                 g2.setStroke(originalStroke);
             }
-            g2.setTransform(backup);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,14 +127,27 @@ public class Renderer {
     public void drawEnemies(Graphics2D g2) {
         for (Enemy enemy : level.getEnemies()) {
             try {
-                BufferedImage image;
-                image = ImageUtil.getImage(enemy.getImagePath());
-                int x = (int) (enemy.getX() - image.getWidth() / 2 - camera.getX());
-                int y = (int) (enemy.getY() - image.getHeight());
-                if (enemy.getViewingDirection().equals(Direction.RIGHT))
-                    g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);
-                else
-                    g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), null);
+                {
+                    BufferedImage image;
+                    image = ImageUtil.getImage(enemy.getImagePath());
+                    int x = (int) (enemy.getX() - image.getWidth() / 2 - camera.getX());
+                    int y = (int) (enemy.getY() - image.getHeight());
+                    if (enemy.getViewingDirection().equals(Direction.RIGHT))
+                        g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);
+                    else
+                        g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), null);
+                }
+
+                {
+                    Color backup = g2.getColor();
+                    g2.setColor(Color.GREEN);
+                    int x = (int) (enemy.getHitbox().getX() - camera.getX());
+                    int y = (int) (enemy.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
+                    g2.fillRect(x, y, (int) ((double) enemy.getHealth() / enemy.getMaxHealth() * enemy.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
+                    g2.setColor(backup);
+                    g2.drawRect(x, y, (int) enemy.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+                }
+
                 if (keyHandler.debug) {
                     Stroke originalStroke = g2.getStroke();
                     g2.setStroke(strichel);
@@ -190,14 +206,15 @@ public class Renderer {
         String debugInfo = view.getUps() + "\u2009u/s, " + view.getFps() + "\u2009fps";
         g2.drawString(debugInfo, view.getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 
-        g2.drawString("P(" + player.getX() + "," + player.getY() + ")", 20, 20);
+        g2.drawString("@(" + player.getX() + "," + player.getY() + ")", 20, 20);
         g2.drawString("velocityX = " + player.getVelocityX(), 20, 40);
         g2.drawString("velocityY = " + player.getVelocityY(), 20, 60);
-        g2.drawString("walking = " + player.isWalking(), 20, 80);
-        g2.drawString("running = " + player.isRunning(), 20, 100);
-        g2.drawString("jumping = " + player.isJumping(), 20, 120);
-        g2.drawString("crouching = " + player.isCrouching(), 20, 140);
-        g2.drawString("exhausted = " + player.isExhausted(), 20, 160);
-        g2.drawString("onGround = " + player.isOnGround(), 20, 180);
+        g2.drawString("health = " + player.getHealth(), 20, 80);
+        g2.drawString("walking = " + player.isWalking(), 20, 100);
+        g2.drawString("running = " + player.isRunning(), 20, 120);
+        g2.drawString("jumping = " + player.isJumping(), 20, 140);
+        g2.drawString("crouching = " + player.isCrouching(), 20, 160);
+        g2.drawString("exhausted = " + player.isExhausted(), 20, 180);
+        g2.drawString("onGround = " + player.isOnGround(), 20, 200);
     }
 }

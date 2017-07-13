@@ -14,6 +14,13 @@ public class Knight extends Enemy {
         hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
         viewingRange = 300;
         attackRange = 200;
+        health = 500;
+        strength = 2;
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return 500;
     }
 
     @Override

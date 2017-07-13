@@ -21,6 +21,8 @@ public class Player extends Entity {
         this.y = y;
         velocityX = 0;
         velocityY = 0;
+        health = getMaxHealth();
+        strength = 5;
         onGround = true;
         stamina = 1000;
         viewingDirection = Direction.RIGHT;
@@ -55,6 +57,11 @@ public class Player extends Entity {
     public void move() {
         super.move();
         sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x : x - sword.getWidth(), y - hitbox.getHeight() - 10, sword.getWidth(), sword.getHeight());
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return 1000;
     }
 
     public Rectangle2D.Double getSword() {
