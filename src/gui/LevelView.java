@@ -24,7 +24,6 @@ public class LevelView extends AbstractView implements Runnable {
     private Renderer renderer;
     private LawMaster lawMaster;
     private JPanel menuPanel;
-    private JPanel deathPanel;
     private JButton continueButton;
     private JLabel deathLabel;
     private JLabel scoreLabel;
@@ -51,7 +50,6 @@ public class LevelView extends AbstractView implements Runnable {
         setIgnoreRepaint(true);
         setLayout(new BorderLayout());
         initPauseMenu();
-        initDeathPanel();
     }
 
     public void run() {
@@ -258,41 +256,6 @@ public class LevelView extends AbstractView implements Runnable {
         menuPanel.setVisible(false);
 
         add(menuPanel, BorderLayout.CENTER);
-    }
-
-    private void initDeathPanel() {
-        deathPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridwidth = GridBagConstraints.REMAINDER;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(5, 0, 5, 0);
-
-        Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24f);
-
-        WoodenButton retryButton = new WoodenButton("Nochmal Versuchen");
-        retryButton.setBackground(Constants.BUTTON_COLOR);
-        retryButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
-        retryButton.setFont(buttonFont);
-        retryButton.addActionListener(a -> {
-
-        });
-
-        WoodenButton backButton = new WoodenButton("Zurück zur Lobby");
-        backButton.setBackground(Constants.BUTTON_COLOR);
-        backButton.setFont(buttonFont);
-        backButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
-        backButton.addActionListener(a -> {
-            paused = false;
-            running = false;
-            SoundUtil.soundSystem.stop("background");
-            SoundUtil.soundSystem.cull("background");
-            MainFrame.getInstance().changeTo(LobbyView.getInstance());
-        });
-
-        deathPanel.add(retryButton, constraints);
-        deathPanel.add(backButton, constraints);
-        deathPanel.setOpaque(false);
-        deathPanel.setVisible(false);
     }
 
     public int getUps() {
