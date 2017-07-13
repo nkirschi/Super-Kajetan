@@ -52,11 +52,7 @@ class LobbyView extends AbstractView {
         lvl1.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl1.setFont(buttonFont);
         lvl1.addActionListener(a -> {
-            LevelView levelView = new LevelView(createLevel1());
-            MainFrame.getInstance().changeTo(levelView);
-            levelView.setFocusable(true);
-            levelView.requestFocusInWindow();
-            new Thread(levelView).start();
+            loadLevel(createLevel1());
         });
         levelButtonPanel.add(lvl1, constraints);
 
@@ -65,9 +61,7 @@ class LobbyView extends AbstractView {
         lvl2.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl2.setFont(buttonFont);
         lvl2.addActionListener(a -> {
-            LevelView levelView = new LevelView(createLevel2());
-            MainFrame.getInstance().changeTo(levelView);
-            new Thread(levelView).start();
+            loadLevel(createLevel2());
         });
         levelButtonPanel.add(lvl2, constraints);
 
@@ -78,6 +72,14 @@ class LobbyView extends AbstractView {
         backButton.setFont(buttonFont);
         backButton.addActionListener(a -> MainFrame.getInstance().changeTo(MainMenuView.getInstance()));
         levelButtonPanel.add(backButton, constraints);
+    }
+
+    private void loadLevel(Level level) {
+        LevelView levelView = new LevelView(level);
+        MainFrame.getInstance().changeTo(levelView);
+        levelView.setFocusable(true);
+        levelView.requestFocusInWindow();
+        new Thread(levelView).start();
     }
 
     public void refresh() {
