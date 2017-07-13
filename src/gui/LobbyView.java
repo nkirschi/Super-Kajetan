@@ -111,6 +111,7 @@ class LobbyView extends AbstractView {
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
         enemies.add(new Knight(2200, 680, Behavior.PATROL, Direction.LEFT));
+        enemies.add(new Spider(4100, 500, Behavior.ATTACK, Direction.LEFT));
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Crate(1750, 640));
         obstacles.add(new Crate(1000, 300));
@@ -122,7 +123,10 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(2200, 200, 60, Ground.Type.GRASS));
         grounds.add(new Ground(2400, 200, 40, Ground.Type.SOIL));
         grounds.add(new Ground(2600, 200, 20, Ground.Type.ROCK));
-        grounds.add(new Ground(2800, 200, 1, Ground.Type.GRASS));
+        grounds.add(new Ground(3100, 800, 33, Ground.Type.ROCK));
+        grounds.add(new Ground(3700, 400, 100, Ground.Type.GRASS));
+        grounds.add(new Ground(4200, 600, 150, Ground.Type.SOIL));
+        grounds.add(new Ground(4700, 400, 200, Ground.Type.ROCK));
         Logger.log("Level erstellt", Logger.INFO);
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png");
     }
