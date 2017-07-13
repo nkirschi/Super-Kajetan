@@ -51,18 +51,14 @@ class LobbyView extends AbstractView {
         WoodenButton lvl1 = new WoodenButton("Level 1");
         lvl1.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl1.setFont(buttonFont);
-        lvl1.addActionListener(a -> {
-            loadLevel(createLevel1());
-        });
+        lvl1.addActionListener(a -> loadLevel(createLevel1()));
         levelButtonPanel.add(lvl1, constraints);
 
         //Level 2
         WoodenButton lvl2 = new WoodenButton("Level 2");
         lvl2.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl2.setFont(buttonFont);
-        lvl2.addActionListener(a -> {
-            loadLevel(createLevel2());
-        });
+        lvl2.addActionListener(a -> loadLevel(createLevel2()));
         levelButtonPanel.add(lvl2, constraints);
 
         constraints.insets.set(50, constraints.insets.left, constraints.insets.right, constraints.insets.bottom);
