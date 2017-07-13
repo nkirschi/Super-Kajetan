@@ -1,7 +1,5 @@
-package logic;
+package gui;
 
-import gui.KeyHandler;
-import gui.LevelView;
 import model.*;
 import util.Constants;
 import util.ImageUtil;
@@ -21,8 +19,6 @@ public class Renderer {
     private KeyHandler keyHandler;
     private LevelView view;
     private final Stroke strichel;
-    private int swordState;
-    private int swordAngle;
 
     public Renderer(Level level, Camera camera, Player player, KeyHandler keyHandler, LevelView view) {
         this.level = level;
@@ -31,8 +27,6 @@ public class Renderer {
         this.keyHandler = keyHandler;
         this.view = view;
         strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
-        swordState = -1;
-        swordAngle = 0;
     }
 
     public void drawPlayer(Graphics2D g2) {

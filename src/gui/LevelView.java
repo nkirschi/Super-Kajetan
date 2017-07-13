@@ -3,7 +3,6 @@ package gui;
 import logic.AIManager;
 import logic.CollisionHandler;
 import logic.LawMaster;
-import logic.Renderer;
 import model.Camera;
 import model.Enemy;
 import model.Level;
