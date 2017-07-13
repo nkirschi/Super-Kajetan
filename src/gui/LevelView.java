@@ -162,18 +162,19 @@ public class LevelView extends AbstractView implements Runnable {
 
         renderer.drawGrounds(g2);
 
-        // 3. Player
+        // 3. Enemies
+        renderer.drawEnemies(g2);
+
+        // 4. Obstacles
+        renderer.drawObstacles(g2);
+
+        // 5. Player
         renderer.drawPlayer(g2);
         renderer.drawSword(g2);
 
-        // 4. Enemies
-        renderer.drawEnemies(g2);
-
-        // 5. Obstacles
-        renderer.drawObstacles(g2);
-
-        // 6. Stamina Bar
+        // 6. Stamina Bar & Score
         renderer.drawStaminaBar(g2);
+        renderer.drawHUD(g2);
 
         // 7. Debug Screen
         if (keyHandler.debug) {
@@ -258,11 +259,15 @@ public class LevelView extends AbstractView implements Runnable {
         add(menuPanel, BorderLayout.CENTER);
     }
 
-    public int getUps() {
+    int getUps() {
         return ups;
     }
 
-    public int getFps() {
+    int getFps() {
         return fps;
+    }
+
+    int getScore() {
+        return score;
     }
 }

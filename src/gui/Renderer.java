@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class Renderer {
+class Renderer {
     private final int HEALTH_BAR_HEIGHT = 5;
 
     private Level level;
@@ -21,7 +21,7 @@ public class Renderer {
     private LevelView view;
     private final Stroke strichel;
 
-    public Renderer(Level level, Camera camera, Player player, KeyHandler keyHandler, LevelView view) {
+    Renderer(Level level, Camera camera, Player player, KeyHandler keyHandler, LevelView view) {
         this.level = level;
         this.camera = camera;
         this.player = player;
@@ -30,7 +30,7 @@ public class Renderer {
         strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
     }
 
-    public void drawPlayer(Graphics2D g2) {
+    void drawPlayer(Graphics2D g2) {
         try {
             BufferedImage image;
             image = ImageUtil.getImage(player.getImagePath());
@@ -63,7 +63,7 @@ public class Renderer {
         }
     }
 
-    public void drawSword(Graphics2D g2) {
+    void drawSword(Graphics2D g2) {
         try {
             BufferedImage image = ImageUtil.getImage("images/sword/sword_giant.png");
 
@@ -87,7 +87,7 @@ public class Renderer {
         }
     }
 
-    public void drawBackground(Graphics2D g2) {
+    void drawBackground(Graphics2D g2) {
         g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
@@ -110,7 +110,7 @@ public class Renderer {
         g2.drawImage(icon.getImage(), 0, 0, view.getWidth(), view.getHeight(), null);
     }
 
-    public void drawGrounds(Graphics2D g2) {
+    void drawGrounds(Graphics2D g2) {
         for (Ground ground : level.getGrounds()) {
             Rectangle2D.Double rectangle = new Rectangle2D.Double(ground.getHitbox().getX() - camera.getX(),
                     ground.getHitbox().getY(), ground.getHitbox().getWidth(), ground.getHitbox().getHeight());
@@ -124,7 +124,7 @@ public class Renderer {
         }
     }
 
-    public void drawEnemies(Graphics2D g2) {
+    void drawEnemies(Graphics2D g2) {
         for (Enemy enemy : level.getEnemies()) {
             try {
                 {
@@ -163,7 +163,7 @@ public class Renderer {
         }
     }
 
-    public void drawObstacles(Graphics2D g2) {
+    void drawObstacles(Graphics2D g2) {
         for (Obstacle obstacle : level.getObstacles()) {
             try {
                 BufferedImage image = ImageUtil.getImage(obstacle.getImagePath());
@@ -184,7 +184,7 @@ public class Renderer {
         }
     }
 
-    public void drawStaminaBar(Graphics2D g2) {
+    void drawStaminaBar(Graphics2D g2) {
         Rectangle2D staminaMask = new Rectangle2D.Double(view.getWidth() - 220, view.getHeight() - 30, 200, 15);
         Rectangle2D staminaBar = new Rectangle2D.Double(view.getWidth() - 220, view.getHeight() - 30, player.getStamina() / 5, 15);
         g2.setColor(Constants.BUTTON_COLOR);
@@ -198,11 +198,17 @@ public class Renderer {
         g2.setFont(backup);
     }
 
-    public void drawDebugScreen(Graphics2D g2) {
-        g2.setColor(Color.BLACK);
+    void drawHUD(Graphics2D g2) {
+        Font backup = g2.getFont();
+        g2.setFont(Constants.DEFAULT_FONT);
         String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
         g2.drawString(s, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
+        String t = "Score: " + view.getScore();
+        g2.drawString(t, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(t) / 2, 60);
+        g2.setFont(backup);
+    }
 
+    void drawDebugScreen(Graphics2D g2) {
         String debugInfo = view.getUps() + "\u2009u/s, " + view.getFps() + "\u2009fps";
         g2.drawString(debugInfo, view.getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 
