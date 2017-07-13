@@ -10,18 +10,20 @@ public abstract class Entity implements Collidable {
     Rectangle2D.Double hitbox;
 
     int health;
+
+    int strength;
+
     boolean walking;
     boolean running;
     boolean jumping;
     boolean crouching;
     boolean onGround;
     Direction viewingDirection;
-
-
     @Override
     public Rectangle2D.Double getHitbox() {
         return hitbox;
     }
+
 
     /**
      * Ausführung der Bewegung in Abhängigkeit der Geschwindigkeitskomponenten
@@ -59,6 +61,8 @@ public abstract class Entity implements Collidable {
     public int getHealth() {
         return health;
     }
+
+    public int getStrength() { return strength; }
 
     /**
      * @param damage Hinzuzufügender Schaden

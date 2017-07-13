@@ -52,15 +52,14 @@ public class AIManager {
                         } else {
                             enemy.setViewingDirection(Direction.RIGHT);
                         }
-                        attack(enemy);
+                        attack(enemy, player);
+                    }
+                    if (player.getX() < enemy.getX()) {
+                        enemy.setViewingDirection(Direction.LEFT);
+                        moveLeft(enemy);
                     } else {
-                        if (player.getX() < enemy.getX()) {
-                            enemy.setViewingDirection(Direction.LEFT);
-                            moveLeft(enemy);
-                        } else {
-                            enemy.setViewingDirection(Direction.RIGHT);
-                            moveRight(enemy);
-                        }
+                        enemy.setViewingDirection(Direction.RIGHT);
+                        moveRight(enemy);
                     }
                     break;
                 case IDLE:
@@ -71,7 +70,7 @@ public class AIManager {
                         } else {
                             enemy.setViewingDirection(Direction.RIGHT);
                         }
-                        attack(enemy);
+                        attack(enemy, player);
                     }
                     break;
                 case PATROL:
@@ -92,20 +91,19 @@ public class AIManager {
                             moveRight(enemy);
                         }
                         patrolCount = 0;
-                        attack(enemy);
-                    } else {
-                        switch (enemy.getViewingDirection()) {
-                            case LEFT:
-                                //System.out.println("Ich marschiere links");
-                                moveLeft(enemy);
-                                break;
-                            case RIGHT:
-                                //System.out.println("Ich marschiere rechts");
-                                moveRight(enemy);
-                                break;
-                        }
-                        patrolCount++;
+                        attack(enemy, player);
                     }
+                    switch (enemy.getViewingDirection()) {
+                        case LEFT:
+                            //System.out.println("Ich marschiere links");
+                            moveLeft(enemy);
+                            break;
+                        case RIGHT:
+                            //System.out.println("Ich marschiere rechts");
+                            moveRight(enemy);
+                            break;
+                    }
+                    patrolCount++;
                     collisionHandler.forEnemy(enemy);
                     enemy.move();
                     break;
@@ -135,8 +133,10 @@ public class AIManager {
         enemy.setVelocityX(Constants.PLAYER_WALK_VELOCITY);
     }
 
-    private void attack(Enemy enemy) {
-        //attack
+    private void attack(Enemy enemy, Player player) {
+        if(distance(player, enemy)<enemy.getAttackRange()){
+            player.suffer(enemy.getStrength);
+        }
     }
 
     private Obstacle nearestViewblocker(Enemy enemy, Level level) {
