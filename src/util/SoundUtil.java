@@ -27,22 +27,22 @@ public class SoundUtil {
         String f = "sounds/";
         String s = "";
         switch (ThreadLocalRandom.current().nextInt(1, 7)) {
-            case 0:
+            case 1:
                 s = "gott_mit_uns.ogg";
                 break;
-            case 1:
+            case 2:
                 s = "no_bullets_fly.ogg";
                 break;
-            case 2:
+            case 3:
                 s = "panzerkampf.ogg";
                 break;
-            case 3:
+            case 4:
                 s = "resist_and_bite.ogg";
                 break;
-            case 4:
+            case 5:
                 s = "shiroyama.ogg";
                 break;
-            case 5:
+            case 6:
                 s = "the_last_stand.ogg";
                 break;
         }

@@ -69,6 +69,7 @@ public class LevelView extends AbstractView implements Runnable {
         double secondTime = 0;
         double lag = 0;
         while (running) {
+            System.out.println(paused);
             if (!paused) {
                 double currentTime = System.nanoTime();
                 double elapsedTime = currentTime - lastTime;
@@ -150,6 +151,7 @@ public class LevelView extends AbstractView implements Runnable {
                     }
                 }
             }
+            player.addStamina(-5);
         }
 
         // 4. Ausdauerverbrauch
@@ -253,7 +255,6 @@ public class LevelView extends AbstractView implements Runnable {
         scoreLabel.setVisible(false);
         menuPanel.add(scoreLabel, constraints);
         constraints.insets.bottom = i;
-        System.out.println(i);
 
         continueButton = new WoodenButton("Fortsetzen");
         continueButton.setBackground(Constants.BUTTON_COLOR);
