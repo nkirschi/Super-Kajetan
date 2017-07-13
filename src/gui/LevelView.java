@@ -26,6 +26,9 @@ public class LevelView extends AbstractView implements Runnable {
     private LawMaster lawMaster;
     private JPanel menuPanel;
     private JPanel deathPanel;
+    private JButton continueButton;
+    private JLabel deathLabel;
+    private JLabel scoreLabel;
     private final Stroke strichel;
 
     private boolean running;
@@ -96,14 +99,14 @@ public class LevelView extends AbstractView implements Runnable {
                     }
                 }*/
             } else {
-                if (!keyHandler.menu) {
+                if (!keyHandler.menu && !player.isDead()) {
                     paused = false;
                     SoundUtil.soundSystem.play("background");
                 }
                 lastTime = System.nanoTime();
             }
         }
-        System.out.println(this + " ist raus, Onkel Klaus!");
+        System.out.println(this.getClass().getSimpleName() + " ist raus, Onkel Klaus!");
     }
 
     private void update() {
@@ -171,15 +174,21 @@ public class LevelView extends AbstractView implements Runnable {
             renderer.drawDebugScreen(g2);
         }
 
-        //8. Pausen-Menü
-        if (keyHandler.menu) {
+        //8. Pausen- und Game-Over-Menü
+        menuPanel.setVisible(keyHandler.menu || player.isDead());
+
+        if (keyHandler.menu || player.isDead()) {
+            if (player.isDead()) {
+                deathLabel.setVisible(true);
+                scoreLabel.setText("Score: &e0");
+                scoreLabel.setVisible(true);
+                continueButton.setVisible(false);
+                running = false;
+                SoundUtil.soundSystem.stop("background");
+            }
             g2.setColor(new Color(0, 0, 0, 0.8f));
             g2.fillRect(0, 0, getWidth(), getHeight());
         }
-
-        menuPanel.setVisible(keyHandler.menu);
-
-        //9. Game-Over-Menü
     }
 
     public void refresh() {
@@ -196,7 +205,24 @@ public class LevelView extends AbstractView implements Runnable {
 
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24f);
 
-        WoodenButton continueButton = new WoodenButton("Fortsetzen");
+        deathLabel = new JLabel("Du bist tod.");
+        deathLabel.setForeground(Color.WHITE);
+        deathLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        deathLabel.setFont(Constants.DEFAULT_FONT.deriveFont(32f));
+        deathLabel.setVisible(false);
+        menuPanel.add(deathLabel, constraints);
+        int i = constraints.insets.bottom;
+        constraints.insets.set(constraints.insets.top, constraints.insets.left, 50, constraints.insets.right);
+        scoreLabel = new JLabel();
+        scoreLabel.setForeground(Color.YELLOW);
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        scoreLabel.setFont(buttonFont);
+        scoreLabel.setVisible(false);
+        menuPanel.add(scoreLabel, constraints);
+        constraints.insets.bottom = i;
+        System.out.println(i);
+
+        continueButton = new WoodenButton("Fortsetzen");
         continueButton.setBackground(Constants.BUTTON_COLOR);
         continueButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         continueButton.setFont(buttonFont);

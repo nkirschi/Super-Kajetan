@@ -69,6 +69,10 @@ public abstract class Entity implements Collidable {
         return health > 0;
     }
 
+    public boolean isDead() {
+        return getHealth() < 0 || y > 1000;
+    }
+
     public boolean isWalking() {
         return walking;
     }
