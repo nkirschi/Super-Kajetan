@@ -5,10 +5,14 @@ import util.Constants;
 import java.awt.geom.Rectangle2D;
 
 public class Player extends Entity {
-    private final double PLAYER_WIDTH = 95;
-    private final double PLAYER_HEIGHT = 169;
+    private final double PLAYER_WIDTH = 90;
+    private final double PLAYER_HEIGHT = 160;
+    private final double SWORD_WIDTH = 128;
+    private final double SWORD_HEIGHT = 128;
+
+    private Rectangle2D.Double sword;
     private int walkCount;
-    private int stamina;
+    private double stamina;
     private boolean exhausted;
 
 
@@ -21,6 +25,7 @@ public class Player extends Entity {
         stamina = 1000;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(x - PLAYER_WIDTH / 2, y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
+        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
     /**
@@ -39,10 +44,21 @@ public class Player extends Entity {
         viewingDirection = player.getViewingDirection();
         hitbox = new Rectangle2D.Double(player.getHitbox().getX(), player.getHitbox().getY(),
                 player.getHitbox().getWidth(), player.getHitbox().getHeight());
+        sword = player.getSword();
         walking = player.isWalking();
         running = player.isRunning();
         jumping = player.isJumping();
         crouching = player.isCrouching();
+    }
+
+    @Override
+    public void move() {
+        super.move();
+        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x : x - sword.getWidth(), y - hitbox.getHeight() - 10, sword.getWidth(), sword.getHeight());
+    }
+
+    public Rectangle2D.Double getSword() {
+        return sword;
     }
 
     @Override
@@ -100,11 +116,11 @@ public class Player extends Entity {
     }
 
 
-    public int getStamina() {
+    public double getStamina() {
         return stamina;
     }
 
-    public void addStamina(int stamina) {
+    public void addStamina(double stamina) {
         this.stamina += stamina;
         if (this.stamina < 0)
             this.stamina = 0;

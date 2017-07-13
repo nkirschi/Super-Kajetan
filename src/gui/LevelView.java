@@ -33,7 +33,9 @@ public class LevelView extends AbstractView implements Runnable {
 
     private boolean running;
     private boolean paused;
-    private int hz = 60, fps = 60;
+    private int ups = 60, fps = 60;
+
+    private int score;
 
     LevelView(Level level) {
         this.level = level;
@@ -73,7 +75,7 @@ public class LevelView extends AbstractView implements Runnable {
                 secondTime += elapsedTime;
 
                 if (secondTime > 1000000000) {
-                    hz = updateCount;
+                    ups = updateCount;
                     fps = frameCount;
                     secondTime = 0;
                     updateCount = 0;
@@ -180,7 +182,8 @@ public class LevelView extends AbstractView implements Runnable {
         if (keyHandler.menu || player.isDead()) {
             if (player.isDead()) {
                 deathLabel.setVisible(true);
-                scoreLabel.setText("Score: &e0");
+                score = (int) Math.max(0, player.getX());
+                scoreLabel.setText("Score: " + score);
                 scoreLabel.setVisible(true);
                 continueButton.setVisible(false);
                 running = false;
@@ -287,8 +290,8 @@ public class LevelView extends AbstractView implements Runnable {
         deathPanel.setVisible(false);
     }
 
-    public int getHz() {
-        return hz;
+    public int getUps() {
+        return ups;
     }
 
     public int getFps() {

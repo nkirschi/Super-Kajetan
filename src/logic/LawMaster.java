@@ -8,12 +8,12 @@ import util.Constants;
 public class LawMaster {
     public void updateStamina(Player player, KeyHandler keyHandler) {
         if (player.isWalking() && !player.isJumping() && !player.isCrouching())
-            player.addStamina(-1);
+            player.addStamina(-0.5);
 
         if (player.isCrouching())
-            player.addStamina(-2);
+            player.addStamina(-1);
         else if (player.isRunning() || player.isJumping() && player.getVelocityY() < 0) {
-            player.addStamina(-3);
+            player.addStamina(-2);
         }
 
         if (!player.isRunning() && !player.isJumping() && !player.isCrouching()) {

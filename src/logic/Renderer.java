@@ -46,13 +46,22 @@ public class Renderer {
         }
 
         try {
-            BufferedImage image = ImageUtil.getImage("images/sword/sword_giant_0.66.png");
-            if (player.getViewingDirection().equals(Direction.RIGHT))
-                g2.drawImage(image, (int) (player.getX() - camera.getX()), (int) (player.getY() - player.getHitbox().getHeight()), null);
-            else
-                g2.drawImage(image, (int) (player.getX() - camera.getX()),
-                        (int) (player.getY() - player.getHitbox().getHeight()),
+            BufferedImage image = ImageUtil.getImage("images/sword/sword_giant.png");
+            if (player.getViewingDirection().equals(Direction.RIGHT)) {
+                g2.drawImage(image, (int) (player.getSword().getX() - camera.getX()), (int) player.getSword().getY(), null);
+            } else {
+                g2.drawImage(image, (int) (player.getSword().getX() + player.getSword().getWidth() - camera.getX()),
+                        (int) player.getSword().getY(),
                         -image.getWidth(), image.getHeight(), null);
+            }
+            if (keyHandler.debug) {
+                Stroke originalStroke = g2.getStroke();
+                g2.setStroke(strichel);
+                Rectangle2D.Double rect = new Rectangle2D.Double(player.getSword().getX() - camera.getX(),
+                        player.getSword().getY(), player.getSword().getWidth(), player.getSword().getHeight());
+                g2.draw(rect);
+                g2.setStroke(originalStroke);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,7 +170,7 @@ public class Renderer {
         g2.setColor(Color.BLACK);
         Font backup = g2.getFont();
         g2.setFont(Constants.DEFAULT_FONT);
-        g2.drawString("Ausdauer: " + player.getStamina() / 10 + "%", view.getWidth() - 215, view.getHeight() - 17);
+        g2.drawString("Ausdauer: " + (int) (player.getStamina() / 10) + "%", view.getWidth() - 215, view.getHeight() - 17);
         g2.setFont(backup);
     }
 
@@ -170,7 +179,7 @@ public class Renderer {
         String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
         g2.drawString(s, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
 
-        String debugInfo = view.getHz() + "\u2009Hz, " + view.getFps() + "\u2009fps";
+        String debugInfo = view.getUps() + "\u2009u/s, " + view.getFps() + "\u2009fps";
         g2.drawString(debugInfo, view.getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
 
         g2.drawString("P(" + player.getX() + "," + player.getY() + ")", 20, 20);
