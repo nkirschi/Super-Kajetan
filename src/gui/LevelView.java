@@ -174,7 +174,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 6. Stamina Bar & Score
         renderer.drawStaminaBar(g2);
-        renderer.drawHUD(g2);
+        renderer.drawScore(g2);
 
         // 7. Debug Screen
         if (keyHandler.debug) {

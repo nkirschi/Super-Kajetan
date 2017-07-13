@@ -198,19 +198,20 @@ class Renderer {
         g2.setFont(backup);
     }
 
-    void drawHUD(Graphics2D g2) {
+    void drawScore(Graphics2D g2) {
         Font backup = g2.getFont();
-        g2.setFont(Constants.DEFAULT_FONT);
-        String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
-        g2.drawString(s, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
-        String t = "Score: " + view.getScore();
-        g2.drawString(t, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(t) / 2, 60);
+        g2.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24f));
+        String s = "Score: " + view.getScore();
+        g2.drawString(s, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 50);
         g2.setFont(backup);
     }
 
     void drawDebugScreen(Graphics2D g2) {
         String debugInfo = view.getUps() + "\u2009u/s, " + view.getFps() + "\u2009fps";
         g2.drawString(debugInfo, view.getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
+
+        String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
+        g2.drawString(s, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
 
         g2.drawString("@(" + player.getX() + "," + player.getY() + ")", 20, 20);
         g2.drawString("velocityX = " + player.getVelocityX(), 20, 40);
