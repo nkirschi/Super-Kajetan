@@ -135,7 +135,7 @@ public class AIManager {
 
     private void attack(Enemy enemy, Player player) {
         if(distance(player, enemy)<enemy.getAttackRange()){
-            player.suffer(enemy.getStrength);
+            player.suffer(enemy.getStrength());
         }
     }
 
