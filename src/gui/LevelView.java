@@ -35,6 +35,8 @@ public class LevelView extends AbstractView implements Runnable {
     private boolean paused;
     private int ups = 60, fps = 60;
 
+    private int swordAngle = 0;
+    private int swordState = -1;
     private int score;
 
     LevelView(Level level) {
@@ -123,6 +125,33 @@ public class LevelView extends AbstractView implements Runnable {
         for (Enemy enemy : level.getEnemies())
             lawMaster.applyGravitation(enemy);
 
+        if (keyHandler.strike && swordState == -1) {
+            swordAngle = -1;
+            swordState = 0;
+        }
+
+        if (swordState >= 0) {
+            if (swordAngle < 0) {
+                if (swordState < 10)
+                    swordAngle -= 2;
+                else
+                    swordAngle += 4;
+                swordState++;
+            } else {
+                if (swordState < 30) {
+                    swordAngle += 4;
+                    swordState++;
+                } else {
+                    swordAngle -= 2;
+                    swordState++;
+                    if (swordAngle <= 0) {
+                        swordAngle = 0;
+                        swordState = -1;
+                    }
+                }
+            }
+        }
+
         // 4. Ausdauerverbrauch
         lawMaster.updateStamina(player, keyHandler);
 
@@ -161,6 +190,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 3. Player
         renderer.drawPlayer(g2);
+        renderer.drawSword(g2, swordAngle);
 
         // 4. Enemies
         renderer.drawEnemies(g2);

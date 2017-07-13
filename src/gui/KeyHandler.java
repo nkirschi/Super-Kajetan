@@ -10,13 +10,14 @@ import java.awt.event.KeyEvent;
 public class KeyHandler extends KeyAdapter {
     private Player player;
 
-    public boolean left, right, run, jump, crouch, menu, debug;
+    public boolean left, right, run, jump, crouch, strike, menu, debug;
 
     private final int KEY_JUMP;
     private final int KEY_LEFT;
     private final int KEY_RIGHT;
     private final int KEY_CROUCH;
     private final int KEY_RUN;
+    private final int KEY_STRIKE;
     private final int KEY_MENU;
     private final int KEY_DEBUG;
 
@@ -29,6 +30,7 @@ public class KeyHandler extends KeyAdapter {
             KEY_LEFT = Constants.ALT_KEY_LEFT;
             KEY_RIGHT = Constants.ALT_KEY_RIGHT;
             KEY_CROUCH = Constants.ALT_KEY_CROUCH;
+            KEY_STRIKE = Constants.ALT_KEY_STRIKE;
             KEY_MENU = Constants.KEY_MENU;
             KEY_DEBUG = Constants.KEY_DEBUG;
             KEY_RUN = Constants.KEY_RUN;
@@ -37,6 +39,7 @@ public class KeyHandler extends KeyAdapter {
             KEY_LEFT = Constants.KEY_LEFT_DEFAULT;
             KEY_RIGHT = Constants.KEY_RIGHT_DEFAULT;
             KEY_CROUCH = Constants.KEY_CROUCH_DEFAULT;
+            KEY_STRIKE = Constants.KEY_STRIKE_DEFAULT;
             KEY_MENU = Constants.KEY_MENU;
             KEY_DEBUG = Constants.KEY_DEBUG;
             KEY_RUN = Constants.KEY_RUN;
@@ -55,6 +58,8 @@ public class KeyHandler extends KeyAdapter {
             run = true;
         else if (keyCode == KEY_JUMP)
             jump = true;
+        else if (keyCode == KEY_STRIKE)
+            strike = true;
         else if (keyCode == KEY_CROUCH)
             crouch = true;
         else if (keyCode == KEY_MENU)
@@ -77,6 +82,8 @@ public class KeyHandler extends KeyAdapter {
             jump = false;
         else if (keyCode == KEY_CROUCH)
             crouch = false;
+        else if (keyCode == KEY_STRIKE)
+            strike = false;
     }
 
     public void process() {

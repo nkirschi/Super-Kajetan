@@ -9,6 +9,7 @@ import util.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -20,6 +21,8 @@ public class Renderer {
     private KeyHandler keyHandler;
     private LevelView view;
     private final Stroke strichel;
+    private int swordState;
+    private int swordAngle;
 
     public Renderer(Level level, Camera camera, Player player, KeyHandler keyHandler, LevelView view) {
         this.level = level;
@@ -28,6 +31,8 @@ public class Renderer {
         this.keyHandler = keyHandler;
         this.view = view;
         strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+        swordState = -1;
+        swordAngle = 0;
     }
 
     public void drawPlayer(Graphics2D g2) {
@@ -45,8 +50,25 @@ public class Renderer {
             Logger.log(e, Logger.WARNING);
         }
 
+        if (keyHandler.debug) {
+            Stroke originalStroke = g2.getStroke();
+            g2.setStroke(strichel);
+            Rectangle2D playerHitbox = player.getHitbox();
+            g2.drawRect((int) (playerHitbox.getX() - camera.x), (int) (playerHitbox.getY()),
+                    (int) (playerHitbox.getWidth()), (int) (playerHitbox.getHeight()));
+            g2.setStroke(originalStroke);
+        }
+    }
+
+    public void drawSword(Graphics2D g2, int swordAngle) {
         try {
             BufferedImage image = ImageUtil.getImage("images/sword/sword_giant.png");
+
+            AffineTransform backup = g2.getTransform();
+            AffineTransform at = new AffineTransform();
+            at.rotate(Math.toRadians(swordAngle), player.getSword().getX() + 28, player.getSword().getY() - 28 + player.getSword().getHeight());
+            g2.transform(at);
+
             if (player.getViewingDirection().equals(Direction.RIGHT)) {
                 g2.drawImage(image, (int) (player.getSword().getX() - camera.getX()), (int) player.getSword().getY(), null);
             } else {
@@ -62,17 +84,9 @@ public class Renderer {
                 g2.draw(rect);
                 g2.setStroke(originalStroke);
             }
+            g2.setTransform(backup);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
-        if (keyHandler.debug) {
-            Stroke originalStroke = g2.getStroke();
-            g2.setStroke(strichel);
-            Rectangle2D playerHitbox = player.getHitbox();
-            g2.drawRect((int) (playerHitbox.getX() - camera.x), (int) (playerHitbox.getY()),
-                    (int) (playerHitbox.getWidth()), (int) (playerHitbox.getHeight()));
-            g2.setStroke(originalStroke);
         }
     }
 
