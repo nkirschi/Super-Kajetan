@@ -17,11 +17,13 @@ public class SettingsView extends AbstractView {
     private float minVolume = 0F;
 
     //Einstellungsvariablen
-    private float volume = (maxVolume + minVolume) / 2;
+    private float musicVolume = (maxVolume + minVolume) / 2;
+    private float effectVolume = (maxVolume + minVolume) / 2;
     private boolean alt_control = false;
     private JCheckBox controllCheckBox;
     private JLabel saveLabel;
-    private JSlider volumeSlider;
+    private JSlider musicVolumeSlider;
+    private JSlider effectVolumeSlider;
 
     private SettingsView() {
         super();
@@ -47,12 +49,16 @@ public class SettingsView extends AbstractView {
         saveButton.setFont(Constants.DEFAULT_FONT);
         saveButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         saveButton.addActionListener(a -> {
-            volume = (float) volumeSlider.getValue() / 100;
-            SoundUtil.soundSystem.setMasterVolume(volume);
+            musicVolume = (float) musicVolumeSlider.getValue() / 100;
+            SoundUtil.soundSystem.setVolume(SoundUtil.MUSIC_SOURCE, musicVolume);
+
+            effectVolume = (float) effectVolumeSlider.getValue() / 100;
+            SoundUtil.soundSystem.setVolume(SoundUtil.EFFECT_SOURCE, effectVolume);
 
             setAltControlMode(controllCheckBox.isSelected());
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, Boolean.toString(alt_control));
-            MainFrame.getInstance().getProperties().put(Constants.PROPERTY_VOLUME, Float.toString(volume));
+            MainFrame.getInstance().getProperties().put(Constants.PROPERTY_MUSIC_VOLUME, Float.toString(musicVolume));
+            MainFrame.getInstance().getProperties().put(Constants.PROPERTY_EFFECT_VOLUME, Float.toString(effectVolume));
             try (FileWriter writer = new FileWriter("settings.properties")) {
                 MainFrame.getInstance().getProperties().store(writer, Constants.GAME_TITLE + " " + Constants.GAME_VERSION);
                 saveLabel.setText("Speichern erfolgreich!");
@@ -89,7 +95,14 @@ public class SettingsView extends AbstractView {
 
         //Einstellungen aus Properties holen
         try {
-            volume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_VOLUME));
+            musicVolume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_MUSIC_VOLUME));
+            SoundUtil.soundSystem.setVolume(SoundUtil.MUSIC_SOURCE, musicVolume);
+        } catch (Exception e) {
+            Logger.log(e, Logger.WARNING);
+        }
+
+        try {
+            effectVolume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_EFFECT_VOLUME));
         } catch (Exception e) {
             Logger.log(e, Logger.WARNING);
         }
@@ -102,52 +115,98 @@ public class SettingsView extends AbstractView {
 
         //Lautstärke
         constraints.insets.set(50, 0, 0, 10);
+
+        //Musik
         constraints.gridwidth = GridBagConstraints.RELATIVE;
-        JLabel volumeLabel = new JLabel("Lautstärke");
-        volumeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        volumeLabel.setForeground(Constants.FOREGROUND_COLOR);
-        volumeLabel.setFont(labelFont);
-        settingsPanel.add(volumeLabel, constraints);
+        JLabel musicVolumeLabel = new JLabel("Musik-Lautstärke");
+        musicVolumeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        musicVolumeLabel.setForeground(Constants.FOREGROUND_COLOR);
+        musicVolumeLabel.setFont(labelFont);
+        settingsPanel.add(musicVolumeLabel, constraints);
 
         constraints.gridwidth = GridBagConstraints.REMAINDER;
 
-        volumeSlider = new JSlider(JSlider.HORIZONTAL, (int) (minVolume * 100), (int) (maxVolume * 100), (int) (volume * 100)) {
+        musicVolumeSlider = new JSlider(JSlider.HORIZONTAL, (int) (minVolume * 100), (int) (maxVolume * 100), (int) (musicVolume * 100)) {
             @Override
             public void setBorder(Border border) {
                 //Nein
             }
         };
-        volumeSlider.setPreferredSize(new Dimension(350, 50));
+        musicVolumeSlider.setPreferredSize(new Dimension(350, 50));
 
-        Hashtable<Integer, JLabel> labels = new Hashtable<>();
-        JLabel label1 = new JLabel("Grabesstille");
-        JLabel label2 = new JLabel("Bergwind");
-        JLabel label3 = new JLabel("Markt");
-        JLabel label4 = new JLabel("Taverne");
-        JLabel label5 = new JLabel("Schlachtfeld");
-        label1.setForeground(Color.WHITE);
-        label2.setForeground(Color.WHITE);
-        label3.setForeground(Color.WHITE);
-        label4.setForeground(Color.WHITE);
-        label5.setForeground(Color.WHITE);
-        labels.put(0, label1);
-        labels.put(25, label2);
-        labels.put(50, label3);
-        labels.put(75, label4);
-        labels.put(100, label5);
-        volumeSlider.setLabelTable(labels);
-        volumeSlider.setMajorTickSpacing(25);
-        volumeSlider.setSnapToTicks(true);
-        volumeSlider.setPaintLabels(true);
-        volumeSlider.setPaintTicks(true);
 
-        volumeSlider.setOpaque(false);
-        /*volumeSlider.addChangeListener(c -> {
-            this.volume = (float) volumeSlider.getValue() / 100;
-        });*/
-        settingsPanel.add(volumeSlider, constraints);
+        Hashtable<Integer, JLabel> labelsm = new Hashtable<>();
+        JLabel labelm1 = new JLabel("Grabesstille");
+        JLabel labelm2 = new JLabel("Bergwind");
+        JLabel labelm3 = new JLabel("Markt");
+        JLabel labelm4 = new JLabel("Taverne");
+        JLabel labelm5 = new JLabel("Schlachtfeld");
+        labelm1.setForeground(Color.WHITE);
+        labelm2.setForeground(Color.WHITE);
+        labelm3.setForeground(Color.WHITE);
+        labelm4.setForeground(Color.WHITE);
+        labelm5.setForeground(Color.WHITE);
+        labelsm.put(0, labelm1);
+        labelsm.put(25, labelm2);
+        labelsm.put(50, labelm3);
+        labelsm.put(75, labelm4);
+        labelsm.put(100, labelm5);
+        musicVolumeSlider.setLabelTable(labelsm);
+        musicVolumeSlider.setMajorTickSpacing(25);
+        musicVolumeSlider.setSnapToTicks(false);
+        musicVolumeSlider.setPaintLabels(true);
+        musicVolumeSlider.setPaintTicks(true);
+
+
+        musicVolumeSlider.setOpaque(false);
+        settingsPanel.add(musicVolumeSlider, constraints);
+
+        //Effect
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel effectVolumeLabel = new JLabel("Effekt-Lautstärke");
+        effectVolumeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        effectVolumeLabel.setForeground(Constants.FOREGROUND_COLOR);
+        effectVolumeLabel.setFont(labelFont);
+        settingsPanel.add(effectVolumeLabel, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+
+        effectVolumeSlider = new JSlider(JSlider.HORIZONTAL, (int) (minVolume * 100), (int) (maxVolume * 100), (int) (musicVolume * 100)) {
+            @Override
+            public void setBorder(Border border) {
+                //Nein
+            }
+        };
+        effectVolumeSlider.setPreferredSize(new Dimension(350, 50));
+
+
+        Hashtable<Integer, JLabel> labelse = new Hashtable<>();
+        JLabel labele1 = new JLabel("Grabesstille");
+        JLabel labele2 = new JLabel("Bergwind");
+        JLabel labele3 = new JLabel("Markt");
+        JLabel labele4 = new JLabel("Taverne");
+        JLabel labele5 = new JLabel("Schlachtfeld");
+        labele1.setForeground(Color.WHITE);
+        labele2.setForeground(Color.WHITE);
+        labele3.setForeground(Color.WHITE);
+        labele4.setForeground(Color.WHITE);
+        labele5.setForeground(Color.WHITE);
+        labelse.put(0, labele1);
+        labelse.put(25, labele2);
+        labelse.put(50, labele3);
+        labelse.put(75, labele4);
+        labelse.put(100, labele5);
+        effectVolumeSlider.setLabelTable(labelsm);
+        effectVolumeSlider.setMajorTickSpacing(25);
+        effectVolumeSlider.setSnapToTicks(false);
+        effectVolumeSlider.setPaintLabels(true);
+        effectVolumeSlider.setPaintTicks(true);
+
+
+        effectVolumeSlider.setOpaque(false);
+        settingsPanel.add(effectVolumeSlider, constraints);
+
         constraints.insets.set(10, 0, 0, 10);
-
         //Steuerung
         constraints.gridwidth = GridBagConstraints.RELATIVE;
         JLabel controllLabel = new JLabel("Alternativer Steuerungsmodus");
@@ -161,6 +220,7 @@ public class SettingsView extends AbstractView {
         controllCheckBox.setOpaque(false);
         controllCheckBox.setBorderPainted(false);
         controllCheckBox.setSelected(alt_control);
+        controllCheckBox.addActionListener(a -> SoundUtil.playEffect("sounds/buttonclick.ogg", "buttonclick.ogg"));
         settingsPanel.add(controllCheckBox, constraints);
 
         //Beschreibung der Steuerung
@@ -238,16 +298,26 @@ public class SettingsView extends AbstractView {
 
     public void refresh() {
         controllCheckBox.setSelected(alt_control);
-        volumeSlider.setValue((int) (volume * 100));
+        musicVolumeSlider.setValue((int) (musicVolume * 100));
+        effectVolumeSlider.setValue((int) (effectVolume * 100));
+
         saveLabel.setText("");
     }
 
-    public float getVolume() {
-        return volume;
+    public float getMusicVolume() {
+        return musicVolume;
     }
 
-    public void setVolume(float f) {
-        volume = f;
+    public void setMusicVolume(float f) {
+        musicVolume = f;
+    }
+
+    public float getEffectVolume() {
+        return effectVolume;
+    }
+
+    public void setEffectVolume(float effectVolume) {
+        this.effectVolume = effectVolume;
     }
 
     public boolean getAltControlMode() {

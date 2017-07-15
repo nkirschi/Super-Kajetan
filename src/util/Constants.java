@@ -26,7 +26,8 @@ public class Constants {
 
     // Properties
     public static final String PROPERTY_CONTROL_MODE = "alt-control-mode";
-    public static final String PROPERTY_VOLUME = "volume";
+    public static final String PROPERTY_MUSIC_VOLUME = "music-volume";
+    public static final String PROPERTY_EFFECT_VOLUME = "effect-volume";
 
     // Spielmechanik
     public static final int UPDATE_CLOCK = 60;

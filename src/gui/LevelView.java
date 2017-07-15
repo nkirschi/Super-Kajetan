@@ -100,7 +100,7 @@ public class LevelView extends AbstractView implements Runnable {
             } else {
                 if (!keyHandler.menu && !player.isDead()) {
                     paused = false;
-                    SoundUtil.soundSystem.play("background");
+                    SoundUtil.soundSystem.play(SoundUtil.MUSIC_SOURCE);
                 }
                 lastTime = System.nanoTime();
             }
@@ -144,7 +144,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (keyHandler.menu) {
             paused = true;
-            SoundUtil.soundSystem.pause("background");
+            SoundUtil.soundSystem.pause(SoundUtil.MUSIC_SOURCE);
         }
     }
 
@@ -192,7 +192,7 @@ public class LevelView extends AbstractView implements Runnable {
                 scoreLabel.setVisible(true);
                 continueButton.setVisible(false);
                 running = false;
-                SoundUtil.soundSystem.stop("background");
+                SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
             }
             g2.setColor(new Color(0, 0, 0, 0.8f));
             g2.fillRect(0, 0, getWidth(), getHeight());
@@ -236,7 +236,7 @@ public class LevelView extends AbstractView implements Runnable {
         continueButton.addActionListener(a -> {
             paused = false;
             keyHandler.menu = false;
-            SoundUtil.soundSystem.play("background");
+            SoundUtil.soundSystem.play(SoundUtil.MUSIC_SOURCE);
         });
 
         WoodenButton backButton = new WoodenButton("Zurück zur Lobby");
@@ -246,8 +246,8 @@ public class LevelView extends AbstractView implements Runnable {
         backButton.addActionListener(a -> {
             paused = false;
             running = false;
-            SoundUtil.soundSystem.stop("background");
-            SoundUtil.soundSystem.cull("background");
+            SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
+            SoundUtil.soundSystem.cull(SoundUtil.MUSIC_SOURCE);
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
 

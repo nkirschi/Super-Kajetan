@@ -16,7 +16,7 @@ public class WoodenButton extends JButton {
         setForeground(Constants.FOREGROUND_COLOR);
         setContentAreaFilled(false);
         setBorderPainted(true);
-
+        addActionListener(a -> util.SoundUtil.playEffect("sounds/buttonclick.ogg", "buttonclick.ogg"));
     }
 
     @Override
