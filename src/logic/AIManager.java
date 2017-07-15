@@ -33,27 +33,29 @@ public class AIManager {
                         case LEFT:
                             if (player.getX() < enemy.getX()) {
                                 if (distance(player, enemy) < enemy.getViewingRange()) {
-                                    if (player.getY() - enemy.getY() < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) { /*Betrag*/
+                                    if (Math.abs(player.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) { /*Betrag*/
                                         if (nearestViewblocker(enemy, level).getX() < player.getX()) {
                                             enemy.setBehavior(ATTACK);
                                         }
                                     }
                                 }
                             }
+                            break;
                         case RIGHT:
                             if (player.getX() > enemy.getX()) {
                                 if (distance(player, enemy) < enemy.getViewingRange()) {
-                                    if (player.getY() - enemy.getY() < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) { /*Betrag*/
+                                    if (Math.abs(player.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) { /*Betrag*/
                                         if (nearestViewblocker(enemy, level).getX() > player.getX()) {
                                             enemy.setBehavior(ATTACK);
                                         }
                                     }
                                 }
                             }
+                            break;
                     }
                     break;
                 case ATTACK:
-                    //System.out.println("Ich bin AGRESSIV");
+                    System.out.println("Ich bin AGRESSIV");
                     if (distance(player, enemy) < enemy.getAttackRange()) {
                         if (player.getX() < enemy.getX()) {
                             enemy.setViewingDirection(Direction.LEFT);
@@ -151,9 +153,17 @@ public class AIManager {
     }
 
     private Obstacle nearestViewblocker(Enemy enemy, Level level) {
-        Obstacle blocker = new Crate(-999999, -999999);
+        Obstacle blocker = new Crate(-99999, -99999);
+        switch (enemy.getViewingDirection()) {
+            case LEFT:
+                blocker = new Crate(0, -99999);
+                break;
+            case RIGHT:
+                blocker = new Crate(level.getLength(), -99999);
+                break;
+        }
         for (Obstacle obstacle : level.getObstacles()) {
-            if (obstacle.getY() - enemy.getY() < (enemy.getHitbox().getHeight() / 2) + (obstacle.getHitbox().getHeight() / 2)) { /*Betrag*/
+            if (Math.abs(obstacle.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (obstacle.getHitbox().getHeight() / 2)) { /*Betrag*/
                 switch (enemy.getViewingDirection()) {
                     case LEFT:
                         if (obstacle.getX() > blocker.getX()) {
@@ -161,12 +171,14 @@ public class AIManager {
                                 blocker = obstacle;
                             }
                         }
+                        break;
                     case RIGHT:
                         if (obstacle.getX() < blocker.getX()) {
                             if (obstacle.getX() > enemy.getX()) {
                                 blocker = obstacle;
                             }
                         }
+                        break;
                 }
             }
         }
