@@ -129,7 +129,7 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(4200, 600, 150, Ground.Type.SOIL));
         grounds.add(new Ground(4700, 400, 200, Ground.Type.ROCK));
         Logger.log("Level erstellt", Logger.INFO);
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png");
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png", 2000);
     }
 
     private Level createLevel2() {
@@ -138,6 +138,6 @@ class LobbyView extends AbstractView {
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1200, 20, Ground.Type.SOIL));
         grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg");
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg", 2000);
     }
 }
