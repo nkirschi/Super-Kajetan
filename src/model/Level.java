@@ -12,14 +12,15 @@ public class Level {
     private List<Obstacle> obstacles;
     private List<Ground> grounds; // Liste von Bodenelementen
     private String backgroundFilePath;
+    private int basescore;
     private double length; // Länge des Levels in px
-
     public Level(List<Enemy> enemies, List<Obstacle> obstacles, List<Ground> grounds,
-                 String backgroundFilePath) {
+                 String backgroundFilePath, int basescore) {
         this.enemies = enemies;
         this.obstacles = obstacles;
         this.grounds = grounds;
         this.backgroundFilePath = backgroundFilePath;
+        this.basescore = basescore;
         try {
             BufferedImage image = ImageUtil.getImage(backgroundFilePath);
             length = (740.0 / (double) image.getHeight()) * (double) image.getWidth();
@@ -48,4 +49,6 @@ public class Level {
     public String getBackgroundFilePath() {
         return backgroundFilePath;
     }
+
+    public int getBasescore() { return basescore; }
 }
