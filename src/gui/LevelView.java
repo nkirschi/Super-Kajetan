@@ -33,16 +33,14 @@ public class LevelView extends AbstractView implements Runnable {
     private boolean paused;
     private int ups = 60, fps = 60;
 
-    private int score;
-
     LevelView(Level level) {
         this.level = level;
         player = new Player(LobbyView.getInstance().getWidth() / 2, Constants.GROUND_LEVEL);
         camera = new Camera(player, 0, 0, getWidth(), getHeight());
-        collisionHandler = new CollisionHandler(player, level);
-        lawMaster = new LawMaster();
-        aiManager = new AIManager(collisionHandler);
         keyHandler = new KeyHandler(player);
+        lawMaster = new LawMaster();
+        collisionHandler = new CollisionHandler(player, level, keyHandler);
+        aiManager = new AIManager(collisionHandler);
         renderer = new Renderer(level, camera, player, keyHandler, this);
         addKeyListener(keyHandler);
         strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
@@ -125,12 +123,6 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 5. Kollision - zuerst in x- dann in y-Richtung
         collisionHandler.forPlayer();
-        if (keyHandler.strike) {
-            for (Enemy enemy : level.getEnemies()) {
-                if (player.getSword().intersects(enemy.getHitbox()))
-                    enemy.suffer(player.getStrength());
-            }
-        }
 
         // Test
         aiManager.handleAI(level, player);
@@ -177,9 +169,8 @@ public class LevelView extends AbstractView implements Runnable {
         renderer.drawScore(g2);
 
         // 7. Debug Screen
-        if (keyHandler.debug) {
+        if (keyHandler.debug)
             renderer.drawDebugScreen(g2);
-        }
 
         //8. Pausen- und Game-Over-Menü
         menuPanel.setVisible(keyHandler.menu || player.isDead());
@@ -187,8 +178,8 @@ public class LevelView extends AbstractView implements Runnable {
         if (keyHandler.menu || player.isDead()) {
             if (player.isDead()) {
                 deathLabel.setVisible(true);
-                score = (int) Math.max(0, player.getX());
-                scoreLabel.setText("Score: " + score);
+                player.addScore((int) Math.max(0, player.getX()));
+                scoreLabel.setText("Score: " + player.getScore());
                 scoreLabel.setVisible(true);
                 continueButton.setVisible(false);
                 running = false;
@@ -265,9 +256,5 @@ public class LevelView extends AbstractView implements Runnable {
 
     int getFps() {
         return fps;
-    }
-
-    int getScore() {
-        return score;
     }
 }

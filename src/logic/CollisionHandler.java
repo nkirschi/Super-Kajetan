@@ -1,17 +1,22 @@
 package logic;
 
+import gui.KeyHandler;
 import model.Enemy;
 import model.Level;
 import model.Player;
 import util.List;
+import util.SoundUtil;
 
 public class CollisionHandler {
     private Player player;
     private Level level;
+    private KeyHandler keyHandler;
+    private boolean strikeHeld;
 
-    public CollisionHandler(Player player, Level level) {
+    public CollisionHandler(Player player, Level level, KeyHandler keyHandler) {
         this.player = player;
         this.level = level;
+        this.keyHandler = keyHandler;
     }
 
     public void forPlayer() {
@@ -51,6 +56,23 @@ public class CollisionHandler {
                 }
                 break;
             }
+        }
+
+        for (Enemy enemy : level.getEnemies()) {
+            if (keyHandler.strike) {
+                if (!strikeHeld) {
+                    if (dummy.getSword().intersects(enemy.getHitbox())) {
+                        enemy.suffer(player.getStrength());
+                        if (enemy.isDead()) {
+                            player.addScore(enemy.getWorthiness());
+                        }
+                    }
+                    SoundUtil.playEffect("sword_attack");
+                    player.addStamina(-50);
+                    strikeHeld = true;
+                }
+            } else
+                strikeHeld = false;
         }
     }
 

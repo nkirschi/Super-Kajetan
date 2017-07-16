@@ -52,19 +52,19 @@ public class KeyHandler extends KeyAdapter {
 
         if (keyCode == KEY_LEFT)
             left = true;
-        else if (keyCode == KEY_RIGHT)
+        if (keyCode == KEY_RIGHT)
             right = true;
-        else if (keyCode == KEY_RUN)
+        if (keyCode == KEY_RUN)
             run = true;
-        else if (keyCode == KEY_JUMP)
+        if (keyCode == KEY_JUMP)
             jump = true;
-        else if (keyCode == KEY_STRIKE)
+        if (keyCode == KEY_STRIKE)
             strike = true;
-        else if (keyCode == KEY_CROUCH)
+        if (keyCode == KEY_CROUCH)
             crouch = true;
-        else if (keyCode == KEY_MENU)
+        if (keyCode == KEY_MENU)
             menu = !menu;
-        else if (keyCode == KEY_DEBUG)
+        if (keyCode == KEY_DEBUG)
             debug = !debug;
     }
 
@@ -74,16 +74,17 @@ public class KeyHandler extends KeyAdapter {
 
         if (keyCode == KEY_LEFT)
             left = false;
-        else if (keyCode == KEY_RIGHT)
+        if (keyCode == KEY_RIGHT)
             right = false;
-        else if (keyCode == KEY_RUN)
+        if (keyCode == KEY_RUN)
             run = false;
-        else if (keyCode == KEY_JUMP)
+        if (keyCode == KEY_JUMP)
             jump = false;
-        else if (keyCode == KEY_CROUCH)
+        if (keyCode == KEY_CROUCH)
             crouch = false;
-        else if (keyCode == KEY_STRIKE)
+        if (keyCode == KEY_STRIKE) {
             strike = false;
+        }
     }
 
     public void process() {

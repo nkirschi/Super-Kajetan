@@ -14,6 +14,7 @@ public class Spider extends Enemy {
         viewingRange = 100;
         attackRange = 10;
         health = getMaxHealth();
+        worthiness = 5;
     }
 
     public String getImagePath() {

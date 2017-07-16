@@ -9,6 +9,7 @@ public class Enemy extends Entity implements Cloneable {
 
     protected double viewingRange;
     protected double attackRange;
+    protected int worthiness;
 
     public Enemy(double x, double y, Behavior behavior, Direction viewingDirection) {
         this.x = x;
@@ -56,6 +57,10 @@ public class Enemy extends Entity implements Cloneable {
 
     public double getAttackRange() {
         return attackRange;
+    }
+
+    public int getWorthiness() {
+        return worthiness;
     }
 
     @Override

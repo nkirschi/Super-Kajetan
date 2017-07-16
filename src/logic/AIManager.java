@@ -55,7 +55,7 @@ public class AIManager {
                     }
                     break;
                 case ATTACK:
-                    System.out.println("Ich bin AGRESSIV");
+                    //System.out.println("Ich bin AGRESSIV");
                     if (distance(player, enemy) < enemy.getAttackRange()) {
                         if (player.getX() < enemy.getX()) {
                             enemy.setViewingDirection(Direction.LEFT);
@@ -92,7 +92,7 @@ public class AIManager {
                         patrolCount = 0;
                     }
                     if (distance(player, enemy) < enemy.getAttackRange()) {
-                        System.out.println("Spieler in Reichweite");
+                        //System.out.println("Spieler in Reichweite");
                         if (player.getX() < enemy.getX()) {
                             enemy.setViewingDirection(Direction.LEFT);
                             moveLeft(enemy);
@@ -148,7 +148,7 @@ public class AIManager {
     }
 
     private void attack(Enemy enemy, Player player) {
-        System.out.println("Hey");
+        //System.out.println("Hey");
         player.suffer(enemy.getStrength());
     }
 

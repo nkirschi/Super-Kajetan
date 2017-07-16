@@ -28,6 +28,10 @@ public class SoundUtil {
         }
         soundSystem = new SoundSystem();
         Logger.log("Soundsystem initialisiert", Logger.INFO);
+        soundSystem.newSource(false, "buttonclick", ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
+                "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
+        soundSystem.newSource(true, "sword_attack", ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
+                "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
     }
 
     public static void playRandomBackgroundMusic() {
@@ -56,7 +60,6 @@ public class SoundUtil {
         soundSystem.backgroundMusic(MUSIC_SOURCE,
                 ClassLoader.getSystemResource(f + s), s, true);
         soundSystem.setVolume(MUSIC_SOURCE, SettingsView.getInstance().getMusicVolume());
-
     }
 
     /*
@@ -64,11 +67,12 @@ public class SoundUtil {
     * Werden Soundeffekte zu schnell nacheinander abgespielt, werden manche Sounds ausgelassen.
     * Evtl sollte man dieses System nochmal überdenken ...
     * */
-    public static void playEffect(String filepath, String identifier) {
-        soundSystem.newSource(true, EFFECT_SOURCE, ClassLoader.getSystemResource(filepath),
-                identifier, false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE,
-                0F);
-        soundSystem.setVolume(EFFECT_SOURCE, SettingsView.getInstance().getEffectVolume());
-        soundSystem.play(EFFECT_SOURCE);
+    public static void playEffect(String sourcename) {
+        if (soundSystem.playing(sourcename))
+            soundSystem.stop(sourcename);
+        soundSystem.cull(sourcename);
+        soundSystem.activate(sourcename);
+        soundSystem.setVolume(sourcename, SettingsView.getInstance().getEffectVolume());
+        soundSystem.play(sourcename);
     }
 }

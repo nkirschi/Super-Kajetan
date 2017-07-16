@@ -153,7 +153,7 @@ public class SettingsView extends AbstractView {
         labelsm.put(100, labelm5);
         musicVolumeSlider.setLabelTable(labelsm);
         musicVolumeSlider.setMajorTickSpacing(25);
-        musicVolumeSlider.setSnapToTicks(false);
+        musicVolumeSlider.setSnapToTicks(true);
         musicVolumeSlider.setPaintLabels(true);
         musicVolumeSlider.setPaintTicks(true);
 
@@ -179,7 +179,6 @@ public class SettingsView extends AbstractView {
         };
         effectVolumeSlider.setPreferredSize(new Dimension(350, 50));
 
-
         Hashtable<Integer, JLabel> labelse = new Hashtable<>();
         JLabel labele1 = new JLabel("Grabesstille");
         JLabel labele2 = new JLabel("Bergwind");
@@ -198,7 +197,7 @@ public class SettingsView extends AbstractView {
         labelse.put(100, labele5);
         effectVolumeSlider.setLabelTable(labelsm);
         effectVolumeSlider.setMajorTickSpacing(25);
-        effectVolumeSlider.setSnapToTicks(false);
+        effectVolumeSlider.setSnapToTicks(true);
         effectVolumeSlider.setPaintLabels(true);
         effectVolumeSlider.setPaintTicks(true);
 
@@ -220,7 +219,7 @@ public class SettingsView extends AbstractView {
         controllCheckBox.setOpaque(false);
         controllCheckBox.setBorderPainted(false);
         controllCheckBox.setSelected(alt_control);
-        controllCheckBox.addActionListener(a -> SoundUtil.playEffect("sounds/buttonclick.ogg", "buttonclick.ogg"));
+        controllCheckBox.addActionListener(a -> SoundUtil.playEffect("buttonclick"));
         settingsPanel.add(controllCheckBox, constraints);
 
         //Beschreibung der Steuerung

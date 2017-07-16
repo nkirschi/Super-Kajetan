@@ -15,6 +15,7 @@ public class Player extends Entity {
     private double stamina;
     private boolean exhausted;
 
+    private int score;
 
     public Player(double x, double y) {
         this.x = x;
@@ -22,12 +23,13 @@ public class Player extends Entity {
         velocityX = 0;
         velocityY = 0;
         health = getMaxHealth();
-        strength = 5;
+        strength = 100;
         onGround = true;
         stamina = 1000;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(x - PLAYER_WIDTH / 2, y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
         sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
+        score = 0;
     }
 
     /**
@@ -150,6 +152,14 @@ public class Player extends Entity {
 
     public void setExhausted(boolean exhausted) {
         this.exhausted = exhausted;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
     }
 
     public void reset() {

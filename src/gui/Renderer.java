@@ -186,22 +186,26 @@ class Renderer {
 
     void drawStaminaBar(Graphics2D g2) {
         Rectangle2D staminaMask = new Rectangle2D.Double(view.getWidth() - 220, view.getHeight() - 30, 200, 15);
+        Rectangle2D staminaBorder = new Rectangle2D.Double(staminaMask.getX() - 1, staminaMask.getY() - 1, staminaMask.getWidth() + 1, staminaMask.getHeight() + 1);
         Rectangle2D staminaBar = new Rectangle2D.Double(view.getWidth() - 220, view.getHeight() - 30, player.getStamina() / 5, 15);
-        g2.setColor(Constants.BUTTON_COLOR);
-        g2.fill(staminaMask);
         g2.setColor(Constants.MENU_BACKGROUND_COLOR);
-        g2.fill(staminaBar);
+        g2.fill(staminaMask);
+        g2.setColor(Color.WHITE);
+        g2.draw(staminaBorder);
         g2.setColor(Color.BLACK);
+        g2.fill(staminaBar);
+        g2.setColor(Color.WHITE);
         Font backup = g2.getFont();
         g2.setFont(Constants.DEFAULT_FONT);
         g2.drawString("Ausdauer: " + (int) (player.getStamina() / 10) + "%", view.getWidth() - 215, view.getHeight() - 17);
         g2.setFont(backup);
+        g2.setColor(Color.BLACK);
     }
 
     void drawScore(Graphics2D g2) {
         Font backup = g2.getFont();
         g2.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24f));
-        String s = "Score: " + view.getScore();
+        String s = "Score: " + player.getScore();
         g2.drawString(s, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 50);
         g2.setFont(backup);
     }

@@ -16,6 +16,7 @@ public class Knight extends Enemy {
         attackRange = 200;
         health = 500;
         strength = 2;
+        worthiness = 10;
     }
 
     @Override
