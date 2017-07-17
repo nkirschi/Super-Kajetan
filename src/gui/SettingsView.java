@@ -1,7 +1,6 @@
 package gui;
 
 import util.Constants;
-import util.Logger;
 import util.SoundUtil;
 
 import javax.swing.*;
@@ -64,7 +63,6 @@ public class SettingsView extends AbstractView {
                 saveLabel.setText("Speichern erfolgreich!");
             } catch (IOException e) {
                 e.printStackTrace();
-                Logger.log(e, Logger.ERROR);
                 saveLabel.setText("Das ging in die Hose!");
             }
         });
@@ -98,19 +96,16 @@ public class SettingsView extends AbstractView {
             musicVolume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_MUSIC_VOLUME));
             SoundUtil.soundSystem.setVolume(SoundUtil.MUSIC_SOURCE, musicVolume);
         } catch (Exception e) {
-            Logger.log(e, Logger.WARNING);
         }
 
         try {
             effectVolume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_EFFECT_VOLUME));
         } catch (Exception e) {
-            Logger.log(e, Logger.WARNING);
         }
 
         try {
             alt_control = Boolean.parseBoolean(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_CONTROL_MODE));
         } catch (Exception e) {
-            Logger.log(e, Logger.WARNING);
         }
 
         //Lautstärke
@@ -290,9 +285,6 @@ public class SettingsView extends AbstractView {
 
 
         add(settingsPanel, BorderLayout.CENTER);
-
-
-        Logger.log("Settings geladen", Logger.INFO);
     }
 
     public void refresh() {

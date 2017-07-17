@@ -1,7 +1,6 @@
 package gui;
 
 import util.Constants;
-import util.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,8 +102,6 @@ class CreditsView extends AbstractView {
         creditsPanel.add(t3, headerConstraints);
         creditsPanel.add(fabi, nameConstraints);
         creditsPanel.add(timm, nameConstraints);
-
-        Logger.log("Credits geladen", Logger.INFO);
     }
 
     public void refresh() {

@@ -2,7 +2,6 @@ package logic;
 
 import model.*;
 import util.Constants;
-import util.List;
 
 import static logic.Behavior.ATTACK;
 
@@ -19,11 +18,9 @@ public class AIManager {
     }
 
     public void handleAI(Level level, Player player) {
-        List<Enemy> dead = new List<>();
-
         for (Enemy enemy : level.getEnemies()) {
             if (enemy.isDead()) {
-                dead.add(enemy);
+                level.getEnemies().remove(enemy);
                 continue;
             }
 
@@ -128,10 +125,6 @@ public class AIManager {
                     }
                     break;
             }
-        }
-
-        for (Enemy enemy : dead) {
-            level.getEnemies().remove(enemy);
         }
     }
 

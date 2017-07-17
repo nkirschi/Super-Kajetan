@@ -1,7 +1,6 @@
 package gui;
 
 import util.Constants;
-import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -42,7 +41,6 @@ class MainMenuView extends AbstractView {
         WoodenButton settingsButton = new WoodenButton("EINSTELLUNGEN");
         WoodenButton creditsButton = new WoodenButton("CREDITS");
         WoodenButton exitButton = new WoodenButton("BEENDEN");
-        Logger.log("Main Menu: Buttons initialisiert", Logger.INFO);
 
         //Action-Listener hinzufügen
         lobbyButton.addActionListener(a -> MainFrame.getInstance().changeTo(LobbyView.getInstance()));
@@ -50,7 +48,6 @@ class MainMenuView extends AbstractView {
         settingsButton.addActionListener(a -> MainFrame.getInstance().changeTo(SettingsView.getInstance()));
         creditsButton.addActionListener(a -> MainFrame.getInstance().changeTo(CreditsView.getInstance()));
         exitButton.addActionListener(a -> MainFrame.getInstance().cleanupAndExit());
-        Logger.log("Main Menu: Action-Listener hinzugefügt", Logger.INFO);
 
         //Aussehens-Parameter setzen
         lobbyButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
@@ -65,7 +62,6 @@ class MainMenuView extends AbstractView {
         settingsButton.setFont(buttonFont);
         creditsButton.setFont(buttonFont);
         exitButton.setFont(buttonFont);
-        Logger.log("Main Menu: Aussehens-Parameter gesetzt", Logger.INFO);
 
         //Buttons hinzufügen
         buttonPanel.add(lobbyButton, constraints);
@@ -73,7 +69,6 @@ class MainMenuView extends AbstractView {
         buttonPanel.add(settingsButton, constraints);
         buttonPanel.add(creditsButton, constraints);
         buttonPanel.add(exitButton, constraints);
-        Logger.log("Main Menu: Buttons hinzugefügt", Logger.INFO);
 
         add(buttonPanel, BorderLayout.CENTER);
     }
@@ -138,7 +133,6 @@ class MainMenuView extends AbstractView {
         });
 
         add(toolPanel, BorderLayout.PAGE_END);
-        Logger.log("Tool Panel initialisiert", Logger.INFO);
     }
 
     public String getCurrentName() {

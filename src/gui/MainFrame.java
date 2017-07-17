@@ -2,7 +2,6 @@ package gui;
 
 import util.Constants;
 import util.ImageUtil;
-import util.Logger;
 import util.SoundUtil;
 
 import javax.swing.*;
@@ -94,7 +93,6 @@ public class MainFrame extends JFrame implements WindowListener {
             } catch (IOException e2) {
                 e1.printStackTrace();
                 e2.printStackTrace();
-                Logger.log(e2, Logger.ERROR);
             }
         }
     }
@@ -122,7 +120,6 @@ public class MainFrame extends JFrame implements WindowListener {
      * Cleanup-Methode, die vor dem Beenden des Programms ausgeführt wird
      */
     void cleanupAndExit() {
-        Logger.log("Applikation ordnungsgemäß beendet", Logger.INFO);
         SoundUtil.soundSystem.cleanup();
         System.exit(0);
     }

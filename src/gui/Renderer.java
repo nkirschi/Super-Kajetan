@@ -3,7 +3,6 @@ package gui;
 import model.*;
 import util.Constants;
 import util.ImageUtil;
-import util.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +41,6 @@ class Renderer {
                 g2.drawImage(image, playerX + image.getWidth(), playerY, -image.getWidth(), image.getHeight(), null);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
         }
 
         Color backup = g2.getColor();
@@ -102,7 +100,6 @@ class Renderer {
             g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
         }
 
         // Nur ein Test :D
@@ -158,7 +155,6 @@ class Renderer {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                Logger.log(e, Logger.WARNING);
             }
         }
     }
@@ -179,7 +175,6 @@ class Renderer {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                Logger.log(e, Logger.WARNING);
             }
         }
     }

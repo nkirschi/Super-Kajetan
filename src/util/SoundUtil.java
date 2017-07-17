@@ -27,7 +27,6 @@ public class SoundUtil {
             e.printStackTrace();
         }
         soundSystem = new SoundSystem();
-        Logger.log("Soundsystem initialisiert", Logger.INFO);
         soundSystem.newSource(false, "buttonclick", ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
                 "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
         soundSystem.newSource(true, "sword_attack", ClassLoader.getSystemResource("sounds/sword_attack.ogg"),

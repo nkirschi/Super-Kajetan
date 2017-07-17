@@ -25,7 +25,7 @@ public class LevelView extends AbstractView implements Runnable {
     private LawMaster lawMaster;
     private JPanel menuPanel;
     private JButton continueButton;
-    private JLabel deathLabel;
+    private JLabel messageLabel;
     private JLabel scoreLabel;
     private final Stroke strichel;
 
@@ -150,6 +150,10 @@ public class LevelView extends AbstractView implements Runnable {
         // 1. Background
         renderer.drawBackground(g2);
 
+        g2.setColor(Color.YELLOW);
+        g2.fillRect((int) (level.getLength() - camera.getX()), 0, 5, getHeight());
+        g2.setColor(Color.WHITE);
+
         // 2. Grounds
 
         renderer.drawGrounds(g2);
@@ -169,16 +173,17 @@ public class LevelView extends AbstractView implements Runnable {
         renderer.drawScore(g2);
 
         // 7. Debug Screen
-        if (keyHandler.debug)
+        if (keyHandler.debug) {
             renderer.drawDebugScreen(g2);
+        }
 
         //8. Pausen- und Game-Over-Menü
-        menuPanel.setVisible(keyHandler.menu || player.isDead());
 
-        if (keyHandler.menu || player.isDead()) {
-            if (player.isDead()) {
-                deathLabel.setVisible(true);
-                player.addScore((int) Math.max(0, player.getX()));
+        if (keyHandler.menu || player.isDead() || player.getX() > level.getLength()) {
+            menuPanel.setVisible(true);
+            if (!keyHandler.menu) {
+                messageLabel.setText(player.isDead() ? "Du bist tot." : "Du hast gewonnen!");
+                messageLabel.setVisible(true);
                 scoreLabel.setText("Score: " + player.getScore());
                 scoreLabel.setVisible(true);
                 continueButton.setVisible(false);
@@ -187,7 +192,9 @@ public class LevelView extends AbstractView implements Runnable {
             }
             g2.setColor(new Color(0, 0, 0, 0.8f));
             g2.fillRect(0, 0, getWidth(), getHeight());
-        }
+        } else
+            menuPanel.setVisible(false);
+
     }
 
     public void refresh() {
@@ -204,12 +211,12 @@ public class LevelView extends AbstractView implements Runnable {
 
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24f);
 
-        deathLabel = new JLabel("Du bist tod.");
-        deathLabel.setForeground(Color.WHITE);
-        deathLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        deathLabel.setFont(Constants.DEFAULT_FONT.deriveFont(32f));
-        deathLabel.setVisible(false);
-        menuPanel.add(deathLabel, constraints);
+        messageLabel = new JLabel("Du bist tod.");
+        messageLabel.setForeground(Color.WHITE);
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messageLabel.setFont(Constants.DEFAULT_FONT.deriveFont(32f));
+        messageLabel.setVisible(false);
+        menuPanel.add(messageLabel, constraints);
         int i = constraints.insets.bottom;
         constraints.insets.set(constraints.insets.top, constraints.insets.left, 50, constraints.insets.right);
         scoreLabel = new JLabel();

@@ -11,7 +11,6 @@ public class DBConnection {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
         }
     }
 

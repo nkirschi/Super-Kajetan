@@ -3,7 +3,6 @@ package gui;
 import util.Constants;
 import util.DBConnection;
 import util.ImageUtil;
-import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -66,7 +65,6 @@ class HighscoresView extends AbstractView {
             listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0, trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0);
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.log(e, Logger.WARNING);
         }
 
 
@@ -145,7 +143,6 @@ class HighscoresView extends AbstractView {
                 fancyCollumPanel.add(label);
 
                 listTopLevelPanel.add(list, constraints);
-                Logger.log("Highscores initialisiert", Logger.INFO);
 
                 if (highScoreSet.getString(Constants.DB_COLLUM_NAME).compareTo(MainMenuView.getInstance().getCurrentName()) == 0) {
                     Color currentPlayerScores = new Color(177, 108, 0);
@@ -160,11 +157,7 @@ class HighscoresView extends AbstractView {
         } catch (Exception e) {
             e.printStackTrace();
             listTopLevelPanel.add(new JLabel("HOPPLA! Da ist wohl was schief gegangen :/"), constraints);
-            Logger.log("Fehler beim initialisieren der Highscores", Logger.WARNING);
-            Logger.log(e, Logger.WARNING);
         }
-
-        Logger.log("Highscores initialisiert", Logger.INFO);
         return listTopLevelPanel;
     }
 

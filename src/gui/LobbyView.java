@@ -4,7 +4,6 @@ import logic.Behavior;
 import model.*;
 import util.Constants;
 import util.List;
-import util.Logger;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -111,7 +110,7 @@ class LobbyView extends AbstractView {
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
         enemies.add(new Knight(2200, 680, Behavior.GUARD, Direction.LEFT));
-        //enemies.add(new Spider(4100, 500, Behavior.ATTACK, Direction.RIGHT));
+        enemies.add(new Skeleton(4100, 590, Behavior.ATTACK, Direction.RIGHT));
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Crate(1750, 640));
         obstacles.add(new Crate(1000, 300));
@@ -128,8 +127,8 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(3700, 400, 100, Ground.Type.GRASS));
         grounds.add(new Ground(4200, 600, 150, Ground.Type.SOIL));
         grounds.add(new Ground(4700, 400, 200, Ground.Type.ROCK));
-        Logger.log("Level erstellt", Logger.INFO);
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png", 2000);
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png",
+                2000, 4500);
     }
 
     private Level createLevel2() {
@@ -138,6 +137,7 @@ class LobbyView extends AbstractView {
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1200, 20, Ground.Type.SOIL));
         grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg", 2000);
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg",
+                2000, 2000);
     }
 }

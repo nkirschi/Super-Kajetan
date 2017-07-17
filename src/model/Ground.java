@@ -2,7 +2,6 @@ package model;
 
 import logic.Collidable;
 import util.ImageUtil;
-import util.Logger;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -67,7 +66,6 @@ public class Ground implements Collidable {
                 texture = ImageUtil.getImage(path);
             } catch (IOException e) {
                 e.printStackTrace();
-                Logger.log("Textur konnte nicht geladen werden", Logger.ERROR);
             }
             TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 64, 64));
 
@@ -82,7 +80,6 @@ public class Ground implements Collidable {
                     texture2 = ImageUtil.getImage("images/grounds/grass.png");
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Logger.log("Textur konnte nicht geladen werden", Logger.ERROR);
                 }
                 TexturePaint paint2 = new TexturePaint(texture2, new Rectangle(0, 0, 64, 64));
                 h.setPaint(paint2);

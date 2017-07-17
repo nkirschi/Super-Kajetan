@@ -4,21 +4,21 @@ import logic.Behavior;
 
 import java.awt.geom.Rectangle2D;
 
-public class Spider extends Enemy {
-    private final double SPIDER_WIDTH = 128;
-    private final double SPIDER_HEIGHT = 128;
+public class Skeleton extends Enemy {
+    private final double SPIDER_WIDTH = 90;
+    private final double SPIDER_HEIGHT = 160;
 
-    public Spider(double x, double y, Behavior behavior, Direction viewingDirection) {
+    public Skeleton(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - SPIDER_WIDTH / 2, y - SPIDER_HEIGHT, SPIDER_WIDTH, SPIDER_HEIGHT);
-        viewingRange = 100;
-        attackRange = 10;
+        viewingRange = 500;
+        attackRange = 100;
         health = getMaxHealth();
         worthiness = 5;
     }
 
     public String getImagePath() {
-        return "images/enemies/spider.png";
+        return "images/enemies/skeleton_1.png";
     }
 
     @Override
@@ -28,6 +28,6 @@ public class Spider extends Enemy {
 
     @Override
     public String toString() {
-        return "Spider at " + super.toString();
+        return "Skeleton at " + super.toString();
     }
 }
