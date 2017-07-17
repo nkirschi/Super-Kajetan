@@ -224,7 +224,7 @@ class Renderer {
     }
 
     void drawFinishCastle(Graphics2D g2) {
-        int x = (int) level.getLength() - view.getWidth() / 2; //TODO Schloss zeichnen
+        int x = (int) (level.getLength() - view.getWidth() / 2 - camera.getX()); //TODO Schloss zeichnen
 
         g2.setColor(Color.YELLOW);
         g2.fillRect(x, 0, 5, view.getHeight());

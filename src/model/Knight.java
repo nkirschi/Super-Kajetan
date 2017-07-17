@@ -49,7 +49,27 @@ public class Knight extends Enemy {
     }
 
     public String getImagePath() {
-        return "images/char/char_stand.png";
+        if (crouching) {
+            if (walkCount < 25)
+                return "images/enemies/enemy_knight_walk_crouch_1.png";
+            else {
+                if (walkCount >= 50)
+                    walkCount = 0;
+                return "images/enemies/enemy_knight_walk_crouch_2.png";
+            }
+        }
+        if (jumping)
+            return "images/enemies/enemy_knight_jump.png";
+        if (walking) {
+            if (walkCount < 25)
+                return "images/enemies/enemy_knight_walk_1.png";
+            else {
+                if (walkCount >= 50)
+                    walkCount = 0;
+                return "images/enemies/enemy_knight_walk_2.png";
+            }
+        }
+        return "images/enemies/enemy_knight_stand.png";
     }
 
     @Override
