@@ -59,6 +59,13 @@ class LobbyView extends AbstractView {
         lvl2.setFont(buttonFont);
         lvl2.addActionListener(a -> loadLevel(createLevel2()));
         levelButtonPanel.add(lvl2, constraints);
+        
+        //Level 3
+        WoodenButton lvl3 = new WoodenButton("Level 3");
+        lvl3.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        lvl3.setFont(buttonFont);
+        lvl3.addActionListener(a -> loadLevel(createLevel3()));
+        levelButtonPanel.add(lvl3, constraints);
 
         constraints.insets.set(50, constraints.insets.left, constraints.insets.right, constraints.insets.bottom);
         // Zurück
@@ -105,7 +112,7 @@ class LobbyView extends AbstractView {
     }
 
     /**
-     * Hässliche Hardcoded-Level-Methode
+     * Hardcoded-Level-Methode
      */
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
@@ -145,5 +152,36 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg",
                 10);
+    }
+    
+    private Level createLevel3() {
+        List<Enemy> enemies = new List<>();
+        enemies.add(new Knight(1700, 660, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Knight(1500, 660, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Skeleton(2800, 620, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Skeleton(4500, 440, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Skeleton(4700, 312, Behavior.ATTACK, Direction.LEFT));
+        List<Obstacle> obstacles = new List<>();
+        obstacles.add(new Crate(130, 700));
+        obstacles.add(new Barrel(130, 572));
+        obstacles.add(new Crate(3100, 620));
+        obstacles.add(new Barrel(3450, 700));
+        obstacles.add(new Crate(3700, 470));
+        obstacles.add(new Barrel(4900, 700));
+        obstacles.add(new Crate(4700, 440));
+        List<Ground> grounds = new List<>();
+        grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));
+        grounds.add(new Ground(1600, 1000, 80, Ground.Type.GRASS));
+        grounds.add(new Ground(2400, 600, 100, Ground.Type.SOIL));
+        grounds.add(new Ground(2800, 900, 120, Ground.Type.ROCK));
+        grounds.add(new Ground(3250, 100, 100, Ground.Type.SOIL));
+        grounds.add(new Ground(3350, 50, 80, Ground.Type.SOIL));
+        grounds.add(new Ground(3450, 50, 40, Ground.Type.SOIL));
+        grounds.add(new Ground(4500, 700, 300, Ground.Type.ROCK));
+        grounds.add(new Ground(4150, 150, 260, Ground.Type.SOIL));
+        grounds.add(new Ground(4050, 50, 100, Ground.Type.SOIL));
+        grounds.add(new Ground(4900, 400, 40, Ground.Type.ROCK));
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png",
+                200);
     }
 }
