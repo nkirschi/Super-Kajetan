@@ -143,7 +143,6 @@ public class AIManager {
     }
 
     private void attack(Enemy enemy, Player player) {
-        //System.out.println("Hey");
         player.suffer(enemy.getStrength());
     }
 

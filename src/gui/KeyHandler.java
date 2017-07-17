@@ -126,6 +126,9 @@ public class KeyHandler extends KeyAdapter {
         if (player.isRunning() || player.isJumping()) {
             player.multiplyVelocityX(Constants.SPEED_FACTOR);
         }
+
+        if (player.isJumping() && player.isRunning())
+            player.setRunning(false);
     }
 
     public void clear() {

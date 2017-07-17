@@ -58,22 +58,24 @@ public class CollisionHandler {
             }
         }
 
-        for (Enemy enemy : level.getEnemies()) {
-            if (keyHandler.strike && !strikeHeld && dummy.getSword().intersects(enemy.getHitbox())) {
-                enemy.suffer(player.getStrength());
-                if (enemy.isDead())
-                    player.addScore(enemy.getWorthiness());
+        if (!player.isExhausted()) {
+            for (Enemy enemy : level.getEnemies()) {
+                if (keyHandler.strike && !strikeHeld && dummy.getSword().intersects(enemy.getHitbox())) {
+                    enemy.suffer(player.getStrength());
+                    if (enemy.isDead())
+                        player.addScore(enemy.getWorthiness());
+                }
             }
-        }
 
-        if (keyHandler.strike) {
-            if (!strikeHeld) {
-                SoundUtil.playEffect("sword_attack");
-                player.addStamina(-50);
-                strikeHeld = true;
-            }
-        } else
-            strikeHeld = false;
+            if (keyHandler.strike) {
+                if (!strikeHeld) {
+                    SoundUtil.playEffect("sword_attack");
+                    player.addStamina(-20);
+                    strikeHeld = true;
+                }
+            } else
+                strikeHeld = false;
+        }
     }
 
     public void forEnemy(Enemy enemy) {
