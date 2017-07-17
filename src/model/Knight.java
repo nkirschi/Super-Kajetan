@@ -14,7 +14,7 @@ public class Knight extends Enemy {
         viewingRange = 1000;
         attackRange = 200;
         health = 500;
-        strength = 2;
+        strength = 200;
         worthiness = 10;
     }
 
