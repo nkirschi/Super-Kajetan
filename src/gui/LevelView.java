@@ -159,17 +159,17 @@ public class LevelView extends AbstractView implements Runnable {
                 SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
                 try {
                     String date = new SimpleDateFormat("#yyyy-MM-dd#").format(new java.util.Date());
-                    ResultSet highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + Constants.DB_TABLE +
-                            " WHERE " + Constants.DB_COLLUM_NAME + " = '" + MainMenuView.getInstance().getCurrentName() + "';");
-                    if (highScoreSet.next()) {
-                        if (player.getScore() > highScoreSet.getInt(Constants.DB_COLLUM_SCORE)) {
-                            String update = String.format("UPDATE %s SET %s = %d, %s = %s WHERE %s = '%s';",
-                                    Constants.DB_TABLE,
-                                    Constants.DB_COLLUM_SCORE, player.getScore(),
-                                    Constants.DB_COLLUM_DATE, date,
-                                    Constants.DB_COLLUM_NAME, MainMenuView.getInstance().getCurrentName());
-                            DBConnection.getInstance().update(update);
-                        }
+                    String query = String.format("SELECT * FROM %s WHERE %s = '%s';",
+                            Constants.DB_TABLE, Constants.DB_COLLUM_NAME, MainMenuView.getInstance().getCurrentName());
+                    ResultSet highScoreSet = DBConnection.getInstance().query(query);
+
+                    if (highScoreSet.next() && player.getScore() > highScoreSet.getInt(Constants.DB_COLLUM_SCORE)) {
+                        String update = String.format("UPDATE %s SET %s = %d, %s = %s WHERE %s = '%s';",
+                                Constants.DB_TABLE,
+                                Constants.DB_COLLUM_SCORE, player.getScore(),
+                                Constants.DB_COLLUM_DATE, date,
+                                Constants.DB_COLLUM_NAME, MainMenuView.getInstance().getCurrentName());
+                        DBConnection.getInstance().update(update);
                     } else {
                         String insert = String.format("INSERT INTO %s (%s, %s, %s) VALUES ('%s', %d, %s);",
                                 Constants.DB_TABLE,
