@@ -213,7 +213,7 @@ public class SettingsView extends AbstractView {
         controllCheckBox.setOpaque(false);
         controllCheckBox.setBorderPainted(false);
         controllCheckBox.setSelected(alt_control);
-        controllCheckBox.addActionListener(a -> SoundUtil.playEffect(SoundUtil.BUTTON));
+        controllCheckBox.addActionListener(a -> SoundUtil.playEffect("buttonclick"));
         settingsPanel.add(controllCheckBox, constraints);
 
         //Beschreibung der Steuerung

@@ -18,9 +18,6 @@ public class SoundUtil {
 
     public static String MUSIC_SOURCE = "music";
 
-    public static String BUTTON = "buttonclick";
-    public static String SWORD_ATTACK = "sword_attack";
-
     public static void init() {
         try {
             addLibrary(LibraryJavaSound.class);
@@ -31,9 +28,9 @@ public class SoundUtil {
         soundSystem = new SoundSystem();
 
         //Quellen für jeden Sound
-        soundSystem.newSource(false, BUTTON, ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
+        soundSystem.newSource(false, "buttonclick", ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
                 "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        soundSystem.newSource(true, SWORD_ATTACK, ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
+        soundSystem.newSource(true, "sword_attack", ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
                 "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
     }
 
