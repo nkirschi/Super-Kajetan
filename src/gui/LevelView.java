@@ -8,10 +8,14 @@ import model.Enemy;
 import model.Level;
 import model.Player;
 import util.Constants;
+import util.DBConnection;
 import util.SoundUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 
 public class LevelView extends AbstractView implements Runnable {
@@ -153,6 +157,25 @@ public class LevelView extends AbstractView implements Runnable {
                 continueButton.setVisible(false);
                 running = false;
                 SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
+                try {
+                    String date = new SimpleDateFormat("#yyyy-MM-dd#").format(new java.util.Date());
+                    ResultSet highScoreSet = DBConnection.getInstance().query("SELECT * FROM " + Constants.DB_TABLE +
+                            " WHERE " + Constants.DB_COLLUM_NAME + " = '" + MainMenuView.getInstance().getCurrentName() + "';");
+                    if (highScoreSet.next()) {
+                        if (player.getScore() > highScoreSet.getInt(Constants.DB_COLLUM_SCORE)) {
+                            DBConnection.getInstance().query("UPDATE " + Constants.DB_TABLE + " SET " + Constants.DB_COLLUM_SCORE +
+                                    " = " + player.getScore() + ", " + Constants.DB_COLLUM_DATE + " = '" + date + "' WHERE " +
+                                    Constants.DB_COLLUM_NAME + " = '" + MainMenuView.getInstance().getCurrentName() + "';");
+                        }
+                    } else {
+                        DBConnection.getInstance().query("INSERT INTO " + Constants.DB_TABLE + "(" + Constants.DB_COLLUM_NAME +
+                                ", " + Constants.DB_COLLUM_SCORE + ", " + Constants.DB_COLLUM_DATE + ")" + "VALUES ('" +
+                                MainMenuView.getInstance().getCurrentName() + "', " + player.getScore() + ", " + date + ");");
+                    }
+                    highScoreSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
