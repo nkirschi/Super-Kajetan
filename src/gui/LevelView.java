@@ -163,16 +163,19 @@ public class LevelView extends AbstractView implements Runnable {
                             " WHERE " + Constants.DB_COLLUM_NAME + " = '" + MainMenuView.getInstance().getCurrentName() + "';");
                     if (highScoreSet.next()) {
                         if (player.getScore() > highScoreSet.getInt(Constants.DB_COLLUM_SCORE)) {
-                            DBConnection.getInstance().update("UPDATE " + Constants.DB_TABLE + " SET " + Constants.DB_COLLUM_SCORE +
-                                    " = " + player.getScore() + ", " + Constants.DB_COLLUM_DATE + " = '" + date + "' WHERE " +
-                                    Constants.DB_COLLUM_NAME + " = '" + MainMenuView.getInstance().getCurrentName() + "';");
+                            String update = String.format("UPDATE %s SET %s = %d, %s = %s WHERE %s = '%s';",
+                                    Constants.DB_TABLE,
+                                    Constants.DB_COLLUM_SCORE, player.getScore(),
+                                    Constants.DB_COLLUM_DATE, date,
+                                    Constants.DB_COLLUM_NAME, MainMenuView.getInstance().getCurrentName());
+                            DBConnection.getInstance().update(update);
                         }
                     } else {
-                        DBConnection.getInstance().update("INSERT INTO " + Constants.DB_TABLE + "(" + Constants.DB_COLLUM_NAME +
-                                ", " + Constants.DB_COLLUM_SCORE + ", " + Constants.DB_COLLUM_DATE + ")" + "VALUES ('" +
-                                MainMenuView.getInstance().getCurrentName() + "', " + player.getScore() + ", " + date + ");");
-
-                        //DBConnection.getInstance().update(query);
+                        String insert = String.format("INSERT INTO %s (%s, %s, %s) VALUES ('%s', %d, %s);",
+                                Constants.DB_TABLE,
+                                Constants.DB_COLLUM_NAME, Constants.DB_COLLUM_SCORE, Constants.DB_COLLUM_DATE,
+                                MainMenuView.getInstance().getCurrentName(), player.getScore(), date);
+                        DBConnection.getInstance().update(insert);
                     }
                     highScoreSet.close();
                 } catch (SQLException e) {
