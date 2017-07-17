@@ -10,6 +10,9 @@ public class Enemy extends Entity implements Cloneable {
     protected double viewingRange;
     protected double attackRange;
     protected int worthiness;
+    protected long lastAttackTime; //Zeit des letzten Angriffs
+
+    protected long minTimeBetweenAttack = 1500000000; //Zeit in ns zwischen zwei Angriffen (1 s = 1.000.000.000 ns)
 
     public Enemy(double x, double y, Behavior behavior, Direction viewingDirection) {
         this.x = x;
@@ -69,4 +72,17 @@ public class Enemy extends Entity implements Cloneable {
     }
 
     protected int walkCount;
+
+    //Für die Regulierung der Angriffe
+    public long getLastAttackTime() {
+        return lastAttackTime;
+    }
+
+    public void setLastAttackTime(long lastAttackTime) {
+        this.lastAttackTime = lastAttackTime;
+    }
+
+    public long getMinTimeBetweenAttack() {
+        return minTimeBetweenAttack;
+    }
 }

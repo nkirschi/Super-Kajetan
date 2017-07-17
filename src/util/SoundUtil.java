@@ -32,6 +32,8 @@ public class SoundUtil {
                 "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
         soundSystem.newSource(true, "sword_attack", ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
                 "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
+        soundSystem.newSource(true, "hit", ClassLoader.getSystemResource("sounds/hit.ogg"),
+                "hit.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
     }
 
     public static void playRandomBackgroundMusic() {
