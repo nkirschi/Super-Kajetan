@@ -282,6 +282,18 @@ public class SettingsView extends AbstractView {
         b24.setForeground(c);
         settingsPanel.add(b24, constraints);
 
+        constraints.gridwidth = GridBagConstraints.RELATIVE;
+        JLabel b15 = new JLabel("[ENTER] Schlagen");
+        b15.setFont(f);
+        b15.setForeground(c);
+        settingsPanel.add(b15, constraints);
+
+        constraints.gridwidth = GridBagConstraints.REMAINDER;
+        JLabel b25 = new JLabel("[SPACE] Schlagen");
+        b25.setFont(f);
+        b25.setForeground(c);
+        settingsPanel.add(b25, constraints);
+
 
         add(settingsPanel, BorderLayout.CENTER);
     }
