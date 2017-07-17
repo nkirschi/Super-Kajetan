@@ -163,14 +163,16 @@ public class LevelView extends AbstractView implements Runnable {
                             " WHERE " + Constants.DB_COLLUM_NAME + " = '" + MainMenuView.getInstance().getCurrentName() + "';");
                     if (highScoreSet.next()) {
                         if (player.getScore() > highScoreSet.getInt(Constants.DB_COLLUM_SCORE)) {
-                            DBConnection.getInstance().query("UPDATE " + Constants.DB_TABLE + " SET " + Constants.DB_COLLUM_SCORE +
+                            DBConnection.getInstance().update("UPDATE " + Constants.DB_TABLE + " SET " + Constants.DB_COLLUM_SCORE +
                                     " = " + player.getScore() + ", " + Constants.DB_COLLUM_DATE + " = '" + date + "' WHERE " +
                                     Constants.DB_COLLUM_NAME + " = '" + MainMenuView.getInstance().getCurrentName() + "';");
                         }
                     } else {
-                        DBConnection.getInstance().query("INSERT INTO " + Constants.DB_TABLE + "(" + Constants.DB_COLLUM_NAME +
+                        DBConnection.getInstance().update("INSERT INTO " + Constants.DB_TABLE + "(" + Constants.DB_COLLUM_NAME +
                                 ", " + Constants.DB_COLLUM_SCORE + ", " + Constants.DB_COLLUM_DATE + ")" + "VALUES ('" +
                                 MainMenuView.getInstance().getCurrentName() + "', " + player.getScore() + ", " + date + ");");
+
+                        //DBConnection.getInstance().update(query);
                     }
                     highScoreSet.close();
                 } catch (SQLException e) {
