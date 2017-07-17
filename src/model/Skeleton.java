@@ -5,13 +5,13 @@ import util.Constants;
 
 import java.awt.geom.Rectangle2D;
 
-public class Knight extends Enemy {
-    private final double KNIGHT_WIDTH = 95;
-    private final double KNIGHT_HEIGHT = 169;
+public class Skeleton extends Enemy {
+    private final double SKELETON_WIDTH = 95;
+    private final double SKELETON_HEIGHT = 230;
 
-    public Knight(double x, double y, Behavior behavior, Direction viewingDirection) {
+    public Skeleton(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
-        hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
+        hitbox = new Rectangle2D.Double(x - SKELETON_WIDTH / 2, y - SKELETON_HEIGHT, SKELETON_WIDTH, SKELETON_HEIGHT);
         viewingRange = 1000;
         attackRange = 200;
         health = 500;
@@ -52,25 +52,25 @@ public class Knight extends Enemy {
     public String getImagePath() {
         if (crouching) {
             if (walkCount < 25)
-                return Constants.KNIGHT_CROUCH_1_IMAGE_PATH;
+                return Constants.SKELETON_CROUCH_1_IMAGE_PATH;
             else {
                 if (walkCount >= 50)
                     walkCount = 0;
-                return Constants.KNIGHT_CROUCH_2_IMAGE_PATH;
+                return Constants.SKELETON_CROUCH_2_IMAGE_PATH;
             }
         }
         if (jumping)
-            return Constants.KNIGHT_JUMP_IMAGE_PATH;
+            return Constants.SKELETON_JUMP_IMAGE_PATH;
         if (walking) {
             if (walkCount < 25)
-                return Constants.KNIGHT_WALK_1_IMAGE_PATH;
+                return Constants.SKELETON_WALK_1_IMAGE_PATH;
             else {
                 if (walkCount >= 50)
                     walkCount = 0;
-                return Constants.KNIGHT_WALK_2_IMAGE_PATH;
+                return Constants.SKELETON_WALK_2_IMAGE_PATH;
             }
         }
-        return Constants.KNIGHT_STAND_IMAGE_PATH;
+        return Constants.SKELETON_STAND_IMAGE_PATH;
     }
 
     @Override

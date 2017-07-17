@@ -62,13 +62,13 @@ public class Constants {
     public static final String PLAYER_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
     public static final String PLAYER_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
 
-    //Knight Bilder
-    public static final String KNIGHT_STAND_IMAGE_PATH = "images/char/char_stand.png";
-    public static final String KNIGHT_WALK_1_IMAGE_PATH = "images/char/char_walk_1.png";
-    public static final String KNIGHT_WALK_2_IMAGE_PATH = "images/char/char_walk_2.png";
-    public static final String KNIGHT_JUMP_IMAGE_PATH = "images/char/char_jump.png";
-    public static final String KNIGHT_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
-    public static final String KNIGHT_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
+    //Skeleton Bilder
+    public static final String SKELETON_STAND_IMAGE_PATH = "images/skeleton/enemy_skeleton_1.png";
+    public static final String SKELETON_WALK_1_IMAGE_PATH = "images/skeleton/enemy_skeleton_1.png";
+    public static final String SKELETON_WALK_2_IMAGE_PATH = "images/skeleton/enemy_skeleton_2.png";
+    public static final String SKELETON_JUMP_IMAGE_PATH = "images/char/char_jump.png";
+    public static final String SKELETON_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
+    public static final String SKELETON_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
 
     //Waffe Bilder
     public static final String KNIGHT_WEAPON_IMAGE_PATH = "images/sword/sword_giant.png";
