@@ -52,7 +52,6 @@ public class SettingsView extends AbstractView {
             SoundUtil.soundSystem.setVolume(SoundUtil.MUSIC_SOURCE, musicVolume);
 
             effectVolume = (float) effectVolumeSlider.getValue() / 100;
-            SoundUtil.soundSystem.setVolume(SoundUtil.EFFECT_SOURCE, effectVolume);
 
             setAltControlMode(controllCheckBox.isSelected());
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, Boolean.toString(alt_control));
@@ -214,7 +213,7 @@ public class SettingsView extends AbstractView {
         controllCheckBox.setOpaque(false);
         controllCheckBox.setBorderPainted(false);
         controllCheckBox.setSelected(alt_control);
-        controllCheckBox.addActionListener(a -> SoundUtil.playEffect("buttonclick"));
+        controllCheckBox.addActionListener(a -> SoundUtil.playEffect(SoundUtil.BUTTON));
         settingsPanel.add(controllCheckBox, constraints);
 
         //Beschreibung der Steuerung

@@ -68,7 +68,7 @@ public class CollisionHandler {
 
         if (keyHandler.strike) {
             if (!strikeHeld) {
-                SoundUtil.playEffect("sword_attack");
+                SoundUtil.playEffect(SoundUtil.SWORD_ATTACK);
                 player.addStamina(-50);
                 strikeHeld = true;
             }

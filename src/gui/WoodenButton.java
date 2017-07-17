@@ -1,6 +1,8 @@
 package gui;
 
+import paulscode.sound.SoundSystemConfig;
 import util.Constants;
+import util.SoundUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +18,11 @@ public class WoodenButton extends JButton {
         setForeground(Constants.FOREGROUND_COLOR);
         setContentAreaFilled(false);
         setBorderPainted(true);
-        addActionListener(a -> util.SoundUtil.playEffect("buttonclick"));
+
+        //Buttonsound
+        SoundUtil.soundSystem.newSource(false, "buttonclick", ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
+                "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
+        addActionListener(a -> util.SoundUtil.playEffect(SoundUtil.BUTTON));
     }
 
     @Override
