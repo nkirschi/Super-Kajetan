@@ -109,13 +109,18 @@ class LobbyView extends AbstractView {
      */
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
-        enemies.add(new Knight(1000, 720, Behavior.ELOPE, Direction.LEFT));
         enemies.add(new Knight(2200, 680, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Knight(3000, 707, Behavior.ATTACK, Direction.RIGHT));
         enemies.add(new Skeleton(4100, 590, Behavior.ATTACK, Direction.RIGHT));
         List<Obstacle> obstacles = new List<>();
+        obstacles.add(new Barrel(150, 720));
         obstacles.add(new Crate(1750, 640));
         obstacles.add(new Crate(1000, 300));
         obstacles.add(new Barrel(2600, 720));
+        obstacles.add(new Crate(4900, 540 + 128));
+        obstacles.add(new Crate(5150, 540 + 148));
+        obstacles.add(new Crate(5400, 540 + 168));
+        obstacles.add(new Crate(5650, 540 + 188));
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1200, 20, Ground.Type.SOIL));
         grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
@@ -127,9 +132,9 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(3100, 800, 33, Ground.Type.ROCK));
         grounds.add(new Ground(3700, 400, 100, Ground.Type.GRASS));
         grounds.add(new Ground(4200, 600, 150, Ground.Type.SOIL));
-        grounds.add(new Ground(4700, 400, 200, Ground.Type.ROCK));
+        grounds.add(new Ground(4600, 200, 200, Ground.Type.ROCK));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png",
-                2000, 4500);
+                200, 5800);
     }
 
     private Level createLevel2() {

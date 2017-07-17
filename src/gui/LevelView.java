@@ -138,6 +138,23 @@ public class LevelView extends AbstractView implements Runnable {
             paused = true;
             SoundUtil.soundSystem.pause(SoundUtil.MUSIC_SOURCE);
         }
+
+        if (keyHandler.menu || player.isDead() || (player.getX() > level.getLength() && player.getY() < 1000)) {
+            if (!keyHandler.menu) {
+                if (player.isDead())
+                    messageLabel.setText("Du bist tot.");
+                else {
+                    player.addScore(level.getBasescore());
+                    messageLabel.setText("Du hast gewonnen!");
+                }
+                messageLabel.setVisible(true);
+                scoreLabel.setText("Score: " + player.getScore());
+                scoreLabel.setVisible(true);
+                continueButton.setVisible(false);
+                running = false;
+                SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
+            }
+        }
     }
 
     @Override
@@ -178,23 +195,12 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         //8. Pausen- und Game-Over-Menü
-
-        if (keyHandler.menu || player.isDead() || player.getX() > level.getLength()) {
+        if (keyHandler.menu || player.isDead() || (player.getX() > level.getLength() && player.getY() < 1000)) {
             menuPanel.setVisible(true);
-            if (!keyHandler.menu) {
-                messageLabel.setText(player.isDead() ? "Du bist tot." : "Du hast gewonnen!");
-                messageLabel.setVisible(true);
-                scoreLabel.setText("Score: " + player.getScore());
-                scoreLabel.setVisible(true);
-                continueButton.setVisible(false);
-                running = false;
-                SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
-            }
             g2.setColor(new Color(0, 0, 0, 0.8f));
             g2.fillRect(0, 0, getWidth(), getHeight());
         } else
             menuPanel.setVisible(false);
-
     }
 
     public void refresh() {

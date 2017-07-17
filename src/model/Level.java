@@ -15,8 +15,8 @@ public class Level {
         this.obstacles = obstacles;
         this.grounds = grounds;
         //Damit niemand flüchten kann!
-        this.grounds.add(new Ground(-50, 100, 200, Ground.Type.GRASS));
-        this.grounds.add(new Ground(-400, 600, 620, Ground.Type.GRASS));
+        this.grounds.add(new Ground(0, 100, 200, Ground.Type.GRASS));
+        this.grounds.add(new Ground(-350, 600, 620, Ground.Type.GRASS));
 
         this.backgroundFilePath = backgroundFilePath;
         this.basescore = basescore;

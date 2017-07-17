@@ -4,7 +4,6 @@ import model.*;
 import util.Constants;
 import util.ImageUtil;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -103,8 +102,8 @@ class Renderer {
         }
 
         // Nur ein Test :D
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/backgrounds/background.gif"));
-        g2.drawImage(icon.getImage(), 0, 0, view.getWidth(), view.getHeight(), null);
+        //ImageIcon icon = new ImageIcon(getClass().getResource("/images/backgrounds/background.gif"));
+        //g2.drawImage(icon.getImage(), 0, 0, view.getWidth(), view.getHeight(), null);
     }
 
     void drawGrounds(Graphics2D g2) {
