@@ -166,10 +166,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 1. Background
         renderer.drawBackground(g2);
-
-        g2.setColor(Color.YELLOW);
-        g2.fillRect((int) (level.getLength() - getWidth() / 2 - camera.getX()), 0, 5, getHeight());
-        g2.setColor(Color.WHITE);
+        renderer.drawFinishCastle(g2);
 
         // 2. Grounds
 

@@ -222,4 +222,12 @@ class Renderer {
         g2.drawString("exhausted = " + player.isExhausted(), 20, 180);
         g2.drawString("onGround = " + player.isOnGround(), 20, 200);
     }
+
+    void drawFinishCastle(Graphics2D g2) {
+        int x = (int) level.getLength() - view.getWidth() / 2; //TODO Schloss zeichnen
+
+        g2.setColor(Color.YELLOW);
+        g2.fillRect(x, 0, 5, view.getHeight());
+        g2.setColor(Color.WHITE);
+    }
 }
