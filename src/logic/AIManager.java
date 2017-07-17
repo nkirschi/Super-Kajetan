@@ -11,12 +11,10 @@ import static logic.Behavior.ATTACK;
 public class AIManager {
     CollisionHandler collisionHandler;
     private int patrolCount;
-    private long lastSecond;
 
     public AIManager(CollisionHandler collisionHandler) {
         this.collisionHandler = collisionHandler;
         patrolCount = 0;
-        lastSecond = System.nanoTime();
     }
 
     public void handleAI(Level level, Player player) {
@@ -145,9 +143,10 @@ public class AIManager {
     }
 
     private void attack(Enemy enemy, Player player) {
-        if (System.nanoTime() - lastSecond > 1000000000) {
+        if (System.nanoTime() - enemy.getLastAttackTime() > enemy.getMinTimeBetweenAttack()) {
+            System.out.println("Hey " + System.nanoTime() / 1000000000);
             player.suffer(enemy.getStrength());
-            lastSecond = System.nanoTime();
+            enemy.setLastAttackTime(System.nanoTime());
         }
     }
 
