@@ -18,7 +18,7 @@ public class Skeleton extends Enemy {
     }
 
     public String getImagePath() {
-        return "images/enemies/skeleton_1.png";
+        return "images/enemies/enemy_skeleton_walk_1.png";
     }
 
     @Override
