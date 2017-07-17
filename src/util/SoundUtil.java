@@ -18,7 +18,6 @@ public class SoundUtil {
 
     public static String MUSIC_SOURCE = "music";
 
-    public static String WALK = "walk";
     public static String BUTTON = "buttonclick";
     public static String SWORD_ATTACK = "sword_attack";
 
@@ -35,8 +34,6 @@ public class SoundUtil {
         soundSystem.newSource(false, BUTTON, ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
                 "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
         soundSystem.newSource(true, SWORD_ATTACK, ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
-                "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        soundSystem.newSource(true, WALK, ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
                 "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
     }
 
