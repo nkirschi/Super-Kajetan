@@ -17,7 +17,10 @@ public class SoundUtil {
     public static SoundSystem soundSystem;
 
     public static String MUSIC_SOURCE = "music";
-    public static String EFFECT_SOURCE = "effect";
+
+    public static String WALK = "walk";
+    public static String BUTTON = "buttonclick";
+    public static String SWORD_ATTACK = "sword_attack";
 
     public static void init() {
         try {
@@ -27,9 +30,13 @@ public class SoundUtil {
             e.printStackTrace();
         }
         soundSystem = new SoundSystem();
-        soundSystem.newSource(false, "buttonclick", ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
+
+        //Quellen für jeden Sound
+        soundSystem.newSource(false, BUTTON, ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
                 "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        soundSystem.newSource(true, "sword_attack", ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
+        soundSystem.newSource(true, SWORD_ATTACK, ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
+                "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
+        soundSystem.newSource(true, WALK, ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
                 "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
     }
 
