@@ -5,8 +5,8 @@ import logic.Behavior;
 import java.awt.geom.Rectangle2D;
 
 public class Knight extends Enemy {
-    private final double SKELETON_WIDTH = 95;
-    private final double SKELETON_HEIGHT = 230;
+    private final double SKELETON_WIDTH = 90;
+    private final double SKELETON_HEIGHT = 160;
 
     public Knight(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);

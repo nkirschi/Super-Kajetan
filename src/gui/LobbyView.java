@@ -109,6 +109,7 @@ class LobbyView extends AbstractView {
      */
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
+        enemies.add(new Knight(1000, 720, Behavior.ELOPE, Direction.LEFT));
         enemies.add(new Knight(2200, 680, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Skeleton(4100, 590, Behavior.ATTACK, Direction.RIGHT));
         List<Obstacle> obstacles = new List<>();
