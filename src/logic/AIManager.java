@@ -143,7 +143,11 @@ public class AIManager {
     }
 
     private void attack(Enemy enemy, Player player) {
-        player.suffer(enemy.getStrength());
+        if (System.nanoTime() - enemy.getLastAttackTime() > enemy.getMinTimeBetweenAttack()) {
+            System.out.println("Hey " + System.nanoTime() / 1000000000);
+            player.suffer(enemy.getStrength());
+            enemy.setLastAttackTime(System.nanoTime());
+        }
     }
 
     private Obstacle nearestViewblocker(Enemy enemy, Level level) {
