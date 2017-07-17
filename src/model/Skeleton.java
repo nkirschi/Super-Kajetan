@@ -5,12 +5,12 @@ import logic.Behavior;
 import java.awt.geom.Rectangle2D;
 
 public class Skeleton extends Enemy {
-    private final double SPIDER_WIDTH = 90;
-    private final double SPIDER_HEIGHT = 160;
+    private final double SKELETON_WIDTH = 90;
+    private final double SKELETON_HEIGHT = 160;
 
     public Skeleton(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
-        hitbox = new Rectangle2D.Double(x - SPIDER_WIDTH / 2, y - SPIDER_HEIGHT, SPIDER_WIDTH, SPIDER_HEIGHT);
+        hitbox = new Rectangle2D.Double(x - SKELETON_WIDTH / 2, y - SKELETON_HEIGHT, SKELETON_WIDTH, SKELETON_HEIGHT);
         viewingRange = 500;
         attackRange = 100;
         health = getMaxHealth();

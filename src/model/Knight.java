@@ -5,12 +5,12 @@ import logic.Behavior;
 import java.awt.geom.Rectangle2D;
 
 public class Knight extends Enemy {
-    private final double SKELETON_WIDTH = 90;
-    private final double SKELETON_HEIGHT = 160;
+    private final double KNIGHT_WIDTH = 90;
+    private final double KNIGHT_HEIGHT = 160;
 
     public Knight(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
-        hitbox = new Rectangle2D.Double(x - SKELETON_WIDTH / 2, y - SKELETON_HEIGHT, SKELETON_WIDTH, SKELETON_HEIGHT);
+        hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
         viewingRange = 1000;
         attackRange = 200;
         health = 500;
