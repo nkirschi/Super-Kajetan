@@ -139,7 +139,7 @@ public class LevelView extends AbstractView implements Runnable {
             SoundUtil.soundSystem.pause(SoundUtil.MUSIC_SOURCE);
         }
 
-        if (keyHandler.menu || player.isDead() || (player.getX() > level.getLength() && player.getY() < 1000)) {
+        if (keyHandler.menu || player.isDead() || (player.getX() + getWidth() / 2 > level.getLength() && player.getY() < 1000)) {
             if (!keyHandler.menu) {
                 if (player.isDead())
                     messageLabel.setText("Du bist tot.");
@@ -168,7 +168,7 @@ public class LevelView extends AbstractView implements Runnable {
         renderer.drawBackground(g2);
 
         g2.setColor(Color.YELLOW);
-        g2.fillRect((int) (level.getLength() - camera.getX()), 0, 5, getHeight());
+        g2.fillRect((int) (level.getLength() - getWidth() / 2 - camera.getX()), 0, 5, getHeight());
         g2.setColor(Color.WHITE);
 
         // 2. Grounds
@@ -195,7 +195,7 @@ public class LevelView extends AbstractView implements Runnable {
         }
 
         //8. Pausen- und Game-Over-Menü
-        if (keyHandler.menu || player.isDead() || (player.getX() > level.getLength() && player.getY() < 1000)) {
+        if (keyHandler.menu || player.isDead() || (player.getX() + getWidth() / 2 > level.getLength() && player.getY() < 1000)) {
             menuPanel.setVisible(true);
             g2.setColor(new Color(0, 0, 0, 0.8f));
             g2.fillRect(0, 0, getWidth(), getHeight());

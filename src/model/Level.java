@@ -1,6 +1,10 @@
 package model;
 
+import util.ImageUtil;
 import util.List;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Level {
     private List<Enemy> enemies;
@@ -10,7 +14,7 @@ public class Level {
     private int basescore;
     private double length; // Länge des Levels in px
     public Level(List<Enemy> enemies, List<Obstacle> obstacles, List<Ground> grounds,
-                 String backgroundFilePath, int basescore, double length) {
+                 String backgroundFilePath, int basescore) {
         this.enemies = enemies;
         this.obstacles = obstacles;
         this.grounds = grounds;
@@ -20,15 +24,14 @@ public class Level {
 
         this.backgroundFilePath = backgroundFilePath;
         this.basescore = basescore;
-        this.length = length;
-        /*
+
         try {
             BufferedImage image = ImageUtil.getImage(backgroundFilePath);
             length = (740.0 / (double) image.getHeight()) * (double) image.getWidth();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        */
+
     }
 
     public List<Enemy> getEnemies() {
