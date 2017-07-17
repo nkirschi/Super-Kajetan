@@ -125,6 +125,8 @@ public class AIManager {
                     }
                     break;
             }
+            collisionHandler.forEnemy(enemy);
+            enemy.move();
         }
     }
 
