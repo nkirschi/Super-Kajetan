@@ -15,6 +15,7 @@ public class Skeleton extends Enemy {
         attackRange = 100;
         health = getMaxHealth();
         worthiness = 5;
+        strength = 3;
     }
 
     public String getImagePath() {
