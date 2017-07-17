@@ -1,6 +1,7 @@
 package model;
 
 import logic.Collidable;
+import util.SoundUtil;
 
 import java.awt.geom.Rectangle2D;
 
@@ -69,6 +70,7 @@ public abstract class Entity implements Collidable {
      */
     public boolean suffer(int damage) {
         health -= damage;
+        SoundUtil.playEffect("hit");
         return health > 0;
     }
 
