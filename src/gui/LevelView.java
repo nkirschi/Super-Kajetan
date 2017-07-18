@@ -79,6 +79,7 @@ public class LevelView extends AbstractView implements Runnable {
                     secondTime = 0;
                     updateCount = 0;
                     frameCount = 0;
+                    System.out.println("Active threads: " + Thread.activeCount());
                 }
 
                 while (lag >= TIME_PER_UPDATE) {

@@ -72,7 +72,8 @@ public abstract class Entity implements Collidable {
      */
     public boolean suffer(int damage) {
         health -= damage;
-        SoundUtil.playEffect("hit");
+        new Thread(() -> SoundUtil.playEffect("hit")).start();
+
         return health > 0;
     }
 
