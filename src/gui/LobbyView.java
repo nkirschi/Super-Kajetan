@@ -194,9 +194,8 @@ class LobbyView extends AbstractView {
 
     private Level createLevel4() {
         List<Enemy> enemies = new List<>();
-        enemies.add(new Helper(1700, 660, Behavior.ATTACK, Direction.LEFT));
-        enemies.add(new Helper(1500, 660, Behavior.ATTACK, Direction.LEFT));
-        enemies.add(new Helper(2800, 620, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Helper(70, 660, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Helper(280, 620, Behavior.ATTACK, Direction.LEFT));
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));

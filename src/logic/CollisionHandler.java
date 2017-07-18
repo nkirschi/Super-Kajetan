@@ -92,7 +92,9 @@ public class CollisionHandler {
             if (dummy.collidesWith(collidable)) {
                 if (!collidable.equals(player))
                     //enemy.setVelocityY((collidable.getHitbox().getY() - enemy.getY())/3);
-                    enemy.setY(enemy.getY()-50); //gettomod
+                    if(collidable.getHitbox().getY() - enemy.getY() + collidable.getHitbox().getHeight() < 200){
+                        enemy.setY(enemy.getY()-50); //gettomod
+                    }
                 if (enemy.getVelocityX() > 0) {
                     enemy.setX(collidable.getHitbox().getX() - enemy.getHitbox().getWidth() / 2);
                     enemy.setX(enemy.getX()-5);
