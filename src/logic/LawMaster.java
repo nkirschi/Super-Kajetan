@@ -1,12 +1,11 @@
 package logic;
 
-import gui.KeyHandler;
 import model.Entity;
 import model.Player;
 import util.Constants;
 
 public class LawMaster {
-    public void updateStamina(Player player, KeyHandler keyHandler) {
+    public void updateStamina(Player player) {
         if (player.isWalking() && !player.isJumping() && !player.isCrouching())
             player.addStamina(-0.5);
 
@@ -23,8 +22,12 @@ public class LawMaster {
         if (player.getStamina() < 10)
             player.setExhausted(true);
 
-        if (!keyHandler.run && !keyHandler.jump && !keyHandler.crouch)
-            player.setExhausted(false);
+
+    }
+
+    public void regenerate(Player player) {
+        if (player.isCrouching() && !player.isWalking() && !player.isRunning() && !player.isJumping())
+            player.addHealth(1);
     }
 
     public void applyGravitation(Entity entity) {

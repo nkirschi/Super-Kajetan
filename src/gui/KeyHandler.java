@@ -129,6 +129,9 @@ public class KeyHandler extends KeyAdapter {
 
         if (player.isJumping() && player.isRunning())
             player.setRunning(false);
+
+        if (!run && !jump && !crouch)
+            player.setExhausted(false);
     }
 
     public void clear() {

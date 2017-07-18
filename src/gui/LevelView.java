@@ -123,7 +123,8 @@ public class LevelView extends AbstractView implements Runnable {
             lawMaster.applyGravitation(enemy);
 
         // 4. Ausdauerverbrauch
-        lawMaster.updateStamina(player, keyHandler);
+        lawMaster.updateStamina(player);
+        lawMaster.regenerate(player);
 
         // 5. Kollision - zuerst in x- dann in y-Richtung
         collisionHandler.forPlayer();
