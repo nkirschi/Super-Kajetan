@@ -11,8 +11,12 @@ public class Enemy extends Entity implements Cloneable {
     protected double attackRange;
     protected int worthiness;
     protected long lastAttackTime; //Zeit des letzten Angriffs
-
     protected long minTimeBetweenAttack = 1500000000; //Zeit in ns zwischen zwei Angriffen (1 s = 1.000.000.000 ns)
+
+    protected final double SWORD_WIDTH = 128;
+    protected final double SWORD_HEIGHT = 128;
+    protected Rectangle2D.Double sword;
+    protected boolean attack;
 
     public Enemy(double x, double y, Behavior behavior, Direction viewingDirection) {
         this.x = x;
@@ -84,5 +88,17 @@ public class Enemy extends Entity implements Cloneable {
 
     public long getMinTimeBetweenAttack() {
         return minTimeBetweenAttack;
+    }
+
+    public Rectangle2D.Double getSword() {
+        return sword;
+    }
+
+    public boolean isAttack() {
+        return attack;
+    }
+
+    public void setAttack(boolean attack) {
+        this.attack = attack;
     }
 }

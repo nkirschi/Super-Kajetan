@@ -205,6 +205,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 3. Enemies
         renderer.drawEnemies(g2);
+        renderer.drawEnemySwords(g2);
 
         // 4. Obstacles
         renderer.drawObstacles(g2);

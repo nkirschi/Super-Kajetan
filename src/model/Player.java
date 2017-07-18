@@ -28,7 +28,7 @@ public class Player extends Entity {
         stamina = 1000;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(x - PLAYER_WIDTH / 2, y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
-        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
+        sword = new Rectangle2D.Double(x + 3, y - hitbox.getHeight() - 7, SWORD_WIDTH, SWORD_HEIGHT);
         score = 0;
     }
 

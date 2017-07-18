@@ -16,6 +16,13 @@ public class Knight extends Enemy {
         health = 500;
         strength = 200;
         worthiness = 10;
+        sword = new Rectangle2D.Double(x + 3, y - hitbox.getHeight() - 7, SWORD_WIDTH, SWORD_HEIGHT);
+    }
+
+    @Override
+    public void move() {
+        super.move();
+        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 3 : x + 3 - sword.getWidth(), y - hitbox.getHeight() - 7, sword.getWidth(), sword.getHeight());
     }
 
     @Override
@@ -70,6 +77,14 @@ public class Knight extends Enemy {
             }
         }
         return "images/enemies/enemy_knight_stand.png";
+    }
+
+    @Override
+    public Rectangle2D.Double getSword() {
+        if (crouching) {
+            return new Rectangle2D.Double(sword.x, sword.y - 15, sword.getWidth(), sword.getHeight());
+        }
+        return sword;
     }
 
     @Override
