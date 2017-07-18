@@ -63,7 +63,7 @@ class Renderer {
     void drawSword(Graphics2D g2) {
         try {
             BufferedImage image = ImageUtil.getImage("images/sword/sword_giant.png");
-            if (keyHandler.strike) {
+            if (keyHandler.strike && !player.isExhausted()) {
                 image = ImageUtil.getImage("images/sword/sword_giant_strike.png");
             }
 
