@@ -8,6 +8,9 @@ public class Skeleton extends Enemy {
     private final double SKELETON_WIDTH = 90;
     private final double SKELETON_HEIGHT = 160;
 
+    private final double SWORD_WIDTH = 128;
+    private final double SWORD_HEIGHT = 128;
+
     public Skeleton(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - SKELETON_WIDTH / 2, y - SKELETON_HEIGHT, SKELETON_WIDTH, SKELETON_HEIGHT);
@@ -35,6 +38,11 @@ public class Skeleton extends Enemy {
             }
         }
         return "images/enemies/enemy_skeleton_walk_1.png";
+    }
+
+    @Override
+    public String getSwordImagePath(boolean strike) {
+        return strike ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
     }
 
     @Override

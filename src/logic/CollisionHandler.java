@@ -103,7 +103,6 @@ public class CollisionHandler {
                             enemy.getHitbox().getWidth() / 2);
                     enemy.setX(enemy.getX()+5);
                 }
-                System.out.println();
                 enemy.setVelocityX(0);
                 enemy.setWalking(false);
                 break;

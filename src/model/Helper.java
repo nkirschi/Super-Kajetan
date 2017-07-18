@@ -1,6 +1,6 @@
 package model;
 
-         import logic.Behavior;
+import logic.Behavior;
 
 import java.awt.geom.Rectangle2D;
 
@@ -8,13 +8,12 @@ import java.awt.geom.Rectangle2D;
  * Created by Max on 18.07.2017.
  */
 
-        import logic.Behavior;
-
-        import java.awt.geom.Rectangle2D;
-
 public class Helper extends Enemy {
     private final double HELPER_WIDTH = 90;
     private final double HELPER_HEIGHT = 160;
+
+    private final double SWORD_WIDTH = 128;
+    private final double SWORD_HEIGHT = 128;
 
     public Helper(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
@@ -43,6 +42,11 @@ public class Helper extends Enemy {
             }
         }
         return "images/enemies/enemy_skeleton_walk_1.png";
+    }
+
+    @Override
+    public String getSwordImagePath(boolean strike) {
+        return strike ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
     }
 
     @Override

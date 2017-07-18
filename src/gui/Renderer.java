@@ -160,10 +160,7 @@ class Renderer {
     void drawEnemySwords(Graphics2D g2) {
         for (Enemy enemy : level.getEnemies()) {
             try {
-                BufferedImage image = ImageUtil.getImage("images/sword/sword_giant.png");
-                if (enemy.isAttack()) {
-                    image = ImageUtil.getImage("images/sword/sword_giant_strike.png");
-                }
+                BufferedImage image = ImageUtil.getImage(enemy.getSwordImagePath(enemy.isAttack()));
 
                 int x = (int) (enemy.getSword().getX() - camera.getX()); // - image.getWidth() / 2
                 int y = (int) (enemy.getSword().getY());
