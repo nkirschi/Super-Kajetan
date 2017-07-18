@@ -176,7 +176,7 @@ class LobbyView extends AbstractView {
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(1000, 2000, 20, Ground.Type.SOIL));
         grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background3.jpg",
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background3.png",
                 10);
     }
     
