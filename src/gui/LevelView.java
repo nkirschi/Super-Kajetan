@@ -132,7 +132,12 @@ public class LevelView extends AbstractView implements Runnable {
         // Test
         aiManager.handleAI(level, player);
 
-        // 6. Änderungen vornehmen
+        // 6. Score reduzieren
+        if(Math.random()<0.005){
+            player.addScore(-1);
+        }
+
+        // 7. Änderungen vornehmen
         player.move();
         camera.move();
 

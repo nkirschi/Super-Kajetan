@@ -158,7 +158,11 @@ public class Player extends Entity {
     }
 
     public int getScore() {
-        return score;
+        if(score < 0){
+            return 0;
+        }else {
+            return score;
+        }
     }
 
     public void addScore(int score) {
