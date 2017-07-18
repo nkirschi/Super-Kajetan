@@ -15,7 +15,14 @@ public class Skeleton extends Enemy {
         attackRange = 100;
         health = getMaxHealth();
         worthiness = 5;
-        strength = 3;
+        strength = 300;
+        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() + 5, SWORD_WIDTH, SWORD_HEIGHT);
+    }
+
+    @Override
+    public void move() {
+        super.move();
+        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 3 : x + 3 - sword.getWidth(), y - hitbox.getHeight() + 5, sword.getWidth(), sword.getHeight());
     }
 
     public String getImagePath() {
@@ -31,12 +38,18 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public int getMaxHealth() {
-        return 200;
-    }
+    public int getMaxHealth() { return 200; }
 
     @Override
     public String toString() {
         return "Skeleton at " + super.toString();
+    }
+
+    @Override
+    public Rectangle2D.Double getSword() {
+        if (crouching) {
+            return new Rectangle2D.Double(sword.x, sword.y - 15, sword.getWidth(), sword.getHeight());
+        }
+        return sword;
     }
 }

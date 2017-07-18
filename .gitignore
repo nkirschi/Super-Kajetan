@@ -1,12 +1,12 @@
 .idea/
-out/
-Sidescroller.iml
-Super Kajetan.iml
-log.txt
-META-INF/
 _windows/
 codestyles/
 debugger.xml
 github_settings.xml
 ide.general.xml
+log.txt
+META-INF/
+out/
+Sidescroller.iml
+Super Kajetan.iml
 vcs.xml

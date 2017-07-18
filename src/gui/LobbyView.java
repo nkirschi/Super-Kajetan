@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
-import java.util.Random;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
@@ -86,7 +85,7 @@ class LobbyView extends AbstractView {
     }
 
     public void refresh() {
-        System.out.println("active threads: " + Thread.activeCount());
+
     }
 
     public static LobbyView getInstance() {
@@ -117,7 +116,7 @@ class LobbyView extends AbstractView {
      */
     private Level createLevel1() {
         List<Enemy> enemies = new List<>();
-        enemies.add(new Knight(2200, 680, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Knight(2200, 680, Behavior.GUARD, Direction.RIGHT));
         enemies.add(new Knight(3000, 707, Behavior.PATROL, Direction.RIGHT));
         enemies.add(new Skeleton(4100, 590, Behavior.ATTACK, Direction.RIGHT));
         List<Obstacle> obstacles = new List<>();

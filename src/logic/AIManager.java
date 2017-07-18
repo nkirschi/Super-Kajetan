@@ -30,7 +30,7 @@ public class AIManager {
                         case LEFT:
                             if (player.getX() < enemy.getX()) {
                                 if (distance(player, enemy) < enemy.getViewingRange()) {
-                                    if (Math.abs(player.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) { /*Betrag*/
+                                    if (Math.abs(player.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) {
                                         if (nearestViewblocker(enemy, level).getX() < player.getX()) {
                                             enemy.setBehavior(ATTACK);
                                         }
@@ -41,7 +41,7 @@ public class AIManager {
                         case RIGHT:
                             if (player.getX() > enemy.getX()) {
                                 if (distance(player, enemy) < enemy.getViewingRange()) {
-                                    if (Math.abs(player.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) { /*Betrag*/
+                                    if (Math.abs(player.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (player.getHitbox().getHeight() / 2)) {
                                         if (nearestViewblocker(enemy, level).getX() > player.getX()) {
                                             enemy.setBehavior(ATTACK);
                                         }
@@ -130,8 +130,8 @@ public class AIManager {
                     }
                     break;
             }
-            //collisionHandler.forEnemy(enemy);
-            //enemy.move();
+            collisionHandler.forEnemy(enemy);
+            enemy.move();
         }
     }
 
@@ -149,8 +149,9 @@ public class AIManager {
 
     private void attack(Enemy enemy, Player player) {
         if (System.nanoTime() - enemy.getLastAttackTime() > enemy.getMinTimeBetweenAttack()) {
-            System.out.println("Hey " + System.nanoTime() / 1000000000);
+            //System.out.println("Hey " + System.nanoTime() / 1000000000);
             player.suffer(enemy.getStrength());
+            enemy.setAttack(true);
             enemy.setLastAttackTime(System.nanoTime());
         }
     }
@@ -166,7 +167,7 @@ public class AIManager {
                 break;
         }
         for (Obstacle obstacle : level.getObstacles()) {
-            if (Math.abs(obstacle.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (obstacle.getHitbox().getHeight() / 2)) { /*Betrag*/
+            if (Math.abs(obstacle.getY() - enemy.getY()) < (enemy.getHitbox().getHeight() / 2) + (obstacle.getHitbox().getHeight() / 2)) {
                 switch (enemy.getViewingDirection()) {
                     case LEFT:
                         if (obstacle.getX() > blocker.getX()) {
