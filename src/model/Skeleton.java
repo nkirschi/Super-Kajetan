@@ -15,17 +15,17 @@ public class Skeleton extends Enemy {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - SKELETON_WIDTH / 2, y - SKELETON_HEIGHT, SKELETON_WIDTH, SKELETON_HEIGHT);
         viewingRange = 500;
-        attackRange = 170;
+        attackRange = 145;
         health = getMaxHealth();
         worthiness = 10;
         strength = 200;
-        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() + 0, SWORD_WIDTH, SWORD_HEIGHT);
+        sword = new Rectangle2D.Double(x - 40, y - hitbox.getHeight() + 17, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
     @Override
     public void move() {
         super.move();
-        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 3 : x + 3 - sword.getWidth(), y - hitbox.getHeight() + 0, sword.getWidth(), sword.getHeight());
+        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 40 : x + 40 - sword.getWidth(), y - hitbox.getHeight() + 17, sword.getWidth(), sword.getHeight());
     }
 
     public String getImagePath() {
