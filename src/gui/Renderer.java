@@ -88,18 +88,14 @@ class Renderer {
     }
 
     void drawBackground(Graphics2D g2) {
-        g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
 
-            // Relation von Breite zu Höhe
-            double rel = (double) view.getWidth() / (double) view.getHeight();
+            double k = view.getHeight() / (double) image.getHeight(); // Skalierungsfaktor
+            int width = (int) (k * image.getWidth());
+            int height = view.getHeight();
 
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-            double factor = view.getHeight() / (double) height; // Skalierungsfaktor
-
-            g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
+            g2.drawImage(image, -(int) camera.getX(), 0, width, height, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
