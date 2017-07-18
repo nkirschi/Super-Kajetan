@@ -17,7 +17,7 @@ public class Coin extends Enemy {
         health = getMaxHealth();
         worthiness = 25;
         strength = 0;
-        hasSword = false;
+        paintWeapon = false;
         paintHealth = false;
     }
 
