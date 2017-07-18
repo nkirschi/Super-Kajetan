@@ -58,7 +58,7 @@ public class Player extends Entity {
     @Override
     public void move() {
         super.move();
-        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x : x - sword.getWidth(), y - hitbox.getHeight() - 10, sword.getWidth(), sword.getHeight());
+        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 3 : x + 3 - sword.getWidth(), y - hitbox.getHeight() - 7, sword.getWidth(), sword.getHeight());
     }
 
     @Override
@@ -67,6 +67,9 @@ public class Player extends Entity {
     }
 
     public Rectangle2D.Double getSword() {
+        if (crouching) {
+            return new Rectangle2D.Double(sword.x, sword.y - 15, sword.getWidth(), sword.getHeight());
+        }
         return sword;
     }
 
