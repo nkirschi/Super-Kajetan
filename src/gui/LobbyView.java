@@ -62,14 +62,14 @@ class LobbyView extends AbstractView {
         levelButtonPanel.add(lvl2, constraints);
 
         //Level 3
-        WoodenButton lvl3 = new WoodenButton("Level 3");
+        WoodenButton lvl3 = new WoodenButton("ITS JUST AN EXPERIMENT I");
         lvl3.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl3.setFont(buttonFont);
         lvl3.addActionListener(a -> loadLevel(createLevel3()));
         levelButtonPanel.add(lvl3, constraints);
 
         //Level 4
-        WoodenButton lvl4 = new WoodenButton("ITS JUST AN EXPERIMENT!");
+        WoodenButton lvl4 = new WoodenButton("ITS JUST AN EXPERIMENT II");
         lvl4.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl4.setFont(buttonFont);
         lvl4.addActionListener(a -> loadLevel(createLevel4()));
@@ -153,42 +153,13 @@ class LobbyView extends AbstractView {
     }
 
     private Level createLevel2() {
-        int rnd = ThreadLocalRandom.current().nextInt(1, 6);
         List<Enemy> enemies = new List<>();
-        for (int i = rnd; i > 0; i--) {
-            if (rnd == 1) {
-                enemies.add(new Knight(800, 700, Behavior.ATTACK, Direction.LEFT));
-            }
-            if (rnd == 2) {
-                enemies.add(new Knight(1000, 700, Behavior.ATTACK, Direction.LEFT));
-            }
-            if (rnd == 3) {
-                enemies.add(new Knight(1200, 700, Behavior.ATTACK, Direction.LEFT));
-            }
-            if (rnd == 4) {
-                enemies.add(new Knight(14000, 700, Behavior.ATTACK, Direction.LEFT));
-            }
-            if (rnd == 5) {
-                enemies.add(new Knight(1600, 700, Behavior.ATTACK, Direction.LEFT));
-            }
-        }
-        List<Obstacle> obstacles = new List<>();
-        List<Ground> grounds = new List<>();
-        grounds.add(new Ground(5000, 10000, 20, Ground.Type.SOIL));
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background3.png",
-                10);
-    }
-
-    private Level createLevel3() {
-        List<Enemy> enemies = new List<>();
-        /**
-         enemies.add(new Knight(1700, 660, Behavior.ATTACK, Direction.LEFT));
-         enemies.add(new Knight(1500, 660, Behavior.ATTACK, Direction.LEFT));
-         enemies.add(new Skeleton(2800, 620, Behavior.GUARD, Direction.LEFT));
-         enemies.add(new Skeleton(4500, 440, Behavior.GUARD, Direction.LEFT));
-         enemies.add(new Skeleton(4700, 312, Behavior.GUARD, Direction.LEFT));
-         enemies.add(new Knight(6100, 660, Behavior.GUARD, Direction.LEFT));
-         */
+        enemies.add(new Knight(1700, 660, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Knight(1500, 660, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Skeleton(2800, 620, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Skeleton(4500, 440, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Skeleton(4700, 312, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Knight(6100, 660, Behavior.GUARD, Direction.LEFT));
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Crate(130, 700));
         obstacles.add(new Barrel(130, 572));
@@ -227,6 +198,33 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(10000, 3400, 10, Ground.Type.ROCK)); // Ebene auf der das Level ergänzt werden kann
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
+    }
+
+    private Level createLevel3() {
+        int rnd = ThreadLocalRandom.current().nextInt(1, 6);
+        List<Enemy> enemies = new List<>();
+        for (int i = rnd; i > 0; i--) {
+            if (rnd == 1) {
+                enemies.add(new Knight(800, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if (rnd == 2) {
+                enemies.add(new Knight(1000, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if (rnd == 3) {
+                enemies.add(new Knight(1200, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if (rnd == 4) {
+                enemies.add(new Knight(14000, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if (rnd == 5) {
+                enemies.add(new Knight(1600, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+        }
+        List<Obstacle> obstacles = new List<>();
+        List<Ground> grounds = new List<>();
+        grounds.add(new Ground(5000, 10000, 20, Ground.Type.SOIL));
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background3.png",
+                10);
     }
 
     private Level createLevel4() {
