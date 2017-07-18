@@ -51,9 +51,9 @@ class CreditsView extends AbstractView {
 
         //Jetzt kommt dass eigentliche -> Titel und Namen
         //Namen ...
-        JLabel nico = new JLabel("Nikolas Kirschstein");
-        nico.setFont(nameFont);
-        nico.setForeground(Constants.FOREGROUND_COLOR);
+        JLabel niko = new JLabel("Nikolas Kirschstein");
+        niko.setFont(nameFont);
+        niko.setForeground(Constants.FOREGROUND_COLOR);
 
         JLabel maxi = new JLabel("Max Strohmeier");
         maxi.setFont(nameFont);
@@ -79,7 +79,7 @@ class CreditsView extends AbstractView {
         creditsPanel.add(alex, nameConstraints);
         creditsPanel.add(bene, nameConstraints);
         creditsPanel.add(maxi, nameConstraints);
-        creditsPanel.add(nico, nameConstraints);
+        creditsPanel.add(niko, nameConstraints);
         creditsPanel.add(fabi, nameConstraints);
         creditsPanel.add(timm, nameConstraints);
     }
