@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
-import java.util.Random;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
@@ -86,7 +85,7 @@ class LobbyView extends AbstractView {
     }
 
     public void refresh() {
-        System.out.println("active threads: " + Thread.activeCount());
+
     }
 
     public static LobbyView getInstance() {

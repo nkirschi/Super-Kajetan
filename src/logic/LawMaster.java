@@ -16,7 +16,7 @@ public class LawMaster {
             player.addStamina(-2);
         }
 
-        if (!player.isRunning() && !player.isJumping() && !player.isCrouching()) {
+        if (!player.isRunning() && !player.isJumping()) {
             player.addStamina(2);
         }
 

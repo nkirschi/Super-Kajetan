@@ -113,6 +113,7 @@ public class LevelView extends AbstractView implements Runnable {
     private void update() {
         // 1. Reset
         player.reset();
+        camera.setRect(player.getX() - getWidth() / 2, camera.getY(), camera.getWidth(), camera.getHeight());
 
         // 2. Input Handling
         keyHandler.process();
