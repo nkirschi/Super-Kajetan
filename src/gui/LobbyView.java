@@ -75,6 +75,13 @@ class LobbyView extends AbstractView {
         lvl4.addActionListener(a -> loadLevel(createLevel4()));
         levelButtonPanel.add(lvl4, constraints);
 
+        //Level 4
+        WoodenButton lvl5 = new WoodenButton("Test-Level");
+        lvl5.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        lvl5.setFont(buttonFont);
+        lvl5.addActionListener(a -> loadLevel(createLevel5()));
+        levelButtonPanel.add(lvl5, constraints);
+
         constraints.insets.set(50, constraints.insets.left, constraints.insets.right, constraints.insets.bottom);
         // Zurück
         WoodenButton backButton = new WoodenButton("Zurück");
@@ -241,5 +248,15 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(2400, 600, 100, Ground.Type.SOIL));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
+    }
+
+    private Level createLevel5() {
+        List<Enemy> enemies = new List<>();
+        enemies.add(new Skeleton(600, 100, Behavior.IDLE, Direction.RIGHT));
+        List<Obstacle> obstacles = new List<>();
+        List<Ground> grounds = new List<>();
+        grounds.add(new Ground(450, 900, 40, Ground.Type.GRASS));
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg",
+                0);
     }
 }
