@@ -54,16 +54,14 @@ public class Constants {
     public static final int ALT_KEY_CROUCH = KeyEvent.VK_DOWN;
     public static final int ALT_KEY_STRIKE = KeyEvent.VK_SPACE;
 
-    //Player Bilder
+    //Player + Playerwaffe Bilder
     public static final String PLAYER_STAND_IMAGE_PATH = "images/char/char_stand.png";
     public static final String PLAYER_WALK_1_IMAGE_PATH = "images/char/char_walk_1.png";
     public static final String PLAYER_WALK_2_IMAGE_PATH = "images/char/char_walk_2.png";
     public static final String PLAYER_JUMP_IMAGE_PATH = "images/char/char_jump.png";
     public static final String PLAYER_CROUCH_1_IMAGE_PATH = "images/char/char_walk_crouch_1.png";
     public static final String PLAYER_CROUCH_2_IMAGE_PATH = "images/char/char_walk_crouch_2.png";
-
-    //Waffe Bilder
-    public static final String KNIGHT_WEAPON_IMAGE_PATH = "images/sword/sword_giant.png";
+    public static final String PLAYER_WEAPON_IMAGE_PATH = "images/sword/sword_giant.png";
 
     static {
         try {

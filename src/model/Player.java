@@ -124,7 +124,7 @@ public class Player extends Entity {
     }
 
     public String getImagePathSword() {
-        return Constants.KNIGHT_WEAPON_IMAGE_PATH;
+        return Constants.PLAYER_WEAPON_IMAGE_PATH;
     }
 
 
