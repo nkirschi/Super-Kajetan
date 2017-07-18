@@ -156,11 +156,14 @@ class LobbyView extends AbstractView {
     
     private Level createLevel3() {
         List<Enemy> enemies = new List<>();
+        /**
         enemies.add(new Knight(1700, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Knight(1500, 660, Behavior.ATTACK, Direction.LEFT));
-        enemies.add(new Skeleton(2800, 620, Behavior.ATTACK, Direction.LEFT));
-        enemies.add(new Skeleton(4500, 440, Behavior.ATTACK, Direction.LEFT));
-        enemies.add(new Skeleton(4700, 312, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Skeleton(2800, 620, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Skeleton(4500, 440, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Skeleton(4700, 312, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Knight(6100, 660, Behavior.GUARD, Direction.LEFT));
+        */
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Crate(130, 700));
         obstacles.add(new Barrel(130, 572));
@@ -171,6 +174,8 @@ class LobbyView extends AbstractView {
         obstacles.add(new Crate(4700, 440));
         obstacles.add(new Crate(6250, 660));
         obstacles.add(new Crate(6122, 660));
+        obstacles.add(new Crate(6600, 470));
+        obstacles.add(new Crate(6950, 590));
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));
         grounds.add(new Ground(1600, 1000, 80, Ground.Type.GRASS));
@@ -187,6 +192,14 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(5300, 100, 20, Ground.Type.SOIL));
         grounds.add(new Ground(6000, 800, 80, Ground.Type.GRASS));
         grounds.add(new Ground(5600, 100, 40, Ground.Type.SOIL));
+        grounds.add(new Ground(6400, 100, 40, Ground.Type.SOIL));
+        grounds.add(new Ground(6950, 150, 150, Ground.Type.ROCK));
+        grounds.add(new Ground(6875, 50, 50, Ground.Type.ROCK));
+        grounds.add(new Ground(7125, 200, 90, Ground.Type.ROCK));
+        grounds.add(new Ground(7300, 200, 70, Ground.Type.SOIL));
+        grounds.add(new Ground(7700, 600, 50, Ground.Type.GRASS));
+        grounds.add(new Ground(8100, 200, 40, Ground.Type.GRASS));
+        grounds.add(new Ground(10000, 3400, 10, Ground.Type.ROCK)); // Ebene auf der das Level ergänzt werden kann
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
     }
