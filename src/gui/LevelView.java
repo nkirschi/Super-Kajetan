@@ -133,7 +133,7 @@ public class LevelView extends AbstractView implements Runnable {
         aiManager.handleAI(level, player);
 
         // 6. Score reduzieren
-        if(Math.random()<0.005){
+        if (Math.random() < 0.005) {
             player.addScore(-1);
         }
 

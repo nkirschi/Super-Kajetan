@@ -50,8 +50,8 @@ public class AIManager {
                             }
                             break;
                     }
-                    if(Math.abs(enemy.getY()-player.getY()) <= enemy.getHitbox().getHeight()/2 + player.getHitbox().getHeight()/2){
-                        if(Math.abs(enemy.getX()-player.getX()) <= enemy.getHitbox().getWidth()/2 + player.getHitbox().getWidth()/2){
+                    if (Math.abs(enemy.getY() - player.getY()) <= enemy.getHitbox().getHeight() / 2 + player.getHitbox().getHeight() / 2) {
+                        if (Math.abs(enemy.getX() - player.getX()) <= enemy.getHitbox().getWidth() / 2 + player.getHitbox().getWidth() / 2) {
                             enemy.setBehavior(ATTACK);
                         }
                     }

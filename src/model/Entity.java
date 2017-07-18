@@ -18,6 +18,7 @@ public abstract class Entity implements Collidable {
     boolean crouching;
     boolean onGround;
     Direction viewingDirection;
+
     @Override
     public Rectangle2D.Double getHitbox() {
         return hitbox;
@@ -64,6 +65,7 @@ public abstract class Entity implements Collidable {
     public int getMaxHealth() {
         return 0;
     }
+
     /**
      * @param damage Hinzuzufügender Schaden
      * @return Wahrheitswert, ob entity noch lebt.

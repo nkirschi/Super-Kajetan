@@ -32,9 +32,8 @@ public class Skeleton extends Enemy {
         if (walking) {
             if (walkCount < 25) {
                 return "images/enemies/enemy_skeleton_walk_1.png";
-            }
-            else {
-                return "images/enemies/enemy_skeleton_walk_2.png";   
+            } else {
+                return "images/enemies/enemy_skeleton_walk_2.png";
             }
         }
         return "images/enemies/enemy_skeleton_walk_1.png";
@@ -46,7 +45,9 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public int getMaxHealth() { return 200; }
+    public int getMaxHealth() {
+        return 200;
+    }
 
     @Override
     public String toString() {

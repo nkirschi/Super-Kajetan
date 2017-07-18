@@ -36,8 +36,7 @@ public class Helper extends Enemy {
         if (walking) {
             if (walkCount < 25) {
                 return "images/enemies/enemy_skeleton_walk_1.png";
-            }
-            else {
+            } else {
                 return "images/enemies/enemy_skeleton_walk_2.png";
             }
         }
@@ -50,7 +49,9 @@ public class Helper extends Enemy {
     }
 
     @Override
-    public int getMaxHealth() { return 200; }
+    public int getMaxHealth() {
+        return 200;
+    }
 
     @Override
     public String toString() {

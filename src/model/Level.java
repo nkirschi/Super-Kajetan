@@ -13,6 +13,7 @@ public class Level {
     private String backgroundFilePath;
     private int basescore;
     private double length; // Länge des Levels in px
+
     public Level(List<Enemy> enemies, List<Obstacle> obstacles, List<Ground> grounds,
                  String backgroundFilePath, int basescore) {
         this.enemies = enemies;
@@ -53,5 +54,7 @@ public class Level {
         return backgroundFilePath;
     }
 
-    public int getBasescore() { return basescore; }
+    public int getBasescore() {
+        return basescore;
+    }
 }
