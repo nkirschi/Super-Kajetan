@@ -67,6 +67,13 @@ class LobbyView extends AbstractView {
         lvl3.addActionListener(a -> loadLevel(createLevel3()));
         levelButtonPanel.add(lvl3, constraints);
 
+        //Level 4
+        WoodenButton lvl4 = new WoodenButton("ITS JUST AN EXPERIMENT!");
+        lvl4.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
+        lvl4.setFont(buttonFont);
+        lvl4.addActionListener(a -> loadLevel(createLevel4()));
+        levelButtonPanel.add(lvl4, constraints);
+
         constraints.insets.set(50, constraints.insets.left, constraints.insets.right, constraints.insets.bottom);
         // Zurück
         WoodenButton backButton = new WoodenButton("Zurück");
@@ -200,6 +207,19 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(7700, 600, 50, Ground.Type.GRASS));
         grounds.add(new Ground(8100, 200, 40, Ground.Type.GRASS));
         grounds.add(new Ground(10000, 3400, 10, Ground.Type.ROCK)); // Ebene auf der das Level ergänzt werden kann
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
+                200);
+    }
+
+    private Level createLevel4() {
+        List<Enemy> enemies = new List<>();
+        enemies.add(new Helper(70, 660, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Helper(280, 620, Behavior.ATTACK, Direction.LEFT));
+        List<Obstacle> obstacles = new List<>();
+        List<Ground> grounds = new List<>();
+        grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));
+        grounds.add(new Ground(1600, 1000, 700, Ground.Type.GRASS));
+        grounds.add(new Ground(2400, 600, 100, Ground.Type.SOIL));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
     }
