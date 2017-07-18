@@ -82,7 +82,7 @@ public class Knight extends Enemy {
     @Override
     public Rectangle2D.Double getSword() {
         if (crouching) {
-            return new Rectangle2D.Double(sword.x, sword.y - 15, sword.getWidth(), sword.getHeight());
+            return new Rectangle2D.Double(sword.x, sword.y - 18, sword.getWidth(), sword.getHeight());
         }
         return sword;
     }

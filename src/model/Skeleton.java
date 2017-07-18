@@ -16,13 +16,13 @@ public class Skeleton extends Enemy {
         health = getMaxHealth();
         worthiness = 5;
         strength = 300;
-        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 7, SWORD_WIDTH, SWORD_HEIGHT);
+        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() + 5, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
     @Override
     public void move() {
         super.move();
-        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 3 : x + 3 - sword.getWidth(), y - hitbox.getHeight() - 7, sword.getWidth(), sword.getHeight());
+        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 3 : x + 3 - sword.getWidth(), y - hitbox.getHeight() + 5, sword.getWidth(), sword.getHeight());
     }
 
     public String getImagePath() {
