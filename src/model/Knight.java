@@ -16,9 +16,9 @@ public class Knight extends Enemy {
         hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
         viewingRange = 1000;
         attackRange = 200;
-        health = 500;
-        strength = 200;
-        worthiness = 10;
+        health = getMaxHealth();
+        strength = 125;
+        worthiness = 7;
         sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
