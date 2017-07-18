@@ -90,15 +90,17 @@ public class CollisionHandler {
             if (collidable.equals(enemy))
                 continue;
             if (dummy.collidesWith(collidable)) {
+                if (!collidable.equals(player))
+                    enemy.setVelocityY((collidable.getHitbox().getY() - enemy.getY())/3);
                 if (enemy.getVelocityX() > 0) {
                     enemy.setX(collidable.getHitbox().getX() - enemy.getHitbox().getWidth() / 2);
+                    enemy.setX(enemy.getX()-5);
                 } else if (enemy.getVelocityX() < 0) {
                     enemy.setX(collidable.getHitbox().getX() + collidable.getHitbox().getWidth() +
                             enemy.getHitbox().getWidth() / 2);
+                    enemy.setX(enemy.getX()+5);
                 }
-                if (!collidable.equals(player))
-                    enemy.setVelocityY((collidable.getHitbox().getY() - enemy.getY()));
-                System.out.println(collidable.getHitbox().getY() - enemy.getY());
+                System.out.println("1");
                 enemy.setVelocityX(0);
                 enemy.setWalking(false);
                 break;

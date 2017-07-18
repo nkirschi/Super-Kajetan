@@ -15,7 +15,7 @@ public class Skeleton extends Enemy {
         attackRange = 100;
         health = getMaxHealth();
         worthiness = 5;
-        strength = 3;
+        strength = 300;
     }
 
     public String getImagePath() {
@@ -31,9 +31,7 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public int getMaxHealth() {
-        return 200;
-    }
+    public int getMaxHealth() { return 200; }
 
     @Override
     public String toString() {
