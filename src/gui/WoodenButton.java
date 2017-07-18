@@ -42,8 +42,8 @@ public class WoodenButton extends JButton {
             g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
             setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.DARK_GRAY));
         } else {
-            g.drawImage(img, 0, 0, getWidth(), getHeight(), null);//TODO schönere Border
-            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.WHITE));
+            g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+            setBorder(BorderFactory.createEmptyBorder());
         }
         super.paintComponent(g);
     }
