@@ -37,10 +37,10 @@ public class WoodenButton extends JButton {
 
         if (getModel().isPressed()) {
             g.drawImage(img, 0, getHeight(), getWidth(), -getHeight(), null);
-            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.BLACK));
+            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.GRAY));
         } else if (getModel().isRollover()) {
             g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
-            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.DARK_GRAY));
+            setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.WHITE));
         } else {
             g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
             setBorder(BorderFactory.createEmptyBorder());
