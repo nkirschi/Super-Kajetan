@@ -19,7 +19,15 @@ public class Skeleton extends Enemy {
     }
 
     public String getImagePath() {
-        return "images/enemies/enemy_skeleton_walk_1.png";
+        if (walking) {
+            if(walkcount <25) {
+                return "images/enemies/enemy_skeleton_walk_1.png";
+            }
+            else {
+                return "images/enemies/enemy_skeleton_walk_2.png";   
+            }
+        }
+        
     }
 
     @Override
