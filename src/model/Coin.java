@@ -11,22 +11,14 @@ public class Coin extends Enemy {
     public Coin(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - COIN_WIDTH / 2, y - COIN_HEIGHT, COIN_WIDTH, COIN_HEIGHT);
-        viewingRange = 500;
-        attackRange = 100;
+        viewingRange = 0;
+        attackRange = 0;
         health = getMaxHealth();
-        worthiness = 10;
+        worthiness = 25;
         strength = 0;
     }
 
     public String getImagePath() {
-        if (walking) {
-            if (2 < 25) {
-                return "images/enemies/enemy_skeleton_walk_1.png";
-            }
-            else {
-                return "images/enemies/enemy_skeleton_walk_2.png";
-            }
-        }
         return "images/enemies/enemy_skeleton_walk_1.png";
     }
 

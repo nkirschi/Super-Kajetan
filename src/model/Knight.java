@@ -8,6 +8,9 @@ public class Knight extends Enemy {
     private final double KNIGHT_WIDTH = 90;
     private final double KNIGHT_HEIGHT = 160;
 
+    private final double SWORD_WIDTH = 128;
+    private final double SWORD_HEIGHT = 128;
+
     public Knight(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
@@ -77,6 +80,11 @@ public class Knight extends Enemy {
             }
         }
         return "images/enemies/enemy_knight_stand.png";
+    }
+
+    @Override
+    public String getSwordImagePath(boolean strike) {
+        return strike ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
     }
 
     @Override
