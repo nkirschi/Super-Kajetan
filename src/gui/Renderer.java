@@ -103,10 +103,6 @@ class Renderer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Nur ein Test :D
-        //ImageIcon icon = new ImageIcon(getClass().getResource("/images/backgrounds/background.gif"));
-        //g2.drawImage(icon.getImage(), 0, 0, view.getWidth(), view.getHeight(), null);
     }
 
     void drawGrounds(Graphics2D g2) {
@@ -185,16 +181,6 @@ class Renderer {
                     g2.draw(rect);
                     g2.setStroke(originalStroke);
                 }
-
-                //WIEDER RAUSNEHMEN
-                /*
-                if (player.getViewingDirection().equals(Direction.RIGHT)) {
-                    g2.drawImage(image, (int) (player.getSword().getX() - camera.getX()), (int) player.getSword().getY(), null);
-                } else {
-                    g2.drawImage(image, (int) (player.getSword().getX() + player.getSword().getWidth() - camera.getX()),
-                            (int) player.getSword().getY(),
-                            -image.getWidth(), image.getHeight(), null);
-                }*/
 
             } catch (IOException e) {
                 e.printStackTrace();
