@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Random;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
@@ -181,7 +182,7 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(4150, 150, 260, Ground.Type.SOIL));
         grounds.add(new Ground(4050, 50, 100, Ground.Type.SOIL));
         grounds.add(new Ground(4900, 400, 40, Ground.Type.ROCK));
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png",
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
     }
 }
