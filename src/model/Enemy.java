@@ -13,7 +13,7 @@ public class Enemy extends Entity implements Cloneable {
     protected long lastAttackTime; //Zeit des letzten Angriffs
     protected long minTimeBetweenAttack = 1500000000; //Zeit in ns zwischen zwei Angriffen (1 s = 1.000.000.000 ns)
 
-    protected boolean hasSword;
+    protected boolean hasSword = true; //Wird standartmäßig als wahr angenommen
     protected Rectangle2D.Double sword;
     protected boolean attack;
 

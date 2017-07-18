@@ -17,6 +17,7 @@ public abstract class Entity implements Collidable {
     boolean jumping;
     boolean crouching;
     boolean onGround;
+    boolean paintHealth = true; //wird standartmäßig als wahr angenommen
     Direction viewingDirection;
 
     @Override
@@ -166,6 +167,10 @@ public abstract class Entity implements Collidable {
     }
 
     public abstract String getImagePath();
+
+    public boolean paintHealth() {
+        return paintHealth;
+    }
 
     @Override
     public String toString() {

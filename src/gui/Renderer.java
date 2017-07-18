@@ -130,13 +130,15 @@ class Renderer {
                 }
 
                 {
-                    Color backup = g2.getColor();
-                    g2.setColor(Color.GREEN);
-                    int x = (int) (enemy.getHitbox().getX() - camera.getX());
-                    int y = (int) (enemy.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
-                    g2.fillRect(x, y, (int) ((double) enemy.getHealth() / enemy.getMaxHealth() * enemy.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
-                    g2.setColor(backup);
-                    g2.drawRect(x, y, (int) enemy.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+                    if (enemy.paintHealth()) {
+                        Color backup = g2.getColor();
+                        g2.setColor(Color.GREEN);
+                        int x = (int) (enemy.getHitbox().getX() - camera.getX());
+                        int y = (int) (enemy.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
+                        g2.fillRect(x, y, (int) ((double) enemy.getHealth() / enemy.getMaxHealth() * enemy.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
+                        g2.setColor(backup);
+                        g2.drawRect(x, y, (int) enemy.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+                    }
                 }
 
                 if (keyHandler.debug) {
