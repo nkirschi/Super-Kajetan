@@ -113,6 +113,7 @@ public class LevelView extends AbstractView implements Runnable {
     private void update() {
         // 1. Reset
         player.reset();
+        camera.setRect(player.getX() - getWidth() / 2, camera.getY(), camera.getWidth(), camera.getHeight());
 
         // 2. Input Handling
         keyHandler.process();
@@ -131,7 +132,12 @@ public class LevelView extends AbstractView implements Runnable {
         // Test
         aiManager.handleAI(level, player);
 
-        // 6. Änderungen vornehmen
+        // 6. Score reduzieren
+        if(Math.random()<0.005){
+            player.addScore(-1);
+        }
+
+        // 7. Änderungen vornehmen
         player.move();
         camera.move();
 
@@ -204,6 +210,7 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 3. Enemies
         renderer.drawEnemies(g2);
+        renderer.drawEnemySwords(g2);
 
         // 4. Obstacles
         renderer.drawObstacles(g2);

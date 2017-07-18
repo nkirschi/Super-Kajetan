@@ -19,6 +19,7 @@ public class SoundUtil {
     public static String MUSIC_SOURCE = "music";
 
     public static void init() {
+        SoundSystemConfig.setLogger(new NoLogger());
         try {
             addLibrary(LibraryJavaSound.class);
             setCodec("ogg", CodecJOrbis.class);
