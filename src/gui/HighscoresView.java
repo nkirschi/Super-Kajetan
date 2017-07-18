@@ -156,7 +156,9 @@ class HighscoresView extends AbstractView {
             highScoreSet.close(); // gaaanz wichtig!!
         } catch (Exception e) {
             e.printStackTrace();
-            listTopLevelPanel.add(new JLabel("HOPPLA! Da ist wohl was schief gegangen :/"), constraints);
+            JLabel fail = new JLabel("HOPPLA! Da ist wohl was schief gegangen :/");
+            fail.setForeground(Constants.FOREGROUND_COLOR);
+            listTopLevelPanel.add(fail, constraints);
         }
         return listTopLevelPanel;
     }
