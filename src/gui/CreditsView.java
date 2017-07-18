@@ -42,15 +42,11 @@ class CreditsView extends AbstractView {
         header.setForeground(Constants.FOREGROUND_COLOR);
         creditsPanel.add(header, headerConstraints);
 
-        //headerConstraints werden abgeändert, da sie ab jetzt für die Titel (Abteilungen, Zuständigkeiten??) verwendet werden ...
-        headerConstraints.insets = new Insets(15, 0, 5, 0);
-        Font headerFont = Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24F);
-
         //neue Constraints für die Namen ...
         GridBagConstraints nameConstraints = new GridBagConstraints();
         nameConstraints.gridwidth = GridBagConstraints.REMAINDER;
         nameConstraints.fill = GridBagConstraints.HORIZONTAL;
-        nameConstraints.insets = new Insets(0, 0, 0, 0);
+        nameConstraints.insets = new Insets(5, 0, 5, 0);
         Font nameFont = Constants.DEFAULT_FONT.deriveFont(24F);
 
         //Jetzt kommt dass eigentliche -> Titel und Namen
@@ -79,27 +75,11 @@ class CreditsView extends AbstractView {
         bene.setFont(nameFont);
         bene.setForeground(Constants.FOREGROUND_COLOR);
 
-        //Titel ...
-        JLabel t1 = new JLabel("GUI - Design und Programmierung");
-        t1.setFont(headerFont);
-        t1.setForeground(Constants.FOREGROUND_COLOR);
-
-        JLabel t2 = new JLabel("Physik und Spiellogik");
-        t2.setFont(headerFont);
-        t2.setForeground(Constants.FOREGROUND_COLOR);
-
-        JLabel t3 = new JLabel("Texturen und Model-Programmierung");
-        t3.setFont(headerFont);
-        t3.setForeground(Constants.FOREGROUND_COLOR);
-
         //Hinzufügen der ganzen Labels (auf Reihenfolge und Constraints achten!)
-        creditsPanel.add(t1, headerConstraints);
         creditsPanel.add(alex, nameConstraints);
         creditsPanel.add(bene, nameConstraints);
-        creditsPanel.add(t2, headerConstraints);
         creditsPanel.add(maxi, nameConstraints);
         creditsPanel.add(nico, nameConstraints);
-        creditsPanel.add(t3, headerConstraints);
         creditsPanel.add(fabi, nameConstraints);
         creditsPanel.add(timm, nameConstraints);
     }
