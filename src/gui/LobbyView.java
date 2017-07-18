@@ -170,6 +170,8 @@ class LobbyView extends AbstractView {
         obstacles.add(new Crate(3700, 470));
         obstacles.add(new Barrel(4900, 700));
         obstacles.add(new Crate(4700, 440));
+        obstacles.add(new Crate(6250, 660));
+        obstacles.add(new Crate(6122, 660));
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));
         grounds.add(new Ground(1600, 1000, 80, Ground.Type.GRASS));
@@ -182,6 +184,10 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(4150, 150, 260, Ground.Type.SOIL));
         grounds.add(new Ground(4050, 50, 100, Ground.Type.SOIL));
         grounds.add(new Ground(4900, 400, 40, Ground.Type.ROCK));
+        grounds.add(new Ground(5200, 200, 60, Ground.Type.SOIL));
+        grounds.add(new Ground(5300, 100, 20, Ground.Type.SOIL));
+        grounds.add(new Ground(6000, 800, 80, Ground.Type.GRASS));
+        grounds.add(new Ground(5600, 100, 40, Ground.Type.SOIL));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
     }
