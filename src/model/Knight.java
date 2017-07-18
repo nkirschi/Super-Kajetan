@@ -16,13 +16,13 @@ public class Knight extends Enemy {
         health = 500;
         strength = 200;
         worthiness = 10;
-        sword = new Rectangle2D.Double(x + 3, y - hitbox.getHeight() - 7, SWORD_WIDTH, SWORD_HEIGHT);
+        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
     @Override
     public void move() {
         super.move();
-        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 3 : x + 3 - sword.getWidth(), y - hitbox.getHeight() - 7, sword.getWidth(), sword.getHeight());
+        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x : x - sword.getWidth(), y - hitbox.getHeight() - 10, sword.getWidth(), sword.getHeight());
     }
 
     @Override
