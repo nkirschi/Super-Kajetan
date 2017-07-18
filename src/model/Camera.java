@@ -1,19 +1,23 @@
 package model;
 
+import gui.LevelView;
+
 import java.awt.geom.Rectangle2D;
 
 public class Camera extends Rectangle2D.Double {
     private Player player;
+    private LevelView view;
 
-    public Camera(Player player, double x, double y, double width, double height) {
+    public Camera(Player player, LevelView view) {
         this.player = player;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.view = view;
+        x = 0;
+        y = 0;
+        width = view.getWidth();
+        height = view.getHeight();
     }
 
     public void move() {
-        this.x += player.getVelocityX();
+        this.x = player.getX() - view.getWidth() / 2;
     }
 }
