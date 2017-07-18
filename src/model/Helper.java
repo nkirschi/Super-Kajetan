@@ -24,6 +24,7 @@ public class Helper extends Enemy {
         worthiness = -1;
         strength = 0;
         sword = new Rectangle2D.Double(x, y - hitbox.getHeight() + 5, SWORD_WIDTH, SWORD_HEIGHT);
+        hasSword = true;
     }
 
     @Override

@@ -20,6 +20,7 @@ public class Knight extends Enemy {
         strength = 200;
         worthiness = 10;
         sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
+        hasSword = true;
     }
 
     @Override

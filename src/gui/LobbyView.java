@@ -127,6 +127,7 @@ class LobbyView extends AbstractView {
         enemies.add(new Knight(2200, 680, Behavior.GUARD, Direction.RIGHT));
         enemies.add(new Knight(3000, 707, Behavior.PATROL, Direction.RIGHT));
         enemies.add(new Skeleton(4100, 590, Behavior.ATTACK, Direction.RIGHT));
+        enemies.add(new Coin(150, 588));
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Barrel(150, 720));
         obstacles.add(new Crate(1750, 640));

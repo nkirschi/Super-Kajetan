@@ -155,31 +155,31 @@ class Renderer {
 
     void drawEnemySwords(Graphics2D g2) {
         for (Enemy enemy : level.getEnemies()) {
-            try {
-                BufferedImage image = ImageUtil.getImage(enemy.getSwordImagePath(enemy.isAttack()));
+            if (enemy.hasSword()) {
+                try {
+                    BufferedImage image = ImageUtil.getImage(enemy.getSwordImagePath(enemy.isAttack()));
 
-                int x = (int) (enemy.getSword().getX() - camera.getX()); // - image.getWidth() / 2
-                int y = (int) (enemy.getSword().getY());
+                    int x = (int) (enemy.getSword().getX() - camera.getX()); // - image.getWidth() / 2
+                    int y = (int) (enemy.getSword().getY());
 
-                if (enemy.getViewingDirection().equals(Direction.RIGHT))
-                    g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);
-                else
-                    g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), null);
+                    if (enemy.getViewingDirection().equals(Direction.RIGHT))
+                        g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);
+                    else
+                        g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), null);
 
-                if (keyHandler.debug) {
-                    Stroke originalStroke = g2.getStroke();
-                    g2.setStroke(strichel);
-                    Rectangle2D.Double rect = new Rectangle2D.Double(enemy.getSword().getX(), enemy.getSword().getY(),
-                            enemy.getSword().getWidth(), enemy.getSword().getHeight());
-                    g2.draw(rect);
-                    g2.setStroke(originalStroke);
+                    if (keyHandler.debug) {
+                        Stroke originalStroke = g2.getStroke();
+                        g2.setStroke(strichel);
+                        Rectangle2D.Double rect = new Rectangle2D.Double(enemy.getSword().getX(), enemy.getSword().getY(),
+                                enemy.getSword().getWidth(), enemy.getSword().getHeight());
+                        g2.draw(rect);
+                        g2.setStroke(originalStroke);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
-            //enemy.setAttack(false);
         }
     }
 

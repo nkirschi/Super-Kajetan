@@ -20,6 +20,7 @@ public class Skeleton extends Enemy {
         worthiness = 5;
         strength = 300;
         sword = new Rectangle2D.Double(x, y - hitbox.getHeight() + 5, SWORD_WIDTH, SWORD_HEIGHT);
+        hasSword = true;
     }
 
     @Override
