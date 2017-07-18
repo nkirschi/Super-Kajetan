@@ -169,6 +169,12 @@ public class Player extends Entity {
         this.score += score;
     }
 
+    public void addHealth(int health) {
+        this.health += health;
+        if (this.health > getMaxHealth())
+            this.health = getMaxHealth();
+    }
+
     public void reset() {
         setVelocityX(0);
         setWalking(false);

@@ -31,26 +31,24 @@ public class LevelView extends AbstractView implements Runnable {
     private JButton continueButton;
     private JLabel messageLabel;
     private JLabel scoreLabel;
-    private final Stroke strichel;
 
     private boolean running;
     private boolean paused;
-    private int ups = 60, fps = 60;
+    private int ups = 0, fps = 0;
 
     LevelView(Level level) {
         this.level = level;
         player = new Player(LobbyView.getInstance().getWidth() / 2, Constants.GROUND_LEVEL);
-        camera = new Camera(player, 0, 0, getWidth(), getHeight());
+        camera = new Camera(player, this);
         keyHandler = new KeyHandler(player);
         lawMaster = new LawMaster();
         collisionHandler = new CollisionHandler(player, level, keyHandler);
         aiManager = new AIManager(collisionHandler);
         renderer = new Renderer(level, camera, player, keyHandler, this);
-        addKeyListener(keyHandler);
-        strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
 
-        setIgnoreRepaint(true);
         setLayout(new BorderLayout());
+        setIgnoreRepaint(true);
+        addKeyListener(keyHandler);
         initPauseMenu();
     }
 
@@ -61,19 +59,20 @@ public class LevelView extends AbstractView implements Runnable {
         int updateCount = 0;
         int frameCount = 0;
 
-        final double TIME_PER_UPDATE = 1000000000 / Constants.UPDATE_CLOCK;
-        double lastTime = System.nanoTime();
-        double secondTime = 0;
-        double lag = 0;
+        final int TIME_PER_UPDATE = 1_000_000_000 / Constants.UPDATE_CLOCK;
+        long lastTime = System.nanoTime();
+        int secondTime = 0;
+        int lag = 0;
+
         while (running) {
             if (!paused) {
-                double currentTime = System.nanoTime();
-                double elapsedTime = currentTime - lastTime;
+                long currentTime = System.nanoTime();
+                long elapsedTime = currentTime - lastTime;
                 lastTime = currentTime;
                 lag += elapsedTime;
                 secondTime += elapsedTime;
 
-                if (secondTime > 1000000000) {
+                if (secondTime > 1_000_000_000) {
                     ups = updateCount;
                     fps = frameCount;
                     secondTime = 0;
@@ -92,7 +91,7 @@ public class LevelView extends AbstractView implements Runnable {
                 frameCount++;
 
                 // Theoretisch VSync - is aber bissl laggy :(
-                /*while (System.nanoTime() - currentTime < 1000000000 / 60) {
+                /*while (System.nanoTime() - currentTime < 1_000_000_000 / 60) {
                     Thread.yield();
                     try {
                         Thread.sleep(1);
@@ -114,7 +113,6 @@ public class LevelView extends AbstractView implements Runnable {
     private void update() {
         // 1. Reset
         player.reset();
-        camera.setRect(player.getX() - getWidth() / 2, camera.getY(), camera.getWidth(), camera.getHeight());
 
         // 2. Input Handling
         keyHandler.process();
@@ -125,7 +123,8 @@ public class LevelView extends AbstractView implements Runnable {
             lawMaster.applyGravitation(enemy);
 
         // 4. Ausdauerverbrauch
-        lawMaster.updateStamina(player, keyHandler);
+        lawMaster.updateStamina(player);
+        lawMaster.regenerate(player);
 
         // 5. Kollision - zuerst in x- dann in y-Richtung
         collisionHandler.forPlayer();
