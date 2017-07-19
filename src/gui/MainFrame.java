@@ -97,12 +97,6 @@ public class MainFrame extends JFrame implements WindowListener {
         }
     }
 
-    /**
-     * Hilfsmethode für die Menü-Konstanten
-     *
-     * @return Dimension des Frames
-     */
-
     public Properties getProperties() {
         return properties;
     }
