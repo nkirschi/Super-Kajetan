@@ -151,6 +151,8 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (keyHandler.menu || player.isDead() || (player.getX() + getWidth() / 2 > level.getLength() && player.getY() < 1000)) {
             if (!keyHandler.menu) {
+                SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
+                SoundUtil.soundSystem.cull(SoundUtil.MUSIC_SOURCE);
                 if (player.isDead()) {
                     messageLabel.setText("Du bist tot.");
                     SoundUtil.playEffect("death");
@@ -164,7 +166,6 @@ public class LevelView extends AbstractView implements Runnable {
                 scoreLabel.setVisible(true);
                 continueButton.setVisible(false);
                 running = false;
-                SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
                 try {
                     String date = new SimpleDateFormat("#yyyy-MM-dd#").format(new java.util.Date());
                     String query = String.format("SELECT * FROM %s WHERE %s = '%s';",
