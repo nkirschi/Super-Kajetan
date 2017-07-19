@@ -5,12 +5,14 @@ import util.SoundUtil;
 
 import java.awt.geom.Rectangle2D;
 
+import static logic.Behavior.COIN;
+
 public class Coin extends Enemy {
     private final double COIN_WIDTH = 78;
     private final double COIN_HEIGHT = 90;
 
     public Coin(double x, double y) {
-        super(x, y, Behavior.IDLE, Direction.RIGHT);
+        super(x, y, Behavior.COIN, Direction.RIGHT);
         hitbox = new Rectangle2D.Double(x - COIN_WIDTH / 2, y - COIN_HEIGHT, COIN_WIDTH, COIN_HEIGHT);
         viewingRange = 0;
         attackRange = 0;
