@@ -14,8 +14,8 @@ public class Enemy extends Entity implements Cloneable {
     protected long minTimeBetweenAttack = 1500000000; //Zeit in ns zwischen zwei Angriffen (1 s = 1.000.000.000 ns)
 
     protected boolean paintWeapon = true; //Wird standartmäßig als wahr angenommen
-    protected Rectangle2D.Double sword;
-    protected boolean attack;
+    protected Rectangle2D.Double weapon;
+    protected boolean attacking;
 
     public Enemy(double x, double y, Behavior behavior, Direction viewingDirection) {
         this.x = x;
@@ -74,8 +74,8 @@ public class Enemy extends Entity implements Cloneable {
         return "";
     }
 
-    public String getSwordImagePath(boolean strike) {
-        return strike ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
+    public String getWeaponImagePath(boolean attacking) {
+        return attacking ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
     }
 
     protected int walkCount;
@@ -97,15 +97,15 @@ public class Enemy extends Entity implements Cloneable {
         return paintWeapon;
     }
 
-    public Rectangle2D.Double getSword() {
-        return sword;
+    public Rectangle2D.Double getWeapon() {
+        return weapon;
     }
 
-    public boolean isAttack() {
-        return attack;
+    public boolean isAttacking() {
+        return attacking;
     }
 
-    public void setAttack(boolean attack) {
-        this.attack = attack;
+    public void setAttacking(boolean attacking) {
+        this.attacking = attacking;
     }
 }

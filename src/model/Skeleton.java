@@ -6,10 +6,10 @@ import java.awt.geom.Rectangle2D;
 
 public class Skeleton extends Enemy {
     private final double SKELETON_WIDTH = 90;
-    private final double SKELETON_HEIGHT = 160;
+    private final double SKELETON_HEIGHT = 148;
 
-    private final double SWORD_WIDTH = 169;
-    private final double SWORD_HEIGHT = 169;
+    private final double SPEAR_WIDTH = 169;
+    private final double SPEAR_HEIGHT = 169;
 
     public Skeleton(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
@@ -19,13 +19,13 @@ public class Skeleton extends Enemy {
         health = getMaxHealth();
         worthiness = 10;
         strength = 200;
-        sword = new Rectangle2D.Double(x - 40, y - hitbox.getHeight() + 17, SWORD_WIDTH, SWORD_HEIGHT);
+        weapon = new Rectangle2D.Double(x - 40, y - hitbox.getHeight() + 17, SPEAR_WIDTH, SPEAR_HEIGHT);
     }
 
     @Override
     public void move() {
         super.move();
-        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 40 : x + 40 - sword.getWidth(), y - hitbox.getHeight() + 17, sword.getWidth(), sword.getHeight());
+        weapon.setRect(viewingDirection.equals(Direction.RIGHT) ? x - 40 : x + 40 - weapon.getWidth(), y - hitbox.getHeight() + 17, weapon.getWidth(), weapon.getHeight());
     }
 
     public String getImagePath() {
@@ -40,8 +40,8 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public String getSwordImagePath(boolean strike) {
-        return strike ? "images/spear/spear_strike.png" : "images/spear/spear.png";
+    public String getWeaponImagePath(boolean attacking) {
+        return attacking ? "images/spear/spear_strike.png" : "images/spear/spear.png";
     }
 
     @Override
@@ -55,10 +55,10 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public Rectangle2D.Double getSword() {
+    public Rectangle2D.Double getWeapon() {
         if (crouching) {
-            return new Rectangle2D.Double(sword.x, sword.y - 15, sword.getWidth(), sword.getHeight());
+            return new Rectangle2D.Double(weapon.x, weapon.y - 15, weapon.getWidth(), weapon.getHeight());
         }
-        return sword;
+        return weapon;
     }
 }

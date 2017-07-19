@@ -159,10 +159,10 @@ class Renderer {
         for (Enemy enemy : level.getEnemies()) {
             if (enemy.hasSword()) {
                 try {
-                    BufferedImage image = ImageUtil.getImage(enemy.getSwordImagePath(enemy.isAttack()));
+                    BufferedImage image = ImageUtil.getImage(enemy.getWeaponImagePath(enemy.isAttacking()));
 
-                    int x = (int) (enemy.getSword().getX() - camera.getX()); // - image.getWidth() / 2
-                    int y = (int) (enemy.getSword().getY());
+                    int x = (int) (enemy.getWeapon().getX() - camera.getX()); // - image.getWidth() / 2
+                    int y = (int) (enemy.getWeapon().getY());
 
                     if (enemy.getViewingDirection().equals(Direction.RIGHT))
                         g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);

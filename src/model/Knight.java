@@ -19,13 +19,13 @@ public class Knight extends Enemy {
         health = getMaxHealth();
         strength = 125;
         worthiness = 7;
-        sword = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
+        weapon = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
     @Override
     public void move() {
         super.move();
-        sword.setRect(viewingDirection.equals(Direction.RIGHT) ? x : x - sword.getWidth(), y - hitbox.getHeight() - 10, sword.getWidth(), sword.getHeight());
+        weapon.setRect(viewingDirection.equals(Direction.RIGHT) ? x : x - weapon.getWidth(), y - hitbox.getHeight() - 10, weapon.getWidth(), weapon.getHeight());
     }
 
     @Override
@@ -83,16 +83,16 @@ public class Knight extends Enemy {
     }
 
     @Override
-    public String getSwordImagePath(boolean strike) {
-        return strike ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
+    public String getWeaponImagePath(boolean attacking) {
+        return attacking ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
     }
 
     @Override
-    public Rectangle2D.Double getSword() {
+    public Rectangle2D.Double getWeapon() {
         if (crouching) {
-            return new Rectangle2D.Double(sword.x, sword.y - 18, sword.getWidth(), sword.getHeight());
+            return new Rectangle2D.Double(weapon.x, weapon.y - 18, weapon.getWidth(), weapon.getHeight());
         }
-        return sword;
+        return weapon;
     }
 
     @Override
