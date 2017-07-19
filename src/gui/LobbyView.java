@@ -241,6 +241,8 @@ class LobbyView extends AbstractView {
         List<Enemy> enemies = new List<>();
         enemies.add(new Helper(70, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Helper(280, 620, Behavior.ATTACK, Direction.LEFT));
+        for (int x = 1300; x < 2000; x += 100)
+            enemies.add(new Coin(x, 40));
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));
