@@ -18,7 +18,7 @@ public class Ground implements Collidable {
     private Image image;
 
     public enum Type {
-        SOIL, GRASS, ROCK
+        SOIL, GRASS, ROCK, SAND, GRAVEL
     }
 
     private Rectangle2D.Double hitbox;
@@ -59,6 +59,12 @@ public class Ground implements Collidable {
                 case GRASS:
                     path += "soil.png";
                     break;
+                case SAND:
+                    path += "sand.png";
+                    break;
+                case GRAVEL:
+                    path += "gravel.png";
+                    break;
             }
 
             BufferedImage texture = null;
@@ -67,7 +73,7 @@ public class Ground implements Collidable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 64, 64));
+            TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 128, 128));
 
             BufferedImage result = new BufferedImage((int) hitbox.getWidth(), (int) hitbox.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D h = result.createGraphics();
@@ -81,9 +87,9 @@ public class Ground implements Collidable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                TexturePaint paint2 = new TexturePaint(texture2, new Rectangle(0, 0, 64, 64));
+                TexturePaint paint2 = new TexturePaint(texture2, new Rectangle(0, 0, 128, 128));
                 h.setPaint(paint2);
-                h.fillRect(0, 0, result.getWidth(), 64);
+                h.fillRect(0, 0, result.getWidth(), 128);
             }
             image = result;
         }

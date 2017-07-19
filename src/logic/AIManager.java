@@ -5,9 +5,6 @@ import util.Constants;
 
 import static logic.Behavior.ATTACK;
 
-/**
- * Created by Max on 11.07.2017.
- */
 public class AIManager {
     CollisionHandler collisionHandler;
     private int patrolCount;
@@ -50,8 +47,8 @@ public class AIManager {
                             }
                             break;
                     }
-                    if(Math.abs(enemy.getY()-player.getY()) <= enemy.getHitbox().getHeight()/2 + player.getHitbox().getHeight()/2){
-                        if(Math.abs(enemy.getX()-player.getX()) <= enemy.getHitbox().getWidth()/2 + player.getHitbox().getWidth()/2){
+                    if (Math.abs(enemy.getY() - player.getY()) <= enemy.getHitbox().getHeight() / 2 + player.getHitbox().getHeight() / 2) {
+                        if (Math.abs(enemy.getX() - player.getX()) <= enemy.getHitbox().getWidth() / 2 + player.getHitbox().getWidth() / 2) {
                             enemy.setBehavior(ATTACK);
                         }
                     }
@@ -59,20 +56,23 @@ public class AIManager {
                 case ATTACK:
                     //System.out.println("Ich bin AGRESSIV");
                     if (distance(player, enemy) < enemy.getAttackRange()) {
-                        if (player.getX() < enemy.getX()) {
+                        /*if (player.getX() < enemy.getX()) {
                             enemy.setViewingDirection(Direction.LEFT);
                         } else {
                             enemy.setViewingDirection(Direction.RIGHT);
-                        }
+                        }*/
                         attack(enemy, player);
                     }
-                    if (player.getX() < enemy.getX()) {
+                    if (Math.abs(player.getX() - enemy.getX()) < 6) {
+                        enemy.setVelocityX(0);
+                    } else if (player.getX() < enemy.getX()) {
                         enemy.setViewingDirection(Direction.LEFT);
                         moveLeft(enemy);
-                    } else {
+                    } else if (player.getX() > enemy.getX()) {
                         enemy.setViewingDirection(Direction.RIGHT);
                         moveRight(enemy);
                     }
+
                     break;
                 case IDLE:
                     //System.out.println("Ich warte");
@@ -129,13 +129,50 @@ public class AIManager {
                         moveLeft(enemy);
                     }
                     break;
+                case COIN:
+                    if (enemy.collidesWith(player))
+                        enemy.suffer(1);
+                    break;
+                case ADMIN:
+                    int count = 0;
+                    for (Enemy e : level.getEnemies()) {
+                        count++;
+                    }
+                    if (count == 1) {
+                        for (int i = 0; i < /*(int) (Math.random() * 3 + 3)*/5; i++) {
+                            switch ((int) (Math.random() * 2)) {
+                                case 0:
+                                    switch ((int) (Math.random() * 2)) {
+                                        case 0:
+                                            level.getEnemies().add(new Knight(player.getX() - 100, 100 * i, ATTACK, Direction.RIGHT));
+                                            break;
+                                        case 1:
+                                            level.getEnemies().add(new Knight(player.getX() + 100, 100 * i, ATTACK, Direction.LEFT));
+                                            break;
+                                    }
+                                    break;
+                                case 1:
+                                    switch ((int) (Math.random() * 2)) {
+                                        case 0:
+                                            level.getEnemies().add(new Skeleton(player.getX() - 100, 100 * i, ATTACK, Direction.RIGHT));
+                                            break;
+                                        case 1:
+                                            level.getEnemies().add(new Skeleton(player.getX() + 100, 100 * i, ATTACK, Direction.LEFT));
+                                            break;
+                                    }
+                                    break;
+                            }
+                            System.out.println("1");
+                        }
+                    }
+                    break;
             }
+
             collisionHandler.forEnemy(enemy);
             if (System.nanoTime() - enemy.getLastAttackTime() > enemy.getMinTimeBetweenAttack() / 4) {
-                enemy.setAttack(false);
+                enemy.setAttacking(false);
             }
             enemy.move();
-
         }
     }
 
@@ -155,7 +192,7 @@ public class AIManager {
         if (System.nanoTime() - enemy.getLastAttackTime() > enemy.getMinTimeBetweenAttack()) {
             //System.out.println("Hey " + System.nanoTime() / 1000000000);
             player.suffer(enemy.getStrength());
-            enemy.setAttack(true);
+            enemy.setAttacking(true);
             enemy.setLastAttackTime(System.nanoTime());
         }
     }

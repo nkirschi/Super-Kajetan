@@ -49,11 +49,9 @@ public class SettingsView extends AbstractView {
         saveButton.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE_2);
         saveButton.addActionListener(a -> {
             musicVolume = (float) musicVolumeSlider.getValue() / 100;
-            SoundUtil.soundSystem.setVolume(SoundUtil.MUSIC_SOURCE, musicVolume);
-
             effectVolume = (float) effectVolumeSlider.getValue() / 100;
-
             setAltControlMode(controllCheckBox.isSelected());
+
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_CONTROL_MODE, Boolean.toString(alt_control));
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_MUSIC_VOLUME, Float.toString(musicVolume));
             MainFrame.getInstance().getProperties().put(Constants.PROPERTY_EFFECT_VOLUME, Float.toString(effectVolume));
@@ -173,22 +171,6 @@ public class SettingsView extends AbstractView {
         };
         effectVolumeSlider.setPreferredSize(new Dimension(350, 50));
 
-        Hashtable<Integer, JLabel> labelse = new Hashtable<>();
-        JLabel labele1 = new JLabel("Grabesstille");
-        JLabel labele2 = new JLabel("Bergwind");
-        JLabel labele3 = new JLabel("Markt");
-        JLabel labele4 = new JLabel("Taverne");
-        JLabel labele5 = new JLabel("Schlachtfeld");
-        labele1.setForeground(Color.WHITE);
-        labele2.setForeground(Color.WHITE);
-        labele3.setForeground(Color.WHITE);
-        labele4.setForeground(Color.WHITE);
-        labele5.setForeground(Color.WHITE);
-        labelse.put(0, labele1);
-        labelse.put(25, labele2);
-        labelse.put(50, labele3);
-        labelse.put(75, labele4);
-        labelse.put(100, labele5);
         effectVolumeSlider.setLabelTable(labelsm);
         effectVolumeSlider.setMajorTickSpacing(25);
         effectVolumeSlider.setSnapToTicks(true);
@@ -310,16 +292,8 @@ public class SettingsView extends AbstractView {
         return musicVolume;
     }
 
-    public void setMusicVolume(float f) {
-        musicVolume = f;
-    }
-
     public float getEffectVolume() {
         return effectVolume;
-    }
-
-    public void setEffectVolume(float effectVolume) {
-        this.effectVolume = effectVolume;
     }
 
     public boolean getAltControlMode() {

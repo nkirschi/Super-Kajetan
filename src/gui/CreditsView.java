@@ -49,37 +49,37 @@ class CreditsView extends AbstractView {
         nameConstraints.insets = new Insets(5, 0, 5, 0);
         Font nameFont = Constants.DEFAULT_FONT.deriveFont(24F);
 
-        //Jetzt kommt dass eigentliche -> Titel und Namen
+        //Jetzt kommt dass eigentliche -> Namen
         //Namen ...
-        JLabel nico = new JLabel("Nikolas Kirschstein");
-        nico.setFont(nameFont);
-        nico.setForeground(Constants.FOREGROUND_COLOR);
-
-        JLabel maxi = new JLabel("Max Strohmeier");
-        maxi.setFont(nameFont);
-        maxi.setForeground(Constants.FOREGROUND_COLOR);
-
-        JLabel alex = new JLabel("Alexander Hammerl");
+        JLabel alex = new JLabel("User interfacing GUI Tinkerer: Alexander Hammerl");
         alex.setFont(nameFont);
         alex.setForeground(Constants.FOREGROUND_COLOR);
 
-        JLabel timm = new JLabel("Tim Mostert");
-        timm.setFont(nameFont);
-        timm.setForeground(Constants.FOREGROUND_COLOR);
+        JLabel bene = new JLabel("General Fixing and Trixing Chief: Benedikt Mödl");
+        bene.setFont(nameFont);
+        bene.setForeground(Constants.FOREGROUND_COLOR);
 
-        JLabel fabi = new JLabel("Fabian Weinelt");
+        JLabel maxi = new JLabel("Crazy Intelligence Professor: Max Strohmeier");
+        maxi.setFont(nameFont);
+        maxi.setForeground(Constants.FOREGROUND_COLOR);
+
+        JLabel niko = new JLabel("Dirty Engine Tuner: Nikolas Kirschstein");
+        niko.setFont(nameFont);
+        niko.setForeground(Constants.FOREGROUND_COLOR);
+
+        JLabel fabi = new JLabel("Stylish Level Buddy: Fabian Weinelt");
         fabi.setFont(nameFont);
         fabi.setForeground(Constants.FOREGROUND_COLOR);
 
-        JLabel bene = new JLabel("Benedikt Mödl");
-        bene.setFont(nameFont);
-        bene.setForeground(Constants.FOREGROUND_COLOR);
+        JLabel timm = new JLabel("Master of Design(aster): Tim Mostert");
+        timm.setFont(nameFont);
+        timm.setForeground(Constants.FOREGROUND_COLOR);
 
         //Hinzufügen der ganzen Labels (auf Reihenfolge und Constraints achten!)
         creditsPanel.add(alex, nameConstraints);
         creditsPanel.add(bene, nameConstraints);
         creditsPanel.add(maxi, nameConstraints);
-        creditsPanel.add(nico, nameConstraints);
+        creditsPanel.add(niko, nameConstraints);
         creditsPanel.add(fabi, nameConstraints);
         creditsPanel.add(timm, nameConstraints);
     }

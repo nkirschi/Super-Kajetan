@@ -23,9 +23,9 @@ public class Player extends Entity {
         velocityX = 0;
         velocityY = 0;
         health = getMaxHealth();
-        strength = 100;
+        strength = Constants.PLAYER_STRENGTH;
         onGround = true;
-        stamina = 1000;
+        stamina = Constants.PLAYER_MAX_STAMINA;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(x - PLAYER_WIDTH / 2, y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
         sword = new Rectangle2D.Double(x + 3, y - hitbox.getHeight() - 7, SWORD_WIDTH, SWORD_HEIGHT);
@@ -63,7 +63,7 @@ public class Player extends Entity {
 
     @Override
     public int getMaxHealth() {
-        return 1000;
+        return Constants.PLAYER_MAX_HEALTH;
     }
 
     public Rectangle2D.Double getSword() {
@@ -89,7 +89,7 @@ public class Player extends Entity {
 
     @Override
     public void setCrouching(boolean crouching) {
-        double crouchingDelta = 53;
+        double crouchingDelta = 50;
         if (crouching && !this.crouching) {
             hitbox.setRect(hitbox.x, hitbox.y + crouchingDelta, hitbox.width, hitbox.height - crouchingDelta);
         } else if (!crouching && this.crouching) {
@@ -102,31 +102,26 @@ public class Player extends Entity {
     public String getImagePath() {
         if (crouching) {
             if (walkCount < 25)
-                return Constants.PLAYER_CROUCH_1_IMAGE_PATH;
+                return "images/char/char_walk_crouch_1.png";
             else {
                 if (walkCount >= 50)
                     walkCount = 0;
-                return Constants.PLAYER_CROUCH_2_IMAGE_PATH;
+                return "images/char/char_walk_crouch_2.png";
             }
         }
         if (jumping)
-            return Constants.PLAYER_JUMP_IMAGE_PATH;
+            return "images/char/char_jump.png";
         if (walking) {
             if (walkCount < 25)
-                return Constants.PLAYER_WALK_1_IMAGE_PATH;
+                return "images/char/char_walk_1.png";
             else {
                 if (walkCount >= 50)
                     walkCount = 0;
-                return Constants.PLAYER_WALK_2_IMAGE_PATH;
+                return "images/char/char_walk_2.png";
             }
         }
-        return Constants.PLAYER_STAND_IMAGE_PATH;
+        return "images/char/char_stand.png";
     }
-
-    public String getImagePathSword() {
-        return Constants.KNIGHT_WEAPON_IMAGE_PATH;
-    }
-
 
     public double getStamina() {
         return stamina;
@@ -136,15 +131,15 @@ public class Player extends Entity {
         this.stamina += stamina;
         if (this.stamina < 0)
             this.stamina = 0;
-        else if (this.stamina > 1000)
-            this.stamina = 1000;
+        else if (this.stamina > Constants.PLAYER_MAX_STAMINA)
+            this.stamina = Constants.PLAYER_MAX_STAMINA;
     }
 
     public void setStamina(int stamina) {
         if (stamina < 0)
             this.stamina = 0;
-        else if (stamina > 1000)
-            this.stamina = 1000;
+        else if (stamina > Constants.PLAYER_MAX_STAMINA)
+            this.stamina = Constants.PLAYER_MAX_STAMINA;
         else
             this.stamina = stamina;
     }
@@ -158,15 +153,21 @@ public class Player extends Entity {
     }
 
     public int getScore() {
-        if(score < 0){
+        if (score < 0) {
             return 0;
-        }else {
+        } else {
             return score;
         }
     }
 
     public void addScore(int score) {
         this.score += score;
+    }
+
+    public void addHealth(int health) {
+        this.health += health;
+        if (this.health > getMaxHealth())
+            this.health = getMaxHealth();
     }
 
     public void reset() {

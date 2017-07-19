@@ -31,26 +31,24 @@ public class LevelView extends AbstractView implements Runnable {
     private JButton continueButton;
     private JLabel messageLabel;
     private JLabel scoreLabel;
-    private final Stroke strichel;
 
     private boolean running;
     private boolean paused;
-    private int ups = 60, fps = 60;
+    private int ups = 0, fps = 0;
 
     LevelView(Level level) {
         this.level = level;
         player = new Player(LobbyView.getInstance().getWidth() / 2, Constants.GROUND_LEVEL);
-        camera = new Camera(player, 0, 0, getWidth(), getHeight());
+        camera = new Camera(player, this);
         keyHandler = new KeyHandler(player);
         lawMaster = new LawMaster();
         collisionHandler = new CollisionHandler(player, level, keyHandler);
         aiManager = new AIManager(collisionHandler);
         renderer = new Renderer(level, camera, player, keyHandler, this);
-        addKeyListener(keyHandler);
-        strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
 
-        setIgnoreRepaint(true);
         setLayout(new BorderLayout());
+        setIgnoreRepaint(true);
+        addKeyListener(keyHandler);
         initPauseMenu();
     }
 
@@ -61,24 +59,26 @@ public class LevelView extends AbstractView implements Runnable {
         int updateCount = 0;
         int frameCount = 0;
 
-        final double TIME_PER_UPDATE = 1000000000 / Constants.UPDATE_CLOCK;
-        double lastTime = System.nanoTime();
-        double secondTime = 0;
-        double lag = 0;
+        final int TIME_PER_UPDATE = 1_000_000_000 / Constants.UPDATE_CLOCK;
+        long lastTime = System.nanoTime();
+        int secondTime = 0;
+        int lag = 0;
+
         while (running) {
             if (!paused) {
-                double currentTime = System.nanoTime();
-                double elapsedTime = currentTime - lastTime;
+                long currentTime = System.nanoTime();
+                long elapsedTime = currentTime - lastTime;
                 lastTime = currentTime;
                 lag += elapsedTime;
                 secondTime += elapsedTime;
 
-                if (secondTime > 1000000000) {
+                if (secondTime > 1_000_000_000) {
                     ups = updateCount;
                     fps = frameCount;
                     secondTime = 0;
                     updateCount = 0;
                     frameCount = 0;
+                    System.out.println("Active threads: " + Thread.activeCount());
                 }
 
                 while (lag >= TIME_PER_UPDATE) {
@@ -91,7 +91,7 @@ public class LevelView extends AbstractView implements Runnable {
                 frameCount++;
 
                 // Theoretisch VSync - is aber bissl laggy :(
-                /*while (System.nanoTime() - currentTime < 1000000000 / 60) {
+                /*while (System.nanoTime() - currentTime < 1_000_000_000 / 60) {
                     Thread.yield();
                     try {
                         Thread.sleep(1);
@@ -113,18 +113,18 @@ public class LevelView extends AbstractView implements Runnable {
     private void update() {
         // 1. Reset
         player.reset();
-        camera.setRect(player.getX() - getWidth() / 2, camera.getY(), camera.getWidth(), camera.getHeight());
 
         // 2. Input Handling
         keyHandler.process();
 
-        // 3. General Gravitation TODO Gravitation für jedermann
+        // 3. General Gravitation
         lawMaster.applyGravitation(player);
         for (Enemy enemy : level.getEnemies())
             lawMaster.applyGravitation(enemy);
 
         // 4. Ausdauerverbrauch
-        lawMaster.updateStamina(player, keyHandler);
+        lawMaster.updateStamina(player);
+        lawMaster.regenerate(player);
 
         // 5. Kollision - zuerst in x- dann in y-Richtung
         collisionHandler.forPlayer();
@@ -133,7 +133,7 @@ public class LevelView extends AbstractView implements Runnable {
         aiManager.handleAI(level, player);
 
         // 6. Score reduzieren
-        if(Math.random()<0.005){
+        if (Math.random() < 0.005) {
             player.addScore(-1);
         }
 
@@ -151,18 +151,21 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (keyHandler.menu || player.isDead() || (player.getX() + getWidth() / 2 > level.getLength() && player.getY() < 1000)) {
             if (!keyHandler.menu) {
-                if (player.isDead())
+                SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
+                SoundUtil.soundSystem.cull(SoundUtil.MUSIC_SOURCE);
+                if (player.isDead()) {
                     messageLabel.setText("Du bist tot.");
-                else {
+                    SoundUtil.playEffect("death");
+                } else {
                     player.addScore(level.getBasescore());
                     messageLabel.setText("Du hast gewonnen!");
+                    SoundUtil.playEffect("victory");
                 }
                 messageLabel.setVisible(true);
                 scoreLabel.setText("Score: " + player.getScore());
                 scoreLabel.setVisible(true);
                 continueButton.setVisible(false);
                 running = false;
-                SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
                 try {
                     String date = new SimpleDateFormat("#yyyy-MM-dd#").format(new java.util.Date());
                     String query = String.format("SELECT * FROM %s WHERE %s = '%s';",
@@ -286,6 +289,10 @@ public class LevelView extends AbstractView implements Runnable {
             running = false;
             SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
             SoundUtil.soundSystem.cull(SoundUtil.MUSIC_SOURCE);
+            SoundUtil.soundSystem.stop("death");
+            SoundUtil.soundSystem.cull("death");
+            SoundUtil.soundSystem.stop("victory");
+            SoundUtil.soundSystem.cull("victory");
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
 

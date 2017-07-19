@@ -88,18 +88,14 @@ class Renderer {
     }
 
     void drawBackground(Graphics2D g2) {
-        g2.setColor(Color.WHITE);
         try {
             BufferedImage image = ImageUtil.getImage(level.getBackgroundFilePath());
 
-            // Relation von Breite zu Höhe
-            double rel = (double) view.getWidth() / (double) view.getHeight();
+            double k = view.getHeight() / (double) image.getHeight(); // Skalierungsfaktor
+            int width = (int) (k * image.getWidth());
+            int height = view.getHeight();
 
-            int width = image.getWidth(null);
-            int height = image.getHeight(null);
-            double factor = view.getHeight() / (double) height; // Skalierungsfaktor
-
-            g2.drawImage(image, -(int) camera.getX(), 0, (int) (width * factor), (int) (height * factor), null);
+            g2.drawImage(image, -(int) camera.getX(), 0, width, height, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -134,13 +130,15 @@ class Renderer {
                 }
 
                 {
-                    Color backup = g2.getColor();
-                    g2.setColor(Color.GREEN);
-                    int x = (int) (enemy.getHitbox().getX() - camera.getX());
-                    int y = (int) (enemy.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
-                    g2.fillRect(x, y, (int) ((double) enemy.getHealth() / enemy.getMaxHealth() * enemy.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
-                    g2.setColor(backup);
-                    g2.drawRect(x, y, (int) enemy.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+                    if (enemy.paintHealth()) {
+                        Color backup = g2.getColor();
+                        g2.setColor(Color.GREEN);
+                        int x = (int) (enemy.getHitbox().getX() - camera.getX());
+                        int y = (int) (enemy.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
+                        g2.fillRect(x, y, (int) ((double) enemy.getHealth() / enemy.getMaxHealth() * enemy.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
+                        g2.setColor(backup);
+                        g2.drawRect(x, y, (int) enemy.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+                    }
                 }
 
                 if (keyHandler.debug) {
@@ -159,31 +157,22 @@ class Renderer {
 
     void drawEnemySwords(Graphics2D g2) {
         for (Enemy enemy : level.getEnemies()) {
-            try {
-                BufferedImage image = ImageUtil.getImage(enemy.getSwordImagePath(enemy.isAttack()));
+            if (enemy.hasSword()) {
+                try {
+                    BufferedImage image = ImageUtil.getImage(enemy.getWeaponImagePath(enemy.isAttacking()));
 
-                int x = (int) (enemy.getSword().getX() - camera.getX()); // - image.getWidth() / 2
-                int y = (int) (enemy.getSword().getY());
+                    int x = (int) (enemy.getWeapon().getX() - camera.getX()); // - image.getWidth() / 2
+                    int y = (int) (enemy.getWeapon().getY());
 
-                if (enemy.getViewingDirection().equals(Direction.RIGHT))
-                    g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);
-                else
-                    g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), null);
+                    if (enemy.getViewingDirection().equals(Direction.RIGHT))
+                        g2.drawImage(image, x, y, image.getWidth(), image.getHeight(), null);
+                    else
+                        g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), null);
 
-                if (keyHandler.debug) {
-                    Stroke originalStroke = g2.getStroke();
-                    g2.setStroke(strichel);
-                    Rectangle2D.Double rect = new Rectangle2D.Double(enemy.getSword().getX(), enemy.getSword().getY(),
-                            enemy.getSword().getWidth(), enemy.getSword().getHeight());
-                    g2.draw(rect);
-                    g2.setStroke(originalStroke);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-
-            //enemy.setAttack(false);
         }
     }
 
@@ -215,7 +204,7 @@ class Renderer {
         g2.fill(staminaMask);
         g2.setColor(Color.WHITE);
         g2.draw(staminaBorder);
-        g2.setColor(Color.BLACK);
+        g2.setColor(new Color(34, 62, 98));
         g2.fill(staminaBar);
         g2.setColor(Color.WHITE);
         Font backup = g2.getFont();

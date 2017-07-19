@@ -61,7 +61,7 @@ class HighscoresView extends AbstractView {
             trophyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             fancyCollumPanel.add(trophyLabel);
 
-            //Setzt jetzt die Border der Spalten-Überschriften entsprechend, um für Höhe des Bildes zu kompensieren. (15/2 kompensiert für texthöhe. unschön, wissen wir ....)
+            //Setzt jetzt die Border der Spalten-Überschriften entsprechend, um für Höhe des Bildes zu kompensieren
             listCollumHeaderBorder = BorderFactory.createEmptyBorder(trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0, trophyImage.getIconHeight() / 2 - Constants.DEFAULT_FONT.getSize() / 2, 0);
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,7 +156,9 @@ class HighscoresView extends AbstractView {
             highScoreSet.close(); // gaaanz wichtig!!
         } catch (Exception e) {
             e.printStackTrace();
-            listTopLevelPanel.add(new JLabel("HOPPLA! Da ist wohl was schief gegangen :/"), constraints);
+            JLabel fail = new JLabel("HOPPLA! Da ist wohl was schief gegangen :/");
+            fail.setForeground(Constants.FOREGROUND_COLOR);
+            listTopLevelPanel.add(fail, constraints);
         }
         return listTopLevelPanel;
     }
