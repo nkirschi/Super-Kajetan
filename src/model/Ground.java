@@ -18,7 +18,7 @@ public class Ground implements Collidable {
     private Image image;
 
     public enum Type {
-        SOIL, GRASS, ROCK
+        SOIL, GRASS, ROCK, SAND, GRAVEL
     }
 
     private Rectangle2D.Double hitbox;
@@ -58,6 +58,12 @@ public class Ground implements Collidable {
                     break;
                 case GRASS:
                     path += "soil.png";
+                    break;
+                case SAND:
+                    path += "sand.png";
+                    break;
+                case GRAVEL:
+                    path += "gravel.png";
                     break;
             }
 

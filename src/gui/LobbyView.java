@@ -151,7 +151,7 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(2000, 200, 80, Ground.Type.ROCK));
         grounds.add(new Ground(2200, 200, 60, Ground.Type.GRASS));
         grounds.add(new Ground(2400, 200, 40, Ground.Type.SOIL));
-        grounds.add(new Ground(2600, 200, 20, Ground.Type.ROCK));
+        grounds.add(new Ground(2600, 200, 20, Ground.Type.SAND));
         grounds.add(new Ground(3100, 800, 33, Ground.Type.ROCK));
         grounds.add(new Ground(3700, 400, 100, Ground.Type.GRASS));
         grounds.add(new Ground(4200, 600, 150, Ground.Type.SOIL));
