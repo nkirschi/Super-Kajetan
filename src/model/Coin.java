@@ -5,8 +5,6 @@ import util.SoundUtil;
 
 import java.awt.geom.Rectangle2D;
 
-import static logic.Behavior.COIN;
-
 public class Coin extends Enemy {
     private final double COIN_WIDTH = 78;
     private final double COIN_HEIGHT = 90;

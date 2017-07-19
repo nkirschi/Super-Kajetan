@@ -134,11 +134,11 @@ public class AIManager {
                         enemy.suffer(1);
                     break;
                 case ADMIN:
-                    int count=0;
-                    for (Enemy e : level.getEnemies()){
+                    int count = 0;
+                    for (Enemy e : level.getEnemies()) {
                         count++;
                     }
-                    if (count==1) {
+                    if (count == 1) {
                         for (int i = 0; i < /*(int) (Math.random() * 3 + 3)*/5; i++) {
                             switch ((int) (Math.random() * 2)) {
                                 case 0:

@@ -292,16 +292,8 @@ public class SettingsView extends AbstractView {
         return musicVolume;
     }
 
-    public void setMusicVolume(float f) {
-        musicVolume = f;
-    }
-
     public float getEffectVolume() {
         return effectVolume;
-    }
-
-    public void setEffectVolume(float effectVolume) {
-        this.effectVolume = effectVolume;
     }
 
     public boolean getAltControlMode() {

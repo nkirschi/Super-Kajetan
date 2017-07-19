@@ -63,7 +63,6 @@ public abstract class Entity implements Collidable {
 
     /**
      * @param damage Hinzuzufügender Schaden
-     * @return Wahrheitswert, ob entity noch lebt.
      */
     public void suffer(int damage) {
         health -= damage;

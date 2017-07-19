@@ -98,15 +98,6 @@ public class MainFrame extends JFrame implements WindowListener {
     }
 
     /**
-     * Getter-Methode für die aktuelle Ansicht
-     *
-     * @return Momentan aktive Ansicht
-     */
-    public AbstractView getCurrentView() {
-        return currentView;
-    }
-
-    /**
      * Hilfsmethode für die Menü-Konstanten
      *
      * @return Dimension des Frames
