@@ -49,7 +49,7 @@ class CreditsView extends AbstractView {
         nameConstraints.insets = new Insets(5, 0, 5, 0);
         Font nameFont = Constants.DEFAULT_FONT.deriveFont(24F);
 
-        //Jetzt kommt dass eigentliche -> Titel und Namen
+        //Jetzt kommt dass eigentliche -> Namen
         //Namen ...
         JLabel niko = new JLabel("Nikolas Kirschstein");
         niko.setFont(nameFont);

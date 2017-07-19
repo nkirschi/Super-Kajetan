@@ -169,15 +169,6 @@ class Renderer {
                     else
                         g2.drawImage(image, x + image.getWidth(), y, -image.getWidth(), image.getHeight(), null);
 
-                    if (keyHandler.debug) {
-                        Stroke originalStroke = g2.getStroke();
-                        g2.setStroke(strichel);
-                        Rectangle2D.Double rect = new Rectangle2D.Double(enemy.getSword().getX(), enemy.getSword().getY(),
-                                enemy.getSword().getWidth(), enemy.getSword().getHeight());
-                        g2.draw(rect);
-                        g2.setStroke(originalStroke);
-                    }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

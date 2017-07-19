@@ -1,7 +1,5 @@
 package model;
 
-import util.Constants;
-
 import java.awt.geom.Rectangle2D;
 
 public class Player extends Entity {
@@ -102,31 +100,26 @@ public class Player extends Entity {
     public String getImagePath() {
         if (crouching) {
             if (walkCount < 25)
-                return Constants.PLAYER_CROUCH_1_IMAGE_PATH;
+                return "images/char/char_walk_crouch_1.png";
             else {
                 if (walkCount >= 50)
                     walkCount = 0;
-                return Constants.PLAYER_CROUCH_2_IMAGE_PATH;
+                return "images/char/char_walk_crouch_2.png";
             }
         }
         if (jumping)
-            return Constants.PLAYER_JUMP_IMAGE_PATH;
+            return "images/char/char_jump.png";
         if (walking) {
             if (walkCount < 25)
-                return Constants.PLAYER_WALK_1_IMAGE_PATH;
+                return "images/char/char_walk_1.png";
             else {
                 if (walkCount >= 50)
                     walkCount = 0;
-                return Constants.PLAYER_WALK_2_IMAGE_PATH;
+                return "images/char/char_walk_2.png";
             }
         }
-        return Constants.PLAYER_STAND_IMAGE_PATH;
+        return "images/char/char_stand.png";
     }
-
-    public String getImagePathSword() {
-        return Constants.PLAYER_WEAPON_IMAGE_PATH;
-    }
-
 
     public double getStamina() {
         return stamina;

@@ -36,11 +36,9 @@ public class Coin extends Enemy {
     }
 
     @Override
-    public boolean suffer(int damage) {
+    public void suffer(int damage) {
         health -= damage;
         new Thread(() -> SoundUtil.playEffect("coin")).start();
-
-        return health > 0;
     }
 
     @Override

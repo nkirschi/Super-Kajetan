@@ -5,9 +5,6 @@ import util.Constants;
 
 import static logic.Behavior.ATTACK;
 
-/**
- * Created by Max on 11.07.2017.
- */
 public class AIManager {
     CollisionHandler collisionHandler;
     private int patrolCount;

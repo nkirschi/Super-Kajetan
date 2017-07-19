@@ -35,12 +35,6 @@ public abstract class Entity implements Collidable {
         hitbox.setRect(hitbox.getX() + velocityX, hitbox.getY() + velocityY, hitbox.getWidth(), hitbox.getHeight());
     }
 
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
-        hitbox.setRect(x - hitbox.getWidth() / 2, y - hitbox.getHeight(), hitbox.getWidth(), hitbox.getHeight());
-    }
-
     public double getX() {
         return x;
     }
@@ -71,11 +65,9 @@ public abstract class Entity implements Collidable {
      * @param damage Hinzuzufügender Schaden
      * @return Wahrheitswert, ob entity noch lebt.
      */
-    public boolean suffer(int damage) {
+    public void suffer(int damage) {
         health -= damage;
         new Thread(() -> SoundUtil.playEffect("hit")).start();
-
-        return health > 0;
     }
 
     public int getStrength() {
@@ -148,10 +140,6 @@ public abstract class Entity implements Collidable {
 
     public void addVelocityY(double velocityY) {
         this.velocityY += velocityY;
-    }
-
-    public void mulitplyVelocityY(double factor) {
-        velocityY *= factor;
     }
 
     public void setVelocityY(double velocityY) {
