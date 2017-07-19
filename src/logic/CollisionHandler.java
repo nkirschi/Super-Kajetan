@@ -1,6 +1,7 @@
 package logic;
 
 import gui.KeyHandler;
+import model.Coin;
 import model.Enemy;
 import model.Level;
 import model.Player;
@@ -27,6 +28,10 @@ public class CollisionHandler {
         dummy.move();
         for (Collidable collidable : collidables) {
             if (dummy.collidesWith(collidable)) {
+                if (collidable instanceof Coin) {
+                    player.addScore(((Coin) collidable).getWorthiness());
+                    break;
+                }
                 if (player.getVelocityX() > 0) {
                     player.setX(collidable.getHitbox().getX() - player.getHitbox().getWidth() / 2);
                 } else if (player.getVelocityX() < 0) {
@@ -44,6 +49,10 @@ public class CollisionHandler {
         dummy.move();
         for (Collidable collidable : collidables) {
             if (dummy.collidesWith(collidable)) {
+                if (collidable instanceof Coin) {
+                    player.addScore(((Coin) collidable).getWorthiness());
+                    break;
+                }
                 if (player.getVelocityY() > 0) {
                     player.setY(collidable.getHitbox().getY());
                     player.setVelocityY(0);
