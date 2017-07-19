@@ -26,7 +26,7 @@ public class LawMaster {
     }
 
     public void regenerate(Player player) {
-        if (player.getStamina() >= 300 && !player.isRunning() && !player.isJumping())
+        if (player.getStamina() >= 300 && !player.isWalking() && !player.isRunning() && !player.isJumping() && player.isCrouching())
             player.addHealth(1);
     }
 
