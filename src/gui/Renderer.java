@@ -204,7 +204,7 @@ class Renderer {
         g2.fill(staminaMask);
         g2.setColor(Color.WHITE);
         g2.draw(staminaBorder);
-        g2.setColor(Color.BLACK);
+        g2.setColor(new Color(34, 62, 98));
         g2.fill(staminaBar);
         g2.setColor(Color.WHITE);
         Font backup = g2.getFont();
