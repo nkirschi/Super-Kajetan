@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Constants {
     public static final String GAME_TITLE = "Super Kajetan";
-    public static final String GAME_VERSION = "Alpha v1.1.2_01";
+    public static final String GAME_VERSION = "Beta 1.1.0";
 
     // GUI
     public static final Color MENU_BACKGROUND_COLOR = new Color(109, 119, 131);
