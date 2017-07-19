@@ -12,6 +12,7 @@ import java.io.IOException;
  * Modellklasse für Bodenelemente
  * Denkbar wären z.B. Grasboden, Steinboden, Wasserboden (Tod bei Berührung)
  */
+
 public class Ground implements Collidable {
     private double x, y;
     private Ground.Type type;

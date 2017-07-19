@@ -162,15 +162,19 @@ class LobbyView extends AbstractView {
 
     private Level createLevel2() {
         List<Enemy> enemies = new List<>();
-        enemies.add(new Knight(1700, 660, Behavior.ATTACK, Direction.LEFT));
+        //enemies.add(new Knight(1700, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Knight(1500, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Skeleton(2800, 620, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Coin(3700, 342));
         enemies.add(new Skeleton(4500, 440, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Skeleton(4700, 312, Behavior.GUARD, Direction.LEFT));
-        enemies.add(new Knight(6100, 660, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Knight(5900, 660, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Coin(6600, 342));
+        enemies.add(new Knight(7800, 690, Behavior.ATTACK, Direction.LEFT));
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Crate(130, 700));
         obstacles.add(new Barrel(130, 572));
+        obstacles.add(new Barrel(1750, 660));
         obstacles.add(new Crate(3100, 620));
         obstacles.add(new Barrel(3450, 700));
         obstacles.add(new Crate(3700, 470));
@@ -180,30 +184,34 @@ class LobbyView extends AbstractView {
         obstacles.add(new Crate(6122, 660));
         obstacles.add(new Crate(6600, 470));
         obstacles.add(new Crate(6950, 590));
+        obstacles.add(new Barrel(8300, 700));
         List<Ground> grounds = new List<>();
-        grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));
-        grounds.add(new Ground(1600, 1000, 80, Ground.Type.GRASS));
-        grounds.add(new Ground(2400, 600, 100, Ground.Type.SOIL));
         grounds.add(new Ground(2800, 900, 120, Ground.Type.ROCK));
+        grounds.add(new Ground(2250, 300, 100, Ground.Type.SOIL));
+        grounds.add(new Ground(1625, 1050, 80, Ground.Type.GRASS));
+        grounds.add(new Ground(450, 1400, 40, Ground.Type.GRASS));
+
         grounds.add(new Ground(3250, 100, 100, Ground.Type.SOIL));
         grounds.add(new Ground(3350, 50, 80, Ground.Type.SOIL));
         grounds.add(new Ground(3450, 50, 40, Ground.Type.SOIL));
         grounds.add(new Ground(4500, 700, 300, Ground.Type.ROCK));
         grounds.add(new Ground(4150, 150, 260, Ground.Type.SOIL));
         grounds.add(new Ground(4050, 50, 100, Ground.Type.SOIL));
-        grounds.add(new Ground(4900, 400, 40, Ground.Type.ROCK));
+
+        grounds.add(new Ground(5000, 300, 40, Ground.Type.ROCK));
         grounds.add(new Ground(5200, 200, 60, Ground.Type.SOIL));
         grounds.add(new Ground(5300, 100, 20, Ground.Type.SOIL));
         grounds.add(new Ground(6000, 800, 80, Ground.Type.GRASS));
         grounds.add(new Ground(5600, 100, 40, Ground.Type.SOIL));
         grounds.add(new Ground(6400, 100, 40, Ground.Type.SOIL));
+
         grounds.add(new Ground(6950, 150, 150, Ground.Type.ROCK));
         grounds.add(new Ground(6875, 50, 50, Ground.Type.ROCK));
-        grounds.add(new Ground(7125, 200, 90, Ground.Type.ROCK));
-        grounds.add(new Ground(7300, 200, 70, Ground.Type.SOIL));
-        grounds.add(new Ground(7700, 600, 50, Ground.Type.GRASS));
-        grounds.add(new Ground(8100, 200, 40, Ground.Type.GRASS));
-        grounds.add(new Ground(10000, 3400, 10, Ground.Type.ROCK)); // Ebene auf der das Level ergänzt werden kann
+        grounds.add(new Ground(7200, 450, 90, Ground.Type.ROCK));
+        grounds.add(new Ground(7500, 250, 70, Ground.Type.SOIL));
+        grounds.add(new Ground(7825, 500, 50, Ground.Type.GRASS));
+        grounds.add(new Ground(8250, 450, 40, Ground.Type.SAND));
+        grounds.add(new Ground(10000, 3400, 10, Ground.Type.ROCK)); // Ebene, auf der das Level ergänzt werden kann
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
     }
