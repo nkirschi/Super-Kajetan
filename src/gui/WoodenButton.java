@@ -1,11 +1,12 @@
 package gui;
 
-import paulscode.sound.SoundSystemConfig;
 import util.Constants;
 import util.SoundUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -20,9 +21,12 @@ public class WoodenButton extends JButton {
         setBorderPainted(true);
 
         //Buttonsound
-        SoundUtil.soundSystem.newSource(false, "buttonclick", ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
-                "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        addActionListener(a -> util.SoundUtil.playEffect("buttonclick"));
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+                SoundUtil.playEffect("buttonclick");
+            }
+        });
     }
 
     @Override
