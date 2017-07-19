@@ -30,6 +30,8 @@ public class CollisionHandler {
             if (dummy.collidesWith(collidable)) {
                 if (collidable instanceof Coin) {
                     player.addScore(((Coin) collidable).getWorthiness());
+                    level.getEnemies().remove((Coin) collidable);
+                    collidables.remove(collidable);
                     break;
                 }
                 if (player.getVelocityX() > 0) {
@@ -51,6 +53,7 @@ public class CollisionHandler {
             if (dummy.collidesWith(collidable)) {
                 if (collidable instanceof Coin) {
                     player.addScore(((Coin) collidable).getWorthiness());
+                    level.getEnemies().remove((Coin) collidable);
                     break;
                 }
                 if (player.getVelocityY() > 0) {
