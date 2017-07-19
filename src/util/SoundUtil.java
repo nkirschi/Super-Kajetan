@@ -29,16 +29,12 @@ public class SoundUtil {
         soundSystem = new SoundSystem();
 
         //Quellen für jeden Sound
-        soundSystem.newSource(false, "buttonclick", ClassLoader.getSystemResource("sounds/buttonclick.ogg"),
-                "buttonclick.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        soundSystem.newSource(true, "sword_attack", ClassLoader.getSystemResource("sounds/sword_attack.ogg"),
-                "sword_attack.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        soundSystem.newSource(true, "hit", ClassLoader.getSystemResource("sounds/hit.ogg"),
-                "hit.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        soundSystem.newSource(false, "coin", ClassLoader.getSystemResource("sounds/coin.ogg"),
-                "coin.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
-        soundSystem.newSource(false, "death", ClassLoader.getSystemResource("sounds/death.ogg"),
-                "death.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
+        register("buttonclick", "sounds/buttonclick.ogg", "buttonclick.ogg");
+        register("sword_attack", "sounds/sword_attack.ogg", "sword_attack.ogg");
+        register("hit", "sounds/hit.ogg", "hit.ogg");
+        register("coin", "sounds/coin.ogg", "coin.ogg");
+        register("death", "sounds/death.ogg", "death.ogg");
+        register("victory", "sounds/victory.ogg", "victory.ogg");
     }
 
     public static void playRandomBackgroundMusic() {
@@ -81,5 +77,10 @@ public class SoundUtil {
         soundSystem.activate(sourcename);
         soundSystem.setVolume(sourcename, SettingsView.getInstance().getEffectVolume());
         soundSystem.play(sourcename);
+    }
+
+    private static void register(String sourcename, String soundPath, String identifier) {
+        soundSystem.newSource(false, sourcename, ClassLoader.getSystemResource(soundPath),
+                identifier, false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
     }
 }

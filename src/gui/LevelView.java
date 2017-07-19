@@ -157,6 +157,7 @@ public class LevelView extends AbstractView implements Runnable {
                 } else {
                     player.addScore(level.getBasescore());
                     messageLabel.setText("Du hast gewonnen!");
+                    SoundUtil.playEffect("victory");
                 }
                 messageLabel.setVisible(true);
                 scoreLabel.setText("Score: " + player.getScore());
@@ -287,6 +288,10 @@ public class LevelView extends AbstractView implements Runnable {
             running = false;
             SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
             SoundUtil.soundSystem.cull(SoundUtil.MUSIC_SOURCE);
+            SoundUtil.soundSystem.stop("death");
+            SoundUtil.soundSystem.cull("death");
+            SoundUtil.soundSystem.stop("victory");
+            SoundUtil.soundSystem.cull("victory");
             MainFrame.getInstance().changeTo(LobbyView.getInstance());
         });
 
