@@ -131,7 +131,11 @@ public class AIManager {
                     break;
             }
             collisionHandler.forEnemy(enemy);
+            if (System.nanoTime() - enemy.getLastAttackTime() > enemy.getMinTimeBetweenAttack() / 4) {
+                enemy.setAttack(false);
+            }
             enemy.move();
+
         }
     }
 

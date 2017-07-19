@@ -13,8 +13,6 @@ public class Enemy extends Entity implements Cloneable {
     protected long lastAttackTime; //Zeit des letzten Angriffs
     protected long minTimeBetweenAttack = 1500000000; //Zeit in ns zwischen zwei Angriffen (1 s = 1.000.000.000 ns)
 
-    protected final double SWORD_WIDTH = 128;
-    protected final double SWORD_HEIGHT = 128;
     protected Rectangle2D.Double sword;
     protected boolean attack;
 
@@ -73,6 +71,10 @@ public class Enemy extends Entity implements Cloneable {
     @Override
     public String getImagePath() {
         return "";
+    }
+
+    public String getSwordImagePath(boolean strike) {
+        return strike ? "images/sword/sword_giant_strike.png" : "images/sword/sword_giant.png";
     }
 
     protected int walkCount;

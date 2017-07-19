@@ -103,10 +103,6 @@ class Renderer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Nur ein Test :D
-        //ImageIcon icon = new ImageIcon(getClass().getResource("/images/backgrounds/background.gif"));
-        //g2.drawImage(icon.getImage(), 0, 0, view.getWidth(), view.getHeight(), null);
     }
 
     void drawGrounds(Graphics2D g2) {
@@ -164,10 +160,7 @@ class Renderer {
     void drawEnemySwords(Graphics2D g2) {
         for (Enemy enemy : level.getEnemies()) {
             try {
-                BufferedImage image = ImageUtil.getImage("images/sword/sword_giant.png");
-                if (enemy.isAttack()) {
-                    image = ImageUtil.getImage("images/sword/sword_giant_strike.png");
-                }
+                BufferedImage image = ImageUtil.getImage(enemy.getSwordImagePath(enemy.isAttack()));
 
                 int x = (int) (enemy.getSword().getX() - camera.getX()); // - image.getWidth() / 2
                 int y = (int) (enemy.getSword().getY());
@@ -185,16 +178,6 @@ class Renderer {
                     g2.draw(rect);
                     g2.setStroke(originalStroke);
                 }
-
-                //WIEDER RAUSNEHMEN
-                /*
-                if (player.getViewingDirection().equals(Direction.RIGHT)) {
-                    g2.drawImage(image, (int) (player.getSword().getX() - camera.getX()), (int) player.getSword().getY(), null);
-                } else {
-                    g2.drawImage(image, (int) (player.getSword().getX() + player.getSword().getWidth() - camera.getX()),
-                            (int) player.getSword().getY(),
-                            -image.getWidth(), image.getHeight(), null);
-                }*/
 
             } catch (IOException e) {
                 e.printStackTrace();

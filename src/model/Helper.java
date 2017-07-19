@@ -4,21 +4,25 @@ import logic.Behavior;
 
 import java.awt.geom.Rectangle2D;
 
-public class Skeleton extends Enemy {
-    private final double SKELETON_WIDTH = 90;
-    private final double SKELETON_HEIGHT = 160;
+/**
+ * Created by Max on 18.07.2017.
+ */
+
+public class Helper extends Enemy {
+    private final double HELPER_WIDTH = 90;
+    private final double HELPER_HEIGHT = 160;
 
     private final double SWORD_WIDTH = 128;
     private final double SWORD_HEIGHT = 128;
 
-    public Skeleton(double x, double y, Behavior behavior, Direction viewingDirection) {
+    public Helper(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
-        hitbox = new Rectangle2D.Double(x - SKELETON_WIDTH / 2, y - SKELETON_HEIGHT, SKELETON_WIDTH, SKELETON_HEIGHT);
+        hitbox = new Rectangle2D.Double(x - HELPER_WIDTH / 2, y - HELPER_HEIGHT, HELPER_WIDTH, HELPER_HEIGHT);
         viewingRange = 500;
-        attackRange = 100;
+        attackRange = 0;
         health = getMaxHealth();
-        worthiness = 5;
-        strength = 300;
+        worthiness = -1;
+        strength = 0;
         sword = new Rectangle2D.Double(x, y - hitbox.getHeight() + 5, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
@@ -34,7 +38,7 @@ public class Skeleton extends Enemy {
                 return "images/enemies/enemy_skeleton_walk_1.png";
             }
             else {
-                return "images/enemies/enemy_skeleton_walk_2.png";   
+                return "images/enemies/enemy_skeleton_walk_2.png";
             }
         }
         return "images/enemies/enemy_skeleton_walk_1.png";
@@ -50,7 +54,7 @@ public class Skeleton extends Enemy {
 
     @Override
     public String toString() {
-        return "Skeleton at " + super.toString();
+        return "Helper at " + super.toString();
     }
 
     @Override
