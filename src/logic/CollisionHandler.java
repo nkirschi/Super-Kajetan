@@ -76,6 +76,8 @@ public class CollisionHandler {
                     enemy.suffer(player.getStrength());
                     if (enemy.isDead())
                         player.addScore(enemy.getWorthiness());
+                    else if (enemy.getBehavior().equals(Behavior.GUARD))
+                        enemy.setBehavior(Behavior.ATTACK);
                 }
             }
 
