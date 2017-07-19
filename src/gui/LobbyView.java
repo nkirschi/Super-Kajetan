@@ -48,14 +48,14 @@ class LobbyView extends AbstractView {
         Font buttonFont = Constants.DEFAULT_FONT.deriveFont(24F);
         //Buttons für einzelne Lvl
         //Level 1
-        WoodenButton lvl1 = new WoodenButton("Level 1");
+        WoodenButton lvl1 = new WoodenButton("Metzger's Zorn");
         lvl1.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl1.setFont(buttonFont);
         lvl1.addActionListener(a -> loadLevel(createLevel1()));
         levelButtonPanel.add(lvl1, constraints);
 
         //Level 2
-        WoodenButton lvl2 = new WoodenButton("Level 2");
+        WoodenButton lvl2 = new WoodenButton("Pfad des Verderbens");
         lvl2.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl2.setFont(buttonFont);
         lvl2.addActionListener(a -> loadLevel(createLevel2()));
@@ -76,7 +76,7 @@ class LobbyView extends AbstractView {
         levelButtonPanel.add(lvl4, constraints);
 
         //Level 4
-        WoodenButton lvl5 = new WoodenButton("Test-Level");
+        WoodenButton lvl5 = new WoodenButton("Schnelles Glück");
         lvl5.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl5.setFont(buttonFont);
         lvl5.addActionListener(a -> loadLevel(createLevel5()));
