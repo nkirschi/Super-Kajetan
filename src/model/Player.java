@@ -87,7 +87,7 @@ public class Player extends Entity {
 
     @Override
     public void setCrouching(boolean crouching) {
-        double crouchingDelta = 53;
+        double crouchingDelta = 501;
         if (crouching && !this.crouching) {
             hitbox.setRect(hitbox.x, hitbox.y + crouchingDelta, hitbox.width, hitbox.height - crouchingDelta);
         } else if (!crouching && this.crouching) {
