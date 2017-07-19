@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
@@ -145,12 +146,30 @@ class LobbyView extends AbstractView {
     }
 
     private Level createLevel2() {
+        int rnd = ThreadLocalRandom.current().nextInt(1, 6);
         List<Enemy> enemies = new List<>();
+        for (int i = rnd; i>0; i--) {
+            if(rnd==1) {
+                enemies.add(new Knight(700, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if(rnd==2) {
+                enemies.add(new Knight(800, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if(rnd==3) {
+                enemies.add(new Knight(900, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if(rnd==4) {
+                enemies.add(new Knight(1000, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if(rnd==5) {
+                enemies.add(new Knight(1100, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+        }
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
-        grounds.add(new Ground(600, 1200, 20, Ground.Type.SOIL));
+        grounds.add(new Ground(1000, 2000, 20, Ground.Type.SOIL));
         grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
-        return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg",
+        return new Level(enemies, obstacles, grounds, "images/backgrounds/background3.jpg",
                 10);
     }
     
