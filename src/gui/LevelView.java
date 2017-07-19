@@ -117,7 +117,7 @@ public class LevelView extends AbstractView implements Runnable {
         // 2. Input Handling
         keyHandler.process();
 
-        // 3. General Gravitation TODO Gravitation für jedermann
+        // 3. General Gravitation
         lawMaster.applyGravitation(player);
         for (Enemy enemy : level.getEnemies())
             lawMaster.applyGravitation(enemy);
