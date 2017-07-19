@@ -151,8 +151,10 @@ public class LevelView extends AbstractView implements Runnable {
 
         if (keyHandler.menu || player.isDead() || (player.getX() + getWidth() / 2 > level.getLength() && player.getY() < 1000)) {
             if (!keyHandler.menu) {
-                if (player.isDead())
+                if (player.isDead()) {
                     messageLabel.setText("Du bist tot.");
+                    SoundUtil.playEffect("death");
+                }
                 else {
                     player.addScore(level.getBasescore());
                     messageLabel.setText("Du hast gewonnen!");

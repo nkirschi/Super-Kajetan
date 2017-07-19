@@ -37,6 +37,8 @@ public class SoundUtil {
                 "hit.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
         soundSystem.newSource(false, "coin", ClassLoader.getSystemResource("sounds/coin.ogg"),
                 "coin.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
+        soundSystem.newSource(false, "death", ClassLoader.getSystemResource("sounds/death.ogg"),
+                "death.ogg", false, 0F, 0F, 0F, SoundSystemConfig.ATTENUATION_NONE, 0F);
     }
 
     public static void playRandomBackgroundMusic() {
