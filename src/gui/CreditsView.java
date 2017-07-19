@@ -51,29 +51,29 @@ class CreditsView extends AbstractView {
 
         //Jetzt kommt dass eigentliche -> Namen
         //Namen ...
-        JLabel niko = new JLabel("Nikolas Kirschstein");
-        niko.setFont(nameFont);
-        niko.setForeground(Constants.FOREGROUND_COLOR);
-
-        JLabel maxi = new JLabel("Max Strohmeier");
-        maxi.setFont(nameFont);
-        maxi.setForeground(Constants.FOREGROUND_COLOR);
-
-        JLabel alex = new JLabel("Alexander Hammerl");
+        JLabel alex = new JLabel("User interfacing GUI Tinkerer: Alexander Hammerl");
         alex.setFont(nameFont);
         alex.setForeground(Constants.FOREGROUND_COLOR);
 
-        JLabel timm = new JLabel("Tim Mostert");
-        timm.setFont(nameFont);
-        timm.setForeground(Constants.FOREGROUND_COLOR);
+        JLabel bene = new JLabel("General Fixing and Trixing Chief: Benedikt Mödl");
+        bene.setFont(nameFont);
+        bene.setForeground(Constants.FOREGROUND_COLOR);
 
-        JLabel fabi = new JLabel("Fabian Weinelt");
+        JLabel maxi = new JLabel("Crazy Intelligence Professor: Max Strohmeier");
+        maxi.setFont(nameFont);
+        maxi.setForeground(Constants.FOREGROUND_COLOR);
+
+        JLabel niko = new JLabel("Dirty Engine Tuner: Nikolas Kirschstein");
+        niko.setFont(nameFont);
+        niko.setForeground(Constants.FOREGROUND_COLOR);
+
+        JLabel fabi = new JLabel("Stylish Level Buddy: Fabian Weinelt");
         fabi.setFont(nameFont);
         fabi.setForeground(Constants.FOREGROUND_COLOR);
 
-        JLabel bene = new JLabel("Benedikt Mödl");
-        bene.setFont(nameFont);
-        bene.setForeground(Constants.FOREGROUND_COLOR);
+        JLabel timm = new JLabel("Master of Design(aster): Tim Mostert");
+        timm.setFont(nameFont);
+        timm.setForeground(Constants.FOREGROUND_COLOR);
 
         //Hinzufügen der ganzen Labels (auf Reihenfolge und Constraints achten!)
         creditsPanel.add(alex, nameConstraints);
