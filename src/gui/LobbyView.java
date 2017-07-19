@@ -157,25 +157,24 @@ class LobbyView extends AbstractView {
         List<Enemy> enemies = new List<>();
         for (int i = rnd; i>0; i--) {
             if(rnd==1) {
-                enemies.add(new Knight(700, 700, Behavior.ATTACK, Direction.LEFT));
-            }
-            if(rnd==2) {
                 enemies.add(new Knight(800, 700, Behavior.ATTACK, Direction.LEFT));
             }
-            if(rnd==3) {
-                enemies.add(new Knight(900, 700, Behavior.ATTACK, Direction.LEFT));
-            }
-            if(rnd==4) {
+            if(rnd==2) {
                 enemies.add(new Knight(1000, 700, Behavior.ATTACK, Direction.LEFT));
             }
+            if(rnd==3) {
+                enemies.add(new Knight(1200, 700, Behavior.ATTACK, Direction.LEFT));
+            }
+            if(rnd==4) {
+                enemies.add(new Knight(14000, 700, Behavior.ATTACK, Direction.LEFT));
+            }
             if(rnd==5) {
-                enemies.add(new Knight(1100, 700, Behavior.ATTACK, Direction.LEFT));
+                enemies.add(new Knight(1600, 700, Behavior.ATTACK, Direction.LEFT));
             }
         }
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
-        grounds.add(new Ground(1000, 2000, 20, Ground.Type.SOIL));
-        grounds.add(new Ground(1400, 400, 60, Ground.Type.SOIL));
+        grounds.add(new Ground(5000, 10000, 20, Ground.Type.SOIL));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background3.png",
                 10);
     }
