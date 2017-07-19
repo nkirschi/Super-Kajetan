@@ -1,5 +1,7 @@
 package model;
 
+import util.Constants;
+
 import java.awt.geom.Rectangle2D;
 
 public class Player extends Entity {
@@ -21,9 +23,9 @@ public class Player extends Entity {
         velocityX = 0;
         velocityY = 0;
         health = getMaxHealth();
-        strength = 100;
+        strength = Constants.PLAYER_STRENGTH;
         onGround = true;
-        stamina = 1000;
+        stamina = Constants.PLAYER_MAX_STAMINA;
         viewingDirection = Direction.RIGHT;
         hitbox = new Rectangle2D.Double(x - PLAYER_WIDTH / 2, y - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
         sword = new Rectangle2D.Double(x + 3, y - hitbox.getHeight() - 7, SWORD_WIDTH, SWORD_HEIGHT);
@@ -61,7 +63,7 @@ public class Player extends Entity {
 
     @Override
     public int getMaxHealth() {
-        return 1000;
+        return Constants.PLAYER_MAX_HEALTH;
     }
 
     public Rectangle2D.Double getSword() {
@@ -129,15 +131,15 @@ public class Player extends Entity {
         this.stamina += stamina;
         if (this.stamina < 0)
             this.stamina = 0;
-        else if (this.stamina > 1000)
-            this.stamina = 1000;
+        else if (this.stamina > Constants.PLAYER_MAX_STAMINA)
+            this.stamina = Constants.PLAYER_MAX_STAMINA;
     }
 
     public void setStamina(int stamina) {
         if (stamina < 0)
             this.stamina = 0;
-        else if (stamina > 1000)
-            this.stamina = 1000;
+        else if (stamina > Constants.PLAYER_MAX_STAMINA)
+            this.stamina = Constants.PLAYER_MAX_STAMINA;
         else
             this.stamina = stamina;
     }

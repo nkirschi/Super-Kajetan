@@ -1,6 +1,7 @@
 package model;
 
 import logic.Behavior;
+import util.Constants;
 
 import java.awt.geom.Rectangle2D;
 
@@ -14,11 +15,12 @@ public class Skeleton extends Enemy {
     public Skeleton(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - SKELETON_WIDTH / 2, y - SKELETON_HEIGHT, SKELETON_WIDTH, SKELETON_HEIGHT);
-        viewingRange = 500;
-        attackRange = 145;
+        viewingRange = Constants.SKELETON_VIEWING_RANGE;
+        attackRange = Constants.SKELETON_ATTACK_RANGE;
+        minTimeBetweenAttack = Constants.SKELETON_ATTACK_INTERVAL;
         health = getMaxHealth();
-        worthiness = 10;
-        strength = 200;
+        worthiness = Constants.SKELETON_WORTHINESS;
+        strength = Constants.SKELETON_STRENGTH;
         weapon = new Rectangle2D.Double(x - 40, y - hitbox.getHeight() + 17, SPEAR_WIDTH, SPEAR_HEIGHT);
     }
 
@@ -46,7 +48,7 @@ public class Skeleton extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 200;
+        return Constants.SKELETON_MAX_HEALTH;
     }
 
     @Override

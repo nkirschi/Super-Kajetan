@@ -54,14 +54,43 @@ public class Constants {
     public static final int ALT_KEY_CROUCH = KeyEvent.VK_DOWN;
     public static final int ALT_KEY_STRIKE = KeyEvent.VK_SPACE;
 
-    //Balancing-Werte
+    //Balancing-Werte (Zur einfacheren Verwaltung hier vorzufinden)
+    //Player
+    public static final int PLAYER_MAX_HEALTH = 1000; //Leben
+    public static final int PLAYER_STRENGTH = 100; //Angriffsstärke
+    public static final double PLAYER_MAX_STAMINA = 1000; //Ausdauer
+
     //Knight
+    public static final int KNIGHT_MAX_HEALTH = 500; //Leben
+    public static final int KNIGHT_WORTHINESS = 7; //Wie viel Score man für das Töten bekommt
+    public static final double KNIGHT_VIEWING_RANGE = 1000; //Die Sichtweite des Gegners in px
+    public static final int KNIGHT_STRENGTH = 125; //Angriffsstärke
+    public static final double KNIGHT_ATTACK_RANGE = 200; //Die Angriffs-Reichweite des Gegners in px
+    public static final long KNIGHT_ATTACK_INTERVAL = (long) (1000000000 * 1.5); //Minimale Zeit zwischen Angriffen; der Teil hinter * ist in Sekunden
 
     //Skelett
+    public static final int SKELETON_MAX_HEALTH = 200;
+    public static final int SKELETON_WORTHINESS = 10;
+    public static final double SKELETON_VIEWING_RANGE = 500;
+    public static final int SKELETON_STRENGTH = 200;
+    public static final double SKELETON_ATTACK_RANGE = 145;
+    public static final long SKELETON_ATTACK_INTERVAL = (long) (1000000000 * 1.5);
 
     //Helper
+    public static final int HELPER_MAX_HEALTH = 200;
+    public static final int HELPER_WORTHINESS = -1;
+    public static final double HELPER_VIEWING_RANGE = 500;
+    public static final int HELPER_STRENGTH = 0;
+    public static final double HELPER_ATTACK_RANGE = 0;
+    public static final long HELPER_ATTACK_INTERVAL = (long) (1000000000 * 1.5);
 
     //Coin
+    public static final int COIN_MAX_HEALTH = 1;
+    public static final int COIN_WORTHINESS = 25;
+    public static final double COIN_VIEWING_RANGE = 0;
+    public static final int COIN_STRENGTH = 0;
+    public static final double COIN_ATTACK_RANGE = 0;
+    public static final long COIN_ATTACK_INTERVAL = (long) (1000000000 * 1.5);
 
     static {
         try {

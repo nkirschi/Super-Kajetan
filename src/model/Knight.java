@@ -1,6 +1,7 @@
 package model;
 
 import logic.Behavior;
+import util.Constants;
 
 import java.awt.geom.Rectangle2D;
 
@@ -14,11 +15,12 @@ public class Knight extends Enemy {
     public Knight(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - KNIGHT_WIDTH / 2, y - KNIGHT_HEIGHT, KNIGHT_WIDTH, KNIGHT_HEIGHT);
-        viewingRange = 1000;
-        attackRange = 200;
+        viewingRange = Constants.KNIGHT_VIEWING_RANGE;
+        attackRange = Constants.KNIGHT_ATTACK_RANGE;
+        minTimeBetweenAttack = Constants.KNIGHT_ATTACK_INTERVAL;
         health = getMaxHealth();
-        strength = 125;
-        worthiness = 7;
+        strength = Constants.KNIGHT_STRENGTH;
+        worthiness = Constants.KNIGHT_WORTHINESS;
         weapon = new Rectangle2D.Double(x, y - hitbox.getHeight() - 10, SWORD_WIDTH, SWORD_HEIGHT);
     }
 
@@ -30,7 +32,7 @@ public class Knight extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 500;
+        return Constants.KNIGHT_MAX_HEALTH;
     }
 
     @Override

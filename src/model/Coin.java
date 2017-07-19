@@ -1,6 +1,7 @@
 package model;
 
 import logic.Behavior;
+import util.Constants;
 import util.SoundUtil;
 
 import java.awt.geom.Rectangle2D;
@@ -12,11 +13,12 @@ public class Coin extends Enemy {
     public Coin(double x, double y) {
         super(x, y, Behavior.COIN, Direction.RIGHT);
         hitbox = new Rectangle2D.Double(x - COIN_WIDTH / 2, y - COIN_HEIGHT, COIN_WIDTH, COIN_HEIGHT);
-        viewingRange = 0;
-        attackRange = 0;
+        viewingRange = Constants.COIN_VIEWING_RANGE;
+        attackRange = Constants.COIN_ATTACK_RANGE;
+        minTimeBetweenAttack = Constants.COIN_ATTACK_INTERVAL;
         health = getMaxHealth();
-        worthiness = 25;
-        strength = 0;
+        worthiness = Constants.COIN_WORTHINESS;
+        strength = Constants.COIN_STRENGTH;
         paintWeapon = false;
         paintHealth = false;
     }
@@ -27,7 +29,7 @@ public class Coin extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 1;
+        return Constants.COIN_MAX_HEALTH;
     }
 
     @Override

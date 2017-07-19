@@ -1,6 +1,7 @@
 package model;
 
 import logic.Behavior;
+import util.Constants;
 
 import java.awt.geom.Rectangle2D;
 
@@ -12,11 +13,12 @@ public class Helper extends Enemy {
     public Helper(double x, double y, Behavior behavior, Direction viewingDirection) {
         super(x, y, behavior, viewingDirection);
         hitbox = new Rectangle2D.Double(x - HELPER_WIDTH / 2, y - HELPER_HEIGHT, HELPER_WIDTH, HELPER_HEIGHT);
-        viewingRange = 500;
-        attackRange = 0;
+        viewingRange = Constants.HELPER_VIEWING_RANGE;
+        attackRange = Constants.HELPER_ATTACK_RANGE;
+        minTimeBetweenAttack = Constants.HELPER_ATTACK_INTERVAL;
         health = getMaxHealth();
-        worthiness = -1;
-        strength = 0;
+        worthiness = Constants.HELPER_WORTHINESS;
+        strength = Constants.HELPER_STRENGTH;
         weapon = new Rectangle2D.Double(x, y - hitbox.getHeight() + 5, 0, 0);
     }
 
@@ -44,7 +46,7 @@ public class Helper extends Enemy {
 
     @Override
     public int getMaxHealth() {
-        return 200;
+        return Constants.HELPER_MAX_HEALTH;
     }
 
     @Override
