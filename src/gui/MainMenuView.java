@@ -11,6 +11,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import java.awt.*;
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 
 class MainMenuView extends AbstractView {
     private static MainMenuView instance;
@@ -167,5 +168,30 @@ class MainMenuView extends AbstractView {
         int x = (getWidth() - (int) g.getFontMetrics().getStringBounds(Constants.GAME_TITLE, g).getWidth()) / 2;
         int y = (int) g.getFontMetrics().getStringBounds(Constants.GAME_TITLE, g).getHeight();
         g.drawString(Constants.GAME_TITLE, x, y);
+
+        // Trololol
+        double x0 = 160, y0 = 540;
+        double x1 = 160, y1 = 440;
+        double x2 = 80, y2 = 540;
+        double x3 = 240, y3 = 540;
+
+        for (int i = 0; i <= 7331; i++) {
+            g.drawLine((int) x0, (int) y0, (int) x0, (int) y0);
+
+            switch (ThreadLocalRandom.current().nextInt(3)) {
+                case 0:
+                    x0 += (x1 - x0) / 2;
+                    y0 += (y1 - y0) / 2;
+                    break;
+                case 1:
+                    x0 += (x2 - x0) / 2;
+                    y0 += (y2 - y0) / 2;
+                    break;
+                case 2:
+                    x0 += (x3 - x0) / 2;
+                    y0 += (y3 - y0) / 2;
+                    break;
+            }
+        }
     }
 }
