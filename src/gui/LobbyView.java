@@ -154,7 +154,7 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(2600, 200, 20, Ground.Type.SAND));
         grounds.add(new Ground(3100, 800, 33, Ground.Type.ROCK));
         grounds.add(new Ground(3700, 400, 100, Ground.Type.GRASS));
-        grounds.add(new Ground(4200, 600, 150, Ground.Type.SOIL));
+        grounds.add(new Ground(4200, 600, 150, Ground.Type.GRAVEL));
         grounds.add(new Ground(4600, 200, 200, Ground.Type.ROCK));
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background.png",
                 200);

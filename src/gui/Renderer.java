@@ -47,8 +47,9 @@ class Renderer {
         int x = (int) (player.getHitbox().getX() - camera.getX());
         int y = (int) (player.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
         g2.fillRect(x, y, (int) ((double) player.getHealth() / player.getMaxHealth() * player.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
-        g2.setColor(backup);
+        g2.setColor(Color.BLACK);
         g2.drawRect(x, y, (int) player.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+        g2.setColor(backup);
 
         if (keyHandler.debug) {
             Stroke originalStroke = g2.getStroke();
@@ -136,8 +137,9 @@ class Renderer {
                         int x = (int) (enemy.getHitbox().getX() - camera.getX());
                         int y = (int) (enemy.getHitbox().getY() - HEALTH_BAR_HEIGHT - 5);
                         g2.fillRect(x, y, (int) ((double) enemy.getHealth() / enemy.getMaxHealth() * enemy.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
-                        g2.setColor(backup);
+                        g2.setColor(Color.BLACK);
                         g2.drawRect(x, y, (int) enemy.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+                        g2.setColor(backup);
                     }
                 }
 

@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Knight extends Enemy {
     private final double KNIGHT_WIDTH = 90;
-    private final double KNIGHT_HEIGHT = 160;
+    private final double KNIGHT_HEIGHT = 169;
 
     private final double SWORD_WIDTH = 128;
     private final double SWORD_HEIGHT = 128;
