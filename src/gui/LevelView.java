@@ -153,6 +153,8 @@ public class LevelView extends AbstractView implements Runnable {
             if (!keyHandler.menu) {
                 SoundUtil.soundSystem.stop(SoundUtil.MUSIC_SOURCE);
                 SoundUtil.soundSystem.cull(SoundUtil.MUSIC_SOURCE);
+                player.setY(0);
+                player.getSword().setRect(0, 0, 0, 0);
                 if (player.isDead()) {
                     messageLabel.setText("Du bist tot.");
                     SoundUtil.playEffect("death");
@@ -205,7 +207,8 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 1. Background
         renderer.drawBackground(g2);
-        renderer.drawFinishCastle(g2);
+        if (running)
+            renderer.drawFinishCastle(g2);
 
         // 2. Grounds
 
@@ -224,7 +227,8 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 6. Stamina Bar & Score
         renderer.drawStaminaBar(g2);
-        renderer.drawScore(g2);
+        if (running)
+            renderer.drawScore(g2);
 
         // 7. Debug Screen
         if (keyHandler.debug) {
