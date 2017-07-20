@@ -104,7 +104,7 @@ public class CollisionHandler {
             if (collidable.equals(enemy))
                 continue;
             if (dummy.collidesWith(collidable)) {
-                if (!collidable.equals(player))
+                if (!collidable.equals(player) && !flyable(level, collidable))
                     if (collidable.getHitbox().getY() - enemy.getY() + collidable.getHitbox().getHeight() < 200) {
                         enemy.setVelocityY((collidable.getHitbox().getY() - enemy.getY()) / 10);
                         enemy.setY(enemy.getY() - 50);
@@ -146,5 +146,13 @@ public class CollisionHandler {
                 break;
             }
         }
+    }
+
+    public boolean flyable(Level level, Collidable collidable){ //fixt Bug, bei dem zwei Enemys hochflogen, indem sie aneinander laufen
+        for (Enemy e : level.getEnemies()) {
+            if ((collidable.equals(e) && e.getVelocityY()!=0))
+                return true;
+        }
+        return false;
     }
 }
