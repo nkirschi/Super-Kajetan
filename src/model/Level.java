@@ -7,11 +7,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Level {
-    private List<Enemy> enemies;
-    private List<Obstacle> obstacles;
-    private List<Ground> grounds; // Liste von Bodenelementen
-    private String backgroundFilePath;
-    private int basescore;
+    private final List<Enemy> enemies;
+    private final List<Obstacle> obstacles;
+    private final List<Ground> grounds; // Liste von Bodenelementen
+    private final String backgroundFilePath;
+    private final int basescore;
     private double length; // Länge des Levels in px
 
     public Level(List<Enemy> enemies, List<Obstacle> obstacles, List<Ground> grounds,

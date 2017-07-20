@@ -15,7 +15,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 class MainMenuView extends AbstractView {
     private static MainMenuView instance;
-    private GridBagConstraints constraints;
     private String currentName = "Ritter Kajetan";
 
     private MainMenuView() {
@@ -31,7 +30,7 @@ class MainMenuView extends AbstractView {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new GridBagLayout());
-        constraints = new GridBagConstraints();
+        GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(5, 0, 5, 0);

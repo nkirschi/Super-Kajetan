@@ -12,8 +12,8 @@ import java.util.Hashtable;
 
 public class SettingsView extends AbstractView {
     private static SettingsView instance;
-    private float maxVolume = 1F;
-    private float minVolume = 0F;
+    private final float maxVolume = 1F;
+    private final float minVolume = 0F;
 
     //Einstellungsvariablen
     private float musicVolume = (maxVolume + minVolume) / 2;
@@ -93,16 +93,21 @@ public class SettingsView extends AbstractView {
             musicVolume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_MUSIC_VOLUME));
             SoundUtil.soundSystem.setVolume(SoundUtil.MUSIC_SOURCE, musicVolume);
         } catch (Exception e) {
+            System.err.println("Error whilst setting music volume");
+            e.printStackTrace();
         }
 
         try {
             effectVolume = Float.parseFloat(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_EFFECT_VOLUME));
         } catch (Exception e) {
+            System.err.println("Error whilst setting effect volume");
+            e.printStackTrace();
         }
 
         try {
             alt_control = Boolean.parseBoolean(MainFrame.getInstance().getProperties().getProperty(Constants.PROPERTY_CONTROL_MODE));
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         //Lautstärke

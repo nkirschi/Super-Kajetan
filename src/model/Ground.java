@@ -15,14 +15,14 @@ import java.io.IOException;
 
 public class Ground implements Collidable {
     private double x, y;
-    private Ground.Type type;
+    private final Ground.Type type;
     private Image image;
 
     public enum Type {
         SOIL, GRASS, ROCK, SAND, GRAVEL
     }
 
-    private Rectangle2D.Double hitbox;
+    private final Rectangle2D.Double hitbox;
 
     public Ground(double x, double width, double height, Ground.Type type) {
         this.x = x;

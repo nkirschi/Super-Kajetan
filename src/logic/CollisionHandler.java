@@ -9,9 +9,9 @@ import util.List;
 import util.SoundUtil;
 
 public class CollisionHandler {
-    private Player player;
-    private Level level;
-    private KeyHandler keyHandler;
+    private final Player player;
+    private final Level level;
+    private final KeyHandler keyHandler;
     private boolean strikeHeld;
 
     public CollisionHandler(Player player, Level level, KeyHandler keyHandler) {

@@ -12,11 +12,11 @@ import java.io.IOException;
 class Renderer {
     private final int HEALTH_BAR_HEIGHT = 5;
 
-    private Level level;
-    private Camera camera;
-    private Player player;
-    private KeyHandler keyHandler;
-    private LevelView view;
+    private final Level level;
+    private final Camera camera;
+    private final Player player;
+    private final KeyHandler keyHandler;
+    private final LevelView view;
     private final Stroke strichel;
 
     Renderer(Level level, Camera camera, Player player, KeyHandler keyHandler, LevelView view) {
@@ -225,11 +225,11 @@ class Renderer {
     }
 
     void drawDebugScreen(Graphics2D g2) {
-        String debugInfo = view.getUps() + "\u2009u/s, " + view.getFps() + "\u2009fps";
-        g2.drawString(debugInfo, view.getWidth() - g2.getFontMetrics().stringWidth(debugInfo) - 20, 20);
-
         String s = Constants.GAME_TITLE + " " + Constants.GAME_VERSION;
         g2.drawString(s, view.getWidth() / 2 - g2.getFontMetrics().stringWidth(s) / 2, 20);
+
+        String perfData = view.getUps() + "\u2009u/s, " + view.getFps() + "\u2009fps";
+        g2.drawString(perfData, view.getWidth() - g2.getFontMetrics().stringWidth(perfData) - 20, 20);
 
         g2.drawString("@(" + player.getX() + "," + player.getY() + ")", 20, 20);
         g2.drawString("velocityX = " + player.getVelocityX(), 20, 40);

@@ -8,7 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class KeyHandler extends KeyAdapter {
-    private Player player;
+    private final Player player;
 
     public boolean left, right, run, jump, crouch, strike, menu, debug;
 
