@@ -192,6 +192,7 @@ public class LevelView extends AbstractView implements Runnable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                repaint();
             }
         }
     }
