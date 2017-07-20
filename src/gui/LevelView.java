@@ -192,6 +192,7 @@ public class LevelView extends AbstractView implements Runnable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                repaint();
             }
         }
     }
@@ -205,7 +206,8 @@ public class LevelView extends AbstractView implements Runnable {
 
         // 1. Background
         renderer.drawBackground(g2);
-        renderer.drawFinishCastle(g2);
+        if (running)
+            renderer.drawFinishCastle(g2);
 
         // 2. Grounds
 
@@ -219,12 +221,15 @@ public class LevelView extends AbstractView implements Runnable {
         renderer.drawObstacles(g2);
 
         // 5. Player
-        renderer.drawPlayer(g2);
-        renderer.drawSword(g2);
+        if (running) {
+            renderer.drawPlayer(g2);
+            renderer.drawSword(g2);
+        }
 
         // 6. Stamina Bar & Score
         renderer.drawStaminaBar(g2);
-        renderer.drawScore(g2);
+        if (running)
+            renderer.drawScore(g2);
 
         // 7. Debug Screen
         if (keyHandler.debug) {

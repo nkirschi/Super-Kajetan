@@ -27,6 +27,7 @@ public class MainFrame extends JFrame implements WindowListener {
      * das ganz am Anfang in der statischen main()-Methode erzeugt wird
      */
     private MainFrame() {
+        new Thread(SoundUtil::init).start();
         setTitle(Constants.GAME_TITLE + " " + Constants.GAME_VERSION);
         setSize(1024, 768);
         setResizable(false);
@@ -60,7 +61,6 @@ public class MainFrame extends JFrame implements WindowListener {
      * @param args Irrelevante Kommandozeilenparamter
      */
     public static void main(String[] args) {
-        SoundUtil.init();
         SwingUtilities.invokeLater(MainFrame::getInstance);
     }
 
@@ -105,7 +105,7 @@ public class MainFrame extends JFrame implements WindowListener {
      * Cleanup-Methode, die vor dem Beenden des Programms ausgeführt wird
      */
     void cleanupAndExit() {
-        SoundUtil.soundSystem.cleanup();
+        //SoundUtil.soundSystem.cleanup();
         System.exit(0);
     }
 

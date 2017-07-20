@@ -47,11 +47,8 @@ public class AIManager {
                             }
                             break;
                     }
-                    if (Math.abs(enemy.getY() - player.getY()) <= enemy.getHitbox().getHeight() / 2 + player.getHitbox().getHeight() / 2) {
-                        if (Math.abs(enemy.getX() - player.getX()) <= enemy.getHitbox().getWidth() / 2 + player.getHitbox().getWidth() / 2) {
-                            enemy.setBehavior(ATTACK);
-                        }
-                    }
+                    if (touch(enemy, player))
+                        enemy.setBehavior(ATTACK);
                     break;
                 case ATTACK:
                     //System.out.println("Ich bin AGRESSIV");
@@ -130,8 +127,10 @@ public class AIManager {
                     }
                     break;
                 case COIN:
-                    if (enemy.collidesWith(player))
+                    if (touch(enemy, player)) {
                         enemy.suffer(1);
+                        player.addScore(enemy.getWorthiness());
+                    }
                     break;
                 case ADMIN:
                     int count = 0;
@@ -178,6 +177,12 @@ public class AIManager {
 
     private double distance(Entity entity1, Entity entity2) {
         return Math.sqrt((entity1.getX() - entity2.getX()) * (entity1.getX() - entity2.getX()) + (entity1.getY() - entity2.getY()) * (entity1.getY() - entity2.getY()));
+    }
+    
+    private boolean touch(Entity entity1, Entity entity2){
+        if(Math.abs(entity1.getX()-entity2.getX()) <= entity1.getHitbox().getWidth()/2 + entity2.getHitbox().getWidth()/2 && Math.abs(entity1.getY()-entity2.getY()) <= entity1.getHitbox().getHeight()/2 + entity2.getHitbox().getHeight()/2)
+            return true;
+        return false;
     }
 
     private void moveLeft(Enemy enemy) {
