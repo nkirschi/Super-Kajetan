@@ -224,6 +224,7 @@ class Renderer {
     }
 
     void drawScore(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
         Font backup = g2.getFont();
         g2.setFont(Constants.DEFAULT_FONT.deriveFont(Font.BOLD, 24f));
         String s = "Score: " + player.getScore();
