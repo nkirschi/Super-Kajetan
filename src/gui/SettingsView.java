@@ -195,6 +195,7 @@ public class SettingsView extends AbstractView {
         controllLabel.setFont(labelFont);
         settingsPanel.add(controllLabel, constraints);
 
+        constraints.fill = GridBagConstraints.CENTER;
         constraints.gridwidth = GridBagConstraints.REMAINDER;
         controllCheckBox = new JCheckBox();
         controllCheckBox.setOpaque(false);
