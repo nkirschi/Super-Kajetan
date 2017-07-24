@@ -1,5 +1,5 @@
 package logic;
 
 public enum Behavior {
-    IDLE, PATROL, ELOPE, ATTACK, GUARD, COIN, ADMIN
+    IDLE, PATROL, ELOPE, ATTACK, GUARD, CROSS, ADMIN
 }

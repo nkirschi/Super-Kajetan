@@ -32,7 +32,7 @@ public class SoundUtil {
         register("buttonclick", "sounds/buttonclick.ogg", "buttonclick.ogg");
         register("sword_attack", "sounds/sword_attack.ogg", "sword_attack.ogg");
         register("hit", "sounds/hit.ogg", "hit.ogg");
-        register("coin", "sounds/coin.ogg", "coin.ogg");
+        register("cross", "sounds/cross.ogg", "cross.ogg");
         register("death", "sounds/death.ogg", "death.ogg");
         register("victory", "sounds/victory.ogg", "victory.ogg");
     }

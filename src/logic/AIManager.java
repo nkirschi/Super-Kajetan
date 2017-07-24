@@ -126,7 +126,7 @@ public class AIManager {
                         moveLeft(enemy);
                     }
                     break;
-                case COIN:
+                case CROSS:
                     if (touch(enemy, player)) {
                         enemy.suffer(1);
                         player.addScore(enemy.getWorthiness());

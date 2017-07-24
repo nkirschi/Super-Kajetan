@@ -134,7 +134,7 @@ class LobbyView extends AbstractView {
         enemies.add(new Knight(2200, 680, Behavior.GUARD, Direction.RIGHT));
         enemies.add(new Knight(3000, 707, Behavior.PATROL, Direction.RIGHT));
         enemies.add(new Skeleton(4100, 590, Behavior.ATTACK, Direction.RIGHT));
-        enemies.add(new Coin(150, 588));
+        enemies.add(new Cross(150, 588));
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Barrel(150, 720));
         obstacles.add(new Crate(1750, 640));
@@ -165,16 +165,16 @@ class LobbyView extends AbstractView {
         enemies.add(new Knight(1500, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Knight(2000, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Skeleton(2800, 620, Behavior.GUARD, Direction.LEFT));
-        enemies.add(new Coin(3700, 342));
+        enemies.add(new Cross(3700, 342));
         enemies.add(new Skeleton(4500, 440, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Skeleton(4700, 312, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Knight(5900, 650, Behavior.GUARD, Direction.LEFT));
-        enemies.add(new Coin(6600, 342));
+        enemies.add(new Cross(6600, 342));
         enemies.add(new Knight(7300, 650, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Knight(7800, 690, Behavior.GUARD, Direction.LEFT));
-        enemies.add(new Coin(9092, 182));
+        enemies.add(new Cross(9092, 182));
         enemies.add(new Skeleton(9700, 670, Behavior.GUARD, Direction.LEFT));
-        enemies.add(new Coin(10300, 520));
+        enemies.add(new Cross(10300, 520));
         enemies.add(new Skeleton(11800, 430, Behavior.GUARD, Direction.LEFT));
 
         List<Obstacle> obstacles = new List<>();
@@ -279,7 +279,7 @@ class LobbyView extends AbstractView {
         enemies.add(new Helper(70, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Helper(280, 620, Behavior.ATTACK, Direction.LEFT));
         for (int x = 1300; x < 2000; x += 100)
-            enemies.add(new Coin(x, 40));
+            enemies.add(new Cross(x, 40));
         List<Obstacle> obstacles = new List<>();
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(600, 1400, 40, Ground.Type.GRASS));

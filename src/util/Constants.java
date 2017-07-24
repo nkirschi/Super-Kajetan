@@ -84,13 +84,13 @@ public class Constants {
     public static final double HELPER_ATTACK_RANGE = 0;
     public static final long HELPER_ATTACK_INTERVAL = (long) (1000000000 * 1.5);
 
-    //Coin
-    public static final int COIN_MAX_HEALTH = 1;
-    public static final int COIN_WORTHINESS = 25;
-    public static final double COIN_VIEWING_RANGE = 0;
-    public static final int COIN_STRENGTH = 0;
-    public static final double COIN_ATTACK_RANGE = 0;
-    public static final long COIN_ATTACK_INTERVAL = (long) (1000000000 * 1.5);
+    //Cross
+    public static final int CROSS_MAX_HEALTH = 1;
+    public static final int CROSS_WORTHINESS = 25;
+    public static final double CROSS_VIEWING_RANGE = 0;
+    public static final int CROSS_STRENGTH = 0;
+    public static final double CROSS_ATTACK_RANGE = 0;
+    public static final long CROSS_ATTACK_INTERVAL = (long) (1000000000 * 1.5);
 
     static {
         try {

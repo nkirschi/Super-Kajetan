@@ -1,7 +1,7 @@
 package logic;
 
 import gui.KeyHandler;
-import model.Coin;
+import model.Cross;
 import model.Enemy;
 import model.Level;
 import model.Player;
@@ -28,9 +28,9 @@ public class CollisionHandler {
         dummy.move();
         for (Collidable collidable : collidables) {
             if (dummy.collidesWith(collidable)) {
-                if (collidable instanceof Coin) {
-                    player.addScore(((Coin) collidable).getWorthiness());
-                    ((Coin) collidable).suffer(((Coin) collidable).getMaxHealth());
+                if (collidable instanceof Cross) {
+                    player.addScore(((Cross) collidable).getWorthiness());
+                    ((Cross) collidable).suffer(((Cross) collidable).getMaxHealth());
                     collidables.remove(collidable);
                     break;
                 }
@@ -51,9 +51,9 @@ public class CollisionHandler {
         dummy.move();
         for (Collidable collidable : collidables) {
             if (dummy.collidesWith(collidable)) {
-                if (collidable instanceof Coin) {
-                    player.addScore(((Coin) collidable).getWorthiness());
-                    ((Coin) collidable).suffer(((Coin) collidable).getMaxHealth());
+                if (collidable instanceof Cross) {
+                    player.addScore(((Cross) collidable).getWorthiness());
+                    ((Cross) collidable).suffer(((Cross) collidable).getMaxHealth());
                     break;
                 }
                 if (player.getVelocityY() > 0) {
