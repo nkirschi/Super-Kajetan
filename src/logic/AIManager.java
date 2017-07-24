@@ -178,8 +178,8 @@ public class AIManager {
     private double distance(Entity entity1, Entity entity2) {
         return Math.sqrt((entity1.getX() - entity2.getX()) * (entity1.getX() - entity2.getX()) + (entity1.getY() - entity2.getY()) * (entity1.getY() - entity2.getY()));
     }
-    
-    private boolean touch(Entity entity1, Entity entity2){
+
+    private boolean touch(Entity entity1, Entity entity2) {
         return Math.abs(entity1.getX() - entity2.getX()) <= entity1.getHitbox().getWidth() / 2 + entity2.getHitbox().getWidth() / 2 && Math.abs(entity1.getY() - entity2.getY()) <= entity1.getHitbox().getHeight() / 2 + entity2.getHitbox().getHeight() / 2;
     }
 

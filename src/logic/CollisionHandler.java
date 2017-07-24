@@ -148,9 +148,9 @@ public class CollisionHandler {
         }
     }
 
-    public boolean flyable(Level level, Collidable collidable){ //fixt Bug, bei dem zwei Enemys hochflogen, indem sie aneinander laufen
+    public boolean flyable(Level level, Collidable collidable) { //fixt Bug, bei dem zwei Enemys hochflogen, indem sie aneinander laufen
         for (Enemy e : level.getEnemies()) {
-            if ((collidable.equals(e) && e.getVelocityY()!=0))
+            if ((collidable.equals(e) && e.getVelocityY() != 0))
                 return true;
         }
         return false;

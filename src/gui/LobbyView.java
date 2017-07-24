@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
-import java.util.concurrent.ThreadLocalRandom;
 
 class LobbyView extends AbstractView {
     private static LobbyView instance;
@@ -61,6 +60,9 @@ class LobbyView extends AbstractView {
         lvl2.addActionListener(a -> loadLevel(createLevel2()));
         levelButtonPanel.add(lvl2, constraints);
 
+        /*
+         *Test-Level
+         *
         //Level 3
         WoodenButton lvl3 = new WoodenButton("ITS JUST AN EXPERIMENT I");
         lvl3.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
@@ -75,12 +77,13 @@ class LobbyView extends AbstractView {
         lvl4.addActionListener(a -> loadLevel(createLevel4()));
         levelButtonPanel.add(lvl4, constraints);
 
-        //Level 4
+        //Level 5
         WoodenButton lvl5 = new WoodenButton("Schnelles Glück");
         lvl5.setPreferredSize(Constants.DEFAULT_BUTTON_SIZE);
         lvl5.setFont(buttonFont);
         lvl5.addActionListener(a -> loadLevel(createLevel5()));
         levelButtonPanel.add(lvl5, constraints);
+        */
 
         constraints.insets.set(50, constraints.insets.left, constraints.insets.right, constraints.insets.bottom);
         // Zurück
@@ -245,6 +248,9 @@ class LobbyView extends AbstractView {
                 200);
     }
 
+    /*
+     *Test-Level
+     *
     private Level createLevel3() {
         int rnd = ThreadLocalRandom.current().nextInt(1, 6);
         List<Enemy> enemies = new List<>();
@@ -298,4 +304,5 @@ class LobbyView extends AbstractView {
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background2.jpg",
                 0);
     }
+    */
 }
