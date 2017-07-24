@@ -74,7 +74,7 @@ public class Ground implements Collidable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 128, 128));
+            TexturePaint paint = new TexturePaint(texture, new Rectangle(0, 0, 64, 64));
 
             BufferedImage result = new BufferedImage((int) hitbox.getWidth(), (int) hitbox.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D h = result.createGraphics();
@@ -88,9 +88,9 @@ public class Ground implements Collidable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                TexturePaint paint2 = new TexturePaint(texture2, new Rectangle(0, 0, 128, 128));
+                TexturePaint paint2 = new TexturePaint(texture2, new Rectangle(0, 0, 64, 64));
                 h.setPaint(paint2);
-                h.fillRect(0, 0, result.getWidth(), 128);
+                h.fillRect(0, 0, result.getWidth(), 64);
             }
             image = result;
         }

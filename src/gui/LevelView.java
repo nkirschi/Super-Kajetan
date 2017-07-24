@@ -225,8 +225,7 @@ public class LevelView extends AbstractView implements Runnable {
             renderer.drawSword(g2);
         }
 
-        // 6. Stamina Bar & Score
-        renderer.drawStaminaBar(g2);
+        // 6. Score
         if (running)
             renderer.drawScore(g2);
 

@@ -18,6 +18,7 @@ class Renderer {
     private final KeyHandler keyHandler;
     private final LevelView view;
     private final Stroke strichel;
+    private final Color staminaBlue;
 
     Renderer(Level level, Camera camera, Player player, KeyHandler keyHandler, LevelView view) {
         this.level = level;
@@ -26,6 +27,7 @@ class Renderer {
         this.keyHandler = keyHandler;
         this.view = view;
         strichel = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+        staminaBlue = new Color(0, 130, 232);
     }
 
     void drawPlayer(Graphics2D g2) {
@@ -49,6 +51,11 @@ class Renderer {
         g2.fillRect(x, y, (int) ((double) player.getHealth() / player.getMaxHealth() * player.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
         g2.setColor(Color.BLACK);
         g2.drawRect(x, y, (int) player.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
+
+        g2.setColor(staminaBlue);
+        g2.fillRect(x, y - 5, (int) (player.getStamina() / 1000.0 * player.getHitbox().getWidth()), HEALTH_BAR_HEIGHT);
+        g2.setColor(Color.BLACK);
+        g2.drawRect(x, y - 5, (int) player.getHitbox().getWidth(), HEALTH_BAR_HEIGHT);
         g2.setColor(backup);
 
         if (keyHandler.debug) {
@@ -199,7 +206,7 @@ class Renderer {
     }
 
     void drawStaminaBar(Graphics2D g2) {
-        Rectangle2D staminaMask = new Rectangle2D.Double(view.getWidth() - 220, view.getHeight() - 30, 200, 15);
+        /*Rectangle2D staminaMask = new Rectangle2D.Double(view.getWidth() - 220, view.getHeight() - 30, 200, 15);
         Rectangle2D staminaBorder = new Rectangle2D.Double(staminaMask.getX() - 1, staminaMask.getY() - 1, staminaMask.getWidth() + 1, staminaMask.getHeight() + 1);
         Rectangle2D staminaBar = new Rectangle2D.Double(view.getWidth() - 220, view.getHeight() - 30, player.getStamina() / 5, 15);
         g2.setColor(Constants.MENU_BACKGROUND_COLOR);
@@ -213,7 +220,7 @@ class Renderer {
         g2.setFont(Constants.DEFAULT_FONT);
         g2.drawString("Ausdauer: " + (int) (player.getStamina() / 10) + "%", view.getWidth() - 215, view.getHeight() - 17);
         g2.setFont(backup);
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.BLACK);*/
     }
 
     void drawScore(Graphics2D g2) {
