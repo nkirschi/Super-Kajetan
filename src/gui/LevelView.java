@@ -19,14 +19,14 @@ import java.text.SimpleDateFormat;
 
 
 public class LevelView extends AbstractView implements Runnable {
-    private Level level;
-    private Player player;
-    private Camera camera; // Die aktuelle "Kamera"
-    private KeyHandler keyHandler;
-    private CollisionHandler collisionHandler;
-    private AIManager aiManager;
-    private Renderer renderer;
-    private LawMaster lawMaster;
+    private final Level level;
+    private final Player player;
+    private final Camera camera; // Die aktuelle "Kamera"
+    private final KeyHandler keyHandler;
+    private final CollisionHandler collisionHandler;
+    private final AIManager aiManager;
+    private final Renderer renderer;
+    private final LawMaster lawMaster;
     private JPanel menuPanel;
     private JButton continueButton;
     private JLabel messageLabel;
@@ -78,7 +78,6 @@ public class LevelView extends AbstractView implements Runnable {
                     secondTime = 0;
                     updateCount = 0;
                     frameCount = 0;
-                    System.out.println("Active threads: " + Thread.activeCount());
                 }
 
                 while (lag >= TIME_PER_UPDATE) {

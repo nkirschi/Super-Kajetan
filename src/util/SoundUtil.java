@@ -16,7 +16,7 @@ public class SoundUtil {
 
     public static SoundSystem soundSystem;
 
-    public static String MUSIC_SOURCE = "music";
+    public static final String MUSIC_SOURCE = "music";
 
     public static void init() {
         SoundSystemConfig.setLogger(new NoLogger());

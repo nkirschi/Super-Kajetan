@@ -5,8 +5,8 @@ import gui.LevelView;
 import java.awt.geom.Rectangle2D;
 
 public class Camera extends Rectangle2D.Double {
-    private Player player;
-    private LevelView view;
+    private final Player player;
+    private final LevelView view;
 
     public Camera(Player player, LevelView view) {
         this.player = player;

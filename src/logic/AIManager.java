@@ -6,7 +6,7 @@ import util.Constants;
 import static logic.Behavior.ATTACK;
 
 public class AIManager {
-    CollisionHandler collisionHandler;
+    final CollisionHandler collisionHandler;
     private int patrolCount;
 
     public AIManager(CollisionHandler collisionHandler) {
@@ -180,9 +180,7 @@ public class AIManager {
     }
     
     private boolean touch(Entity entity1, Entity entity2){
-        if(Math.abs(entity1.getX()-entity2.getX()) <= entity1.getHitbox().getWidth()/2 + entity2.getHitbox().getWidth()/2 && Math.abs(entity1.getY()-entity2.getY()) <= entity1.getHitbox().getHeight()/2 + entity2.getHitbox().getHeight()/2)
-            return true;
-        return false;
+        return Math.abs(entity1.getX() - entity2.getX()) <= entity1.getHitbox().getWidth() / 2 + entity2.getHitbox().getWidth() / 2 && Math.abs(entity1.getY() - entity2.getY()) <= entity1.getHitbox().getHeight() / 2 + entity2.getHitbox().getHeight() / 2;
     }
 
     private void moveLeft(Enemy enemy) {
