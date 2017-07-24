@@ -162,15 +162,21 @@ class LobbyView extends AbstractView {
 
     private Level createLevel2() {
         List<Enemy> enemies = new List<>();
-        //enemies.add(new Knight(1700, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Knight(1500, 660, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Knight(2000, 660, Behavior.ATTACK, Direction.LEFT));
         enemies.add(new Skeleton(2800, 620, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Coin(3700, 342));
         enemies.add(new Skeleton(4500, 440, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Skeleton(4700, 312, Behavior.GUARD, Direction.LEFT));
-        enemies.add(new Knight(5900, 660, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Knight(5900, 650, Behavior.GUARD, Direction.LEFT));
         enemies.add(new Coin(6600, 342));
-        enemies.add(new Knight(7800, 690, Behavior.ATTACK, Direction.LEFT));
+        enemies.add(new Knight(7300, 650, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Knight(7800, 690, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Coin(9092, 182));
+        enemies.add(new Skeleton(9700, 670, Behavior.GUARD, Direction.LEFT));
+        enemies.add(new Coin(10300, 520));
+        enemies.add(new Skeleton(11800, 430, Behavior.GUARD, Direction.LEFT));
+
         List<Obstacle> obstacles = new List<>();
         obstacles.add(new Crate(130, 700));
         obstacles.add(new Barrel(130, 572));
@@ -185,6 +191,12 @@ class LobbyView extends AbstractView {
         obstacles.add(new Crate(6600, 470));
         obstacles.add(new Crate(6950, 590));
         obstacles.add(new Barrel(8300, 700));
+        obstacles.add(new Barrel(8520, 650));
+        obstacles.add(new Crate(8900, 360));
+        obstacles.add(new Crate(9028, 310));
+        obstacles.add(new Crate(9156, 310));
+        obstacles.add(new Barrel(9550, 670));
+
         List<Ground> grounds = new List<>();
         grounds.add(new Ground(2800, 900, 120, Ground.Type.ROCK));
         grounds.add(new Ground(2250, 300, 100, Ground.Type.SOIL));
@@ -198,8 +210,8 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(4150, 150, 260, Ground.Type.SOIL));
         grounds.add(new Ground(4050, 50, 100, Ground.Type.SOIL));
 
-        grounds.add(new Ground(5000, 300, 40, Ground.Type.ROCK));
         grounds.add(new Ground(5200, 200, 60, Ground.Type.SOIL));
+        grounds.add(new Ground(5025, 350, 40, Ground.Type.ROCK));
         grounds.add(new Ground(5300, 100, 20, Ground.Type.SOIL));
         grounds.add(new Ground(6000, 800, 80, Ground.Type.GRASS));
         grounds.add(new Ground(5600, 100, 40, Ground.Type.SOIL));
@@ -211,7 +223,24 @@ class LobbyView extends AbstractView {
         grounds.add(new Ground(7500, 250, 70, Ground.Type.SOIL));
         grounds.add(new Ground(7825, 500, 50, Ground.Type.GRASS));
         grounds.add(new Ground(8250, 450, 40, Ground.Type.SAND));
-        grounds.add(new Ground(10000, 3400, 10, Ground.Type.ROCK)); // Ebene, auf der das Level ergänzt werden kann
+        grounds.add(new Ground(8520, 90, 90, Ground.Type.SAND));
+        grounds.add(new Ground(8565, 60, 50, Ground.Type.SAND));
+
+        grounds.add(new Ground(9600, 300, 70, Ground.Type.SAND));
+        grounds.add(new Ground(9425, 100, 40, Ground.Type.SAND));
+        grounds.add(new Ground(9800, 150, 20, Ground.Type.SAND));
+
+        grounds.add(new Ground(10200, 75, 150, Ground.Type.SAND));
+        grounds.add(new Ground(10300, 200, 220, Ground.Type.SAND));
+        grounds.add(new Ground(10600, 300, 130, Ground.Type.SAND));
+        grounds.add(new Ground(10400, 100, 180, Ground.Type.SAND));
+        grounds.add(new Ground(10750, 100, 80, Ground.Type.SAND));
+
+        grounds.add(new Ground(11100, 50, 90, Ground.Type.ROCK));
+        grounds.add(new Ground(12150, 1100, 310, Ground.Type.GRASS));
+        grounds.add(new Ground(11550, 200, 290, Ground.Type.SOIL));
+        grounds.add(new Ground(11300, 400, 260, Ground.Type.ROCK));
+
         return new Level(enemies, obstacles, grounds, "images/backgrounds/background_extended.png",
                 200);
     }
